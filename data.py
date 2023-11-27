@@ -1,8 +1,8 @@
 import numpy
 
 I = 3  # The producer locations (pistachlo orchard)
-K = 3  # The potential processing center
-J = 3  # The potential pistachio factory locations
+J = 3  # The potential processing center
+K = 3  # The potential pistachio factory locations
 E = 2  # The potential oil extraction center locations
 Q = 2  # The potential composting center locations
 S = 2  # The potential cosmetic factories locations
@@ -25,16 +25,16 @@ Cv = numpy.random.uniform(low=150, high=180, size=S) # Production cost per unit 
 Cu1 = numpy.random.uniform(low=60, high=100, size=J) # Processing cost per unit of product type 1 for processing centers i
 Cu2 = numpy.random.uniform(low=80, high=120, size=J) # Processing cost per unit of product type 2 for processing centers i
 
-CX  = numpy.random.uniform(low = 20, high = 40, size = I * J) # Shipping cost per unit of picked pistachio shipped from the producer (pistachio orchard) i to processing center j
-CK = numpy.random.uniform(low = 20, high = 40, size = J * K) #  Shipping cost per unit of open-mouth pistachio shipped from processing center j to pistachio factory k
-CE = numpy.random.uniform(low = 20, high = 40, size = J * E) # Shipping cost per unit of raw kernel shipped from processing center j to oil extraction center e
-CJ = numpy.random.uniform(low = 20, high = 40, size = J * Q) # Shipping cost per unit of processing waste shipped from processing center j to composting center q
-CS = numpy.random.uniform(low = 20, high = 40, size = E * S) # Shipping cost per unit of products from oil extraction center e to cosmetic factory s
-CN = numpy.random.uniform(low = 20, high = 40, size = E * N2) # Shipping cost per unit of product shipped from oil extraction center e to oil customer N2
-CQ = numpy.random.uniform(low = 20, high = 40,size = E * Q) # Shipping cost per unit of products from oil extraction center e to composting center q
-Cl = numpy.random.uniform(low = 20, high = 40, size = S * N3) # Shipping cost per unit of product shipped from cosmetic factory s to cosmetic customer N3
-Cp = numpy.random.uniform(low = 20, high = 40, size = K * N1) # Shipping cost per unit of product shipped from pistachio factory k to pistachio customer N1
-Cd = numpy.random.uniform(low = 20, high = 40, size = Q * M) # Shipping cost per unit of produced compost shipped from composting center q to compost customer m
+CX  = numpy.random.uniform(low = 20, high = 40, size = (I, J)) # Shipping cost per unit of picked pistachio shipped from the producer (pistachio orchard) i to processing center j
+CK = numpy.random.uniform(low = 20, high = 40, size = (J , K)) #  Shipping cost per unit of open-mouth pistachio shipped from processing center j to pistachio factory k
+CE = numpy.random.uniform(low = 20, high = 40, size = (J, E)) # Shipping cost per unit of raw kernel shipped from processing center j to oil extraction center e
+CJ = numpy.random.uniform(low = 20, high = 40, size = (J, Q)) # Shipping cost per unit of processing waste shipped from processing center j to composting center q
+CS = numpy.random.uniform(low = 20, high = 40, size = (E, S)) # Shipping cost per unit of products from oil extraction center e to cosmetic factory s
+CN = numpy.random.uniform(low = 20, high = 40, size = (E, N2)) # Shipping cost per unit of product shipped from oil extraction center e to oil customer N2
+CQ = numpy.random.uniform(low = 20, high = 40,size = (E, Q)) # Shipping cost per unit of products from oil extraction center e to composting center q
+Cl = numpy.random.uniform(low = 20, high = 40, size = (S, N3)) # Shipping cost per unit of product shipped from cosmetic factory s to cosmetic customer N3
+Cp = numpy.random.uniform(low = 20, high = 40, size = (K, N1)) # Shipping cost per unit of product shipped from pistachio factory k to pistachio customer N1
+Cd = numpy.random.uniform(low = 20, high = 40, size = (Q, M)) # Shipping cost per unit of produced compost shipped from composting center q to compost customer m
  
 Beta = 0.3 # Weight loss percentage in drying operations 
 Omega = [0.4, 0.1, 0.5] #  Waste percentage of product type b from processing center j
@@ -49,7 +49,6 @@ Cpy = numpy.random.uniform(low = 20000, high = 40000, size = Q) # Production cap
 Cpw = numpy.random.uniform(low = 20000, high = 40000, size = K) # Production capacity for pistachio factory k
 Cpr = numpy.random.uniform(low = 20000, high = 40000, size = E)  # Production capacity for oil extraction center e
 Cpv = numpy.random.uniform(low = 20000, high = 40000, size = S) # Production capacity for cosmetic factory s
-# CI = numpy.random.uniform(low = 20, high = 40, size = I)
 Dc = numpy.random.uniform(low = 200, high = 400, size = M) # The demand for compost by customer M
 Dp =  numpy.random.uniform(low = 200, high = 400, size = N1) # The demand of open-mouth pistachio by pistachio customer N1
 Du =  numpy.random.uniform(low = 100, high = 200, size = N2) # The demand for oil by oil customer N2
