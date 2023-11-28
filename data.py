@@ -35,7 +35,7 @@ CQ = numpy.random.uniform(low = 20, high = 40,size = (E, Q)) # Shipping cost per
 Cl = numpy.random.uniform(low = 20, high = 40, size = (S, N3)) # Shipping cost per unit of product shipped from cosmetic factory s to cosmetic customer N3
 Cp = numpy.random.uniform(low = 20, high = 40, size = (K, N1)) # Shipping cost per unit of product shipped from pistachio factory k to pistachio customer N1
 Cd = numpy.random.uniform(low = 20, high = 40, size = (Q, M)) # Shipping cost per unit of produced compost shipped from composting center q to compost customer m
- 
+
 Beta = 0.3 # Weight loss percentage in drying operations 
 Omega = [0.4, 0.1, 0.5] #  Waste percentage of product type b from processing center j
 yq = 0.6 # Production rate of compost from composting center q

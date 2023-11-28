@@ -30,6 +30,7 @@ def decode_step(K, J, b, a, c, chromosome):
 
     # Step 4: Assign the minimum available quantity from the source to the depot
     g = min(a[k_star], b[j_star])
+
     # Update the availabilities at the source and depot
     a[k_star] -= g
     b[j_star] -= g
@@ -75,5 +76,4 @@ def main(K, J, b, a, c, chromosome):
     for i, fabrication in enumerate(quantity_fabrication):
         print(f"Source {i + 1} needs to produce {fabrication} to meet demand.")
 
-# Execute the main function
 main(K, J, b, a, c, chromosome)

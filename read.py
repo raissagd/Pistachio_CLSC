@@ -1,0 +1,67 @@
+import numpy
+import decode
+
+data = numpy.load("data.npz")
+
+I = data["I"]
+K = data["K"]
+J = data["J"]
+E = data["E"]
+Q = data["Q"]
+S = data["S"]
+N1 = data["N1"]
+N2 = data["N2"]
+N3 = data["N3"]
+M = data["M"]
+Fu = data["Fu"]
+Fy = data["Fy"]
+Fw = data["Fw"]
+Fr = data["Fr"]
+Fv = data["Fv"]
+CI = data["CI"]
+Cy = data["Cy"]
+Cw = data["Cw"]
+Cr = data["Cr"]
+Cv = data["Cv"]
+Cu1 = data["Cu1"]
+Cu2 = data["Cu2"]
+CX = data["CX"]
+CK = data["CK"]
+CE = data["CE"]
+CJ = data["CJ"]
+CS = data["CS"]
+CN = data["CN"]
+CQ = data["CQ"]
+Cl = data["Cl"]
+Cp = data["Cp"]
+Cd = data["Cd"]
+Beta = data["Beta"]
+Omega = data["Omega"]
+yq = data["yq"]
+ys = data["ys"]
+yk = data["yk"]
+lambd = data["lambd"]
+Cpa = data["Cpa"]
+Cpu = data["Cpu"]
+Cpy = data["Cpy"]
+Cpw = data["Cpw"]
+Cpr = data["Cpr"]
+Cpv = data["Cpv"]
+Dc = data["Dc"]
+Dp = data["Dp"]
+Du = data["Du"]
+Ds = data["Ds"]
+
+data.close()
+
+chromo = [2,5,3,6,4,1]
+K = [0, 1, 2]
+J = [0, 1, 2]
+a = Cpw
+print(a)
+b = Dp
+print(b)
+c = Cp
+print(c)
+
+#decode.main(K, J, b, a, c, chromo)
