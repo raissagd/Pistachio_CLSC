@@ -12,21 +12,25 @@ def decode_step(K, J, b, a, c, chromosome):
     non_zero_priorities = [i for i, v in enumerate(chromosome) if v != 0]
     if not non_zero_priorities:
         # If all priorities are zero, the algorithm should terminate.
-        return None, None, None
+        return None, None, None, 0
 
     l = max(non_zero_priorities, key=lambda x: chromosome[x])
 
     # Step 3: Select the source or depot based on 'l'
     if l < len(K):  # 'l' is a source index
         k_star = K[l]
-        # Find depot with the lowest cost that has not yet been exhausted
-        j_star = min((j for j in J if chromosome[len(K) + j] != 0),
-                     key=lambda j: c[k_star][j])
+        eligible_depots = [j for j in J if chromosome[len(K) + j] != 0]
+        if not eligible_depots:
+            # No eligible depots left, terminate the algorithm
+            return None, None, None, 0
+        j_star = min(eligible_depots, key=lambda j: c[k_star][j])
     else:  # 'l' is a depot index
         j_star = J[l - len(K)]
-        # Find source with the lowest cost that has not yet been exhausted
-        k_star = min((k for k in K if chromosome[k] != 0),
-                     key=lambda k: c[k][j_star])
+        eligible_sources = [k for k in K if chromosome[k] != 0]
+        if not eligible_sources:
+            # No eligible sources left, terminate the algorithm
+            return None, None, None, 0
+        k_star = min(eligible_sources, key=lambda k: c[k][j_star])
 
     # Step 4: Assign the minimum available quantity from the source to the depot
     g = min(a[k_star], b[j_star])
@@ -50,11 +54,11 @@ def decode_step(K, J, b, a, c, chromosome):
 def print_shipment_info(k_star, j_star, g, cost, chromosome, a, b):
     print(f"Source: {k_star + 1}")
     print(f"Depot: {j_star + 1}")
-    print(f"Quantity: {g}")
-    print(f"Cost: {cost}")
-    print("Chromosome:", chromosome)
-    print("Sources' capacities:", a)
-    print("Depots' demands:", b)
+    print(f"Quantity: {g:.2f}")
+    print(f"Cost: {cost:.2f}")
+    print("Update chromosome:", chromosome)
+    print("Updated sources' capacities:", a)
+    print("Updated depots' demands:", b)
     print("---------------------------------------------------")
 
 def main(K, J, b, a, c, chromosome):
@@ -64,7 +68,7 @@ def main(K, J, b, a, c, chromosome):
     # Continue decoding the chromosome until all priorities are zero
     while any(v != 0 for v in chromosome):
         result = decode_step(K, J, b, a, c, chromosome)
-        if result is None:
+        if result == (None, None, None, 0):
             break
 
         g, k_star, j_star, cost = result
@@ -72,8 +76,8 @@ def main(K, J, b, a, c, chromosome):
         quantity_fabrication[k_star] += g 
         print_shipment_info(k_star, j_star, g, cost, chromosome, a, b)
 
-    print("Total operation cost:", total_cost)
+    print(f"Total operation cost: {(total_cost):.2f}")
     for i, fabrication in enumerate(quantity_fabrication):
-        print(f"Source {i + 1} needs to produce {fabrication} to meet demand.")
+        print(f"Source {i + 1} needs to produce {(fabrication):.2f} to meet demand.")
 
-main(K, J, b, a, c, chromosome)
+#main(K, J, b, a, c, chromosome)

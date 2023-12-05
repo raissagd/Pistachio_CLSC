@@ -1,5 +1,4 @@
 import numpy
-import decode
 
 data = numpy.load("data.npz")
 
@@ -53,15 +52,3 @@ Du = data["Du"]
 Ds = data["Ds"]
 
 data.close()
-
-chromo = [2,5,3,6,4,1]
-K = [0, 1, 2]
-J = [0, 1, 2]
-a = Cpw
-print(a)
-b = Dp
-print(b)
-c = Cp
-print(c)
-
-#decode.main(K, J, b, a, c, chromo)
