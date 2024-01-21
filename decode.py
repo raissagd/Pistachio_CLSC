@@ -67,8 +67,8 @@ def decode(K, J, b, a, c, chromosome):
         g, k_star, j_star, cost = result
         total_cost += cost  
         quantity_fabrication[k_star] += g 
-        print_shipment_info(k_star, j_star, g, cost, chromosome, a, b)
+        #print_shipment_info(k_star, j_star, g, cost, chromosome, a, b)
 
-    print(f"Total operation cost: {(total_cost):.2f}")
-    for i, fabrication in enumerate(quantity_fabrication):
-        print(f"Source {i + 1} needs to produce {(fabrication):.2f} to meet demand.")
+    #print(f"Total operation cost: {(total_cost):.2f}")
+    #for i, fabrication in enumerate(quantity_fabrication):
+        #print(f"Source {i + 1} needs to produce {(fabrication):.2f} to meet demand.")
