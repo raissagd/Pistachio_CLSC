@@ -1,6 +1,6 @@
-import numpy
+import numpy as np
 
-data = numpy.load("data.npz")
+data = np.load("data.npz")
 
 I = data["I"]
 K = data["K"]

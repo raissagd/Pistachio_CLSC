@@ -1,10 +1,3 @@
-K = [0, 1, 2]  # Indices of sources
-J = [0, 1, 2, 3]  # Indices of depots
-a = [550, 300, 450]  # Capacity of each source
-b = [300, 350, 300, 350]  # Demand of each depot
-c = [[11, 19, 17, 18], [16, 14, 18, 15], [15, 16, 19, 13]]  # Transport cost matrix from source to depot
-chromosome = [2, 5, 3, 7, 4, 1, 6]  # Chromosome representing priorities
-
 def decode_step(K, J, b, a, c, chromosome):
     g = 0  # Step 1: Initialize g to zero
 
@@ -61,7 +54,7 @@ def print_shipment_info(k_star, j_star, g, cost, chromosome, a, b):
     print("Updated depots' demands:", b)
     print("---------------------------------------------------")
 
-def main(K, J, b, a, c, chromosome):
+def decode(K, J, b, a, c, chromosome):
     total_cost = 0
     quantity_fabrication = [0 for _ in K]
 
@@ -79,5 +72,3 @@ def main(K, J, b, a, c, chromosome):
     print(f"Total operation cost: {(total_cost):.2f}")
     for i, fabrication in enumerate(quantity_fabrication):
         print(f"Source {i + 1} needs to produce {(fabrication):.2f} to meet demand.")
-
-#main(K, J, b, a, c, chromosome)
