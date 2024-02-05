@@ -29,8 +29,6 @@ demand_M = read.Dc
 shipment_cost_QM = read.Cd # Shipping cost composting center q -> compost customer m
 dc.decode(sources_Q, depots_M, demand_M, production_capacity_Q, shipment_cost_QM, chromo_QM)
 
-# to do: Dqm??
-
 # ---------------------------------------------------------
 # Flow from oil extraction centers (E -> N2 & S + Q)
 chromo_ESN2 = [2, 3, 5, 7, 1, 4, 6, 8, 9]
@@ -60,5 +58,11 @@ amount_j_demands = production_capacity_J / (1 - read.Beta) / (read.Theta[0] + re
 amount_to_send_from_j_to_compost_ = amount_j_demands * read.Theta[2]
 
 # ---------------------------------------------------------
-# Flow from producers to processing center (I-> J)
-# to do
+# Flow from producers to processing center (I -> J)
+chromo_JI = [6,3,4,2,1,5]
+sources_I = [0, 1, 2]
+depots_J = [0, 1, 2]
+production_capacity_I = read.Cpa
+total_shipment_cost_I = read.CX
+
+dc.decode (sources_I, depots_J, amount_j_demands, total_shipment_cost_I, chromo_JI)
