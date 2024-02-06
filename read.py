@@ -2,53 +2,16 @@ import numpy as np
 
 data = np.load("data.npz")
 
-I = data["I"]
-K = data["K"]
-J = data["J"]
-E = data["E"]
-Q = data["Q"]
-S = data["S"]
-N1 = data["N1"]
-N2 = data["N2"]
-N3 = data["N3"]
-M = data["M"]
-Fu = data["Fu"]
-Fy = data["Fy"]
-Fw = data["Fw"]
-Fr = data["Fr"]
-Fv = data["Fv"]
-CI = data["CI"]
-Cy = data["Cy"]
-Cw = data["Cw"]
-Cr = data["Cr"]
-Cv = data["Cv"]
-Cu1 = data["Cu1"]
-Cu2 = data["Cu2"]
-CX = data["CX"]
-CK = data["CK"]
-CE = data["CE"]
-CJ = data["CJ"]
-CS = data["CS"]
-CN = data["CN"]
-CQ = data["CQ"]
-Cl = data["Cl"]
-Cp = data["Cp"]
-Cd = data["Cd"]
-Beta = data["Beta"]
-Theta = data["Theta"]
-yq = data["yq"]
-ys = data["ys"]
-yk = data["yk"]
-lambd = data["lambd"]
-Cpa = data["Cpa"]
-Cpu = data["Cpu"]
-Cpy = data["Cpy"]
-Cpw = data["Cpw"]
-Cpr = data["Cpr"]
-Cpv = data["Cpv"]
-Dc = data["Dc"]
-Dp = data["Dp"]
-Du = data["Du"]
-Ds = data["Ds"]
+# Lista de variáveis a serem extraídas
+variaveis = ["I", "K", "J", "E", "Q", "S", "N1", "N2", "N3", "M", 
+             "Fu", "Fy", "Fw", "Fr", "Fv", "CI", "Cy", "Cw", "Cr", 
+             "Cv", "Cu1", "Cu2", "CX", "CK", "CE", "CJ", "CS", "CN", 
+             "CQ", "Cl", "Cp", "Cd", "Beta", "Theta", "yq", "ys", "yk", 
+             "lambd", "Cpa", "Cpu", "Cpy", "Cpw", "Cpr", "Cpv", "Dc", 
+             "Dp", "Du", "Ds"]
+
+# Atribuir os valores correspondentes às variáveis
+for variavel in variaveis:
+    globals()[variavel] = data[variavel]
 
 data.close()
