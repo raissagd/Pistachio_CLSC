@@ -36,12 +36,12 @@ Cl = np.random.uniform(low = 20, high = 40, size = (S, N3)) # Shipping cost per 
 Cp = np.random.uniform(low = 20, high = 40, size = (K, N1)) # Shipping cost per unit of product shipped from pistachio factory k to pistachio customer N1
 Cd = np.random.uniform(low = 20, high = 40, size = (Q, M)) # Shipping cost per unit of produced compost shipped from composting center q to compost customer m
 
-Beta = 0.3 # Weight loss percentage in drying operations 
-Theta = [0.4, 0.1, 0.5] #  Waste percentage of product type b from processing center j
-yq = 0.6 # Production rate of compost from composting center q
-ys = 2 # Production rate of cosmetic product from cosmetic factory s
-yk = 1.01 # Production rate of pistachio factoy k
-lambd = 0.4 # Waste percentage of oil extracting process in oil extraction center e
+beta = 0.3 # Weight loss percentage in drying operations 
+theta = [0.4, 0.1, 0.5] #  Waste percentage of product type b from processing center j
+gammaq = 0.6 # Production rate of compost from composting center q
+gammas = 2 # Production rate of cosmetic product from cosmetic factory s
+gammak = 1.01 # Production rate of pistachio factoy k
+lamb = 0.4 # Waste percentage of oil extracting process in oil extraction center e
 
 Cpa = np.random.uniform(low = 80000, high = 100000, size = I) # Production capacity for producer i
 Cpu = np.random.uniform(low = 20000, high = 40000, size = J) # Production capacity for processing centers j
@@ -54,4 +54,4 @@ Dp =  np.random.uniform(low = 200, high = 400, size = N1) # The demand of open-m
 Du =  np.random.uniform(low = 100, high = 200, size = N2) # The demand for oil by oil customer N2
 Ds =  np.random.uniform(low = 20, high = 80, size = N3) # The demand of cosmetic by cosmetic customer N3
 
-np.savez_compressed("data.npz", I=I, K=K, J=J, E=E, Q=Q, S=S, N1=N1, N2=N2, N3=N3, M=M, Fu=Fu, Fy=Fy, Fw=Fw, Fr=Fr, Fv=Fv, CI=CI, Cy=Cy, Cw=Cw, Cr=Cr, Cv=Cv, Cu1=Cu1, Cu2=Cu2, CX=CX, CK=CK, CE=CE, CJ=CJ, CS=CS, CN=CN, CQ=CQ, Cl=Cl, Cp=Cp, Cd=Cd, Beta=Beta, Theta=Theta, yq=yq, ys=ys, yk=yk, lambd=lambd, Cpa=Cpa, Cpu=Cpu, Cpy=Cpy, Cpw=Cpw, Cpr=Cpr, Cpv=Cpv, Dc=Dc, Dp=Dp, Du=Du, Ds=Ds)
+np.savez_compressed("data.npz", I=I, K=K, J=J, E=E, Q=Q, S=S, N1=N1, N2=N2, N3=N3, M=M, Fu=Fu, Fy=Fy, Fw=Fw, Fr=Fr, Fv=Fv, CI=CI, Cy=Cy, Cw=Cw, Cr=Cr, Cv=Cv, Cu1=Cu1, Cu2=Cu2, CX=CX, CK=CK, CE=CE, CJ=CJ, CS=CS, CN=CN, CQ=CQ, Cl=Cl, Cp=Cp, Cd=Cd, beta=beta, theta=theta, gammaq=gammaq, gammas=gammas, gammak=gammak, lamb=lamb, Cpa=Cpa, Cpu=Cpu, Cpy=Cpy, Cpw=Cpw, Cpr=Cpr, Cpv=Cpv, Dc=Dc, Dp=Dp, Du=Du, Ds=Ds)

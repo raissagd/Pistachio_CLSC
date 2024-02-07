@@ -6,8 +6,8 @@ data = np.load("data.npz")
 variaveis = ["I", "K", "J", "E", "Q", "S", "N1", "N2", "N3", "M", 
              "Fu", "Fy", "Fw", "Fr", "Fv", "CI", "Cy", "Cw", "Cr", 
              "Cv", "Cu1", "Cu2", "CX", "CK", "CE", "CJ", "CS", "CN", 
-             "CQ", "Cl", "Cp", "Cd", "Beta", "Theta", "yq", "ys", "yk", 
-             "lambd", "Cpa", "Cpu", "Cpy", "Cpw", "Cpr", "Cpv", "Dc", 
+             "CQ", "Cl", "Cp", "Cd", "beta", "theta", "gammaq", "gammas", "gammak", 
+             "lamb", "Cpa", "Cpu", "Cpy", "Cpw", "Cpr", "Cpv", "Dc", 
              "Dp", "Du", "Ds"]
 
 # Atribuir os valores correspondentes às variáveis

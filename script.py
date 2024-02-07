@@ -44,8 +44,8 @@ total_shipment_cost_J = np.hstack((read.CK, read.CE)) # shipment cost J -> K + s
 
 dc.decoding(chromo_JKE, production_capacity_J, demand_KE, total_shipment_cost_J)
 
-amount_j_demands = production_capacity_J / (1 - read.Beta) / (read.Theta[0] + read.Theta[1]) # Theta = Waste percentage of product type b from processing center j
-amount_to_send_from_j_to_compost_ = amount_j_demands * read.Theta[2]
+amount_j_demands = production_capacity_J / (1 - read.beta) / (read.theta[0] + read.theta[1]) # theta = Waste percentage of product type b from processing center j
+amount_to_send_from_j_to_compost_ = amount_j_demands * read.theta[2]
 
 # ---------------------------------------------------------
 # Flow from producers to processing center (I -> J)
