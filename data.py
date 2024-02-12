@@ -1,14 +1,14 @@
 import numpy as np
 
 I = 3  # The producer locations (pistachlo orchard)
-J = 3  # The potential processing center
-K = 3  # The potential pistachio factory locations
-E = 4   # The potential oil extraction center locations
-Q = 2  # The potential composting center locations
-S = 2  # The potential cosmetic factories locations
-N1 = 3 # The pistachio market locatlons
-N2 = 3 # The oil market locations
-N3 = 2 # The cosmetic customer locations
+J = 2  # The potential processing center
+K = 1  # The potential pistachio factory locations
+E = 1  # The potential oil extraction center locations
+Q = 1  # The potential composting center locations
+S = 1  # The potential cosmetic factories locations
+N1 = 2 # The pistachio market locatlons
+N2 = 2 # The oil market locations
+N3 = 1 # The cosmetic customer locations
 M = 2  # Total compost's customers
 
 Fu = np.random.uniform(low=20000, high=40000, size=J)  # Fixed cost of processing center j
@@ -22,8 +22,8 @@ Cy = np.random.uniform(low=50, high=100, size=Q)  # Production cost per unit of 
 Cw = np.random.uniform(low=100, high=150, size=K) # Roasting and packing cost per unit of product for pistachio factory k
 Cr = np.random.uniform(low=40, high=80, size=E)   # Extracting cost per unit of product for oil extraction center e
 Cv = np.random.uniform(low=150, high=180, size=S) # Production cost per unit of products for cosmetic factory s
-Cu1 = np.random.uniform(low=60, high=100, size=J) # Processing cost per unit of product type 1 for processing centers i
-Cu2 = np.random.uniform(low=80, high=120, size=J) # Processing cost per unit of product type 2 for processing centers i
+Cu1 = np.random.uniform(low=60, high=100, size=J) # Processing cost per unit of product type 1 for processing centers j
+Cu2 = np.random.uniform(low=80, high=120, size=J) # Processing cost per unit of product type 2 for processing centers j
 
 CX  = np.random.uniform(low = 20, high = 40, size = (I, J)) # Shipping cost per unit of picked pistachio shipped from the producer (pistachio orchard) i to processing center j
 CK = np.random.uniform(low = 20, high = 40, size = (J , K)) #  Shipping cost per unit of open-mouth pistachio shipped from processing center j to pistachio factory k
