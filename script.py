@@ -62,7 +62,7 @@ bX1 = np.sum(Go, axis=1)/(1-read.beta)/read.theta[0]
 bX2 = np.sum(Gr, axis=1)/(1-read.beta)/read.theta[1]
 
 # Demanda final do centro de processamento
-b = np.zeros(read.J)
+b4 = np.zeros(read.J)
 
 # Para cada centro de processamento
 for j in range(read.J):
@@ -71,13 +71,13 @@ for j in range(read.J):
     if bX1[j] > bX2[j]:
         
         # A demanda final do centro de processamento é a demanda relacionada às fabricas de pistache
-        b[j] = bX1[j]
+        b4[j] = bX1[j]
         
         # Encontro qual centro de extração de óleo tem o menor custo
         e = np.argmin(read.CE[j, :] + read.Cu2[j])
         
         # Calculo quanto de caroço deveria sair do centro de processamento
-        amount = b[j]*read.theta[1]*(1-read.beta)
+        amount = b4[j]*read.theta[1]*(1-read.beta)
         
         # Atribuo a aquele trecho a quantidade de caroço que falta para completar a demanda final
         Gr[j, e] = Gr[j, e] + amount - np.sum(Gr[j, :])
@@ -85,13 +85,13 @@ for j in range(read.J):
     # Caso contrário
     else:
         # A demanda final do centro de processamento é a demanda relacionada ao centro de extração de óleo
-        b[j] = bX2[j]
+        b4[j] = bX2[j]
         
         # Encontro qual fabrica de pistache tem o menor custo
         k = np.argmin(read.CK[j, :] + read.Cu1[j])
         
         # Calculo quanto de pistache deveria sair do centro de processamento
-        amount = b[j]*read.theta[0]*(1-read.beta)
+        amount = b4[j]*read.theta[0]*(1-read.beta)
         
         # Atribuo a aquele trecho a quantidade de pistache que falta para completar a demanda final
         Go[j, k] = Go[j, k] + amount - np.sum(Go[j, :])
@@ -124,10 +124,10 @@ totalcost += cost6
 Gw = np.zeros((read.J, read.Q))
 
 # A quantidade de resíduo a ser enviada pelos centros de processamento
-a = np.sum(X, axis=0)* read.theta[2]
+a7 = np.sum(X, axis=0)* read.theta[2]
 
 # A quantidade mínima de resíduo necessária pelos centros de compostagem
-b = np.sum(D, axis=1)/ read.gammaq
+b7 = np.sum(D, axis=1)/ read.gammaq
 
 # Para cada centro de processamento
 for j in range(read.J):
@@ -135,22 +135,22 @@ for j in range(read.J):
     q = np.argmin(read.CJ[j, :])
     
     # Atribui todo o resíduo para esse trecho
-    Gw[j, q] = a[j]
+    Gw[j, q] = a7[j]
 
 # Para cada centro de compostagem
 for q in range(read.Q):
     # Se a quantidade de resíduo já enviada é menor que a quantidade necessária
-    if b[q] > Gw[:, q].sum():
+    if b7[q] > Gw[:, q].sum():
         # Atualiza a demanda do centro de compostagem diminuido a quantidade
-        b[q] = b[q] - np.sum(Gw[:, q])
+        b7[q] = b7[q] - np.sum(Gw[:, q])
     
     # Se a quantidade de resíduo já enviada é maior que a quantidade necessária
     else:
         # Nenhum resíduo a mais é necessário
-        b[q] = 0
+        b7[q] = 0
 
 # Se ainda há algum centro de compostagem que necessita de resíduo
-if np.sum(b) > 0:
+if np.sum(b7) > 0:
     # Exemplo de cromossomo para a etapa considerada
     S7 = np.array([1])
     
@@ -158,7 +158,7 @@ if np.sum(b) > 0:
     a = read.lamb*np.sum(Gr, axis=0)
     
     # Calculando o custo e a matriz de transporte
-    _, Ow = dc.decoding(S7, a, b, read.CQ)
+    _, Ow = dc.decoding(S7, a, b7, read.CQ)
 
 # Caso contrário, não é necessário enviar nenhum resíduo do centro de extração de óleo para os centros de compostagem
 else:
@@ -171,7 +171,6 @@ totalcost += np.sum(read.CJ*Gw) + np.sum(read.CQ*Ow)
 a = np.hstack((np.sum(X, axis=0)*read.theta[2], read.lamb*np.sum(Gr, axis=0)))
 b = np.sum(D, axis=1)/read.gammaq
 GwOw = np.vstack((Gw, Ow))
-print(f"a={a} | Gw+Ow={GwOw} | b={b}")
 
 # -------------------------------------------------------------
 # Somando os custos de abertura à função objetivo
