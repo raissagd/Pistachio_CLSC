@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 import numpy as np
 import copy
 
-class Neighbourhood(ABC):
+class Neighborhood(ABC):
     """
-    Abstract class for Neighbourhood Search Algorithms.
+    Abstract class for Neighborhood Search Algorithms.
     """
     def __init__(self, solution):
         self.chromosomes = [f"S{i}" for i in range(1, 9)] # List of chromosomes (S1, S2, ..., S8)
@@ -23,7 +23,7 @@ class Neighbourhood(ABC):
     def applyChange(self):
         pass
 
-class Swap(Neighbourhood):
+class Swap(Neighborhood):
     """
     Two units of a solution are selected randomly and their positions are swapped. 
     """
@@ -33,27 +33,27 @@ class Swap(Neighbourhood):
             i, j = self.selectRandomPair()
             self.chromosome[i], self.chromosome[j] = self.chromosome[j], self.chromosome[i] # Swap the elements at indices i and j
 
-class Reversion(Neighbourhood):
+class Reversion(Neighborhood):
     """
     In addition to Swap, units located between swapped units are reversed, too.
     """
     def applyChange(self, N):
-        self.selectRandomChromosome()
         for _ in range(N):
+            self.selectRandomChromosome()
             i, j = self.selectRandomPair()
             start = min(i, j)
             end = max(i, j) + 1
             self.chromosome[start:end] = self.chromosome[start:end][::-1]  # Reverse the selected portion of the chromosome
 
-class Insertion(Neighbourhood):
+class Insertion(Neighborhood):
     """
     Two units of a solution are selected randomly. The unit in the second position is placed immediately after the 
     unit in the first location and the other units are shifted to the right hand side accordingly.
     """
     
     def applyChange(self, N):
-        self.selectRandomChromosome()
         for _ in range(N):
+            self.selectRandomChromosome()
             i, j = self.selectRandomPair()
             
             # Ensure i < j
@@ -68,7 +68,7 @@ class Insertion(Neighbourhood):
             
             self.chromosome[i + 1] = unit_to_insert # Insert the unit in its new position
 
-class MaxMinSwap(Neighbourhood):
+class MaxMinSwap(Neighborhood):
     """
     The units with maximum and minimum values are chosen and their positions are exchanged. 
     """
@@ -80,7 +80,7 @@ class MaxMinSwap(Neighbourhood):
         # Swap the elements at indices min_index and max_index
         self.chromosome[min_index], self.chromosome[max_index] = self.chromosome[max_index], self.chromosome[min_index]
 
-class Slide(Neighbourhood):
+class Slide(Neighborhood):
     """
     1) Two units of a solution are selected randomly. 
     2) The first unit is eliminated.
@@ -88,8 +88,8 @@ class Slide(Neighbourhood):
     4) The first number is placed in the position the second number used to take. 
     """
     def applyChange(self, N):
-        self.selectRandomChromosome()
         for _ in range(N):
+            self.selectRandomChromosome()
             i, j = self.selectRandomPair()
             
             # Ensure i < j
@@ -104,37 +104,83 @@ class Slide(Neighbourhood):
             
             self.chromosome[j] = unit_to_move  # Place the moved unit in its new position
 
-
-class ETN(Neighbourhood):
+class ETN(Neighborhood):
     """
     ETN (Exchange Two Neighbors):
     Two neighbor units of a solution are selected randomly. Their positions are then changed with each other. 
     """
     def applyChange(self, N):
-        pass
+        for _ in range(N):
+            self.selectRandomChromosome()
+            i = np.random.randint(0, len(self.chromosome) - 1)  # Select a random index within the valid range
+            j = i + 1  # Select the neighbor of the first unit
+            
+            self.chromosome[i], self.chromosome[j] = self.chromosome[j], self.chromosome[i]  # Swap the elements at indices i and j
 
-class RS(Neighbourhood):
+class RS(Neighborhood):
     """
     RS (Random Shuffling ):
-    A subsequence is chosen (with, for example, 2 elements), then the values of its positions are exchanged
-    with the values of the positions of another subsequence. 
+    A subsequence of the solution is selected randomly. The elements of this subsequence are then shuffled.
     """
     def applyChange(self, N):
-        pass
+        for _ in range(N):
+            self.selectRandomChromosome()
+            start, end = sorted(np.random.choice(len(self.chromosome), 2, replace=False)) # Select start and end indices for the subsequence
+            
+            subsequence = self.chromosome[start:end+1] # Extract the subsequence
+            
+            np.random.shuffle(subsequence) # Shuffle the subsequence randomly
 
-class SPS(Neighbourhood):
+            self.chromosome[start:end+1] = subsequence # Place the shuffled subsequence back into the chromosome
+
+class SPS(Neighborhood):
     """
-    Swaping a Part of Solution (SPS):
-    A subsequence of solutions is selected and then shifted to a new position. 
+    Swapping a Part of Solution (SPS):
+    A subsequence of the solution is selected and then shifted to a new position. 
     """
     def applyChange(self, N):
-        pass
+        for _ in range(N):
+            self.selectRandomChromosome()
+            
+            start1, end1 = sorted(np.random.choice(len(self.chromosome), 2, replace=False)) # Select start and end indices for the first subsequence
+            
+            new_position = np.random.randint(0, len(self.chromosome) - (end1 - start1)) # Select the new position for the first subsequence
+                        
+            subsequence1 = self.chromosome[start1:end1+1] # Extract the first subsequence
+            
+            # Remove the first subsequence from the chromosome
+            remaining_indices = np.concatenate((np.arange(start1), np.arange(end1+1, len(self.chromosome))))
+            self.chromosome = self.chromosome[remaining_indices]
+            
+            # Make space at the new position for the first subsequence
+            self.chromosome = np.concatenate((self.chromosome[:new_position], subsequence1, self.chromosome[new_position:]))
     
-class SRPS(Neighbourhood):
+class SRPS(Neighborhood):
     """
     Swapping a Reversed Part of Solution (SRPS): 
-    Similar to SPS, with the difference that, during the moving process, the elements of the selected subsequence
+    Similar to SPS, with the difference that, during the moving process, the elements of the first selected subsequence
     are reversed.
     """
-    def applyChange(self, Nn):
-        pass
+    def applyChange(self, N):
+        for _ in range(N):
+            self.selectRandomChromosome()
+            
+            # Select start and end indices for the first subsequence
+            start1, end1 = sorted(np.random.choice(len(self.chromosome), 2, replace=False))
+            
+            # Select the new position for the first subsequence
+            new_position = np.random.randint(0, len(self.chromosome) - (end1 - start1))
+            
+            # Extract the first subsequence
+            subsequence1 = self.chromosome[start1:end1+1]
+            
+            # Reverse the first subsequence
+            subsequence1 = subsequence1[::-1]
+            
+            # Remove the first subsequence from the chromosome
+            remaining_indices = np.concatenate((np.arange(start1), np.arange(end1+1, len(self.chromosome))))
+            self.chromosome = self.chromosome[remaining_indices]
+            
+            # Make space at the new position for the first subsequence
+            self.chromosome = np.concatenate((self.chromosome[:new_position], subsequence1, self.chromosome[new_position:]))
+            print(self.chromosome)
