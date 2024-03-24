@@ -178,7 +178,7 @@ class Solution:
                 # Find which oil extraction center has the lowest cost
                 e = np.argmin(data.CE[j, :] + data.Cu2[j])
 
-                # Calculate how much raw kernel should leave the processing center //
+                # Calculate how much raw kernel should leave the processing center
                 amount = b[j] * data.theta[1] * (1 - data.beta)
 
                 # Assign to that segment the amount of raw kernel needed to complete the final demand
