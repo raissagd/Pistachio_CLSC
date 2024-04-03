@@ -6,7 +6,7 @@ class Solution:
         self.S1, self.S2, self.S3, self.S4, self.S5, self.S6, self.S7, self.S8 = [None] * 8 # Chromosomes
         self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [None] * 15 # Decision variables
     
-    def generateChromosome(self, I, J, K, E, Q, S, N1, N2, N3, M):
+    def generateChromosome(self, data):
         """
         Generate an eight segment chromosome.
 
@@ -23,14 +23,14 @@ class Solution:
         - M (int): Number of compost customers.
         """
         flows = [
-            (K + N1),
-            (S + N3),
-            (E + N2 + S),
-            (J + K),
-            (J + E),
-            (I + J),
-            (Q + M),
-            (J + E + Q)
+            (data.K + data.N1),
+            (data.S + data.N3),
+            (data.E + data.N2 + data.S),
+            (data.J + data.K),
+            (data.J + data.E),
+            (data.I + data.J),
+            (data.Q + data.M),
+            (data.J + data.E + data.Q)
         ]
 
         # Generate chromosomes for each flow and assign them to the corresponding attribute
@@ -290,13 +290,7 @@ class Solution:
         return totalcost
     
     def encode(self, n):
-        """
-        The initialization of a chromosome is performed with randomly generating a permutation of digits from 1 to n
-
-        Returns:
-        - chromosome (list): Encoded chromosome.
-        """
-        return np.random.permutation(np.arange(1, n + 1))
+        pass
      
     def evaluate(self, data, show=False):
         """
