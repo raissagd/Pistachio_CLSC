@@ -190,8 +190,7 @@ class SPS(Neighborhood):
 class SRPS(Neighborhood):
     """
     Swapping a Reversed Part of Solution (SRPS): 
-    Similar to SPS, with the difference that, during the moving process, the elements of the first selected subsequence
-    are reversed.
+    Similar to SPS, with the difference that, during the moving process, the elements of the first selected subsequence are reversed.
     """
     def applyChange(self, solution):
         solution_copy = copy.deepcopy(solution)
