@@ -49,7 +49,7 @@ class Solution:
             c (matrix): transportation cost of one unit of product from
             source k to depot j.
         """
-        K, J = a.size, b.size
+        K, J = a.size, b.size # K = number of sources, J = number of depots
         a, b, v = a.copy(), b.copy(), v.copy()
             
         # The amount of product shipped from source k to depot j
@@ -60,12 +60,12 @@ class Solution:
             
         while True:
             # Select a node
-            l = np.argmax(v)
+            l = np.argmax(v) # Select the node with the highest value
                 
             if l < K: # Select a source
                 k = l
                 possible_depots = np.nonzero(v[K:])[0]
-                j = possible_depots[np.argmin(c[k, possible_depots].flatten())]
+                j = possible_depots[np.argmin(c[k, possible_depots].flatten())]                
             else: # Select a depot
                 j = l-K
                 possible_sources = np.nonzero(v[:K])[0]
@@ -255,8 +255,9 @@ class Solution:
             a8 = data.lamb * np.sum(self.Gr, axis=0)
 
             # Calculating cost and transportation matrix
+            print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
             _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
-
+            
         # Otherwise, it is not necessary to send any waste from the oil extraction center to the composting centers
         else:
             self.Ow = np.zeros((data.E, data.Q))

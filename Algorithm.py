@@ -12,6 +12,15 @@ class Algorithm(ABC):
         pass
     
 class VariableNeighborhoodSearch(Algorithm):
+    """
+    Function VNS (x, kmax)
+        1:    k ← 1
+        2:    repeat
+        3:       x' ← Shake(x, k)                   // Shaking
+        4:       x'' ← BestImprovement(x' )         // Local search
+        5:       x ← NeighbourhoodChange(x, x'', k) // Change neighbourhood
+        6:    until k = kmax
+    """
     def __init__(self, operators, max_eval):
         self.operators = operators # Operators for generating neighbors
         self.max_eval = max_eval # Maximum number of iterations
