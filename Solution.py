@@ -30,7 +30,8 @@ class Solution:
             (data.J + data.E),
             (data.I + data.J),
             (data.Q + data.M),
-            (data.J + data.E + data.Q)
+            # (data.J + data.E + data.Q)
+            (data.E + data.Q)
         ]
 
         # Generate chromosomes for each flow and assign them to the corresponding attribute
@@ -58,14 +59,12 @@ class Solution:
         it = 0
             
         while True:
-            
             # Select a node
             l = np.argmax(v)
                 
             if l < K: # Select a source
                 k = l
                 possible_depots = np.nonzero(v[K:])[0]
-                # Select a depot with the lowest cost
                 j = possible_depots[np.argmin(c[k, possible_depots].flatten())]
             else: # Select a depot
                 j = l-K
