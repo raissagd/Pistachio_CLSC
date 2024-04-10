@@ -3,7 +3,7 @@ from numpy.random import uniform
 import gurobipy as grb
 
 # Tamanho único
-SIZE = 100
+""" SIZE = 100
 I = SIZE
 J = SIZE
 K = SIZE
@@ -13,19 +13,19 @@ S = SIZE
 N1 = SIZE
 N2 = SIZE
 N3 = SIZE
-M = SIZE
+M = SIZE """
 
-# # Test 24
-# I = 200
-# J = 62
-# K = 30
-# E = 22
-# Q = 130
-# S = 24
-# N1 = 400
-# N2 = 138
-# N3 = 80
-# M = 250
+# Test 24
+I = 200
+J = 62
+K = 30
+E = 22
+Q = 130
+S = 24
+N1 = 400
+N2 = 138
+N3 = 80
+M = 250
 
 beta = 0.3
 theta1 = 0.4
