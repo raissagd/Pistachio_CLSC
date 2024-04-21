@@ -216,7 +216,7 @@ modelo.addConstrs(
     name="Eq.(21)"
 )
 modelo.addConstrs(
-    (grb.quicksum(D[q,m] for q in range(Q)) >= Dc[m] for m in range(M)),
+    (grb.quicksum(D[q,m] for q in range(Q)) <= Dc[m] for m in range(M)),
     name="Eq.(22)"
 )
 

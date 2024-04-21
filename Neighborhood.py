@@ -22,6 +22,8 @@ class Neighborhood(ABC):
     @abstractmethod
     def applyChange(self):
         pass
+    
+# Ordinary Neighborhood Structures
 
 class Swap(Neighborhood):
     """
@@ -54,6 +56,7 @@ class Reversion(Neighborhood):
             setattr(solution_copy, chromosome_attr, chromosome)
             
         return solution_copy
+    
 class Insertion(Neighborhood):
     """
     Two units of a solution are selected randomly. The unit in the second position is placed immediately after the 
@@ -80,24 +83,6 @@ class Insertion(Neighborhood):
             setattr(solution_copy, chromosome_attr, chromosome)
             
         return solution_copy 
-
-class MaxMinSwap(Neighborhood):
-    """
-    The units with maximum and minimum values are chosen and their positions are exchanged. 
-    """
-    def applyChange(self, solution):
-        solution_copy = copy.deepcopy(solution)
-        
-        for _ in range(self.N):
-            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
-            min_index = np.argmin(chromosome)  # Find the index of the minimum value
-            max_index = np.argmax(chromosome)  # Find the index of the maximum value
-                
-            # Swap the elements at indices min_index and max_index
-            chromosome[min_index], chromosome[max_index] = chromosome[max_index], chromosome[min_index]
-            setattr(solution_copy, chromosome_attr, chromosome)
-            
-        return solution_copy
         
 class Slide(Neighborhood):
     """
@@ -209,5 +194,114 @@ class SRPS(Neighborhood):
             # Make space at the new position for the first subsequence
             chromosome = np.concatenate((chromosome[:new_position], subsequence1, chromosome[new_position:]))
             setattr(solution_copy, chromosome_attr, chromosome)
+            
+        return solution_copy
+    
+# Directed Neighborhood Structures (Problem-specific)
+class MinMaxSwap(Neighborhood):
+    """
+    A subset of the chromsome is chosen. The highest number is swapped with the lowest number in that subset.
+    """
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+        
+        for _ in range(self.N):
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            start, end = sorted(np.random.choice(len(chromosome), 2, replace=False))  # Select start and end indices for the subset
+            subset = chromosome[start:end+1]  # Extract the subset
+            min_index = np.argmin(subset)  # Find the index of the minimum value in the subset
+            max_index = np.argmax(subset)  # Find the index of the maximum value in the subset
+            
+            # Swap the elements at indices min_index and max_index within the subset
+            subset[min_index], subset[max_index] = subset[max_index], subset[min_index]
+            chromosome[start:end+1] = subset  # Place the modified subset back into the chromosome
+            setattr(solution_copy, chromosome_attr, chromosome)
+            
+        return solution_copy
+
+class SourceDepotSwap(Neighborhood):
+    """
+    SourceDepotSwap:
+    One of the sources has its priority changed with one of the depots.
+    """
+    
+    def __init__(self, N, data):
+        super().__init__(N)
+        self.data = data
+        
+    def numSources(self, chromosome):
+        if chromosome == 'S1':
+            return self.data.K
+        elif chromosome == 'S2':
+            return self.data.S
+        elif chromosome == 'S3':
+            return self.data.E
+        elif chromosome == 'S4':
+            return self.data.J
+        elif chromosome == 'S5':
+            return self.data.J
+        elif chromosome == 'S6':
+            return self.data.I
+        elif chromosome == 'S7':
+            return self.data.Q
+        elif chromosome == 'S8':
+            return self.data.E
+        
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+        
+        for _ in range(self.N):
+            # Select a random chromosome
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            print(f"Chromosome: {chromosome}")
+            
+            # Determine the number of sources for this chromosome
+            num_sources = self.numSources(chromosome_attr)
+            
+            # Ensure there are at least two sources
+            if num_sources < 2:
+                continue
+            
+            # Divide the chromosome into two subsets
+            subset1 = chromosome[:num_sources]
+            subset2 = chromosome[num_sources:]
+            
+            # Randomly select indices from each subset
+            index1 = np.random.randint(0, len(subset1))
+            index2 = np.random.randint(0, len(subset2))
+            
+            # Swap elements between subsets
+            subset1[index1], subset2[index2] = subset2[index2], subset1[index1]
+            
+            # Merge the subsets back into the chromosome
+            chromosome = np.concatenate((subset1, subset2))
+            
+            # Update the solution with the modified chromosome
+            setattr(solution_copy, chromosome_attr, chromosome)
+            print(f"Chromosome after swap: {chromosome}")
+            
+        return solution_copy
+
+class ENS(Neighborhood):
+    """
+    ENS (Exchange Neighbor Priority):
+    Two units with neighbor priorities are selected and their positions are then changed with each other.
+    """
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+        
+        for _ in range(self.N):
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            value = np.random.choice(chromosome)  # Select a random value from the chromosome
+            #print(f"Chromosome: {chromosome}")
+            #print(f"Selected value: {value}")
+            chromosome_list = list(chromosome)
+            i = chromosome_list.index(value)  # Find the index of the selected value
+            next_value = value + 1
+            if next_value in chromosome:  # Check if the next value exists in the chromosome
+                j = chromosome_list.index(next_value)  # Find the index of the next value
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]  # Swap the elements at indices i and j
+                setattr(solution_copy, chromosome_attr, np.array(chromosome_list)) 
+                #print(f"Chromosome after swap: {chromosome_list}")
             
         return solution_copy

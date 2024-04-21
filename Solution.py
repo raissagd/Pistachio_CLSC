@@ -54,7 +54,13 @@ class Solution:
             
         # The amount of product shipped from source k to depot j
         g = np.zeros((K, J))
-
+        
+        # Check if the total available from sources is less than the total demand from depots
+        """ if np.sum(a) < np.sum(b):
+            raise ValueError("Total available from sources is less than total demand from depots. "
+                            "The flux cannot be satisfied.")
+        """
+        
         # Iteration counter
         it = 0
             
@@ -88,7 +94,7 @@ class Solution:
                 
             it += 1
                 
-            if np.all(v[K:] == 0):
+            if np.all(v[K:] == 0) or np.sum(a) == 0:
                 break
 
         if show:
@@ -250,13 +256,27 @@ class Solution:
 
         # If there is still any composting center that needs waste
         if np.sum(b8) > 0:
-
+            
             # Defining the capacity of each source
-            a8 = data.lamb * np.sum(self.Gr, axis=0)
+            a8 = np.sum(self.Gr, axis=0) * data.lamb
+            
+            if np.sum(a8) < np.sum(b8):
+                delta = np.sum(b8)/np.sum(a8)
+                b8 = b8 / delta
+                # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
+                _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
+                # Composting centers -> composting consumers
+                a7 = data.gammaq * (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0))
+                b7 = data.Dc
+                c7 = data.Cd + data.Cy[:, None]
+                totalcost -= cost7
+                cost7, self.D = self.decodingStep(self.S7, a7, b7, c7)
+                totalcost += cost7
+            else:
 
-            # Calculating cost and transportation matrix
-            print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
-            _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
+                # Calculating cost and transportation matrix
+                # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
+                _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
             
         # Otherwise, it is not necessary to send any waste from the oil extraction center to the composting centers
         else:
@@ -341,7 +361,7 @@ class Solution:
             (np.sum(self.P, axis=0), data.Dp, ">=", "(17)"),
             (np.sum(self.O, axis=0), data.Du, ">=", "(18)"),
             (np.sum(self.L, axis=0), data.Ds, ">=", "(19)"),
-            (np.sum(self.D, axis=0), data.Dc, ">=", "(20)")
+            (np.sum(self.D, axis=0), data.Dc, "<=", "(20)")
         ]
 
         for lhs, rhs, comparison, label in equations:
