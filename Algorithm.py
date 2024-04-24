@@ -27,7 +27,7 @@ class VariableNeighborhoodSearch(Algorithm):
         self.max_eval = max_eval # Maximum number of iterations
         self.n_eval = 1 # Number of evaluations
     
-    def localSearch(self, solution, data, operator_index, number_of_neighbors):
+    def best_improvement(self, solution, data, operator_index, number_of_neighbors):
         failure_counter = 0
         while True:
             neighbors = [] # List to store the neighbor solutions
@@ -75,7 +75,7 @@ class VariableNeighborhoodSearch(Algorithm):
         # Neighborhood change
         while True:
             perturbed_solution = self.perturbation(solution, data, operator_index) # Shake the current solution
-            new_solution = self.localSearch(perturbed_solution, data, operator_index, number_of_neighbors) # Local search on the perturbed solution
+            new_solution = self.best_improvement(perturbed_solution, data, operator_index, number_of_neighbors) # Local search on the perturbed solution
             
             if new_solution.FX < solution.FX:
                 # If the new solution is better, update the current solution and repeat the process

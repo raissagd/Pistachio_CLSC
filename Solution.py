@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 class Solution:
     def __init__(self):
@@ -309,9 +310,19 @@ class Solution:
         
         return totalcost
     
-    def encode(self, n):
+    def encode(self, a, b, c, g):
+        """
+        Procedure of encoding a transportation tree.
+        Args:
+            a(array): capacity of source k
+            b(array): demand on depot j
+            c(matrix): transportation cost of one unit of product from source k to depot j
+            g(matrix): amount of shipment from source k to depot j
+        Returns:
+            V(array): chromosome
+        """
         pass
-     
+        
     def evaluate(self, data, show=False):
         """
         Evaluate a solution.

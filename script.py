@@ -2,27 +2,63 @@ from Problem import Problem
 from Solution import Solution
 from Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
 from Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
+import random
 
-#I, J, K, E, Q, S, N1, N2, N3, M = 3, 2, 1, 1, 1, 1, 2, 2, 1, 2
-I, J, K, E, Q, S, N1, N2, N3, M = 9, 6, 3, 2, 5, 3, 8, 4, 4, 8
+"""
+1) Gerar um problema padrão e salvar
+2) Definir um conjunto de formulações do VNS
+3) Rodar 30 vezes cada algoritmo e guardar o melhor f(x) de cada execução
+   - Todo mundo com o mesmo critério de parada: 100 mil avaliações
+"""
 
-# Creating an instance of the Problem class
-""" problem = Problem()
-problem.generate(I, J, K, E, Q, S, N1, N2, N3, M)
-problem.saveFile("data.npz")  """
+I, J, K, E, Q, S, N1, N2, N3, M = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+
+def createProblem(I, J, K, E, Q, S, N1, N2, N3, M):
+    problem = Problem()
+    problem.generate(I, J, K, E, Q, S, N1, N2, N3, M)
+    problem.saveFile("data.npz")
+    
+def find_smallest_FX(arr):
+    smallest = arr[0]  # Assume the first element is the smallest
+    for num in arr:
+        if num < smallest:
+            smallest = num  # Update smallest if a smaller value is found
+    return smallest
+
+def VNSSets(data):
+    sets = []
+    sets.append([Swap(5), Reversion(4), Insertion(3), Slide(2)])
+    sets.append([ETN(6), RS(6), SPS(5), SRPS(2)])
+    sets.append([MinMaxSwap(5), SourceDepotSwap(2, data), ENS(1)])
+    return sets
+
+""" def VNSSets(data, max_sets=3, max_structures=4, max_runs=5):
+    sets = []
+    num_sets = random.randint(1, max_sets)
+    
+    for _ in range(num_sets):
+        neighborhood_structures = []
+        num_structures = random.randint(1, max_structures)
+        for _ in range(num_structures):
+            neighborhood_structures.append(random.choice([Swap(5), Reversion(4), Insertion(3), Slide(2), ETN(6), RS(6), SPS(5), SRPS(2), MinMaxSwap(5), SourceDepotSwap(2, data), ENS(1)]))
+        neighborhood_structures.sort(key=lambda x: x.move) # sorting step that ensures the neighborhood structures are in ascending order based on the move attribute
+        sets.append(neighborhood_structures)
+
+    return sets """
+
+# createProblem(I, J, K, E, Q, S, N1, N2, N3, M)
 data = Problem()
 data.loadFile("data.npz")
 
-# Creating an instance of the Solution class
-solution = Solution()
-solution.generateChromosome(data)
-solution.evaluate(data)
-solution.check(data) 
+sets = VNSSets(data)
+best_FX_values = []
 
-#ILS = IteratedLocalSearch([Swap(2), Reversion(2), Insertion(2), MaxMinSwap(2), Slide(2), ETN(2), RS(2), SPS(2), SRPS(2)], 5)
-#ILS.solve(data)
-#VNS = VariableNeighborhoodSearch([Swap(5), Reversion(10), Insertion(4), MaxMinSwap(5), Slide(6), ETN(5), RS(5), SPS(3), SRPS(4), PS(2), CPS(2), IDP(2), LocalMinMaxSwap(2)], 50)o#/ptimum = VNS.solve(data)
-#optimum.check(data)
-
-teste = ENS(1)
-teste.applyChange(solution)
+for i in range(len(sets)):
+    FX_values = []
+    for _ in range(2):
+        vns = VariableNeighborhoodSearch(sets[i], 100000)
+        solution = vns.solve(data)
+        FX_values.append(solution.FX)
+    best_FX_values.append(find_smallest_FX(FX_values))
+    
+print(best_FX_values)
