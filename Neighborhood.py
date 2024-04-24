@@ -253,7 +253,6 @@ class SourceDepotSwap(Neighborhood):
         for _ in range(self.N):
             # Select a random chromosome
             chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
-            print(f"Chromosome: {chromosome}")
             
             # Determine the number of sources for this chromosome
             num_sources = self.numSources(chromosome_attr)
@@ -278,7 +277,6 @@ class SourceDepotSwap(Neighborhood):
             
             # Update the solution with the modified chromosome
             setattr(solution_copy, chromosome_attr, chromosome)
-            print(f"Chromosome after swap: {chromosome}")
             
         return solution_copy
 
