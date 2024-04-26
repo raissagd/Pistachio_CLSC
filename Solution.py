@@ -7,37 +7,53 @@ class Solution:
         self.S1, self.S2, self.S3, self.S4, self.S5, self.S6, self.S7, self.S8 = [None] * 8 # Chromosomes
         self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [None] * 15 # Decision variables
     
+    def calculate_priorities(self, transportation_matrix):
+        """
+        Generate a chromosome based on the mean costs of the transportation matrix.
+        """
+        row_means = np.mean(transportation_matrix, axis=1) # Calculate mean of each row
+        col_means = np.mean(transportation_matrix, axis=0) # Calculate mean of each column
+        means_array = np.concatenate((row_means, col_means)) # Concatenate row and column means
+        priority_array = np.arange(1, len(means_array) + 1) # Create an array of numbers from 1 to len(means_array)
+        
+        # Sort the means_array along with their indices
+        sorted_indices = np.argsort(means_array)
+        sorted_means = means_array[sorted_indices]
+        
+        # Assign priorities to each value in means_array
+        current_priority = 1
+        for i in range(len(sorted_means)):
+            if i > 0 and sorted_means[i] == sorted_means[i - 1]:
+                # If the current value is equal to the previous one, assign the next sequential priority
+                current_priority += 1
+            else:
+                # Otherwise, assign a new priority
+                current_priority = max(current_priority, i + 1)  # Ensure sequential priorities
+            priority_array[sorted_indices[i]] = current_priority
+        
+        return priority_array
+        
     def generateChromosome(self, data):
         """
         Generate an eight segment chromosome.
-
-        Args:
-        - I (int): Number of producers.
-        - J (int): Number of processing centers.
-        - K (int): Number of pistachio factories.
-        - E (int): Number of oil extraction centers.
-        - Q (int): Number of composting centers.
-        - S (int): Number of cosmetic factories.
-        - N1 (int): Number of pistachio customers
-        - N2 (int): Number of oil customers.
-        - N3 (int): Number of cosmetic customers.
-        - M (int): Number of compost customers.
+        
+        S1: Pistachio factories -> pistachio consumers (K + N1)
+        S2: Cosmetics factories -> cosmetics consumers (S + N3)
+        S3: Oil extraction centers -> oil consumers + cosmetics factories (E + N2 + S)
+        S4: Processing center -> pistachio factories (J + K)
+        S5: Processing center -> oil extraction center (J + E)
+        S6: Pistachio producers -> processing centers (I + J)
+        S7: Composting centers -> composting consumers (Q + M)
+        S8: Oil extraction centers -> composting centers (E + Q)
         """
-        flows = [
-            (data.K + data.N1),
-            (data.S + data.N3),
-            (data.E + data.N2 + data.S),
-            (data.J + data.K),
-            (data.J + data.E),
-            (data.I + data.J),
-            (data.Q + data.M),
-            # (data.J + data.E + data.Q)
-            (data.E + data.Q)
-        ]
-
-        # Generate chromosomes for each flow and assign them to the corresponding attribute
-        for i in range(1, 9):
-            setattr(self, f"S{i}", np.random.permutation(np.arange(1, flows[i-1] + 1)))
+        self.S1 = self.calculate_priorities(data.Cp)
+        self.S2 = self.calculate_priorities(data.Cl)
+        self.S3 = self.calculate_priorities(np.hstack((data.CN, data.CS)))
+        self.S4 = self.calculate_priorities(data.CK)
+        self.S5 = self.calculate_priorities(data.CE)
+        self.S6 = self.calculate_priorities(data.CX)
+        self.S7 = self.calculate_priorities(data.Cd)
+        self.S8 = self.calculate_priorities(data.CQ)
     
     def decodingStep(self, v, a, b, c, show = False):
         """

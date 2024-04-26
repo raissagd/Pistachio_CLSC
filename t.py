@@ -6,6 +6,8 @@ def calculate_priorities(transportation_matrix):
     col_means = np.mean(transportation_matrix, axis=0) # Calculate mean of each column
     
     means_array = np.concatenate((row_means, col_means)) # Concatenate row and column means
+    
+    print(f"means_array: {means_array}")
 
     priority_array = np.arange(1, len(means_array) + 1) # Create an array of numbers from 1 to len(means_array)
     
