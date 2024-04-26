@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Solution import Solution
+from Classes.Solution import Solution
 import numpy as np
 import random
 

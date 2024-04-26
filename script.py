@@ -1,7 +1,7 @@
-from Problem import Problem
-from Solution import Solution
-from Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
-from Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
+from Classes.Problem import Problem
+from Classes.Solution import Solution
+from Classes.Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
+from Classes.Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
 import random
 import numpy as np
 
@@ -17,7 +17,7 @@ I, J, K, E, Q, S, N1, N2, N3, M = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
 def createProblem(I, J, K, E, Q, S, N1, N2, N3, M):
     problem = Problem()
     problem.generate(I, J, K, E, Q, S, N1, N2, N3, M)
-    problem.saveFile("data.npz")
+    problem.saveFile("data/data.npz")
     
 def find_smallest_FX(arr):
     smallest = arr[0]  # Assume the first element is the smallest
@@ -34,7 +34,7 @@ def VNSSets(data):
     return sets
 
 data = Problem()
-data.loadFile("data.npz")
+data.loadFile("data/data.npz")
 
 sets = VNSSets(data)
 best_FX_values = np.zeros((len(sets), 30))
@@ -45,4 +45,4 @@ for i in range(len(sets)):
         solution = vns.solve(data)
         best_FX_values[i, j] = solution.FX
     
-np.savez("best_FX_values.npz", best_FX_values=best_FX_values)
+np.savez("data/best_FX_values.npz", best_FX_values=best_FX_values)
