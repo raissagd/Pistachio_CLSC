@@ -290,9 +290,7 @@ class ENS(Neighborhood):
         
         for _ in range(self.N):
             chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
-            value = np.random.choice(chromosome)  # Select a random value from the chromosome
-            #print(f"Chromosome: {chromosome}")
-            #print(f"Selected value: {value}")
+            value = np.ceil(np.abs(np.random.normal(loc=0, scale=(len(chromosome) * 0.75) / 3)))  # Select a random value from a normal distribution
             chromosome_list = list(chromosome)
             i = chromosome_list.index(value)  # Find the index of the selected value
             next_value = value + 1
@@ -300,6 +298,5 @@ class ENS(Neighborhood):
                 j = chromosome_list.index(next_value)  # Find the index of the next value
                 chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]  # Swap the elements at indices i and j
                 setattr(solution_copy, chromosome_attr, np.array(chromosome_list)) 
-                #print(f"Chromosome after swap: {chromosome_list}")
             
         return solution_copy

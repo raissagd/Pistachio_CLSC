@@ -3,6 +3,7 @@ from Solution import Solution
 from Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
 from Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
 import random
+import numpy as np
 
 """
 1) Gerar um problema padrão e salvar
@@ -32,33 +33,16 @@ def VNSSets(data):
     sets.append([MinMaxSwap(5), SourceDepotSwap(2, data), ENS(1)])
     return sets
 
-""" def VNSSets(data, max_sets=3, max_structures=4, max_runs=5):
-    sets = []
-    num_sets = random.randint(1, max_sets)
-    
-    for _ in range(num_sets):
-        neighborhood_structures = []
-        num_structures = random.randint(1, max_structures)
-        for _ in range(num_structures):
-            neighborhood_structures.append(random.choice([Swap(5), Reversion(4), Insertion(3), Slide(2), ETN(6), RS(6), SPS(5), SRPS(2), MinMaxSwap(5), SourceDepotSwap(2, data), ENS(1)]))
-        neighborhood_structures.sort(key=lambda x: x.move) # sorting step that ensures the neighborhood structures are in ascending order based on the move attribute
-        sets.append(neighborhood_structures)
-
-    return sets """
-
-# createProblem(I, J, K, E, Q, S, N1, N2, N3, M)
 data = Problem()
 data.loadFile("data.npz")
 
 sets = VNSSets(data)
-best_FX_values = []
+best_FX_values = np.zeros((len(sets), 30))
 
 for i in range(len(sets)):
-    FX_values = []
-    for _ in range(2):
+    for j in range(2):
         vns = VariableNeighborhoodSearch(sets[i], 100000)
         solution = vns.solve(data)
-        FX_values.append(solution.FX)
-    best_FX_values.append(find_smallest_FX(FX_values))
+        best_FX_values[i, j] = solution.FX
     
-print(best_FX_values)
+np.savez("best_FX_values.npz", best_FX_values=best_FX_values)
