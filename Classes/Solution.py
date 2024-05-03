@@ -33,7 +33,7 @@ class Solution:
         
         return priority_array
         
-    def generateChromosome(self, data):
+    def generateChromosomeDeterministic(self, data):
         """
         Generate an eight segment chromosome.
         
@@ -54,6 +54,38 @@ class Solution:
         self.S6 = self.calculate_priorities(data.CX)
         self.S7 = self.calculate_priorities(data.Cd)
         self.S8 = self.calculate_priorities(data.CQ)
+        
+    def generateChromosomeStochastic(self, data):
+        """
+        Generate an eight segment chromosome.
+
+        Args:
+        - I (int): Number of producers.
+        - J (int): Number of processing centers.
+        - K (int): Number of pistachio factories.
+        - E (int): Number of oil extraction centers.
+        - Q (int): Number of composting centers.
+        - S (int): Number of cosmetic factories.
+        - N1 (int): Number of pistachio customers
+        - N2 (int): Number of oil customers.
+        - N3 (int): Number of cosmetic customers.
+        - M (int): Number of compost customers.
+        """
+        flows = [
+            (data.K + data.N1),
+            (data.S + data.N3),
+            (data.E + data.N2 + data.S),
+            (data.J + data.K),
+            (data.J + data.E),
+            (data.I + data.J),
+            (data.Q + data.M),
+            # (data.J + data.E + data.Q)
+            (data.E + data.Q)
+        ]
+
+        # Generate chromosomes for each flow and assign them to the corresponding attribute
+        for i in range(1, 9):
+            setattr(self, f"S{i}", np.random.permutation(np.arange(1, flows[i-1] + 1)))
     
     def decodingStep(self, v, a, b, c, show = False):
         """
