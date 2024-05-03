@@ -22,10 +22,11 @@ class VariableNeighborhoodSearch(Algorithm):
         6:    until k = kmax
     """
     
-    def __init__(self, operators, max_eval):
+    def __init__(self, operators, max_eval, initialization):
         self.operators = operators # Operators for generating neighbors
         self.max_eval = max_eval # Maximum number of iterations
         self.n_eval = 1 # Number of evaluations
+        self.initializaton = initialization # Initialization method
     
     def best_improvement(self, solution, data, operator_index, number_of_neighbors):
         failure_counter = 0
@@ -66,7 +67,11 @@ class VariableNeighborhoodSearch(Algorithm):
         
     def solve(self, data):
         solution = Solution() # Create a new solution
-        solution.generateChromosome(data)
+        if(self.initializaton == 0):
+            solution.generateChromosomeDeterministic(data)
+        else:
+            solution.generateChromosomeStochastic(data)
+            
         solution.evaluate(data)
         print(f"Initial FX: {solution.FX}")
         operator_index = 0
