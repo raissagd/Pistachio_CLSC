@@ -2,7 +2,6 @@ from Classes.Problem import Problem
 from Classes.Solution import Solution
 from Classes.Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
 from Classes.Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
-import random
 import numpy as np
 
 """
@@ -18,13 +17,6 @@ def createProblem(I, J, K, E, Q, S, N1, N2, N3, M):
     problem = Problem()
     problem.generate(I, J, K, E, Q, S, N1, N2, N3, M)
     problem.saveFile("data/data.npz")
-    
-def find_smallest_FX(arr):
-    smallest = arr[0]  # Assume the first element is the smallest
-    for num in arr:
-        if num < smallest:
-            smallest = num  # Update smallest if a smaller value is found
-    return smallest
 
 def VNSSets(data):
     sets = []
@@ -37,12 +29,18 @@ data = Problem()
 data.loadFile("data/data.npz")
 
 sets = VNSSets(data)
-best_FX_values = np.zeros((len(sets), 30))
+FX_values = np.zeros((len(sets), 30))
+iter = 1
 
-for i in range(len(sets)):
-    for j in range(2):
-        vns = VariableNeighborhoodSearch(sets[i], 100000)
-        solution = vns.solve(data)
-        best_FX_values[i, j] = solution.FX
-    
-np.savez("data/best_FX_values.npz", best_FX_values=best_FX_values)
+# i = 0 -> Deterministic
+# i = 1 -> Stochastic
+for i in range(2):
+    print(f"Starting execution {i}")
+    for j in range(len(sets)):
+        for k in range(30):
+            print(f"Execution {iter}")
+            iter += 1
+            vns = VariableNeighborhoodSearch(sets[j], 100000, i)
+            solution = vns.solve(data)
+            FX_values[j, k] = solution.FX
+    np.savez(f"data/FX_values_{i}.npz", FX_values_=FX_values)
