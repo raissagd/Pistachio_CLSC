@@ -1,4 +1,6 @@
-from Classes.Problem import Problem
+import sys
+sys.path.append(r'C:\Users\Acer\Documents\IC')  # Add the directory containing the module to the Python path
+from Classes.Problem import Problem  # Import the Problem class
 from Classes.Solution import Solution
 from Classes.Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
 from Classes.Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
@@ -11,12 +13,12 @@ import numpy as np
    - Todo mundo com o mesmo critério de parada: 100 mil avaliações
 """
 
-I, J, K, E, Q, S, N1, N2, N3, M = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
+I, J, K, E, Q, S, N1, N2, N3, M = 30, 30, 30, 30, 30, 30, 30, 30, 30, 30
 
-def createProblem(I, J, K, E, Q, S, N1, N2, N3, M):
+def createProblem(I, J, K, E, Q, S, N1, N2, N3, M, filename):
     problem = Problem()
     problem.generate(I, J, K, E, Q, S, N1, N2, N3, M)
-    problem.saveFile("data/data.npz")
+    problem.saveFile(f"data/{filename}.npz")
 
 def VNSSets(data):
     sets = []
@@ -26,7 +28,7 @@ def VNSSets(data):
     return sets
 
 data = Problem()
-data.loadFile("data/data_10.npz")
+data.loadFile("data/data_30.npz")
 
 sets = VNSSets(data)
 FX_values = np.zeros((len(sets), 30))

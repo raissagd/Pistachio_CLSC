@@ -16,17 +16,18 @@ I, J, K, E, Q, S, N1, N2, N3, M = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
 def createProblem(I, J, K, E, Q, S, N1, N2, N3, M):
     problem = Problem()
     problem.generate(I, J, K, E, Q, S, N1, N2, N3, M)
-    problem.saveFile("data/data.npz")
+    problem.saveFile("data/data_10.npz")
 
 def VNSSets(data):
     sets = []
-    sets.append([Swap(5), Reversion(4), Insertion(3), Slide(2)])
-    sets.append([ETN(6), RS(6), SPS(5), SRPS(2)])
-    sets.append([MinMaxSwap(5), SourceDepotSwap(2, data), ENS(1)])
+    sets.append([Swap(1), Reversion(1), Insertion(1), Slide(1)])
+    sets.append([Swap(2), Reversion(2), Insertion(2), Slide(2)])
+    sets.append([Swap(3), Reversion(3), Insertion(3), Slide(3)])
+    sets.append([Swap(4), Reversion(4), Insertion(4), Slide(4)])
     return sets
 
 data = Problem()
-data.loadFile("data/data_10.npz")
+data.loadFile("data/data_30.npz")
 
 sets = VNSSets(data)
 FX_values = np.zeros((len(sets), 30))
@@ -43,4 +44,4 @@ for i in range(2):
             vns = VariableNeighborhoodSearch(sets[j], 100000, i)
             solution = vns.solve(data)
             FX_values[j, k] = solution.FX
-    np.savez(f"FX_values_{i}.npz", FX_values_=FX_values)
+    np.savez("FX_values_2_{i}.npz", FX_values_=FX_values)
