@@ -43,4 +43,4 @@ for i in range(2):
             vns = VariableNeighborhoodSearch(sets[j], 100000, i)
             solution = vns.solve(data)
             FX_values[j, k] = solution.FX
-    np.savez(f"data/FX_values_{i}.npz", FX_values_=FX_values)
+    np.savez(f"FX_values_{i}.npz", FX_values_=FX_values)
