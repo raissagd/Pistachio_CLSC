@@ -1,3 +1,5 @@
+import sys
+sys.path.append(r'C:\Users\Acer\Documents\IC') 
 from Classes.Problem import Problem
 from Classes.Solution import Solution
 from Classes.Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
@@ -44,4 +46,4 @@ for i in range(2):
             vns = VariableNeighborhoodSearch(sets[j], 100000, i)
             solution = vns.solve(data)
             FX_values[j, k] = solution.FX
-    np.savez("FX_values_2_{i}.npz", FX_values_=FX_values)
+    np.savez(f"FX_values_2_{i}.npz", FX_values_=FX_values)
