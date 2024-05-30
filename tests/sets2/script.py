@@ -2,15 +2,8 @@ import sys
 sys.path.append(r'C:\Users\Acer\Documents\IC')
 from Classes.Problem import Problem
 from Classes.Algorithm import VariableNeighborhoodSearch
-from Classes.Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
+from Classes.Neighborhood import Swap, Reversion, Insertion, Slide
 import numpy as np
-
-I, J, K, E, Q, S, N1, N2, N3, M = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
-
-def createProblem(I, J, K, E, Q, S, N1, N2, N3, M):
-    problem = Problem()
-    problem.generate(I, J, K, E, Q, S, N1, N2, N3, M)
-    problem.saveFile("data/data_10.npz")
 
 def VNSSets(data):
     sets = []
