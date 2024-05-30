@@ -1,8 +1,7 @@
 import sys
 sys.path.append(r'C:\Users\Acer\Documents\IC')  
 from Classes.Problem import Problem
-from Classes.Solution import Solution
-from Classes.Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
+from Classes.Algorithm import VariableNeighborhoodSearch
 from Classes.Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
 import numpy as np
 

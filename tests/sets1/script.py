@@ -1,15 +1,9 @@
+import sys
+sys.path.append(r'C:\Users\Acer\Documents\IC')
 from Classes.Problem import Problem
-from Classes.Solution import Solution
-from Classes.Algorithm import IteratedLocalSearch, VariableNeighborhoodSearch
+from Classes.Algorithm import VariableNeighborhoodSearch
 from Classes.Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, MinMaxSwap, SourceDepotSwap, ENS
 import numpy as np
-
-"""
-1) Gerar um problema padrão e salvar
-2) Definir um conjunto de formulações do VNS
-3) Rodar 30 vezes cada algoritmo e guardar o melhor f(x) de cada execução
-   - Todo mundo com o mesmo critério de parada: 100 mil avaliações
-"""
 
 I, J, K, E, Q, S, N1, N2, N3, M = 10, 10, 10, 10, 10, 10, 10, 10, 10, 10
 

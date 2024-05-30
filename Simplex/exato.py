@@ -1,6 +1,7 @@
 import numpy as np
 from numpy.random import uniform
 import gurobipy as grb
+import csv
 
 # Tamanho único
 """ SIZE = 100
@@ -223,3 +224,10 @@ modelo.addConstrs(
 # Resolvendo o modelo
 modelo.optimize()
 variaveis_decisao = modelo.getVars()
+
+with open('exato.csv', 'w', newline='') as arquivo_csv:
+    escritor_csv = csv.writer(arquivo_csv)
+    escritor_csv.writerow(['Variável', 'Valor'])
+        
+    for var in variaveis_decisao:
+        escritor_csv.writerow([var.VarName, var.x])
