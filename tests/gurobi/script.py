@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'C:\Users\Acer\Documents\IC')  
+sys.path.append(r'C:\Users\Lenovo\Documents\IC')
 from Classes.Problem import Problem
 from Classes.Algorithm import ExactAlgorithm
 import numpy as np
