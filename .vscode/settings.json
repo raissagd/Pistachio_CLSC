@@ -1,0 +1,15 @@
+{
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./Classes/",  // Caminho para a pasta de testes
+        "-p",
+        "*_test.py"  // Padrão de nome dos arquivos de teste
+    ],
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "python.testing.promptToConfigure": false,
+    "python.formatting.provider": "autopep8",
+    "editor.formatOnSave": true
+}
