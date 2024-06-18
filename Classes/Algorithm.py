@@ -3,6 +3,8 @@ sys.path.append(r'C:\Users\Lenovo\Documents\IC')
 from abc import ABC, abstractmethod
 from Classes.Solution import Solution
 import numpy as np
+import gurobipy as grb
+import random
 
 class Algorithm(ABC):
     def __init__(self):
@@ -99,6 +101,179 @@ class VariableNeighborhoodSearch(Algorithm):
             
         print(f"Final solution: {solution.FX}")
         return solution
+    
+class ExactAlgorithm(Algorithm):
+    def __init__(self):
+        pass
+    
+    def solve(self, data):
+        # Criação do modelo
+        modelo = grb.Model(
+            """Otimização de rede de cadeia de abastecimento de pistache com realimentação"""
+        )
+        
+        # Variáveis de decisão positivas: fluxos de produtos
+        X = modelo.addVars(int(data.I), int(data.J), vtype=grb.GRB.CONTINUOUS, name="X", lb=0.)
+        Go = modelo.addVars(int(data.J), int(data.K), vtype=grb.GRB.CONTINUOUS, name="Go", lb=0.)
+        Gr = modelo.addVars(int(data.J), int(data.E), vtype=grb.GRB.CONTINUOUS, name="Gr", lb=0.)
+        Gw = modelo.addVars(int(data.J), int(data.Q), vtype=grb.GRB.CONTINUOUS, name="Gw", lb=0.)
+        O = modelo.addVars(int(data.E), int(data.N2), vtype=grb.GRB.CONTINUOUS, name="O", lb=0.)
+        Oc = modelo.addVars(int(data.E), int(data.S), vtype=grb.GRB.CONTINUOUS, name="Oc", lb=0.)
+        Ow = modelo.addVars(int(data.E), int(data.Q), vtype=grb.GRB.CONTINUOUS, name="Ow", lb=0.)
+        L = modelo.addVars(int(data.S), int(data.N3), vtype=grb.GRB.CONTINUOUS, name="L", lb=0.)
+        P = modelo.addVars(int(data.K), int(data.N1), vtype=grb.GRB.CONTINUOUS, name="P", lb=0.)
+        D = modelo.addVars(int(data.Q), int(data.M), vtype=grb.GRB.CONTINUOUS, name="D", lb=0.)
+
+        # Variáveis binárias: indicadores de ativação
+        U = modelo.addVars(int(data.J), vtype=grb.GRB.BINARY, name="U")
+        Y = modelo.addVars(int(data.Q), vtype=grb.GRB.BINARY, name="Y")
+        W = modelo.addVars(int(data.K), vtype=grb.GRB.BINARY, name="W")
+        R = modelo.addVars(int(data.E), vtype=grb.GRB.BINARY, name="R")
+        V = modelo.addVars(int(data.S), vtype=grb.GRB.BINARY, name="V")
+                
+        # Custo de abertura de instalações
+        z1 = (grb.quicksum(data.Fu[j] * U[j] for j in range(int(data.J)))
+            + grb.quicksum(data.Fy[q] * Y[q] for q in range(int(data.Q)))
+            + grb.quicksum(data.Fw[k] * W[k] for k in range(int(data.K)))
+            + grb.quicksum(data.Fr[e] * R[e] for e in range(int(data.E)))
+            + grb.quicksum(data.Fv[s] * V[s] for s in range(int(data.S))))
+
+        # Custo de produção
+        z2 = (grb.quicksum(data.CI[i] * X[i,j] for i in range(int(data.I)) for j in range(int(data.J)))
+            + grb.quicksum(data.Cu1[j] * Go[j,k] for j in range(int(data.J)) for k in range(int(data.K)))
+            + grb.quicksum(data.Cu2[j] * Gr[j,e] for j in range(int(data.J)) for e in range(int(data.E)))
+            + grb.quicksum(data.Cy[q] * D[q,m] for q in range(int(data.Q)) for m in range(int(data.M)))
+            + grb.quicksum(data.Cw[k] * P[k,n1] for k in range(int(data.K)) for n1 in range(int(data.N1)))
+            + grb.quicksum(data.Cr[e] * O[e,n2] for e in range(int(data.E)) for n2 in range(int(data.N2)))
+            + grb.quicksum(data.Cr[e] * Oc[e,s] for e in range(int(data.E)) for s in range(int(data.S)))
+            + grb.quicksum(data.Cv[s] * L[s,n3] for s in range(int(data.S)) for n3 in range(int(data.N3))))
+
+        # Custos de transporte
+        z3 = (grb.quicksum(data.CX[i,j] * X[i,j] for i in range(int(data.I)) for j in range(int(data.J)))
+            + grb.quicksum(data.CK[j,k] * Go[j,k] for j in range(int(data.J)) for k in range(int(data.K)))
+            + grb.quicksum(data.CE[j,e] * Gr[j,e] for j in range(int(data.J)) for e in range(int(data.E)))
+            + grb.quicksum(data.CJ[j,q] * Gw[j,q] for j in range(int(data.J)) for q in range(int(data.Q)))
+            + grb.quicksum(data.CS[e,s] * Oc[e,s] for e in range(int(data.E)) for s in range(int(data.S)))
+            + grb.quicksum(data.CN[e,n2] * O[e,n2] for e in range(int(data.E)) for n2 in range(int(data.N2)))
+            + grb.quicksum(data.CQ[e,q] * Ow[e,q] for e in range(int(data.E)) for q in range(int(data.Q)))
+            + grb.quicksum(data.Cl[s,n3] * L[s,n3] for s in range(int(data.S)) for n3 in range(int(data.N3)))
+            + grb.quicksum(data.Cp[k,n1] * P[k,n1] for k in range(int(data.K)) for n1 in range(int(data.N1)))
+            + grb.quicksum(data.Cd[q,m] * D[q,m] for q in range(int(data.Q)) for m in range(int(data.M))))
+
+        
+        # Definindo a função objetivo
+        modelo.setObjective(z1 + z2 + z3, grb.GRB.MINIMIZE)
+
+        # Restrição de capacidade
+        modelo.addConstrs(
+            (grb.quicksum(X[i,j] for j in range(int(data.J))) <= data.Cpa[i] for i in range(int(data.I))), 
+            name="Eq.(4)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(X[i,j] for i in range(int(data.I))) <= data.Cpu[j] * U[j] for j in range(int(data.J))), 
+            name="Eq.(5)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Ow[e,q] for e in range(int(data.E))) + grb.quicksum(Gw[j,q] for j in range(int(data.J))) 
+            <= data.Cpy[q] * Y[q] for q in range(int(data.Q))), name="Eq.(6)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Go[j,k] for j in range(int(data.J))) <= data.Cpw[k] * W[k] for k in range(int(data.K))),
+            name="Eq.(7)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Gr[j,e] for j in range(int(data.J))) <= data.Cpr[e] * R[e] for e in range(int(data.E))), 
+            name="Eq.(8)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Oc[e,s] for e in range(int(data.E))) <= data.Cpv[s] * V[s] for s in range(int(data.S))),
+            name="Eq.(9)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Go[j,k] for k in range(int(data.K))) + grb.quicksum(Gr[j,e] for e in range(int(data.E))) + grb.quicksum(Gw[j,q] for q in range(int(data.Q)))
+            <= grb.quicksum(X[i,j] for i in range(int(data.I))) for j in range(int(data.J))),
+            name="Eq.(10)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Go[j,k] for k in range(int(data.K)))
+            == (1 - data.beta)  * data.theta[0] * grb.quicksum(X[i,j] for i in range(int(data.I))) for j in range(int(data.J))),
+            name="Eq.(11)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Gr[j,e] for e in range(int(data.E)))
+            == (1 - data.beta) * data.theta[1] * grb.quicksum(X[i,j] for i in range(int(data.I))) for j in range(int(data.J))),
+            name="Eq.(12)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Gw[j,q] for q in range(int(data.Q)))
+            == data.theta[2] * grb.quicksum(X[i,j] for i in range(int(data.I))) for j in range(int(data.J))), 
+            name="Eq.(13)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(P[k,n1] for n1 in range(int(data.N1)))
+            <= data.gammak * grb.quicksum(Go[j,k] for j in range(int(data.J))) for k in range(int(data.K))),
+            name="Eq.(14)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(O[e,n2] for n2 in range(int(data.N2))) + grb.quicksum(Oc[e,s] for s in range(int(data.S))) 
+            <= (1- data.lamb) * grb.quicksum(Gr[j,e] for j in range(int(data.J))) for e in range(int(data.E))), 
+            name="Eq.(15)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(Ow[e,q] for q in range(int(data.Q)))
+            <= data.lamb * grb.quicksum(Gr[j,e] for j in range(int(data.J))) for e in range(int(data.E))), 
+            name="Eq.(16)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(L[s,n3] for n3 in range(int(data.N3))) 
+            <= data.gammas * grb.quicksum(Oc[e,s] for e in range(int(data.E))) for s in range(int(data.S))),
+            name="Eq.(17)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(D[q,m] for m in range(int(data.M)))
+            <= data.gammaq*(grb.quicksum(Gw[j,q] for j in range(int(data.J))) + grb.quicksum(Ow[e,q] for e in range(int(data.E)))) for q in range(int(data.Q))), 
+            name="Eq.(18)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(P[k,n1] for k in range(int(data.K))) >= data.Dp[n1] for n1 in range(int(data.N1))), 
+            name="Eq.(19)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(O[e,n2] for e in range(int(data.E))) >= data.Du[n2] for n2 in range(int(data.N2))), 
+            name="Eq.(20)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(L[s,n3] for s in range(int(data.S))) >= data.Ds[n3] for n3 in range(int(data.N3))), 
+            name="Eq.(21)"
+        )
+        
+        modelo.addConstrs(
+            (grb.quicksum(D[q,m] for q in range(int(data.Q))) >= data.Dc[m] for m in range(int(data.M))),
+            name="Eq.(22)"
+        )
+
+        # Resolvendo o modelo
+        modelo.optimize()
+        
+        # Retornando o valor da função objetivo
+        return modelo.objVal
                    
 class IteratedLocalSearch(Algorithm):
     def __init__(self, operators, max_iter):
@@ -166,3 +341,99 @@ class IteratedLocalSearch(Algorithm):
         
         print(f"Final solution: {solution.FX}")
         return solution
+    
+class GeneticAlgorithm(Algorithm):
+    def __init__(self, population_size, crossover_rate, mutation_rate, max_generations, initialization):
+        self.population_size = population_size  # Size of the population
+        self.crossover_rate = crossover_rate  # Crossover rate
+        self.mutation_rate = mutation_rate  # Mutation rate
+        self.max_generations = max_generations  # Maximum number of generations
+        self.initialization = initialization  # Initialization method for the population
+        
+    def initialize_population(self, data):
+        # Initialize the population with random solutions
+        population = []
+        for _ in range(self.population_size):
+            solution = Solution()
+            if self.initialization == 0:
+                # Generate chromosome deterministically
+                solution.generateChromosomeDeterministic(data)
+            else:
+                # Generate chromosome stochastically
+                solution.generateChromosomeStochastic(data)
+            # Evaluate the solution
+            solution.evaluate(data)
+            # Add the solution to the population
+            population.append(solution)
+        return population
+    
+    def select_parents(self, population):
+        # Select two parents from the population based on their fitness (FX)
+        fitness_values = np.array([1/sol.FX for sol in population])
+        probabilities = fitness_values / np.sum(fitness_values)
+        # Roulette wheel selection
+        parents = np.random.choice(population, size=2, p=probabilities, replace=False)
+        return parents
+    
+    def crossover(self, parent1, parent2):
+        # Perform crossover between two parents to produce two children
+        child1, child2 = Solution(), Solution()
+        crossover_point = np.random.randint(1, 8)  # Crossover point
+        
+        for i in range(1, 9):
+            if i <= crossover_point:
+                # Assign segments from parents to children
+                setattr(child1, f"S{i}", getattr(parent1, f"S{i}").copy())
+                setattr(child2, f"S{i}", getattr(parent2, f"S{i}").copy())
+            else:
+                setattr(child1, f"S{i}", getattr(parent2, f"S{i}").copy())
+                setattr(child2, f"S{i}", getattr(parent1, f"S{i}").copy())
+                
+        return child1, child2
+    
+    def mutate(self, solution):
+        # Perform mutation on a segment of the solution's chromosome
+        segment = np.random.randint(1, 9)  # Select a random segment
+        chromosome = getattr(solution, f"S{segment}").copy()
+        # Select two random positions in the segment to swap
+        i, j = np.random.randint(0, len(chromosome), size=2)
+        chromosome[i], chromosome[j] = chromosome[j], chromosome[i]
+        # Update the solution's segment with the mutated chromosome
+        setattr(solution, f"S{segment}", chromosome)
+    
+    def solve(self, data):
+        # Solve the problem using the genetic algorithm
+        population = self.initialize_population(data)
+        
+        for generation in range(self.max_generations):
+            new_population = []
+            
+            while len(new_population) < self.population_size:
+                # Select two parents from the current population
+                parent1, parent2 = self.select_parents(population)
+                
+                # Perform crossover based on the crossover rate
+                if np.random.rand() < self.crossover_rate:
+                    child1, child2 = self.crossover(parent1, parent2)
+                else:
+                    child1, child2 = parent1, parent2
+                
+                # Perform mutation based on the mutation rate
+                if np.random.rand() < self.mutation_rate:
+                    self.mutate(child1)
+                if np.random.rand() < self.mutation_rate:
+                    self.mutate(child2)
+                
+                # Evaluate the new solutions
+                child1.evaluate(data)
+                child2.evaluate(data)
+                
+                # Add the new solutions to the new population
+                new_population.extend([child1, child2])
+            
+            # Update the population, keeping only the best individuals
+            population = sorted(new_population, key=lambda sol: sol.FX)[:self.population_size]
+            best_solution = population[0]
+            print(f"Generation {generation}: Best FX = {best_solution.FX}")
+        
+        return best_solution  # Return the best solution found
