@@ -30,6 +30,7 @@ class VariableNeighborhoodSearch(Algorithm):
         self.max_eval = max_eval # Maximum number of iterations
         self.n_eval = 1 # Number of evaluations
         self.initializaton = initialization # Initialization method
+        self.FX_history = [] # List to store all FX values for plotting
     
     def best_improvement(self, solution, data, operator_index, number_of_neighbors):
         failure_counter = 0
@@ -84,7 +85,8 @@ class VariableNeighborhoodSearch(Algorithm):
         while True:
             perturbed_solution = self.perturbation(solution, data, operator_index) # Shake the current solution
             new_solution = self.best_improvement(perturbed_solution, data, operator_index, number_of_neighbors) # Local search on the perturbed solution
-            
+            self.FX_history.append(new_solution.FX)
+
             if new_solution.FX < solution.FX:
                 # If the new solution is better, update the current solution and repeat the process
                 solution = new_solution
@@ -434,6 +436,6 @@ class GeneticAlgorithm(Algorithm):
             # Update the population, keeping only the best individuals
             population = sorted(new_population, key=lambda sol: sol.FX)[:self.population_size]
             best_solution = population[0]
-            print(f"Generation {generation}: Best FX = {best_solution.FX}")
+            #print(f"Generation {generation}: Best FX = {best_solution.FX}")
         
         return best_solution  # Return the best solution found
