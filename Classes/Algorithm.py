@@ -343,13 +343,14 @@ class IteratedLocalSearch(Algorithm):
         return solution
     
 class GeneticAlgorithm(Algorithm):
-    def __init__(self, population_size, crossover_rate, mutation_rate, max_generations, initialization):
+    def __init__(self, population_size, crossover_rate, mutation_rate, max_generations, initialization, elite_size):
         self.population_size = population_size  # Size of the population
         self.crossover_rate = crossover_rate  # Crossover rate
         self.mutation_rate = mutation_rate  # Mutation rate
         self.max_generations = max_generations  # Maximum number of generations
         self.initialization = initialization  # Initialization method for the population
-        
+        self.elite_size = elite_size  # Number of elite individuals to retain
+
     def initialize_population(self, data):
         # Initialize the population with random solutions
         population = []
@@ -366,20 +367,21 @@ class GeneticAlgorithm(Algorithm):
             # Add the solution to the population
             population.append(solution)
         return population
-    
+
     def select_parents(self, population):
-        # Select two parents from the population based on their fitness (FX)
-        fitness_values = np.array([1/sol.FX for sol in population])
-        probabilities = fitness_values / np.sum(fitness_values)
-        # Roulette wheel selection
-        parents = np.random.choice(population, size=2, p=probabilities, replace=False)
-        return parents
-    
+        def binary_tournament():
+            candidate1, candidate2 = np.random.choice(population, size=2, replace=False)
+            return candidate1 if candidate1.FX < candidate2.FX else candidate2
+
+        parent1 = binary_tournament()
+        parent2 = binary_tournament()
+        return parent1, parent2
+
     def crossover(self, parent1, parent2):
         # Perform crossover between two parents to produce two children
         child1, child2 = Solution(), Solution()
         crossover_point = np.random.randint(1, 8)  # Crossover point
-        
+
         for i in range(1, 9):
             if i <= crossover_point:
                 # Assign segments from parents to children
@@ -388,9 +390,9 @@ class GeneticAlgorithm(Algorithm):
             else:
                 setattr(child1, f"S{i}", getattr(parent2, f"S{i}").copy())
                 setattr(child2, f"S{i}", getattr(parent1, f"S{i}").copy())
-                
+
         return child1, child2
-    
+
     def mutate(self, solution):
         # Perform mutation on a segment of the solution's chromosome
         segment = np.random.randint(1, 9)  # Select a random segment
@@ -400,40 +402,44 @@ class GeneticAlgorithm(Algorithm):
         chromosome[i], chromosome[j] = chromosome[j], chromosome[i]
         # Update the solution's segment with the mutated chromosome
         setattr(solution, f"S{segment}", chromosome)
-    
+
     def solve(self, data):
         # Solve the problem using the genetic algorithm
         population = self.initialize_population(data)
-        
+
         for generation in range(self.max_generations):
             new_population = []
-            
+
+            # Retain the elite individuals
+            elite_individuals = sorted(population, key=lambda sol: sol.FX)[:self.elite_size]
+            new_population.extend(elite_individuals)
+
             while len(new_population) < self.population_size:
                 # Select two parents from the current population
                 parent1, parent2 = self.select_parents(population)
-                
+
                 # Perform crossover based on the crossover rate
                 if np.random.rand() < self.crossover_rate:
                     child1, child2 = self.crossover(parent1, parent2)
                 else:
                     child1, child2 = parent1, parent2
-                
+
                 # Perform mutation based on the mutation rate
                 if np.random.rand() < self.mutation_rate:
                     self.mutate(child1)
                 if np.random.rand() < self.mutation_rate:
                     self.mutate(child2)
-                
+
                 # Evaluate the new solutions
                 child1.evaluate(data)
                 child2.evaluate(data)
-                
+
                 # Add the new solutions to the new population
                 new_population.extend([child1, child2])
-            
+
             # Update the population, keeping only the best individuals
             population = sorted(new_population, key=lambda sol: sol.FX)[:self.population_size]
             best_solution = population[0]
-            #print(f"Generation {generation}: Best FX = {best_solution.FX}")
-        
+            print(f"Generation {generation}: Best FX = {best_solution.FX}")
+
         return best_solution  # Return the best solution found
