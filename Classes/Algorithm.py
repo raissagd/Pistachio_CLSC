@@ -343,13 +343,14 @@ class IteratedLocalSearch(Algorithm):
         return solution
     
 class GeneticAlgorithm(Algorithm):
-    def __init__(self, population_size, crossover_rate, mutation_rate, max_generations, initialization, elite_size):
+    def __init__(self, population_size, crossover_rate, mutation_rate, max_eval, initialization, elite_size):
         self.population_size = population_size  # Size of the population
         self.crossover_rate = crossover_rate  # Crossover rate
         self.mutation_rate = mutation_rate  # Mutation rate
-        self.max_generations = max_generations  # Maximum number of generations
         self.initialization = initialization  # Initialization method for the population
-        self.elite_size = elite_size  # Number of elite individuals to retain
+        self.elite_size = elite_size  # Number of elite individuals to 
+        self.max_eval = max_eval # Maximum number of evaluations
+        self.n_eval = 0 # Number of evaluations
 
     def initialize_population(self, data):
         # Initialize the population with random solutions
@@ -364,6 +365,7 @@ class GeneticAlgorithm(Algorithm):
                 solution.generateChromosomeStochastic(data)
             # Evaluate the solution
             solution.evaluate(data)
+            self.n_eval += 1
             # Add the solution to the population
             population.append(solution)
         return population
@@ -407,7 +409,7 @@ class GeneticAlgorithm(Algorithm):
         # Solve the problem using the genetic algorithm
         population = self.initialize_population(data)
 
-        for generation in range(self.max_generations):
+        while self.n_eval < self.max_eval:
             new_population = []
 
             # Retain the elite individuals
@@ -415,6 +417,9 @@ class GeneticAlgorithm(Algorithm):
             new_population.extend(elite_individuals)
 
             while len(new_population) < self.population_size:
+                if self.n_eval >= self.max_eval:
+                    break
+
                 # Select two parents from the current population
                 parent1, parent2 = self.select_parents(population)
 
@@ -432,7 +437,13 @@ class GeneticAlgorithm(Algorithm):
 
                 # Evaluate the new solutions
                 child1.evaluate(data)
+                self.n_eval += 1
+                if self.n_eval >= self.max_eval:
+                    break
                 child2.evaluate(data)
+                self.n_eval += 1
+                if self.n_eval >= self.max_eval:
+                    break
 
                 # Add the new solutions to the new population
                 new_population.extend([child1, child2])
@@ -440,6 +451,5 @@ class GeneticAlgorithm(Algorithm):
             # Update the population, keeping only the best individuals
             population = sorted(new_population, key=lambda sol: sol.FX)[:self.population_size]
             best_solution = population[0]
-            print(f"Generation {generation}: Best FX = {best_solution.FX}")
-
-        return best_solution  # Return the best solution found
+            
+        return best_solution
