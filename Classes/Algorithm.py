@@ -371,12 +371,8 @@ class GeneticAlgorithm(Algorithm):
         return population
 
     def select_parents(self, population):
-        def binary_tournament():
-            candidate1, candidate2 = np.random.choice(population, size=2, replace=False)
-            return candidate1 if candidate1.FX < candidate2.FX else candidate2
-
-        parent1 = binary_tournament()
-        parent2 = binary_tournament()
+        # Select two parents randomly from the population
+        parent1, parent2 = np.random.choice(population, size=2, replace=False)
         return parent1, parent2
 
     def crossover(self, parent1, parent2):
@@ -405,6 +401,15 @@ class GeneticAlgorithm(Algorithm):
         # Update the solution's segment with the mutated chromosome
         setattr(solution, f"S{segment}", chromosome)
 
+    def tournament_selection(self, population, k=2):
+        # Perform binary tournament selection to retain only the best individuals
+        selected = []
+        while len(selected) < self.population_size:
+            tournament = np.random.choice(population, size=k, replace=False)
+            winner = min(tournament, key=lambda sol: sol.FX)
+            selected.append(winner)
+        return selected
+
     def solve(self, data):
         # Solve the problem using the genetic algorithm
         population = self.initialize_population(data)
@@ -416,11 +421,14 @@ class GeneticAlgorithm(Algorithm):
             elite_individuals = sorted(population, key=lambda sol: sol.FX)[:self.elite_size]
             new_population.extend(elite_individuals)
 
-            while len(new_population) < self.population_size:
+            # Since each pair of parents generate two children, the number of pairs is half the population size
+            num_pairs = (self.population_size - self.elite_size) // 2
+
+            for _ in range(num_pairs):
                 if self.n_eval >= self.max_eval:
                     break
 
-                # Select two parents from the current population
+                # Select two parents from the current population randomly
                 parent1, parent2 = self.select_parents(population)
 
                 # Perform crossover based on the crossover rate
@@ -448,8 +456,9 @@ class GeneticAlgorithm(Algorithm):
                 # Add the new solutions to the new population
                 new_population.extend([child1, child2])
 
-            # Update the population, keeping only the best individuals
-            population = sorted(new_population, key=lambda sol: sol.FX)[:self.population_size]
+            # Update the population using tournament selection
+            population = self.tournament_selection(new_population)
             best_solution = population[0]
-            
+            print(f"Best FX = {best_solution.FX}")
+
         return best_solution
