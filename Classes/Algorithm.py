@@ -76,6 +76,8 @@ class VariableNeighborhoodSearch(Algorithm):
             solution.generateChromosomeStochastic(data)
             
         solution.evaluate(data)
+        self.n_eval = 1 # Prevent early stopping in case of reusing the object
+        
         print(f"Initial FX: {solution.FX}")
         operator_index = 0
         number_of_neighbors = 15 
@@ -276,9 +278,11 @@ class ExactAlgorithm(Algorithm):
         return modelo.objVal
                    
 class IteratedLocalSearch(Algorithm):
-    def __init__(self, operators, max_iter):
+    def __init__(self, operators, max_iter, max_eval=100000):
         self.operators = operators # Operators for generating neighbors
         self.max_iter = max_iter # Maximum number of iterations
+        self.max_eval = max_eval # Maximum number of evaluations
+        self.n_eval = 0 # Number of evaluations
     
     def localSearch(self, solution, data):
         failure_counter = 0
@@ -289,6 +293,7 @@ class IteratedLocalSearch(Algorithm):
             for n in range(len(self.operators)):
                 neighbor = self.operators[n].applyChange(solution) # Generate a neighbor solution (apply an operator to the current solution)
                 neighbor.evaluate(data) # Evaluate the neighbor solution
+                self.n_eval += 1
                 neighbors.append(neighbor) # Store the neighbor solution
                 Fx_neighbors.append(neighbor.FX) # Store the fitness value of the neighbor solution
                 
@@ -310,7 +315,7 @@ class IteratedLocalSearch(Algorithm):
         for n in range(len(self.operators)):
             solution = self.operators[n].applyChange(solution)
         solution.evaluate(data)
-        
+        self.n_eval += 1
         return solution
 
     def solve(self, data):
@@ -328,11 +333,12 @@ class IteratedLocalSearch(Algorithm):
         solution = Solution()
         solution.generateChromosome(data)
         solution.evaluate(data)
+        self.n_eval = 1 # Prevent early stopping in case of reusing the object
         print(f"Initial FX: {solution.FX}")
         
         solution = self.localSearch(solution, data) # Local search on the initial solution
         
-        for n in range(self.max_iter):
+        while self.n_eval < self.max_eval:
             perturbed_solution = self.perturbation(solution, data) # Perturbation of previous local search solution
             candidate = self.localSearch(perturbed_solution, data) # Local search on the perturbed solution
             
@@ -411,6 +417,10 @@ class GeneticAlgorithm(Algorithm):
         return selected
 
     def solve(self, data):
+        
+        # Prevent early stopping in case of reusing the object
+        self.n_eval = 0
+        
         # Solve the problem using the genetic algorithm
         population = self.initialize_population(data)
 
