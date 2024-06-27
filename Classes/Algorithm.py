@@ -410,10 +410,16 @@ class GeneticAlgorithm(Algorithm):
     def tournament_selection(self, population, k=2):
         # Perform binary tournament selection to retain only the best individuals
         selected = []
-        while len(selected) < self.population_size:
-            tournament = np.random.choice(population, size=k, replace=False)
-            winner = min(tournament, key=lambda sol: sol.FX)
-            selected.append(winner)
+        pairs = np.random.permutation(2*self.population_size)
+        for i in range(0, 2*self.population_size, 2):
+            if population[pairs[i]].FX < population[pairs[i+1]].FX:
+                selected.append(population[pairs[i]])
+            else:
+                selected.append(population[pairs[i+1]])
+        # while len(selected) < self.population_size:
+        #     tournament = np.random.choice(population, size=k, replace=False)
+        #     winner = min(tournament, key=lambda sol: sol.FX)
+        #     selected.append(winner)
         return selected
 
     def solve(self, data):
@@ -428,11 +434,10 @@ class GeneticAlgorithm(Algorithm):
             new_population = []
 
             # Retain the elite individuals
-            elite_individuals = sorted(population, key=lambda sol: sol.FX)[:self.elite_size]
-            new_population.extend(elite_individuals)
+            # elite_individuals = sorted(population, key=lambda sol: sol.FX)[:self.elite_size]
 
             # Since each pair of parents generate two children, the number of pairs is half the population size
-            num_pairs = (self.population_size - self.elite_size) // 2
+            num_pairs = self.population_size//2
 
             for _ in range(num_pairs):
                 if self.n_eval >= self.max_eval:
@@ -467,8 +472,10 @@ class GeneticAlgorithm(Algorithm):
                 new_population.extend([child1, child2])
 
             # Update the population using tournament selection
+            new_population.extend(population)
             population = self.tournament_selection(new_population)
-            best_solution = population[0]
+            # new_population.extend(elite_individuals)
+            best_solution = min(population, key=lambda sol: sol.FX)
             print(f"Best FX = {best_solution.FX}")
 
         return best_solution
