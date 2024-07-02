@@ -411,19 +411,23 @@ class GeneticAlgorithm(Algorithm):
         # Perform binary tournament selection to retain only the best individuals
         selected = []
         pairs = np.random.permutation(2*self.population_size)
-        for i in range(0, 2*self.population_size, 2):
-            if population[pairs[i]].FX < population[pairs[i+1]].FX:
-                selected.append(population[pairs[i]])
-            else:
-                selected.append(population[pairs[i+1]])
-        # while len(selected) < self.population_size:
-        #     tournament = np.random.choice(population, size=k, replace=False)
-        #     winner = min(tournament, key=lambda sol: sol.FX)
-        #     selected.append(winner)
-        return selected
+        num_pairs = len(pairs) // 2 * 2  # Ensure we have an even number of pairs for selection
+        
+        for i in range(0, num_pairs, 2):
+            if pairs[i] < len(population) and pairs[i + 1] < len(population):
+                if population[pairs[i]].FX < population[pairs[i + 1]].FX:
+                    selected.append(population[pairs[i]])
+                else:
+                    selected.append(population[pairs[i + 1]])
+
+        # If the selected size is less than required, fill it up
+        while len(selected) < self.population_size:
+            tournament = np.random.choice(population, size=k, replace=False)
+            winner = min(tournament, key=lambda sol: sol.FX)
+            selected.append(winner)
+        return selected[:self.population_size]  # Ensure the population size is correct
 
     def solve(self, data):
-        
         # Prevent early stopping in case of reusing the object
         self.n_eval = 0
         
@@ -433,11 +437,8 @@ class GeneticAlgorithm(Algorithm):
         while self.n_eval < self.max_eval:
             new_population = []
 
-            # Retain the elite individuals
-            # elite_individuals = sorted(population, key=lambda sol: sol.FX)[:self.elite_size]
-
-            # Since each pair of parents generate two children, the number of pairs is half the population size
-            num_pairs = self.population_size//2
+            # Since each pair of parents generates two children, the number of pairs is half the population size
+            num_pairs = self.population_size // 2
 
             for _ in range(num_pairs):
                 if self.n_eval >= self.max_eval:
@@ -474,7 +475,6 @@ class GeneticAlgorithm(Algorithm):
             # Update the population using tournament selection
             new_population.extend(population)
             population = self.tournament_selection(new_population)
-            # new_population.extend(elite_individuals)
             best_solution = min(population, key=lambda sol: sol.FX)
             print(f"Best FX = {best_solution.FX}")
 
