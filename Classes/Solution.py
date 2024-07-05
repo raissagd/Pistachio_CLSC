@@ -1,25 +1,32 @@
 import numpy as np
 import random
 
+
 class Solution:
     def __init__(self):
-        self.FX = None # Objective function value
-        self.S1, self.S2, self.S3, self.S4, self.S5, self.S6, self.S7, self.S8 = [None] * 8 # Chromosomes
-        self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [None] * 15 # Decision variables
-    
+        self.FX = None  # Objective function value
+        self.S1, self.S2, self.S3, self.S4, self.S5, self.S6, self.S7, self.S8 = [
+            None] * 8  # Chromosomes
+        self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [
+            None] * 15  # Decision variables
+
     def calculate_priorities(self, transportation_matrix):
         """
         Generate a chromosome based on the mean costs of the transportation matrix.
         """
-        row_means = np.mean(transportation_matrix, axis=1) # Calculate mean of each row
-        col_means = np.mean(transportation_matrix, axis=0) # Calculate mean of each column
-        means_array = np.concatenate((row_means, col_means)) # Concatenate row and column means
-        priority_array = np.arange(1, len(means_array) + 1) # Create an array of numbers from 1 to len(means_array)
-        
+        row_means = np.mean(transportation_matrix,
+                            axis=1)  # Calculate mean of each row
+        # Calculate mean of each column
+        col_means = np.mean(transportation_matrix, axis=0)
+        # Concatenate row and column means
+        means_array = np.concatenate((row_means, col_means))
+        # Create an array of numbers from 1 to len(means_array)
+        priority_array = np.arange(1, len(means_array) + 1)
+
         # Sort the means_array along with their indices
         sorted_indices = np.argsort(means_array)
         sorted_means = means_array[sorted_indices]
-        
+
         # Assign priorities to each value in means_array
         current_priority = 1
         for i in range(len(sorted_means)):
@@ -28,15 +35,16 @@ class Solution:
                 current_priority += 1
             else:
                 # Otherwise, assign a new priority
-                current_priority = max(current_priority, i + 1)  # Ensure sequential priorities
+                # Ensure sequential priorities
+                current_priority = max(current_priority, i + 1)
             priority_array[sorted_indices[i]] = current_priority
-        
+
         return priority_array
-        
+
     def generateChromosomeDeterministic(self, data):
         """
         Generate an eight segment chromosome.
-        
+
         S1: Pistachio factories -> pistachio consumers (K + N1)
         S2: Cosmetics factories -> cosmetics consumers (S + N3)
         S3: Oil extraction centers -> oil consumers + cosmetics factories (E + N2 + S)
@@ -54,7 +62,7 @@ class Solution:
         self.S6 = self.calculate_priorities(data.CX)
         self.S7 = self.calculate_priorities(data.Cd)
         self.S8 = self.calculate_priorities(data.CQ)
-        
+
     def generateChromosomeStochastic(self, data):
         """
         Generate an eight segment chromosome.
@@ -85,9 +93,10 @@ class Solution:
 
         # Generate chromosomes for each flow and assign them to the corresponding attribute
         for i in range(1, 9):
-            setattr(self, f"S{i}", np.random.permutation(np.arange(1, flows[i-1] + 1)))
-    
-    def decodingStep(self, v, a, b, c, show = False):
+            setattr(self, f"S{i}", np.random.permutation(
+                np.arange(1, flows[i-1] + 1)))
+
+    def decodingStep(self, v, a, b, c, show=False):
         """
         Step of the decoding process.
 
@@ -98,62 +107,65 @@ class Solution:
             c (matrix): transportation cost of one unit of product from
             source k to depot j.
         """
-        K, J = a.size, b.size # K = number of sources, J = number of depots
+        K, J = a.size, b.size  # K = number of sources, J = number of depots
         a, b, v = a.copy(), b.copy(), v.copy()
-            
+
         # The amount of product shipped from source k to depot j
         g = np.zeros((K, J))
-        
+
         # Check if the total available from sources is less than the total demand from depots
         """ if np.sum(a) < np.sum(b):
             raise ValueError("Total available from sources is less than total demand from depots. "
                             "The flux cannot be satisfied.")
         """
-        
+
         # Iteration counter
         it = 0
-            
+
         while True:
             # Select a node
-            l = np.argmax(v) # Select the node with the highest value
-                
-            if l < K: # Select a source
+            l = np.argmax(v)  # Select the node with the highest value
+
+            if l < K:  # Select a source
                 k = l
                 possible_depots = np.nonzero(v[K:])[0]
-                j = possible_depots[np.argmin(c[k, possible_depots].flatten())]                
-            else: # Select a depot
+                j = possible_depots[np.argmin(c[k, possible_depots].flatten())]
+            else:  # Select a depot
                 j = l-K
                 possible_sources = np.nonzero(v[:K])[0]
-                k = possible_sources[np.argmin(c[possible_sources, j].flatten())]
-            
+                k = possible_sources[np.argmin(
+                    c[possible_sources, j].flatten())]
+
             # Assign available amount of units
             g[k, j] = np.minimum(a[k], b[j])
-            
+
             if show:
-                print(f"it={it}, v={v}, a={a}, b={b}, k={k+1}, j={j+1}, g_kj={g[k, j]}")
-            
+                print(
+                    f"it={it}, v={v}, a={a}, b={b}, k={k+1}, j={j+1}, g_kj={g[k, j]}")
+
             # Update availabilities on source k and depot j
             a[k] -= g[k, j]
             b[j] -= g[k, j]
-                
+
             if a[k] == 0:
                 v[k] = 0
             if b[j] == 0:
                 v[K + j] = 0
-                
+
             it += 1
-                
+
             if np.all(v[K:] == 0) or np.sum(a) == 0:
                 break
 
         if show:
-            print(f"it={it}, v={v}, a={a}, b={b}, k={k+1}, j={j+1}, g_kj={g[k, j]}")
-        
+            print(
+                f"it={it}, v={v}, a={a}, b={b}, k={k+1}, j={j+1}, g_kj={g[k, j]}")
+
         # Calculate transportation cost
         cost = np.sum(g*c)
-        
+
         return cost, g
-    
+
     def decode(self, data):
         """
         Decode the chromosome into a solution.
@@ -161,11 +173,12 @@ class Solution:
         Returns:
         - Decision variables: X ... V.
         """
-        
+
         # Pistachio factories -> pistachio consumers
 
         # Source capacity
-        a1 = data.gammak * data.Cpw  # amount coming from the processing center * factory production rate
+        # amount coming from the processing center * factory production rate
+        a1 = data.gammak * data.Cpw
 
         # Demand from each depot
         b1 = data.Dp
@@ -181,19 +194,25 @@ class Solution:
         a2 = data.gammas * data.Cpv
         b2 = data.Ds
         c2 = data.Cl + data.Cv[:, None]
-        cost2, self.L = self.decodingStep(self.S2, a2, b2, c2)  # L = how much cosmetic was sent to each consumer
+        # L = how much cosmetic was sent to each consumer
+        cost2, self.L = self.decodingStep(self.S2, a2, b2, c2)
         totalcost += cost2
 
         # --------------------------------------------------------------------------------------------------------
         # Oil extraction centers -> oil consumers + cosmetics factories
-        a3 = (1 - data.lamb) * data.Cpr  # oil extraction center production capacity x (1 - oil loss percentage in the extraction process)
-        b3 = np.hstack((data.Du, np.sum(self.L, axis=1) / data.gammas))  # oil consumers demand + amount of oil that should be sent to cosmetics factories (amount calculated in the previous flow / factory production rate)
-        c3 = np.hstack((data.CN + data.Cr[:, None], data.CS + data.Cr[:, None]))  # transportation cost from oil extraction center to oil consumer + transportation cost from oil extraction center to cosmetics factory
-        cost3, OOc = self.decodingStep(self.S3, a3, b3, c3)  # OOc is an array with the amount of product that should be sent to each of the oil consumers and to the cosmetics factory (hence it needs to be split in two arrays)
+        # oil extraction center production capacity x (1 - oil loss percentage in the extraction process)
+        a3 = (1 - data.lamb) * data.Cpr
+        # oil consumers demand + amount of oil that should be sent to cosmetics factories (amount calculated in the previous flow / factory production rate)
+        b3 = np.hstack((data.Du, np.sum(self.L, axis=1) / data.gammas))
+        # transportation cost from oil extraction center to oil consumer + transportation cost from oil extraction center to cosmetics factory
+        c3 = np.hstack(
+            (data.CN + data.Cr[:, None], data.CS + data.Cr[:, None]))
+        # OOc is an array with the amount of product that should be sent to each of the oil consumers and to the cosmetics factory (hence it needs to be split in two arrays)
+        cost3, OOc = self.decodingStep(self.S3, a3, b3, c3)
         totalcost += cost3
 
-        self.O = OOc[:, :data.N2]  
-        self.Oc = OOc[:, data.N2:]  
+        self.O = OOc[:, :data.N2]
+        self.Oc = OOc[:, data.N2:]
 
         # --------------------------------------------------------------------------------------------------------
         # Processing center -> pistachio factories + oil extraction centers
@@ -201,13 +220,15 @@ class Solution:
         # Step 1: Processing center -> pistachio factories
         a4 = data.Cpu
         b4 = np.sum(self.P, axis=1) / data.gammak
-        _, self.Go = self.decodingStep(self.S4, a4, b4, data.CK + data.Cu1[:, None])
+        _, self.Go = self.decodingStep(
+            self.S4, a4, b4, data.CK + data.Cu1[:, None])
 
         # --------------------------------
         # Step 2: Processing center -> oil extraction center
         a5 = data.Cpu
         b5 = (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1)) / (1 - data.lamb)
-        _, self.Gr = self.decodingStep(self.S5, a5, b5, data.CE + data.Cu2[:, None])
+        _, self.Gr = self.decodingStep(
+            self.S5, a5, b5, data.CE + data.Cu2[:, None])
 
         # --------------------------------
         # Step 3: enforcing equality constraints
@@ -253,7 +274,8 @@ class Solution:
                 self.Go[j, k] = self.Go[j, k] + amount - np.sum(self.Go[j, :])
 
         # Calculate cost
-        totalcost += np.sum((data.CK + data.Cu1[:, None]) * self.Go) + np.sum((data.CE + data.Cu2[:, None]) * self.Gr)
+        totalcost += np.sum((data.CK + data.Cu1[:, None]) * self.Go) + np.sum(
+            (data.CE + data.Cu2[:, None]) * self.Gr)
 
         # --------------------------------------------------------------------------------------------------------
         # Pistachio producers -> processing centers
@@ -305,17 +327,18 @@ class Solution:
 
         # If there is still any composting center that needs waste
         if np.sum(b8) > 0:
-            
+
             # Defining the capacity of each source
             a8 = np.sum(self.Gr, axis=0) * data.lamb
-            
+
             if np.sum(a8) < np.sum(b8):
                 delta = np.sum(b8)/np.sum(a8)
                 b8 = b8 / delta
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
                 _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
                 # Composting centers -> composting consumers
-                a7 = data.gammaq * (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0))
+                a7 = data.gammaq * \
+                    (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0))
                 b7 = data.Dc
                 c7 = data.Cd + data.Cy[:, None]
                 totalcost -= cost7
@@ -326,14 +349,14 @@ class Solution:
                 # Calculating cost and transportation matrix
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
                 _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
-            
+
         # Otherwise, it is not necessary to send any waste from the oil extraction center to the composting centers
         else:
             self.Ow = np.zeros((data.E, data.Q))
 
         # Update the costs
         totalcost += np.sum(data.CJ * self.Gw) + np.sum(data.CQ * self.Ow)
-        
+
         # --------------------------------------------------------------------------------------------------------
         # Binary variables (opening of facilities)
         # Opening of processing centers
@@ -355,9 +378,9 @@ class Solution:
         # Opening of cosmetics factories
         v = np.sum(self.Oc, axis=0) != 0
         self.V = v.astype(int)
-        
+
         return totalcost
-    
+
     def encode(self, a, b, c, g):
         """
         Procedure of encoding a transportation tree.
@@ -370,7 +393,7 @@ class Solution:
             V(array): chromosome
         """
         pass
-        
+
     def evaluate(self, data, show=False):
         """
         Evaluate a solution.
@@ -378,19 +401,18 @@ class Solution:
         Returns:
         - F1 (float): Objective function's total value.
         """
-        
+
         totalcost = self.decode(data)
-        
+
         # Objective function: transportation costs + production costs + opening costs
-        F1 = totalcost + (np.sum(data.Fu * self.U) + np.sum(data.Fy * self.Y) + np.sum(data.Fw * self.W) + np.sum(data.Fr * self.R) 
-              + np.sum(data.Fv * self.V))
+        F1 = totalcost + (np.sum(data.Fu * self.U) + np.sum(data.Fy * self.Y) + np.sum(data.Fw * self.W) + np.sum(data.Fr * self.R)
+                          + np.sum(data.Fv * self.V))
         if show:
             print(f"The objective function = {totalcost}")
-        
+
         self.FX = F1
         return F1
-    
-    
+
     def check(self, data):
         """
         Check if all restrictions have been respected.
@@ -399,7 +421,7 @@ class Solution:
         - valid (bool): True if the solution is valid, False otherwise.
         - failed_restrictions (list): List of restrictions that failed.
         """
-                
+
         failed_restrictions = []
         equations = [
             (np.sum(self.X, axis=1), data.Cpa, "<=", "(1)"),
@@ -408,15 +430,24 @@ class Solution:
             (np.sum(self.Go, axis=0), data.Cpw, "<=", "(4)"),
             (np.sum(self.Gr, axis=0), data.Cpr, "<=", "(5)"),
             (np.sum(self.Oc, axis=0), data.Cpv, "<=", "(6)"),
-            (np.sum(self.Go, axis=1) + np.sum(self.Gr, axis=1) + np.sum(self.Gw, axis=1), np.sum(self.X, axis=0), "<=", "(7)"),
-            (np.sum(self.Go, axis=1), (1-data.beta) * data.theta[0]*np.sum(self.X, axis=0), "==", "(8)"),
-            (np.sum(self.Gr, axis=1), (1-data.beta) * data.theta[1]*np.sum(self.X, axis=0), "==", "(9)"),
-            (np.sum(self.Gw, axis=1), data.theta[2] * np.sum(self.X, axis=0), "==", "(10)"),
-            (np.sum(self.P, axis=1), data.gammak * np.sum(self.Go, axis=0), "<=", "(12)"),
-            (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1), (1-data.lamb) * np.sum(self.Gr, axis=0), "<=", "(13)"),
-            (np.sum(self.Ow, axis=1), data.lamb * np.sum(self.Gr, axis=0), "<=", "(14)"),
-            (np.sum(self.L, axis=1), data.gammas * np.sum(self.Oc, axis=0), "<=", "(15)"),
-            (np.sum(self.D, axis=1), data.gammaq * (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0)), "<=", "(16)"),
+            (np.sum(self.Go, axis=1) + np.sum(self.Gr, axis=1) +
+             np.sum(self.Gw, axis=1), np.sum(self.X, axis=0), "<=", "(7)"),
+            (np.sum(self.Go, axis=1), (1-data.beta) *
+             data.theta[0]*np.sum(self.X, axis=0), "==", "(8)"),
+            (np.sum(self.Gr, axis=1), (1-data.beta) *
+             data.theta[1]*np.sum(self.X, axis=0), "==", "(9)"),
+            (np.sum(self.Gw, axis=1),
+             data.theta[2] * np.sum(self.X, axis=0), "==", "(10)"),
+            (np.sum(self.P, axis=1), data.gammak *
+             np.sum(self.Go, axis=0), "<=", "(12)"),
+            (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1),
+             (1-data.lamb) * np.sum(self.Gr, axis=0), "<=", "(13)"),
+            (np.sum(self.Ow, axis=1), data.lamb *
+             np.sum(self.Gr, axis=0), "<=", "(14)"),
+            (np.sum(self.L, axis=1), data.gammas *
+             np.sum(self.Oc, axis=0), "<=", "(15)"),
+            (np.sum(self.D, axis=1), data.gammaq *
+             (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0)), "<=", "(16)"),
             (np.sum(self.P, axis=0), data.Dp, ">=", "(17)"),
             (np.sum(self.O, axis=0), data.Du, ">=", "(18)"),
             (np.sum(self.L, axis=0), data.Ds, ">=", "(19)"),
@@ -432,11 +463,13 @@ class Solution:
                 result = np.all(lhs >= rhs)
             else:
                 raise ValueError("Invalid comparison operator")
-                
+
             if not result and (comparison == "=="):
-                failed_restrictions.append(f"Restriction {label} failed: {lhs} {comparison} {rhs}. Residual={np.abs(lhs-rhs)}")
+                failed_restrictions.append(
+                    f"Restriction {label} failed: {lhs} {comparison} {rhs}. Residual={np.abs(lhs-rhs)}")
             elif not result:
-                failed_restrictions.append(f"Restriction {label} failed: {lhs} {comparison} {rhs}")
+                failed_restrictions.append(
+                    f"Restriction {label} failed: {lhs} {comparison} {rhs}")
 
         if not failed_restrictions:
             print("All restrictions have been respected.")
