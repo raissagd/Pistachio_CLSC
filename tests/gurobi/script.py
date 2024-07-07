@@ -1,7 +1,7 @@
 import sys
-sys.path.append(r'C:\Users\Lenovo\Documents\IC')
-from Classes.Problem import Problem
-from Classes.Algorithm import ExactAlgorithm
+sys.path.insert(0, 'Classes/')
+from Problem import Problem
+from Algorithm import ExactAlgorithm
 import numpy as np
 
 data = Problem()

@@ -1,10 +1,7 @@
-import random
 import gurobipy as grb
 import numpy as np
-from Classes.Solution import Solution
+from Solution import Solution
 from abc import ABC, abstractmethod
-import sys
-sys.path.append(r'C:\Users\Lenovo\Documents\IC')
 
 
 class Algorithm(ABC):

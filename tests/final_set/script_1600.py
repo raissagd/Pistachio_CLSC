@@ -1,8 +1,8 @@
 import sys
-sys.path.append(r'C:\Users\Lenovo\Documents\IC')
-from Classes.Problem import Problem
-from Classes.Algorithm import VariableNeighborhoodSearch
-from Classes.Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS
+sys.path.insert(0, 'Classes/')
+from Problem import Problem
+from Algorithm import VariableNeighborhoodSearch
+from Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS
 import numpy as np
 
 sets = []
