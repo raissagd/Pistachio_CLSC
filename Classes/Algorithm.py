@@ -453,39 +453,29 @@ class GeneticAlgorithm(Algorithm):
         # Update the solution's segment with the mutated chromosome
         setattr(solution, f"S{segment}", chromosome)
 
-    def tournament_selection(self, population, k=2):
+    def tournament_selection(self, population):
         # Perform binary tournament selection to retain only the best individuals
         selected = []
-        pairs = np.random.permutation(2*self.population_size)
-        # Ensure we have an even number of pairs for selection
-        num_pairs = len(pairs) // 2 * 2
-
-        for i in range(0, num_pairs, 2):
-            if pairs[i] < len(population) and pairs[i + 1] < len(population):
-                if population[pairs[i]].FX < population[pairs[i + 1]].FX:
+        pairs = np.random.permutation(len(population))
+        for i in range(0, len(pairs), 2):
+            if i+1 < len(pairs):  # Ensure there is a pair to compare
+                if population[pairs[i]].FX < population[pairs[i+1]].FX:
                     selected.append(population[pairs[i]])
                 else:
-                    selected.append(population[pairs[i + 1]])
-
-        # If the selected size is less than required, fill it up
-        while len(selected) < self.population_size:
-            tournament = np.random.choice(population, size=k, replace=False)
-            winner = min(tournament, key=lambda sol: sol.FX)
-            selected.append(winner)
-        # Ensure the population size is correct
-        return selected[:self.population_size]
+                    selected.append(population[pairs[i+1]])
+        return selected
 
     def solve(self, data):
         # Prevent early stopping in case of reusing the object
         self.n_eval = 0
-
+        
         # Solve the problem using the genetic algorithm
         population = self.initialize_population(data)
 
         while self.n_eval < self.max_eval:
             new_population = []
 
-            # Since each pair of parents generates two children, the number of pairs is half the population size
+            # Since each pair of parents generate two children, the number of pairs is half the population size
             num_pairs = self.population_size // 2
 
             for _ in range(num_pairs):
