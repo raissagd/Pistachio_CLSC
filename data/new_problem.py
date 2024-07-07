@@ -1,6 +1,6 @@
 import sys
-sys.path.append(r'C:\Users\Lenovo\Documents\IC')
-from Classes.Problem import Problem
+sys.path.insert(0, 'Classes/')
+from Problem import Problem
 
 def createProblem(I, J, K, E, Q, S, N1, N2, N3, M, problem_size):
     problem = Problem()
