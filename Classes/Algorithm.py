@@ -458,7 +458,7 @@ class GeneticAlgorithm(Algorithm):
         selected = []
         pairs = np.random.permutation(len(population))
         for i in range(0, len(pairs), 2):
-            if i+1 < len(pairs):  # Ensure there is a pair to compare
+            if True: # i+1 < len(pairs):  # Ensure there is a pair to compare
                 if population[pairs[i]].FX < population[pairs[i+1]].FX:
                     selected.append(population[pairs[i]])
                 else:
@@ -512,8 +512,11 @@ class GeneticAlgorithm(Algorithm):
 
             # Update the population using tournament selection
             new_population.extend(population)
-            population = self.tournament_selection(new_population)
-            best_solution = min(population, key=lambda sol: sol.FX)
+            if self.n_eval <= self.max_eval:
+                population = self.tournament_selection(new_population)
+                best_solution = min(population, key=lambda sol: sol.FX)
+            else:
+                best_solution = min(new_population, key=lambda sol: sol.FX)
             print(f"Best FX = {best_solution.FX}")
 
         return best_solution
