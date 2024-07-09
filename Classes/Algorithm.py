@@ -458,11 +458,10 @@ class GeneticAlgorithm(Algorithm):
         selected = []
         pairs = np.random.permutation(len(population))
         for i in range(0, len(pairs), 2):
-            if True: # i+1 < len(pairs):  # Ensure there is a pair to compare
-                if population[pairs[i]].FX < population[pairs[i+1]].FX:
-                    selected.append(population[pairs[i]])
-                else:
-                    selected.append(population[pairs[i+1]])
+            if population[pairs[i]].FX < population[pairs[i+1]].FX:
+                selected.append(population[pairs[i]])
+            else:
+                selected.append(population[pairs[i+1]])
         return selected
 
     def solve(self, data):
