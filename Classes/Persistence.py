@@ -1,12 +1,74 @@
+"""
+This module provides classes for persisting solution objects to disk 
+using pickle serialization.
+
+Classes:
+    PersistSingleSolution: Handles the persistence of a single solution 
+    object, allowing it to be saved to or loaded from a file.
+    PersistMultipleSolutions: (incomplete) Intended to handle the 
+    persistence of multiple solution objects.
+
+The `PersistSingleSolution` class supports saving a solution object to a 
+file and loading it back into memory. It uses the `.pkl` file format for 
+serialization and deserialization of the solution object with the pickle 
+module. This class can be useful in scenarios where solution states need 
+to be preserved between program executions, such as caching results or 
+intermediate states in computational pipelines.
+
+The `PersistMultipleSolutions` class is intended to extend this 
+functionality to handle multiple solution objects, although its 
+implementation is not provided in the excerpt.
+
+Example:
+    To save a solution object:
+        persister = PersistSingleSolution()
+        persister.save(solution=my_solution, filename='solution1', 
+        filepath='/path/to/save/')
+
+    To load a solution object:
+        loaded_solution = persister.load(filename='solution1', 
+        filepath='/path/to/save/')
+"""
 import pickle
 
 class PersistSingleSolution:
+    """
+    A class for persisting a single solution object.
+
+    Attributes:
+        format (str): The file format for saving the solution object.
+
+    Methods:
+        save: Save the solution object to a file.
+        load: Load the solution object from a file.
+    """
+
     def __init__(self) -> None:
         self.format = '.pkl'
+
     def save(self, solution=None, filename='', filepath=''):
+        """
+        Save the solution object to a file.
+
+        Args:
+            solution: The solution object to be saved.
+            filename (str): The name of the file.
+            filepath (str): The path where the file will be saved.
+        """
         with open(filepath + filename + self.format, 'wb') as file:
             pickle.dump(solution, file)
+
     def load(self, filename='', filepath=''):
+        """
+        Load the solution object from a file.
+
+        Args:
+            filename (str): The name of the file.
+            filepath (str): The path where the file is located.
+
+        Returns:
+            The loaded solution object.
+        """
         with open(filepath + filename + self.format, 'rb') as file:
             solution = pickle.load(file)
         return solution
