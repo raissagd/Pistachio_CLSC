@@ -1,6 +1,7 @@
 import gurobipy as grb
 import numpy as np
 from Solution import Solution
+from Convergence import Convergence
 from abc import ABC, abstractmethod
 
 
@@ -8,9 +9,8 @@ class Algorithm(ABC):
     def __init__(self):
         pass
 
-    @abstractmethod
     def solve(self, data):
-        pass
+        return Convergence()
 
 
 class VariableNeighborhoodSearch(Algorithm):
@@ -72,6 +72,7 @@ class VariableNeighborhoodSearch(Algorithm):
         return solution
 
     def solve(self, data):
+        convergence = super().solve(data)
         solution = Solution()  # Create a new solution
         if (self.initializaton == 0):
             solution.generateChromosomeDeterministic(data)
@@ -80,6 +81,7 @@ class VariableNeighborhoodSearch(Algorithm):
 
         solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
+        convergence.add(solution)
 
         print(f"Initial FX: {solution.FX}")
         operator_index = 0
@@ -106,8 +108,10 @@ class VariableNeighborhoodSearch(Algorithm):
             else:
                 # If the new solution is not better, try the next operator
                 operator_index += 1
+            convergence.add(solution)
 
         print(f"Final solution: {solution.FX}")
+        solution.convergence = convergence
         return solution
 
 
@@ -325,6 +329,7 @@ class IteratedLocalSearch(Algorithm):
         self.n_eval = 0  # Number of evaluations
 
     def localSearch(self, solution, data):
+
         failure_counter = 0
         while True:
             neighbors = []
@@ -372,10 +377,12 @@ class IteratedLocalSearch(Algorithm):
                 s2 <- Aceita (s2, s3, memória)
             até condição de paragem ser verdadeira
         """
+        convergence = super().solve(data)
         solution = Solution()
         solution.generateChromosome(data)
         solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
+        convergence.add(solution)
         print(f"Initial FX: {solution.FX}")
 
         # Local search on the initial solution
@@ -389,8 +396,11 @@ class IteratedLocalSearch(Algorithm):
 
             if candidate.FX < solution.FX:
                 solution = candidate
+            
+            convergence.add(solution)
 
         print(f"Final solution: {solution.FX}")
+        solution.convergence = convergence
         return solution
 
 
@@ -464,11 +474,14 @@ class GeneticAlgorithm(Algorithm):
         return selected
 
     def solve(self, data):
+        convergence = super().solve(data)
         # Prevent early stopping in case of reusing the object
         self.n_eval = 0
         
         # Solve the problem using the genetic algorithm
         population = self.initialize_population(data)
+        best_solution = min(population, key=lambda sol: sol.FX)
+        convergence.add(best_solution)
 
         while self.n_eval < self.max_eval:
             new_population = []
@@ -515,6 +528,8 @@ class GeneticAlgorithm(Algorithm):
                 best_solution = min(population, key=lambda sol: sol.FX)
             else:
                 best_solution = min(new_population, key=lambda sol: sol.FX)
+            convergence.add(best_solution)
             print(f"Best FX = {best_solution.FX}")
 
+        best_solution.convergence = convergence
         return best_solution
