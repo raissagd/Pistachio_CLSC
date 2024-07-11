@@ -8,6 +8,7 @@ class Solution:
             None] * 8  # Chromosomes
         self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [
             None] * 15  # Decision variables
+        self.convergence = None  # Convergence curve
 
     def calculate_priorities(self, transportation_matrix):
         """
@@ -478,3 +479,7 @@ class Solution:
             for restriction in failed_restrictions:
                 print(restriction)
             return False, failed_restrictions
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return False

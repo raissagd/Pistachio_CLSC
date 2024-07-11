@@ -44,3 +44,16 @@ class Convergence:
             numpy.ndarray: The convergence values.
         """
         return np.array(self.convergence)
+    def __eq__(self, other):
+        """
+        Overload of the equality operator (==) for the Convergence class.
+
+        Args:
+            other: The other object to compare with.
+
+        Returns:
+            bool: True if the convergence values are equal, False otherwise.
+        """
+        if isinstance(other, Convergence):
+            return self.convergence == other.convergence
+        return False
