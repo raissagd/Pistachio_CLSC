@@ -395,12 +395,11 @@ class IteratedLocalSearch(Algorithm):
 
 
 class GeneticAlgorithm(Algorithm):
-    def __init__(self, population_size, crossover_rate, mutation_rate, max_eval, initialization, elite_size):
+    def __init__(self, population_size, crossover_rate, mutation_rate, max_eval, initialization):
         self.population_size = population_size  # Size of the population
         self.crossover_rate = crossover_rate  # Crossover rate
         self.mutation_rate = mutation_rate  # Mutation rate
         self.initialization = initialization  # Initialization method for the population
-        self.elite_size = elite_size  # Number of elite individuals to
         self.max_eval = max_eval  # Maximum number of evaluations
         self.n_eval = 0  # Number of evaluations
 

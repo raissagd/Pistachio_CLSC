@@ -13,7 +13,6 @@ crossover_rate = 0.8
 mutation_rate = 0.2
 max_eval = 100000
 initialization = 1
-elite_size = 1
 
 # Storage for best solutions
 best_solutions = []
@@ -24,7 +23,6 @@ for i in range(30):
         crossover_rate=crossover_rate,
         mutation_rate=mutation_rate,
         initialization=initialization,
-        elite_size=elite_size,
         max_eval=max_eval
     )
     best_solution = ga.solve(data)
