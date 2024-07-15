@@ -17,7 +17,7 @@ class PersistSingleSolutionTests(unittest.TestCase):
         self.solution.convergence = Convergence()
         self.solution.convergence.add(self.solution)
         self.filename = 'test_solution'
-        self.filepath = ''
+        self.filepath = './'
 
     def test_save_and_load(self):
         # Create an instance of SaveSolution
