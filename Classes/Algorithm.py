@@ -40,6 +40,7 @@ class VariableNeighborhoodSearch(Algorithm):
                 # Generate a neighbor solution (apply an operator to the current solution)
                 neighbor = self.operators[operator_index].applyChange(solution)
                 neighbor.evaluate(data)  # Evaluate the neighbor solution
+                self.n_eval += 1
                 neighbors.append(neighbor)  # Store it
                 Fx_neighbors.append(neighbor.FX)  # Store its fitness value
 
@@ -55,8 +56,7 @@ class VariableNeighborhoodSearch(Algorithm):
                 failure_counter += 1
                 if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
                     break
-
-        self.n_eval += 1
+        
         return solution
 
     def perturbation(self, solution, data, operator_index):
