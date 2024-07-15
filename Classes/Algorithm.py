@@ -122,7 +122,8 @@ class ExactAlgorithm(Algorithm):
     def solve(self, data):
         # Criação do modelo
         modelo = grb.Model(
-            """Otimização de rede de cadeia de abastecimento de pistache com realimentação"""
+            """Otimização de rede de cadeia de abastecimento de pistache com "
+            "realimentação"""
         )
 
         # Variáveis de decisão positivas: fluxos de produtos
