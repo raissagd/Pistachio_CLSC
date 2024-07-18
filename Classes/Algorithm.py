@@ -3,6 +3,7 @@ import numpy as np
 from Solution import Solution
 from Convergence import Convergence
 from abc import ABC, abstractmethod
+from time import time
 
 
 class Algorithm(ABC):
@@ -73,6 +74,7 @@ class VariableNeighborhoodSearch(Algorithm):
 
     def solve(self, data):
         convergence = super().solve(data)
+        tic = time()
         solution = Solution()  # Create a new solution
         if (self.initializaton == 0):
             solution.generateChromosomeDeterministic(data)
@@ -111,6 +113,7 @@ class VariableNeighborhoodSearch(Algorithm):
             convergence.add(solution)
 
         #print(f"Final solution: {solution.FX}")
+        solution.execution_time = time()-tic
         solution.convergence = convergence
         return solution
 
