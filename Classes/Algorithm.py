@@ -83,7 +83,7 @@ class VariableNeighborhoodSearch(Algorithm):
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
         convergence.add(solution)
 
-        print(f"Initial FX: {solution.FX}")
+        #print(f"Initial FX: {solution.FX}")
         operator_index = 0
         number_of_neighbors = 15
 
@@ -110,7 +110,7 @@ class VariableNeighborhoodSearch(Algorithm):
                 operator_index += 1
             convergence.add(solution)
 
-        print(f"Final solution: {solution.FX}")
+        #print(f"Final solution: {solution.FX}")
         solution.convergence = convergence
         return solution
 
@@ -384,7 +384,7 @@ class IteratedLocalSearch(Algorithm):
         solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
         convergence.add(solution)
-        print(f"Initial FX: {solution.FX}")
+        #print(f"Initial FX: {solution.FX}")
 
         # Local search on the initial solution
         solution = self.localSearch(solution, data)
@@ -400,7 +400,7 @@ class IteratedLocalSearch(Algorithm):
             
             convergence.add(solution)
 
-        print(f"Final solution: {solution.FX}")
+        #print(f"Final solution: {solution.FX}")
         solution.convergence = convergence
         return solution
 
@@ -530,7 +530,7 @@ class GeneticAlgorithm(Algorithm):
             else:
                 best_solution = min(new_population, key=lambda sol: sol.FX)
             convergence.add(best_solution)
-            print(f"Best FX = {best_solution.FX}")
+            #(f"Best FX = {best_solution.FX}")
 
         best_solution.convergence = convergence
         return best_solution
