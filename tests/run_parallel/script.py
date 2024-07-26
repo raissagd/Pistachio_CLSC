@@ -14,8 +14,8 @@ methods = [vns1, vns2, vns3]
 number_executions = 30
 
 data = Problem()
-data.loadFile("data/data_100.npz")
+data.loadFile("data/data_30.npz")
 
 results = RunMultipleMethodsMultipleTimes().run(data, methods, number_executions)
 
-PersistMultipleSolutions().save(results, 'script_100_results', './tests/run_parallel/results/')
+PersistMultipleSolutions().save(results, 'script_30_results', './tests/run_parallel/results/')
