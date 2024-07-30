@@ -1,1 +1,10 @@
 data/data_1600.npz filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_200_results.pkl filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_200_execution_time.pkl filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_200_fx_values.pkl filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_400_results.pkl filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_400_fx_values.pkl filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_400_execution_time.pkl filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_800_results.pkl filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_800_fx_values.pkl filter=lfs diff=lfs merge=lfs -text
+tests/run_parallel/results/script_800_execution_time.pkl filter=lfs diff=lfs merge=lfs -text
