@@ -29,5 +29,5 @@ except AttributeError as e:
 # Convert the list to a numpy array if fx_values is defined
 if 'fx_values' in locals():
     fx_array = np.array(fx_values)
-    # Save the array to a .npz fileS
+    # Save the array to a .npz file
     np.savez('./results/script_800_fx_values.npz', fx_array=fx_array)
