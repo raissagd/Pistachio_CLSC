@@ -2,7 +2,8 @@ import sys
 sys.path.insert(0, 'Classes/')
 from Problem import Problem
 from Algorithm import GeneticAlgorithm
-import numpy as np
+from Execute import RunMultipleMethodsMultipleTimes
+from Persistence import PersistMultipleSolutions
 
 data = Problem()
 data.loadFile("data/data_100.npz")
@@ -14,19 +15,20 @@ mutation_rate = 0.2
 max_eval = 100000
 initialization = 1
 
-# Storage for best solutions
-best_solutions = []
+# Criando a instância do algoritmo genético
+ga = GeneticAlgorithm(
+    population_size=population_size,
+    crossover_rate=crossover_rate,
+    mutation_rate=mutation_rate,
+    initialization=initialization,
+    max_eval=max_eval
+)
 
-for i in range(30):
-    ga = GeneticAlgorithm(
-        population_size=population_size,
-        crossover_rate=crossover_rate,
-        mutation_rate=mutation_rate,
-        initialization=initialization,
-        max_eval=max_eval
-    )
-    best_solution = ga.solve(data)
-    best_solutions.append(best_solution.FX)
-    print(f"Iteration {i+1}: Best solution found: {best_solution.FX}")
+# Executando o algoritmo 30 vezes em paralelo
+methods = [ga]
+number_executions = 30
 
-np.savez('solutions_100_GA.npz', best_solutions=best_solutions)
+results = RunMultipleMethodsMultipleTimes().run(data, methods, number_executions)
+
+# Salvando as soluções em um arquivo pickle
+PersistMultipleSolutions().save(results, 'solutions_100_GA', './tests/GAxVNS/results/')
