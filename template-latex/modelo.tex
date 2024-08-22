@@ -1,0 +1,104 @@
+\documentclass[]{article}
+\usepackage[a4paper, total={7in, 10in}]{geometry}
+\usepackage[portuguese]{babel}
+
+%opening
+\title{Modelo de otimização da cadeia produtiva de pistache}
+\author{Laboratório de Projetos IV}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	Explicações das restrições e dos termos da função-objetivo.
+\end{abstract}
+
+	\section{Função-objetivo}
+	
+		\begin{equation}
+			\min z_1 + z_2 + z_3
+		\end{equation}
+	
+		\subsection{$z_1$: Custos de alocação/uso}
+
+			\begin{itemize}
+				\item $\sum\limits_{j=1}^J Fu_j\times U_j$: o custo de usar o centro de processamento $j$.
+				\item $\sum\limits_{q=1}^Q Fy_q\times Y_q$: o custo de usar o centro de compostagem $q$.
+				\item $\sum\limits_{k=1}^{K} Fw_k\times W_k$: o custo de usar a fábrica de pistache $k$.
+				\item $\sum\limits_{e=1}^{E} Fr_e\times R_e$: o custo de usar o centro de extração de óleo $e$.
+				\item $\sum\limits_{s=1}^{S} Fv_s\times V_s$: o custo de usar a fábrica de cosmético $s$.
+				\item Não existe custo de ``usar um produtor/fazenda de pistache $i$''.
+			\end{itemize}
+		
+		\subsection{$z_2$: Custos de produção}
+		
+			Unidade pode ser qualquer coisa: quilo, tonelada, saco etc.
+		
+			\begin{itemize}
+				\item $\sum\limits_{i=1}^I\sum\limits_{j=1}^J CI_i\times X_{ij}$: o custo total da colheita é a soma do custo total de cada produtor $i$. O custo total do produtor $i$ é o custo de colher uma unidade vezes tudo que ele exporta, i.e., tudo que ele manda para cada centro de processamento $j$..
+				\item $\sum\limits_{j=1}^J\sum\limits_{k=1}^K Cu_{1j}\times Go_{jk}$: o custo total de produção do pistache \textit{open-mouth} é a soma do custos totais de cada centro de processamento $j$ para esse produto. O custo total de cada centro de processamento $j$ para produzir o pistache \textit{open-mouth} é igual ao custo de produzir uma unidade desse produto vezes o tanto que ela exporta para todas as fábricas de pistache final.
+				\item $\sum\limits_{j=1}^J\sum\limits_{e=1}^E Cu_{2j}\times Gr_{je}$: o custo total de produção de grão é a soma dos custos totais de cada centro de processamento $j$ para produzir esse produto. O custo de cada centro de processamento $j$ para produzir o grão é igual ao custo de produzir uma unidade vezes o tanto que ela exporta para todos os centros de extração de óleo.
+				\item $\sum\limits_{q=1}^Q\sum\limits_{m=1}^M Cy_{q}\times D_{qm}$: o custo total de produção de compostagem é a soma dos custos totais de cada centro de compostagem $q$. O custo total de produção de composta por um centro de compostagem $q$ é igual ao custo de produzir uma unidade vezes o tanto que ela exporta para todos consumidores de compostagem.
+				\item $\sum\limits_{k=1}^K\sum\limits_{n_1=1}^{N_1} Cw_{k}\times P_{kn_1}$: o custo total de fabricação do pistache final é igual à soma dos custos totais de cada fábrica de pistache $k$. O custo total de uma fábrica de pistache $k$ é igual ao custo de tostar e empacotar cada unidade de pistache vezes o tanto que ele envia para os clientes de pistache.
+				\item $\sum\limits_{e=1}^E Cr_e\left(\sum\limits_{n_2=1}^{N_2}O_{en_2} + \sum\limits_{s=1}^S Oc_{es}\right)$: o custo total de produção de óleo é igual à soma dos custos totais de cada centro de extração de óleo $e$. O custo total de operação de um centro de extração de óleo é igual ao custo de extrair uma unidade de óleo pela vezes tudo que ela exporta para os consumidores de óleo e as fábricas de cosmético somadas.
+				\item $\sum\limits_{s=1}^S\sum\limits_{n_3=1}^{N_3} Cv_{s}\times L_{sn_3}$: o custo total de fabricação de cosméticos é igual à soma dos custos totais de cada fábrica de cosméticos $s$. O custo total de cada fábrica de cosméticos $s$ é igual ao custo de produzir cada unidade de cosmético vezes o total que ela fornece para todos os clientes.
+			\end{itemize}
+		
+		\subsection{$z_3$: Custos de transporte}
+
+			\begin{itemize}
+				\item $\sum\limits_{i=1}^I\sum\limits_{j=1}^J CX_{ij}\times X_{ij}$: o custo total de transporte dos produtores para os centros de processamento é igual à soma do custo unitário de transporte do produtor $i$ ao centro de processamento $j$ vezes a quantidade que está sendo transportada.
+				\item $\sum\limits_{j=1}^J\sum\limits_{k=1}^K CK_{jk}\times Go_{jk}$: o custo total de transporte dos centros de processamento para as fábricas de pistache é igual à soma do custo unitário de transporte do centro de processamento $j$ à fábrica $k$ vezes a quantidade que está sendo transportada.
+				\item $\sum\limits_{j=1}^J\sum\limits_{q=1}^Q CJ_{jq}\times Gw_{jq}$: o custo total de transporte dos centros de processamento para os centros de compostagens é igual à soma do custo unitário de transporte do centro de processamento $j$ ao centro de compostagem $q$ vezes a quantidade que está sendo transportada.
+				\item $\sum\limits_{e=1}^E\sum\limits_{s=1}^S CS_{es}\times Oc_{es}$: o custo total de transporte dos centros de extração de óleo para as fábricas de cosméticos é igual à soma do custo unitário de transporte do centro de extração de óleo $e$ à fábrica de cosmético $s$ vezes a quantidade que está sendo transportada.
+				\item $\sum\limits_{e=1}^E\sum\limits_{n_2=1}^{N_2} CN_{en_2}\times Oc_{en_2}$: o custo total de transporte dos centros de extração de óleo para os consumidores de óleo é igual à soma do custo unitário de transporte do centro de extração de óleo $e$ ao consumidor de óleo $n_2$ vezes a quantidade que está sendo transportada.
+				\item $\sum\limits_{e=1}^E\sum\limits_{q=1}^Q CQ_{eq}\times Ow_{eq}$: o custo total de transporte dos centros de extração de óleo para os centros de compostagem é igual à soma do custo unitário de transporte do centro de extração de óleo $e$ ao centro de compostagem $q$ vezes a quantidade que está sendo transportada.
+				\item $\sum\limits_{s=1}^S\sum\limits_{n_3=1}^{N_3} Cl_{sn_3}\times L_{sn_3}$: o custo total de transporte das fábricas de cosméticos para os consumidores de cosméticos é igual à soma do custo unitário de transporte da fábrica de cosmético $s$ ao consumidor de cosméticos $n_3$ vezes a quantidade que está sendo transportada.
+				\item $\sum\limits_{k=1}^K\sum\limits_{n_1=1}^{N_1} Cp_{kn_1}\times P_{kn_1}$: o custo total de transporte das fábricas de pistache para os consumidores de pistache é igual à soma do custo unitário de transporte da fábrica de pistache $k$ ao consumidor de pistache $n_1$ vezes a quantidade que está sendo transportada.
+				\item $\sum\limits_{q=1}^Q\sum\limits_{m=1}^M Cd_{qm}\times D_{qm}$: o custo total de transporte dos centros de compostagem para os consumidores de compostas é igual à soma do custo unitário de transporte do centro de compostagem $q$ ao consumidor de composta $m$ vezes a quantidade que está sendo transportada.
+			\end{itemize}
+
+	\section{Restrições}
+	
+		\subsection{Restrições de capacidade}
+		
+			\begin{itemize}
+				\item $\sum\limits_{j=1}^J X_{ij} \le Cpa_i,~\forall i \in I$: a soma de tudo o que sai do produtor $i$ não pode ser maior do que sua própria capacidade de produção.
+				\item $\sum\limits_{i=1}^I X_{ij} \le Cpu_j\times U_j,~\forall j \in J$: a soma de tudo que chega no centro de processamento $j$ não pode ser maior que a própria capacidade de armazenagem.
+				\item $\sum\limits_{e=1}^E Ow_{eq} + \sum\limits_{j=1}^J Gw_{jq} \le Cpy_q \times T_q,~\forall q\in Q$: a soma de tudo que chega no centro de compostagem $q$ vindo de todos os centros de processamento e de extração de óleo não pode ser maior que a sua própria capacidade de armazenagem.
+				\item $\sum\limits_{j=1}^J Go_{jk} \le Cpw_k\times W_k,~\forall k \in K$: a soma de tudo que chega na fábrica de pistache $k$ não pode ser maior que a própria capacidade de armazenagem.
+				\item $\sum\limits_{j=1}^J Gr_{je} \le Cpr_e\times R_e,~\forall e \in E$: a soma de tudo que chega no centro de extração de óleo $2$ não pode ser maior que a própria capacidade de armazenagem.
+				\item $\sum\limits_{e=1}^E O_{en_2} \le Cpv_s\times V_s,~\forall s \in S$: a soma de tudo que chega na fábrica de cosmético $k$ não pode ser maior que a própria capacidade de armazenagem.
+			\end{itemize}
+
+		\subsection{Restrições de fluxo}
+		
+			\begin{itemize}
+				\item $\sum\limits_{k=1}^K Go_{jk} + \sum\limits_{e=1} Gr_{je} + \sum\limits_{q=1}^Q Gw_{jq} \le \sum\limits_{i=1} X_{ij},~\forall j \in J$: a soma de tudo que sai do centro de processamento $j$ para as fábricas de pistache, centros de extração de óleo e de compostagem tem que ser menor ou igual a tudo o que chega vindo de todos os produtores. Não necessariamente tudo vai sair porque podem haver perdas.
+				\item $\sum\limits_{k=1}^K Go_{jk} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_1,~\forall j\in J$: tudo o que sai de um centro de processamento $j$ para todas as fábricas de pistache é igual a um percentual $(1-\beta)$ vezes a porção de tudo que chegou dos produtores destinada a esse fim ($\theta_1$). O termo $(1-\beta)$ significa a perda que existe ao fazer a preparação do pistache \textit{open-mouth} após fazer a separação de tudo que chega dos produtores.
+				\item $\sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2,~\forall j\in J$: tudo o que sai de um centro de processamento $j$ para todos os centros de extração de óleo é igual a um percentual $(1-\beta)$ vezes a porção de tudo que chegou dos produtores destinada a esse fim ($\theta_2$). O termo $(1-\beta)$ significa a perda que existe ao fazer a preparação do grão após fazer a separação de tudo que chega dos produtores.
+				\item $\sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3,~\forall j\in J$: tudo o que sai de um centro de processamento $j$ para todos os centros de compostagem é igual à porção de tudo que chegou dos produtores destinada a esse fim ($\theta_3$).
+				\item $\theta_1 + \theta_2 + \theta_3 = 1$: a soma das proporções de divisão de cada produto do centro de processamento tem que ser igual a um.
+				\item $\sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k,~\forall k \in K$: em toda a fábrica de pistache $k$, somente uma porção $\gamma k$ de tudo que ela receber de todos os centros de processamento é que vai virar produto para ser enviado para os consumidores de pistache.
+				\item $\sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda),~\forall e\in E$: em todo centro de extração de óleo $e$, somente uma porção $(1-\lambda)$ de tudo que ela receber de todos os centros de processamento é que vai virar produto para ser enviado tanto para os consumidores de óleo como para as fábricas de cosméticos. A porção restante $\lambda$ é resíduo para ser enviado para os centros de compostagem.
+				\item $\sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda k,~\forall e \in E$: a quantidade enviada para todos os centros de compostagem por um centro de extração de óleo $e$ tem que menor ou igual a porção $\lambda$ do que vier dos centros de processamento. Ou seja, tudo o que não foi para os consumidores de óleo e as fábricas de cosméticos.
+				\item $\sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s,~\forall s \in S$: em toda a fábrica de cosmético $s$, somente uma porção $\gamma s$ de tudo que ela receber de todos os centros de extração de óleo é que vai virar produto para ser enviado para os consumidores de cosméticos.
+				\item $\sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q,~\forall q \in Q$: em todo centro de compostagem $q$, somente uma porção $\gamma q$ de tudo que ela receber de todos os centros de processamento e de extração de óleo é que vai virar composta para ser enviado para os consumidores de compostagem.
+			\end{itemize}
+		
+		\subsection{Restrições de demanda}
+			
+			\begin{itemize}
+				\item $\sum\limits_{k=1}^K P_{kn_1} \le Dp_{n_1},~\forall n_1 \in N_1$: tudo que chega em um cliente de pistache $n_1$ vindo de todas as fábricas de pistache tem que ser maior ou igual à demanda do cliente $n_1$.
+				\item $\sum\limits_{e=1}^E O_{en_2} \le Du_{n_2},~\forall n_2 \in N_2$: tudo que chega em um cliente de óleo $n_2$ vindo de todos os centros de extração de óleo tem que ser maior ou igual à demanda do cliente $n_2$.
+				\item $\sum\limits_{s=1}^S L_{sn_3} \le Ds_{n_3},~\forall n_3 \in N_3$: tudo que chega em um cliente de cosmético $n_3$ vindo de todas as fábricas de cosmético tem que ser maior ou igual à demanda do cliente $n_3$.
+				\item $\sum\limits_{q=1}^Q D_{qm} \le Dc_{m},~\forall m \in M$: tudo que chega em um cliente de compostagem $m$ vindo de todos os centros de compostagem tem que ser maior ou igual à demanda do cliente $m$.
+				\item Ou seja, em todos os casos, o modelo até aceita você enviar mais do que a demanda de um cliente.
+			\end{itemize}
+		
+	\section{Natureza das variáveis}
+	
+		As variáveis $R_j$, $Y_q$, $W_k$, $Z_e$ e $V_s$ são todas binárias. As outras são todas positivas, i.e., reais maior igual a zero.
+
+\end{document}
