@@ -3,3 +3,10 @@
 /.vscode
 test_solution.pkl
 /Classes/__pycache__
+/template-latex/*.aux
+/template-latex/*.log
+/template-latex/*.bbl
+/template-latex/*.dvi
+/template-latex/*.fdb_latexmk
+/template-latex/*.fls
+/template-latex/*.synctex.gz
