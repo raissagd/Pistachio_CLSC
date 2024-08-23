@@ -1,5 +1,5 @@
 import numpy as np
-
+from scipy.sparse import csr_matrix
 
 class Solution:
     def __init__(self):
@@ -394,6 +394,21 @@ class Solution:
         """
         pass
 
+    def convert2sparse(self):
+        """
+        Convert the decision variables to a sparse matrix.
+        """
+        self.X = csr_matrix(self.X)
+        self.Go = csr_matrix(self.Go)
+        self.Gr = csr_matrix(self.Gr)
+        self.Gw = csr_matrix(self.Gw)
+        self.O = csr_matrix(self.O)
+        self.Oc = csr_matrix(self.Oc)
+        self.Ow = csr_matrix(self.Ow)
+        self.L = csr_matrix(self.L)
+        self.P = csr_matrix(self.P)
+        self.D = csr_matrix(self.D)
+
     def evaluate(self, data, show=False):
         """
         Evaluate a solution.
@@ -410,6 +425,7 @@ class Solution:
         if show:
             print(f"The objective function = {totalcost}")
 
+        self.convert2sparse()
         self.FX = F1
         return F1
 
