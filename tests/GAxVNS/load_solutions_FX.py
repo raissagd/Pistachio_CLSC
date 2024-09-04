@@ -5,7 +5,7 @@ import numpy as np
 
 # Carregar as soluções do arquivo pickle
 persist = PersistMultipleSolutions()
-solutions = persist.load(filename='solutions_400', filepath='./tests/GAxVNS/results/')
+solutions = persist.load(filename='solutions_400_GA', filepath='./tests/GAxVNS/results/')
 
 # Extrair o atributo FX de cada solução
 try:
