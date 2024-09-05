@@ -1,0 +1,18 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\burl{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+\providecommand{\doi}[1]{\url{https://doi.org/#1}}
+\bibcommenthead
+
+\bibitem{gen2006genetic}
+\bibinfo{author}{Gen, M.}, \bibinfo{author}{Altiparmak, F.} \&
+  \bibinfo{author}{Lin, L.}
+\newblock \bibinfo{title}{A genetic algorithm for two-stage transportation
+  problem using priority-based encoding}.
+\newblock \emph{\bibinfo{journal}{OR spectrum}} \textbf{\bibinfo{volume}{28}},
+  \bibinfo{pages}{337--354} (\bibinfo{year}{2006}).
+
+\end{thebibliography}

@@ -10,3 +10,5 @@ test_solution.pkl
 /template-latex/*.fdb_latexmk
 /template-latex/*.fls
 /template-latex/*.synctex.gz
+tests/GAxVNS/results/solutions_400_GA.pkl
+tests/run_parallel/results/script_800_results.pkl

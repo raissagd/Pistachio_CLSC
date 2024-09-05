@@ -1,0 +1,62 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: sn-article.aux
+Reallocating 'name_of_file' (item size: 1) to 10 items.
+The style file: sn-nature.bst
+Reallocating 'name_of_file' (item size: 1) to 16 items.
+Database file #1: sn-bibliography.bib
+Warning--I didn't find a database entry for "bib1"
+Warning--I didn't find a database entry for "bib2"
+Warning--I didn't find a database entry for "bib3"
+Warning--I didn't find a database entry for "bib4"
+Warning--I didn't find a database entry for "bib5"
+Warning--I didn't find a database entry for "bib6"
+Warning--I didn't find a database entry for "bib7"
+Warning--I didn't find a database entry for "bib8"
+Warning--I didn't find a database entry for "bib9"
+Warning--I didn't find a database entry for "bib10"
+Warning--I didn't find a database entry for "bib11"
+Warning--I didn't find a database entry for "bib12"
+Warning--I didn't find a database entry for "bib13"
+You've used 1 entry,
+            2710 wiz_defined-function locations,
+            1061 strings with 9548 characters,
+and the built_in function-call counts, 459 in all, are:
+= -- 32
+> -- 12
+< -- 0
++ -- 6
+- -- 3
+* -- 58
+:= -- 56
+add.period$ -- 3
+call.type$ -- 1
+change.case$ -- 1
+chr.to.int$ -- 0
+cite$ -- 1
+duplicate$ -- 35
+empty$ -- 37
+format.name$ -- 4
+if$ -- 84
+int.to.chr$ -- 0
+int.to.str$ -- 1
+missing$ -- 9
+newline$ -- 15
+num.names$ -- 1
+pop$ -- 5
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 5
+stack$ -- 0
+substring$ -- 25
+swap$ -- 39
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 3
+width$ -- 2
+write$ -- 20
+(There were 13 warnings)
