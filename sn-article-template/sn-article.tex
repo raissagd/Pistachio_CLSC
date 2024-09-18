@@ -380,15 +380,48 @@ and intensification phases. The neighborhood structures used are detailed below,
 
 \section{Results}
     
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus ullamcorper ante vel tempor. 
-Curabitur tincidunt leo ligula, at faucibus sem porttitor non. Proin sodales, ex malesuada dictum cursus, 
-libero massa feugiat erat, convallis sollicitudin ante arcu non ante. Curabitur vitae neque pretium, 
-placerat quam quis, porttitor metus. In suscipit orci at lectus sollicitudin, vel porta sem tempor. 
-Integer posuere, libero non eleifend imperdiet, nisl elit ultrices dolor, auctor fringilla libero 
-justo eget leo. Curabitur maximus libero pharetra felis porta, quis elementum massa fermentum.    
+Our results demonstrate that the Variable Neighborhood Search (VNS) algorithm outperforms both the Genetic Algorithm (GA) 
+and Gurobi when considering execution time and memory efficiency, especially on larger instances. While Gurobi guarantees 
+optimal solutions, its memory consumption increases significantly with larger problems, often making it impractical. 
+VNS provides high-quality solutions with a substantial reduction in both execution time and memory usage, making it a 
+more viable choice for large-scale problems. Although GA remains popular in literature, its performance falters as problem 
+sizes increase, both in terms of time and solution quality.
+
+\subsection{Comparison with Gurobi}
+As shown in Table \ref{tab:comparison_vns_gurobi}, Gurobi efficiently finds optimal solutions for smaller instances, such as 100 and 200. 
+The solution difference between VNS and Gurobi is rather little for these smaller cases — 4.19\% for 100 instances and 8.22\% for 200 instances.
+However, as the problem size increases, the difference in solution quality becomes larger, with VNS being 20.12\% away from 
+the optimal solution at 800 instances.
+
+When examining execution time, the results clearly highlight Gurobi's inefficiency on larger instances. For example, at 
+400 instances, Gurobi takes over 70,000 seconds to solve the problem, while VNS takes just over 2,000 seconds, offering a 
+remarkable 97.13\% reduction in time. By the time we reach 1600 instances, Gurobi is unable to find a solution due to its 
+excessive resource demands, while VNS continues to provide a feasible solution in approximately 17,766 seconds.
+
+These results emphasize that although Gurobi produces the best solutions for small instances, it becomes impractical for 
+larger problems due to its memory usage and excessive execution times. VNS, while not optimal, offers a more practical and 
+scalable solution for larger instances.
+
+\subsection{Comparison between VNS and GA}
+The performance of the Genetic Algorithm (GA) can be seen in Table \ref{tab:comparison_vns_ga}. For small instances, such as 100, 
+the difference between VNS and GA is negligible—only 0.71\%. However, as the problem size grows, GA's performance gradually worsens 
+compared to VNS. By 800 instances, the difference in solution quality rises to 5.26\%, indicating that VNS provides consistently better 
+solutions for larger problems.
+
+It is important to highlight that GA takes considerably longer to run compared to VNS. The nature of the GA, which relies on iterative 
+population-based mechanisms such as selection, crossover, and mutation, demands a high number of epochs to reach an acceptable solution. 
+This results in prolonged execution times, particularly for larger problem sizes. In contrast, VNS, with its focused exploration of 
+neighborhood structures, efficiently narrows down the solution space, allowing for faster convergence. This significant difference 
+in runtime makes VNS a more practical choice for larger problem instances, as GA's prolonged execution time limits its scalability 
+and applicability in real-world scenarios where timely solutions are crucial.
+
+In summary, while GA can compete with VNS in smaller problem instances, it lags behind as the complexity increases. 
+VNS provides not only better solutions but also handles larger instances more efficiently, making it the more robust and scalable 
+option for large-scale optimization problems.
     
 \begin{table}[h]
     \caption{Average solution values and execution times of the VNS algorithm compared to the Exact Algorithm (Gurobi).}\label{tab2}
+    \label{tab:comparison_vns_gurobi}
     \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
     \toprule%
     & \multicolumn{3}{@{}c@{}}{Solution value} & \multicolumn{3}{@{}c@{}}{Execution time} \\\cmidrule{2-4}\cmidrule{5-7}%
@@ -405,6 +438,7 @@ justo eget leo. Curabitur maximus libero pharetra felis porta, quis elementum ma
 
 \begin{table}[h]
     \caption{Average solution values of the VNS algorithm compared to the Genetic Algorithm (GA).}\label{tab2}
+    \label{tab:comparison_vns_ga}
     \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
     \toprule%
     & \multicolumn{3}{@{}c@{}}{Solution value}\\\cmidrule{2-4}\cmidrule{5-7}%
@@ -428,108 +462,6 @@ libero massa feugiat erat, convallis sollicitudin ante arcu non ante. Curabitur 
 placerat quam quis, porttitor metus. In suscipit orci at lectus sollicitudin, vel porta sem tempor. 
 Integer posuere, libero non eleifend imperdiet, nisl elit ultrices dolor, auctor fringilla libero 
 justo eget leo. Curabitur maximus libero pharetra felis porta, quis elementum massa fermentum. 
-
-\section{Cross referencing}\label{sec8}
-
-Environments such as figure, table, equation and align can have a label
-declared via the \verb+\label{#label}+ command. For figures and table
-environments use the \verb+\label{}+ command inside or just
-below the \verb+\caption{}+ command. You can then use the
-\verb+\ref{#label}+ command to cross-reference them. As an example, consider
-the label declared for Figure~\ref{fig1} which is
-\verb+\label{fig1}+. To cross-reference it, use the command 
-\verb+Figure \ref{fig1}+, for which it comes up as
-``Figure~\ref{fig1}''. 
-
-To reference line numbers in an algorithm, consider the label declared for the line number 2 of Algorithm~\ref{algo1} is \verb+\label{algln2}+. To cross-reference it, use the command \verb+\ref{algln2}+ for which it comes up as line~\ref{algln2} of Algorithm~\ref{algo1}.
-
-\subsection{Details on reference citations}\label{subsec7}
-
-Standard \LaTeX\ permits only numerical citations. To support both numerical and author-year citations this template uses \verb+natbib+ \LaTeX\ package. For style guidance please refer to the template user manual.
-
-Here is an example for \verb+\cite{...}+: \cite{bib1}. Another example for \verb+\citep{...}+: \citep{bib2}. For author-year citation mode, \verb+\cite{...}+ prints Jones et al. (1990) and \verb+\citep{...}+ prints (Jones et al., 1990).
-
-All cited bib entries are printed at the end of this article: \cite{bib3}, \cite{bib4}, \cite{bib5}, \cite{bib6}, \cite{bib7}, \cite{bib8}, \cite{bib9}, \cite{bib10}, \cite{bib11}, \cite{bib12} and \cite{bib13}.
-
-
-\section{Examples for theorem like environments}\label{sec10}
-
-For theorem like environments, we require \verb+amsthm+ package. There are three types of predefined theorem styles exists---\verb+thmstyleone+, \verb+thmstyletwo+ and \verb+thmstylethree+ 
-
-%%=============================================%%
-%% For presentation purpose, we have included  %%
-%% \bigskip command. Please ignore this.       %%
-%%=============================================%%
-\bigskip
-\begin{tabular}{|l|p{19pc}|}
-\hline
-\verb+thmstyleone+ & Numbered, theorem head in bold font and theorem text in italic style \\\hline
-\verb+thmstyletwo+ & Numbered, theorem head in roman font and theorem text in italic style \\\hline
-\verb+thmstylethree+ & Numbered, theorem head in bold font and theorem text in roman style \\\hline
-\end{tabular}
-\bigskip
-%%=============================================%%
-%% For presentation purpose, we have included  %%
-%% \bigskip command. Please ignore this.       %%
-%%=============================================%%
-
-For mathematics journals, theorem styles can be included as shown in the following examples:
-
-\begin{theorem}[Theorem subhead]\label{thm1}
-Example theorem text. Example theorem text. Example theorem text. Example theorem text. Example theorem text. 
-Example theorem text. Example theorem text. Example theorem text. Example theorem text. Example theorem text. 
-Example theorem text. 
-\end{theorem}
-
-Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text.
-
-\begin{proposition}
-Example proposition text. Example proposition text. Example proposition text. Example proposition text. Example proposition text. 
-Example proposition text. Example proposition text. Example proposition text. Example proposition text. Example proposition text. 
-\end{proposition}
-
-Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text.
-
-\begin{example}
-Phasellus adipiscing semper elit. Proin fermentum massa
-ac quam. Sed diam turpis, molestie vitae, placerat a, molestie nec, leo. Maecenas lacinia. Nam ipsum ligula, eleifend
-at, accumsan nec, suscipit a, ipsum. Morbi blandit ligula feugiat magna. Nunc eleifend consequat lorem. 
-\end{example}
-
-Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text.
-
-\begin{remark}
-Phasellus adipiscing semper elit. Proin fermentum massa
-ac quam. Sed diam turpis, molestie vitae, placerat a, molestie nec, leo. Maecenas lacinia. Nam ipsum ligula, eleifend
-at, accumsan nec, suscipit a, ipsum. Morbi blandit ligula feugiat magna. Nunc eleifend consequat lorem. 
-\end{remark}
-
-Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text.
-
-\begin{definition}[Definition sub head]
-Example definition text. Example definition text. Example definition text. Example definition text. Example definition text. Example definition text. Example definition text. Example definition text. 
-\end{definition}
-
-Additionally a predefined ``proof'' environment is available: \verb+\begin{proof}+ \verb+...+ \verb+\end{proof}+. This prints a ``Proof'' head in italic font style and the ``body text'' in roman font style with an open square at the end of each proof environment. 
-
-\begin{proof}
-Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. 
-\end{proof}
-
-Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text. Sample body text.
-
-\begin{proof}[Proof of Theorem~{\upshape\ref{thm1}}]
-Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. Example for proof text. 
-\end{proof}
-
-\noindent
-For a quote environment, use \verb+\begin{quote}...\end{quote}+
-\begin{quote}
-Quoted text example. Aliquam porttitor quam a lacus. Praesent vel arcu ut tortor cursus volutpat. In vitae pede quis diam bibendum placerat. Fusce elementum
-convallis neque. Sed dolor orci, scelerisque ac, dapibus nec, ultricies ut, mi. Duis nec dui quis leo sagittis commodo.
-\end{quote}
-
-Sample body text. Sample body text. Sample body text. Sample body text. Sample body text (refer Figure~\ref{fig1}). Sample body text. Sample body text. Sample body text (refer Table~\ref{tab3}). 
 
 \section{Methods}\label{sec11}
 

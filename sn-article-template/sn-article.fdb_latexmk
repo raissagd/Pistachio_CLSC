@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex sn-article"] 1726679031.53603 "sn-article.aux" "sn-article.bbl" "sn-article" 1726679034.11557 0
+["bibtex sn-article"] 1726693335.31979 "sn-article.aux" "sn-article.bbl" "sn-article" 1726693338.12511 0
   "./sn-bibliography.bib" 1725495909 1401 0dd8ac911de269fdd2929f0015cb43e0 ""
   "./sn-nature.bst" 1700572414 40058 442dafdf9f5aeb65ccddf1255f87db23 ""
-  "sn-article.aux" 1726679033 6333 f8684dbc26088e5b670d4eb6d97ee3dc "pdflatex"
+  "sn-article.aux" 1726693337 6044 ad1d60b89c4625b3c572b9523743130e "pdflatex"
   (generated)
   "sn-article.bbl"
   "sn-article.blg"
   (rewritten before read)
-["pdflatex"] 1726679031.90391 "c:/Users/Lenovo/Documents/IC/sn-article-template/sn-article.tex" "sn-article.pdf" "sn-article" 1726679034.11647 0
+["pdflatex"] 1726693335.78039 "c:/Users/Lenovo/Documents/IC/sn-article-template/sn-article.tex" "sn-article.pdf" "sn-article" 1726693338.12595 0
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1725028616 82705 9cc9f144eacd499bc23a611703921467 ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1725028625 11548 5894832a50cf542b108ceb5af710ad4a ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/tfm/public/rsfs/rsfs10.tfm" 1718805637 688 37338d6ab346c2f1466b29e195316aa4 ""
@@ -46,7 +46,6 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy6.tfm" 1136765053 1116 933a60c408fc0a863a92debe84b2d294 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmsy8.tfm" 1136765053 1120 8b7d695260f3cff42e636090a8002094 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmti10.tfm" 1136765053 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
-  "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmtt10.tfm" 1136765053 768 1321e9409b4137d6fb428ac9dc956269 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1247596666 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1247596666 32080 340ef9bf63678554ee606688e7b5339d ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb" 1247596666 32166 b0c356b15f19587482a9217ce1d8fa67 ""
@@ -64,7 +63,6 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1247596667 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1247596666 32716 08e384dc442464e7285e891af9f45947 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1247596667 37944 359e864bd06cde3b1cf57bb20757fb06 ""
-  "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1247596667 31099 342ef5a582aacbd3346f3cf4579679fa ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/context/base/mkii/supp-pdf.mkii" 1580390158 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/generic/atbegshi/atbegshi.sty" 1575571100 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/generic/bigintcalc/bigintcalc.sty" 1576433602 40635 c40361e206be584d448876bba8a64a3b ""
@@ -152,13 +150,13 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/wrapfig/wrapfig.sty" 1044403200 26220 3701aebf80ccdef248c0c20dd062fea9 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/xkeyval/xkeyval.sty" 1656236919 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
-  "c:/Users/Lenovo/Documents/IC/sn-article-template/sn-article.tex" 1726679027 45740 0f098af47d22b5c721d6d76a94914823 ""
+  "c:/Users/Lenovo/Documents/IC/sn-article-template/sn-article.tex" 1726693332 42277 cdb950f14670a4e19c15e18f5db5addf ""
   "imgs/decode_flux.PNG" 1726621331 47164 74f0f8b8fd741de34d9380889f0595bd ""
   "imgs/nbhd_op.png" 1725480620 54696 2fd0912f31ad5e4b73458e8c966b9781 ""
-  "sn-article.aux" 1726679033 6333 f8684dbc26088e5b670d4eb6d97ee3dc "pdflatex"
-  "sn-article.bbl" 1726679031 717 2fc26c1068a2381b1eae8ec6367f65fc "bibtex sn-article"
-  "sn-article.out" 1726679033 2398 1fbdd6b9c13453deb92bc696609f6758 "pdflatex"
-  "sn-article.tex" 1726679027 45740 0f098af47d22b5c721d6d76a94914823 ""
+  "sn-article.aux" 1726693337 6044 ad1d60b89c4625b3c572b9523743130e "pdflatex"
+  "sn-article.bbl" 1726693335 717 2fc26c1068a2381b1eae8ec6367f65fc "bibtex sn-article"
+  "sn-article.out" 1726693337 2191 a5866062acd6fc25c5540db925014e12 "pdflatex"
+  "sn-article.tex" 1726693332 42277 cdb950f14670a4e19c15e18f5db5addf ""
   "sn-jnl.cls" 1700572412 55331 2adf3041e7f64a0f542a04760be0043f ""
   (generated)
   "sn-article.aux"

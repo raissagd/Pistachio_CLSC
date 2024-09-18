@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  18 SEP 2024 14:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  18 SEP 2024 18:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -702,7 +702,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [4]
-<./imgs/decode_flux.PNG, id=146, 482.40225pt x 298.716pt>
+<./imgs/decode_flux.PNG, id=142, 482.40225pt x 298.716pt>
 File: ./imgs/decode_flux.PNG Graphic file (type png)
 <use ./imgs/decode_flux.PNG>
 Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 264.
@@ -729,7 +729,7 @@ Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on inp
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [7]
-<./imgs/nbhd_op.png, id=169, 410.7345pt x 263.18324pt>
+<./imgs/nbhd_op.png, id=165, 410.7345pt x 263.18324pt>
 File: ./imgs/nbhd_op.png Graphic file (type png)
 <use ./imgs/nbhd_op.png>
 Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 376.
@@ -744,23 +744,28 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [8]
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 392.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [9 <./imgs/nbhd_op.png>]
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 425.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 392.
+(Font)              size <5> substituted on input line 425.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 392.
+(Font)              size <5> substituted on input line 425.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 392.
+(Font)              size <5> substituted on input line 425.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 392.
+(Font)              size <5> substituted on input line 425.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -770,100 +775,28 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [9 <./imgs/nbhd_op.png>]
-
-LaTeX Warning: Reference `fig1' on page 10 undefined on input line 439.
-
-
-LaTeX Warning: Reference `fig1' on page 10 undefined on input line 442.
-
-
-LaTeX Warning: Reference `algo1' on page 10 undefined on input line 444.
-
-
-LaTeX Warning: Reference `algln2' on page 10 undefined on input line 444.
-
-
-LaTeX Warning: Reference `algo1' on page 10 undefined on input line 444.
-
-
-Package natbib Warning: Citation `bib1' on page 10 undefined on input line 450.
-
-
-Package natbib Warning: Citation `bib2' on page 10 undefined on input line 450.
-
-
-Package natbib Warning: Citation `bib3' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib4' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib5' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib6' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib7' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib8' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib9' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib10' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib11' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib12' on page 10 undefined on input line 452.
-
-
-Package natbib Warning: Citation `bib13' on page 10 undefined on input line 452.
-
-
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
  [10]
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [11]
-
-LaTeX Warning: Reference `fig1' on page 12 undefined on input line 532.
-
-
-LaTeX Warning: Reference `tab3' on page 12 undefined on input line 532.
-
-
-Underfull \hbox (badness 1859) in paragraph at lines 548--549
+Underfull \hbox (badness 1859) in paragraph at lines 480--481
 \OT1/cmr/m/n/10 of a clin-i-cal trial then addi-tional infor-ma-tion will be required. Please visit
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 548--549
+Underfull \hbox (badness 10000) in paragraph at lines 480--481
 \OT1/cmr/m/n/10 ([][]$https : / / www . nature . com / nature-[]research / editorial-[]policies$[][]) for Nature Port-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 548--549
+Underfull \hbox (badness 10000) in paragraph at lines 480--481
 \OT1/cmr/m/n/10 fo-lio jour-nals, ([][]$https : / / www . springer . com / gp / authors-[]editors / journal-[]author /
  []
 
 
-Underfull \hbox (badness 4634) in paragraph at lines 548--549
+Underfull \hbox (badness 4634) in paragraph at lines 480--481
 \OT1/cmr/m/n/10 journal-[]author-[]helpdesk / publishing-[]ethics / 14214$[][]) for Springer Nature jour-nals,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 548--549
+Underfull \hbox (badness 10000) in paragraph at lines 480--481
 \OT1/cmr/m/n/10 or ([][]$https : / / www . biomedcentral . com / getpublished / editorial-[]policies # ethics + and +
  []
 
@@ -872,30 +805,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 548--549
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12]
+ [11]
 
 Package hyperref Warning: Difference (4) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 564.
+(hyperref)                than one, level fixed on input line 496.
 
 
 Package hyperref Warning: Difference (3) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 572.
+(hyperref)                than one, level fixed on input line 504.
 
 
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [13] (sn-article.bbl)
-
-Package natbib Warning: There were undefined citations.
-
-
+ [12] (sn-article.bbl)
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14] (sn-article.aux)
+ [13] (sn-article.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 1
 L3 programming layer <2024-05-27>
@@ -906,26 +835,23 @@ LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.985pt have occurred.
 
 
-LaTeX Warning: There were undefined references.
-
-
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `sn-article.out' has not changed.
-(rerunfilecheck)             Checksum: 1FBDD6B9C13453DEB92BC696609F6758;2398.
+(rerunfilecheck)             Checksum: A5866062ACD6FC25C5540DB925014E12;2191.
  ) 
 Here is how much of TeX's memory you used:
- 16135 strings out of 473919
- 253768 string characters out of 5726481
+ 16092 strings out of 473919
+ 252815 string characters out of 5726481
  1947908 words of memory out of 5000000
- 38653 multiletter control sequences out of 15000+600000
- 575376 words of font info for 107 fonts, out of 8000000 for 9000
+ 38618 multiletter control sequences out of 15000+600000
+ 575208 words of font info for 106 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
  90i,11n,117p,678b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on sn-article.pdf (14 pages, 399654 bytes).
+ <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on sn-article.pdf (13 pages, 373618 bytes).
 PDF statistics:
- 325 PDF objects out of 1000 (max. 8388607)
- 75 named destinations out of 1000 (max. 500000)
- 147 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 306 PDF objects out of 1000 (max. 8388607)
+ 68 named destinations out of 1000 (max. 500000)
+ 139 words of extra memory for PDF output out of 10000 (max. 10000000)
 
