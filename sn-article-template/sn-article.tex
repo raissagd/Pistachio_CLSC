@@ -102,13 +102,13 @@
 %%  \sfx{IV}}\email{iauthor@gmail.com}
 %%=============================================================%%
 
-\author*[1,2]{\fnm{Raissa} \sur{Gonçalves Diniz}}\email{raissagd@ufmg.br}
+\author[1]{\fnm{Raissa} \sur{Gonçalves Diniz}}\email{raissagd@ufmg.br}
 
-\author*[1,2]{\fnm{André} \sur{Costa Batista}}\email{andre-costa@ufmg.br}
+\author[1,2]{\fnm{André} \sur{Costa Batista}}\email{andre-costa@ufmg.br}
 
-\affil*[1]{\orgdiv{Department}, \orgname{Universidade Federal de Minas Gerais}, \orgaddress{\street{Av. Antônio Carlos 6627}, \city{Belo Horizonte}, \postcode{31270-010}, \state{Minas Gerais}, \country{Brazil}}}
+\affil[1]{\orgdiv{Operations Research and Complex Systems Laboratory}, \orgname{Universidade Federal de Minas Gerais}, \orgaddress{\country{Brazil}}}
 
-\affil[2]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{10587}, \state{State}, \country{Country}}}
+\affil[2]{\orgdiv{Department of Electrical Engineering}, \orgname{Universidade Federal de Minas Gerais}, \orgaddress{\street{Av. Antônio Carlos 6627}, \city{Belo Horizonte}, \postcode{31270-010}, \state{Minas Gerais}, \country{Brazil}}}
 
 
 %%==================================%%
@@ -139,9 +139,12 @@
 
 \section{Introduction}\label{sec1}
 
-The Introduction section, of referenced text \cite{bib1} expands on the background of the work (some overlap with the Abstract is acceptable). The introduction should not include subheadings.
-
-Springer Nature does not impose a strict layout as standard however authors are advised to check the individual requirements for the journal they are planning to submit to as there may be journal-level preferences. When preparing your text please also be aware that some stylistic choices are not supported in full text XML (publication version), including coloured font. These will not be replicated in the typeset article if it is accepted. 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus ullamcorper ante vel tempor. 
+Curabitur tincidunt leo ligula, at faucibus sem porttitor non. Proin sodales, ex malesuada dictum cursus, 
+libero massa feugiat erat, convallis sollicitudin ante arcu non ante. Curabitur vitae neque pretium, 
+placerat quam quis, porttitor metus. In suscipit orci at lectus sollicitudin, vel porta sem tempor. 
+Integer posuere, libero non eleifend imperdiet, nisl elit ultrices dolor, auctor fringilla libero 
+justo eget leo. Curabitur maximus libero pharetra felis porta, quis elementum massa fermentum. 
 
 \section{Problem definition}
 
@@ -250,9 +253,61 @@ the source's capacity and the depot's demand. Once the shipment is fulfilled, th
 its demand is satisfied), and the process continues with the next highest priority node. This sequential process of arc appending 
 and priority updating repeats until all depots' demands are satisfied, resulting in a complete transportation tree.
 
-The whole supply chain itself is determined step-by-step, starting from consumer demand and moving back to producers, addressing key constraints at each stage.
-The priority-based encoding scheme is crucial in managing the construction process, as it ensures that the most cost-effective connections are made first,
-leading to an optimal solution. 
+The supply chain is determined using a step-by-step, backward approach, starting from consumer demand and moving upward toward producers. 
+This method ensures resource allocation is optimized at each stage, preventing excess or unnecessary material flow. For example, 
+after determining the quantity of open-mouth pistachios required by consumers, we work backward to calculate the factories' 
+processing needs, ensuring their capacities are not overloaded. This then informs how much material the processing centers must supply, 
+aligning each upstream stage with the final demand and optimizing resource use throughout the chain.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./imgs/decode_flux.PNG}
+    \caption{Decodification steps of the transportation tree}
+    \label{fig:decode_flux}
+\end{figure}
+
+As shown in Figure~\ref{fig:decode_flux}, the decoding process begins with the flow of pistachio products from factories to consumers, ensuring that 
+all constraints are met: consumer demand is satisfied, the total amount of product leaving the factory does not exceed the 
+pistachio received from processing centers multiplied by the factory’s production rate, and the pistachio sent to any active 
+factory is within its capacity. Likewise, the distribution of cosmetic products from factories to consumers and the transfer of oil 
+from extraction centers to both oil consumers and cosmetic factories adhere to the same principles, ensuring all constraints are satisfied
+
+The flow from processing centers to pistachio factories and oil extraction centers is regulated by constraints ensuring that the 
+total pistachios leaving a processing center do not exceed the harvested amount sent by producers. Harvested pistachios are divided into three parts, 
+each assigned to a product type, with a $(1-\beta)$ loss factor applied to pistachios with shells and pits. Factories can receive more pistachios than 
+they process, but must meet a minimum intake, while oil extraction centers send no more than $(1-\lambda)$ of the kernels to consumers and cosmetics factories, 
+with the remaining $\lambda$ going to composting. All processing centers must respect their capacity limits to ensure efficient distribution.
+
+The decoding process for this specific flow is more complex and requires a targeted approach. First, we must determine the flow of in-shell pistachios from 
+processing centers to pistachio factories, and the flow of kernels from processing centers to oil extraction centers. Using the given constraints, we calculate 
+the quantity of harvested pistachios each processing center must receive to meet the demands of both pistachio factories and oil extraction centers.
+
+If the factory demand exceeds that of the oil extraction centers, the processing center must prioritize meeting the exact demand of the factories. Since 
+harvested pistachios are divided into three proportional parts, basing the allocation solely on the oil extraction center’s demand would leave the factories 
+undersupplied. The priority should be given to the entity with the greatest need, adjusting the remaining flow accordingly, as constraints allow for over-supply 
+but not shortages.
+
+Thus, we need to adjust the quantity of kernels shipped from the processing centers to the oil extraction centers, ensuring enough is sent to satisfy the 
+restrictions. This involves calculating the total amount of kernels required, identifying the oil extraction center with the lowest transportation cost, and 
+directing the additional flow there to minimize costs.
+
+If, instead, the oil extraction centers have higher demand, the process is reversed: the pistachio factories' flow is adjusted accordingly to balance 
+the supply while minimizing transportation costs.
+
+Next, the flow of harvested pistachios from producers to processing centers is also governed by constraints ensuring that no producer exceeds its production 
+capacity and no processing center receives more than it can process. While the capacity of each producer limits the supply, the demand for each 
+processing center has already been determined in a previous step. If producers' capacities are insufficient to meet the total demand, the solution 
+becomes infeasible. However, due to the constraints on product allocation between processing centers, this flow will always satisfy the condition of equality.
+
+Similarly, the flow of fertilizer from composting centers to consumers is governed by constraints that ensure composting centers do not receive more waste than 
+they can handle. The amount of fertilizer sent must be less than or equal to the waste received from processing and oil extraction centers, adjusted by the 
+composting center's production rate. Finally, for the waste flow from processing and oil extraction centers to composting centers, constraints also ensure that no 
+composting center receives more waste than its capacity. Waste from each processing center is assigned to the composting center with the lowest associated cost, 
+ensuring that no composting center receives more waste than required. If the waste sent to a composting center falls short of its needs, the demand is adjusted 
+accordingly. Conversely, if excess waste is sent, the demand is set to zero. Once all processing centers have allocated their waste, any remaining composting 
+needs are fulfilled by oil extraction centers, considering their available capacity. If no additional waste is needed, no waste is sent from the oil extraction 
+centers. Finally, the total cost of transporting waste is updated based on the assignments, ensuring efficient waste management across the supply chain.
+
 
 \subsection{VNS algorithm}
 The Variable Neighborhood Search (VNS) algorithm is a powerful metaheuristic that combines local search with
@@ -318,7 +373,7 @@ and intensification phases. The neighborhood structures used are detailed below,
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{nbhd_op.png} % Adjust the width as needed
+    \includegraphics[width=0.8\textwidth]{./imgs/nbhd_op.png}
     \caption{Neighborhood structures used in the VNS Algorithm}
     \label{fig:nbdh_op}
 \end{figure}
@@ -332,6 +387,39 @@ placerat quam quis, porttitor metus. In suscipit orci at lectus sollicitudin, ve
 Integer posuere, libero non eleifend imperdiet, nisl elit ultrices dolor, auctor fringilla libero 
 justo eget leo. Curabitur maximus libero pharetra felis porta, quis elementum massa fermentum.    
     
+\begin{table}[h]
+    \caption{Average solution values and execution times of the VNS algorithm compared to the Exact Algorithm (Gurobi).}\label{tab2}
+    \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
+    \toprule%
+    & \multicolumn{3}{@{}c@{}}{Solution value} & \multicolumn{3}{@{}c@{}}{Execution time} \\\cmidrule{2-4}\cmidrule{5-7}%
+    Instance & VNS & Gurobi & Difference & VNS & Gurobi & Difference \\
+    \midrule
+    100 & 7.356017e+06 & 7059878.15 & 4.19\% & 240.576739s & 261s & -7.83\%\\
+    200 & 1.488441e+08 & 137535570.42 &  8.22\%  & 714.499149s & 3834s & -81.36\%\\
+    400 & 3.075344e+08 & 270662192.84 & 13.62\%  & 2015.728858s & 70339s & -97.13\%\\
+    800 & 6.573093e+08 & 547200537.38 & 20.12\%  & 5537.291645s & 11836s&  -53.22\%\\
+    1600 & 1.364413e+09 & - & - & 17766.873715s & - & -\\
+    \botrule
+    \end{tabular*}
+\end{table}
+
+\begin{table}[h]
+    \caption{Average solution values of the VNS algorithm compared to the Genetic Algorithm (GA).}\label{tab2}
+    \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
+    \toprule%
+    & \multicolumn{3}{@{}c@{}}{Solution value}\\\cmidrule{2-4}\cmidrule{5-7}%
+    Instance & VNS & GA & Difference\\
+    \midrule
+    100 & 74105277.59 & 74630611.96 & 0.71\%\\
+    200 & 150165899.77 & 155311143.01 &  3.37\%\\
+    400 & 307527336.72 & 324315714.06  & 5.31\%\\
+    800 & 657000372.14 & 692477371.5  & 5.26\%\\
+    1600& 1363240244.41 & -  & -\\
+    \botrule
+    \end{tabular*}
+\end{table}
+
+
 \section{Conclusion}
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus ullamcorper ante vel tempor. 
@@ -340,99 +428,6 @@ libero massa feugiat erat, convallis sollicitudin ante arcu non ante. Curabitur 
 placerat quam quis, porttitor metus. In suscipit orci at lectus sollicitudin, vel porta sem tempor. 
 Integer posuere, libero non eleifend imperdiet, nisl elit ultrices dolor, auctor fringilla libero 
 justo eget leo. Curabitur maximus libero pharetra felis porta, quis elementum massa fermentum. 
-   
-
-\section{Tables}\label{sec5}
-
-Tables can be inserted via the normal table and tabular environment. To put
-footnotes inside tables you should use \verb+\footnotetext[]{...}+ tag.
-The footnote appears just below the table itself (refer Tables~\ref{tab1} and \ref{tab2}). 
-For the corresponding footnotemark use \verb+\footnotemark[...]+
-
-\begin{table}[h]
-\caption{Caption text}\label{tab1}%
-\begin{tabular}{@{}llll@{}}
-\toprule
-Column 1 & Column 2  & Column 3 & Column 4\\
-\midrule
-row 1    & data 1   & data 2  & data 3  \\
-row 2    & data 4   & data 5\footnotemark[1]  & data 6  \\
-row 3    & data 7   & data 8  & data 9\footnotemark[2]  \\
-\botrule
-\end{tabular}
-\footnotetext{Source: This is an example of table footnote. This is an example of table footnote.}
-\footnotetext[1]{Example for a first table footnote. This is an example of table footnote.}
-\footnotetext[2]{Example for a second table footnote. This is an example of table footnote.}
-\end{table}
-
-\noindent
-The input format for the above table is as follows:
-
-%%=============================================%%
-%% For presentation purpose, we have included  %%
-%% \bigskip command. Please ignore this.       %%
-%%=============================================%%
-\bigskip
-\begin{verbatim}
-\begin{table}[<placement-specifier>]
-\caption{<table-caption>}\label{<table-label>}%
-\begin{tabular}{@{}llll@{}}
-\toprule
-Column 1 & Column 2 & Column 3 & Column 4\\
-\midrule
-row 1 & data 1 & data 2	 & data 3 \\
-row 2 & data 4 & data 5\footnotemark[1] & data 6 \\
-row 3 & data 7 & data 8	 & data 9\footnotemark[2]\\
-\botrule
-\end{tabular}
-\footnotetext{Source: This is an example of table footnote. 
-This is an example of table footnote.}
-\footnotetext[1]{Example for a first table footnote.
-This is an example of table footnote.}
-\footnotetext[2]{Example for a second table footnote. 
-This is an example of table footnote.}
-\end{table}
-\end{verbatim}
-\bigskip
-%%=============================================%%
-%% For presentation purpose, we have included  %%
-%% \bigskip command. Please ignore this.       %%
-%%=============================================%%
-
-\begin{table}[h]
-\caption{Example of a lengthy table which is set to full textwidth}\label{tab2}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
-\toprule%
-& \multicolumn{3}{@{}c@{}}{Element 1\footnotemark[1]} & \multicolumn{3}{@{}c@{}}{Element 2\footnotemark[2]} \\\cmidrule{2-4}\cmidrule{5-7}%
-Project & Energy & $\sigma_{calc}$ & $\sigma_{expt}$ & Energy & $\sigma_{calc}$ & $\sigma_{expt}$ \\
-\midrule
-Element 3  & 990 A & 1168 & $1547\pm12$ & 780 A & 1166 & $1239\pm100$\\
-Element 4  & 500 A & 961  & $922\pm10$  & 900 A & 1268 & $1092\pm40$\\
-\botrule
-\end{tabular*}
-\footnotetext{Note: This is an example of table footnote. This is an example of table footnote this is an example of table footnote this is an example of~table footnote this is an example of table footnote.}
-\footnotetext[1]{Example for a first table footnote.}
-\footnotetext[2]{Example for a second table footnote.}
-\end{table}
-
-In case of double column layout, tables which do not fit in single column width should be set to full text width. For this, you need to use \verb+\begin{table*}+ \verb+...+ \verb+\end{table*}+ instead of \verb+\begin{table}+ \verb+...+ \verb+\end{table}+ environment. Lengthy tables which do not fit in textwidth should be set as rotated table. For this, you need to use \verb+\begin{sidewaystable}+ \verb+...+ \verb+\end{sidewaystable}+ instead of \verb+\begin{table*}+ \verb+...+ \verb+\end{table*}+ environment. This environment puts tables rotated to single column width. For tables rotated to double column width, use \verb+\begin{sidewaystable*}+ \verb+...+ \verb+\end{sidewaystable*}+.
-
-\begin{sidewaystable}
-\caption{Tables which are too long to fit, should be written using the ``sidewaystable'' environment as shown here}\label{tab3}
-\begin{tabular*}{\textheight}{@{\extracolsep\fill}lcccccc}
-\toprule%
-& \multicolumn{3}{@{}c@{}}{Element 1\footnotemark[1]}& \multicolumn{3}{@{}c@{}}{Element\footnotemark[2]} \\\cmidrule{2-4}\cmidrule{5-7}%
-Projectile & Energy	& $\sigma_{calc}$ & $\sigma_{expt}$ & Energy & $\sigma_{calc}$ & $\sigma_{expt}$ \\
-\midrule
-Element 3 & 990 A & 1168 & $1547\pm12$ & 780 A & 1166 & $1239\pm100$ \\
-Element 4 & 500 A & 961  & $922\pm10$  & 900 A & 1268 & $1092\pm40$ \\
-Element 5 & 990 A & 1168 & $1547\pm12$ & 780 A & 1166 & $1239\pm100$ \\
-Element 6 & 500 A & 961  & $922\pm10$  & 900 A & 1268 & $1092\pm40$ \\
-\botrule
-\end{tabular*}
-\footnotetext{Note: This is an example of table footnote this is an example of table footnote this is an example of table footnote this is an example of~table footnote this is an example of table footnote.}
-\footnotetext[1]{This is an example of table footnote.}
-\end{sidewaystable}
 
 \section{Cross referencing}\label{sec8}
 
