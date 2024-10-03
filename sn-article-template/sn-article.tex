@@ -115,7 +115,12 @@
 %% Sample for unstructured abstract %%
 %%==================================%%
 
-\abstract{The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. Authors are advised to check the author instructions for the journal they are submitting to for word limits and if structural elements like subheadings, citations, or equations are permitted.}
+\abstract{The increasing focus on sustainability in agriculture has led to concerns about managing agricultural by-products and optimizing resource usage. 
+This study addresses these challenges by proposing a mixed linear mathematical model for optimizing the pistachio supply chain network. The model integrates 
+forward and reverse logistics to reduce environmental impact, including the return of by-products to the network through composting. To minimize total fixed 
+and variable costs, we employ the Variable Neighborhood Search (VNS) algorithm and compare its performance with an exact algorithm (Gurobi) and a population-based 
+metaheuristic (Genetic Algorithm). Our results demonstrate the efficiency and scalability of VNS, especially for larger problem instances, making it a viable solution 
+for sustainable agricultural supply chain optimization.}
 
 %%================================%%
 %% Sample for structured abstract %%
@@ -129,7 +134,7 @@
 % 
 % \textbf{Conclusion:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.}
 
-\keywords{keyword1, Keyword2, Keyword3, Keyword4}
+\keywords{Optimization, Supply chain, Metaheuristics, Environmental impact, Variable Neighborhood Search}
 
 %%\pacs[JEL Classification]{D8, H51}
 
@@ -139,12 +144,25 @@
 
 \section{Introduction}\label{sec1}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus ullamcorper ante vel tempor. 
-Curabitur tincidunt leo ligula, at faucibus sem porttitor non. Proin sodales, ex malesuada dictum cursus, 
-libero massa feugiat erat, convallis sollicitudin ante arcu non ante. Curabitur vitae neque pretium, 
-placerat quam quis, porttitor metus. In suscipit orci at lectus sollicitudin, vel porta sem tempor. 
-Integer posuere, libero non eleifend imperdiet, nisl elit ultrices dolor, auctor fringilla libero 
-justo eget leo. Curabitur maximus libero pharetra felis porta, quis elementum massa fermentum. 
+The growing role of agriculture in the economic development of many countries highlights the importance of integrating this 
+sector with other industries to stimulate overall economic growth. Agriculture not only supports food security but also acts 
+as a major contributor to exports, generating significant income and bolstering other sectors. Among various agricultural 
+products, pistachios stand out due to their high economic and nutritional value. As major producers such as the US, Turkey, 
+and Iran lead global production, the strategic importance of pistachios in international trade continues to rise.
+
+With the increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper 
+supply chain management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth 
+flow of goods from production to consumers. In particular, pistachio production faces challenges related to waste management, 
+as large volumes of by-products such as hulls and shells are generated during processing. Addressing these environmental concerns, 
+along with optimizing logistics, becomes crucial for sustaining both the economic and ecological viability of the pistachio industry.
+
+Given the complex interplay of factors influencing pistachio production and trade, this study focuses on designing an optimal 
+supply chain network for pistachios. Specifically, we explore the development of a closed-loop supply chain (CLSC), which 
+integrates forward and reverse logistics to minimize waste and maximize resource utilization. While there has been extensive 
+research on CLSCs for other agricultural products, pistachios remain underexplored. Therefore, this work aims to fill that gap 
+by proposing a quantitative model for the design of a pistachio CLSC network. Through the application of several meta-heuristic 
+and hybrid algorithms, this study seeks to provide an effective solution for enhancing the sustainability and efficiency of the 
+pistachio supply chain.
 
 \section{Problem definition}
 
@@ -380,75 +398,89 @@ and intensification phases. The neighborhood structures used are detailed below,
 
 \section{Results}
     
-Our results demonstrate that the Variable Neighborhood Search (VNS) algorithm outperforms both the Genetic Algorithm (GA) 
-and Gurobi when considering execution time and memory efficiency, especially on larger instances. While Gurobi guarantees 
-optimal solutions, its memory consumption increases significantly with larger problems, often making it impractical. 
-VNS provides high-quality solutions with a substantial reduction in both execution time and memory usage, making it a 
-more viable choice for large-scale problems. Although GA remains popular in literature, its performance falters as problem 
-sizes increase, both in terms of time and solution quality.
+Our results demonstrate that the Variable Neighborhood Search (VNS) algorithm performs competitively against both an exact algorithm, 
+Gurobi, and a population-based metaheuristic, the Genetic Algorithm (GA), when considering execution time and memory efficiency, particularly 
+on larger instances. While the Exact Algorithm guarantees optimal solutions, its memory consumption and execution time increase significantly as problem 
+sizes grow, often making it impractical for large-scale problems. VNS provides high-quality solutions with a significant reduction in both 
+time and memory usage, making it a more practical choice in these scenarios. Although the population-based metaheuristic is widely used in the 
+literature, its performance deteriorates with increasing problem size, both in terms of solution quality and execution time.
 
-\subsection{Comparison with Gurobi}
-As shown in Table \ref{tab:comparison_vns_gurobi}, Gurobi efficiently finds optimal solutions for smaller instances, such as 100 and 200. 
-The solution difference between VNS and Gurobi is rather little for these smaller cases — 4.19\% for 100 instances and 8.22\% for 200 instances.
-However, as the problem size increases, the difference in solution quality becomes larger, with VNS being 20.12\% away from 
-the optimal solution at 800 instances.
+\subsection{Comparison between VNS and an Exact Algorithm}
+As shown in Table \ref{tab:comparison_vns_gurobi}, Gurobi efficiently finds optimal solutions for smaller instances, such as 100 and 200, 
+where the solution difference between VNS and Gurobi is relatively small—4.19\% for 100 instances and 8.22\% for 200 instances. However, as 
+the problem size increases, the difference in solution quality becomes larger, with VNS being 20.12\% away from the optimal solution at 800 
+instances.
+
+The boxplots in Figure 2 further illustrate the variability of VNS across 30 runs compared to Gurobi's single optimal solution. 
+For instance 100, VNS results range from $7.15 \times 10^6$ to $8.75 \times 10^6$, closely matching Gurobi's solution of $7.06 \times 10^6$ 
+with only a 4.19\% difference. In instance 200, VNS shows slightly more variability, ranging from $1.40 \times 10^8$ to $1.75 \times 10^8$, 
+maintaining an 8.22\% gap from Gurobi's $1.37 \times 10^8$. As problem size increases, the VNS range widens—for instance 400, from 
+$2.70 \times 10^8$ to $3.30 \times 10^8$, with a 13.62\% difference, and for instance 800, from $5.40 \times 10^8$ to $6.85 \times 10^8$, 
+showing a 20.12\% gap from Gurobi's $5.47 \times 10^8$. Although the difference in solution quality increases as the problem 
+size grows, VNS remains competitive by providing solutions much faster than Gurobi, particularly for larger instances.
+
 
 When examining execution time, the results clearly highlight Gurobi's inefficiency on larger instances. For example, at 
 400 instances, Gurobi takes over 70,000 seconds to solve the problem, while VNS takes just over 2,000 seconds, offering a 
 remarkable 97.13\% reduction in time. By the time we reach 1600 instances, Gurobi is unable to find a solution due to its 
-excessive resource demands, while VNS continues to provide a feasible solution in approximately 17,766 seconds.
+excessive resource demands, while VNS continues to provide a feasible solution in approximately 17.766 seconds.
 
-These results emphasize that although Gurobi produces the best solutions for small instances, it becomes impractical for 
+These results emphasize that although the Exact Algorithm produces the best solutions for small instances, it becomes impractical for 
 larger problems due to its memory usage and excessive execution times. VNS, while not optimal, offers a more practical and 
 scalable solution for larger instances.
 
 \subsection{Comparison between VNS and GA}
-The performance of the Genetic Algorithm (GA) can be seen in Table \ref{tab:comparison_vns_ga}. For small instances, such as 100, 
-the difference between VNS and GA is negligible—only 0.71\%. However, as the problem size grows, GA's performance gradually worsens 
-compared to VNS. By 800 instances, the difference in solution quality rises to 5.26\%, indicating that VNS provides consistently better 
-solutions for larger problems.
+The performance of the Genetic Algorithm (GA) can be seen in Table \ref{tab:comparison_vns_ga}. For small instances, such as 100, the 
+difference between VNS and GA is negligible—only 0.71\%. However, as the problem size grows, GA's performance gradually worsens compared to VNS. 
+By 800 instances, the difference in solution quality rises to 5.26\%, indicating that VNS provides consistently better solutions for larger problems.
 
-It is important to highlight that GA takes considerably longer to run compared to VNS. The nature of the GA, which relies on iterative 
+Statistical tests conducted on the results further validate that VNS outperforms GA in all tested instances. VNS not only exhibits a lower average 
+solution value across small and large instances but also consistently produces more reliable and robust outcomes. The boxplots visually demonstrate
+VNS's lower median values compared to GA, reinforcing the statistical tests' conclusions. This shows that, although GA may perform competitively 
+in smaller cases, such as in the 100-instance example, it falls significantly behind as the problem size increases, with VNS statistically 
+surpassing GA in solution quality.
+
+It is also important to highlight that GA takes considerably longer to run compared to VNS. The nature of GA, which relies on iterative 
 population-based mechanisms such as selection, crossover, and mutation, demands a high number of epochs to reach an acceptable solution. 
 This results in prolonged execution times, particularly for larger problem sizes. In contrast, VNS, with its focused exploration of 
-neighborhood structures, efficiently narrows down the solution space, allowing for faster convergence. This significant difference 
-in runtime makes VNS a more practical choice for larger problem instances, as GA's prolonged execution time limits its scalability 
-and applicability in real-world scenarios where timely solutions are crucial.
+neighborhood structures, efficiently narrows down the solution space, allowing for faster convergence. This significant difference in 
+runtime makes VNS a more practical choice for larger problem instances, as GA's prolonged execution time limits its scalability and 
+applicability in real-world scenarios where timely solutions are crucial.
 
-In summary, while GA can compete with VNS in smaller problem instances, it lags behind as the complexity increases. 
-VNS provides not only better solutions but also handles larger instances more efficiently, making it the more robust and scalable 
-option for large-scale optimization problems.
+In summary, while GA can compete with VNS in smaller problem instances, it lags behind as the complexity increases. VNS consistently provides 
+not only better solutions, as supported by statistical evidence, but also handles larger instances more efficiently, making it the more robust 
+and scalable option for large-scale optimization problems.
     
 \begin{table}[h]
-    \caption{Average solution values and execution times of the VNS algorithm compared to the Exact Algorithm (Gurobi).}\label{tab2}
+    \caption{Comparison of the VNS algorithm and the Exact Algorithm (Gurobi) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab2}
     \label{tab:comparison_vns_gurobi}
     \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
     \toprule%
-    & \multicolumn{3}{@{}c@{}}{Solution value} & \multicolumn{3}{@{}c@{}}{Execution time} \\\cmidrule{2-4}\cmidrule{5-7}%
-    Instance & VNS & Gurobi & Difference & VNS & Gurobi & Difference \\
+    & \multicolumn{3}{@{}c@{}}{Objective function evaluation} & \multicolumn{3}{@{}c@{}}{Execution time} \\\cmidrule{2-4}\cmidrule{5-7}%
+    Instance & VNS & Exact Algorithm & Difference & VNS & Exact Algorithm  & Difference \\
     \midrule
-    100 & 7.356017e+06 & 7059878.15 & 4.19\% & 240.576739s & 261s & -7.83\%\\
-    200 & 1.488441e+08 & 137535570.42 &  8.22\%  & 714.499149s & 3834s & -81.36\%\\
-    400 & 3.075344e+08 & 270662192.84 & 13.62\%  & 2015.728858s & 70339s & -97.13\%\\
-    800 & 6.573093e+08 & 547200537.38 & 20.12\%  & 5537.291645s & 11836s&  -53.22\%\\
-    1600 & 1.364413e+09 & - & - & 17766.873715s & - & -\\
+    100  & $7.36 \times 10^6$  & $7.06 \times 10^6$  & 4.19\%   & 241s  & 261s  & -7.83\% \\
+    200  & $1.49 \times 10^8$  & $1.38 \times 10^8$  & 8.22\%   & 714s  & 3834s & -81.36\% \\
+    400  & $3.08 \times 10^8$  & $2.71 \times 10^8$  & 13.62\%  & 2016s & 70339s & -97.13\% \\
+    800  & $6.57 \times 10^8$  & $5.47 \times 10^8$  & 20.12\%  & 5538s & 11836s & -53.22\% \\
+    1600 & $1.36 \times 10^9$  & -                  & -        & 17767s & -      & - \\
     \botrule
     \end{tabular*}
 \end{table}
 
 \begin{table}[h]
-    \caption{Average solution values of the VNS algorithm compared to the Genetic Algorithm (GA).}\label{tab2}
+    \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab2}
     \label{tab:comparison_vns_ga}
     \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
     \toprule%
-    & \multicolumn{3}{@{}c@{}}{Solution value}\\\cmidrule{2-4}\cmidrule{5-7}%
+    & \multicolumn{3}{@{}c@{}}{Objective function evaluation}\\\cmidrule{2-4}\cmidrule{5-7}%
     Instance & VNS & GA & Difference\\
     \midrule
-    100 & 74105277.59 & 74630611.96 & 0.71\%\\
-    200 & 150165899.77 & 155311143.01 &  3.37\%\\
-    400 & 307527336.72 & 324315714.06  & 5.31\%\\
-    800 & 657000372.14 & 692477371.5  & 5.26\%\\
-    1600& 1363240244.41 & -  & -\\
+    100  & $7.41 \times 10^7$  & $7.46 \times 10^7$  & 0.71\% \\
+    200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37\% \\
+    400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31\% \\
+    800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26\% \\
+    1600 & $1.36 \times 10^9$  & -                  & -      \\
     \botrule
     \end{tabular*}
 \end{table}
@@ -456,122 +488,27 @@ option for large-scale optimization problems.
 
 \section{Conclusion}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus ullamcorper ante vel tempor. 
-Curabitur tincidunt leo ligula, at faucibus sem porttitor non. Proin sodales, ex malesuada dictum cursus, 
-libero massa feugiat erat, convallis sollicitudin ante arcu non ante. Curabitur vitae neque pretium, 
-placerat quam quis, porttitor metus. In suscipit orci at lectus sollicitudin, vel porta sem tempor. 
-Integer posuere, libero non eleifend imperdiet, nisl elit ultrices dolor, auctor fringilla libero 
-justo eget leo. Curabitur maximus libero pharetra felis porta, quis elementum massa fermentum. 
+The conclusion of this study underscores the advantages of the Variable Neighborhood Search (VNS) algorithm in optimizing the 
+pistachio supply chain network. The proposed model effectively integrates various stages of the supply chain, from production
+to composting, ensuring that all capacity and demand constraints are satisfied. By minimizing total costs while considering 
+transportation, production, and facility operations, the model addresses the complexities of managing pistachio products and 
+by-products.
 
-\section{Methods}\label{sec11}
+Our results demonstrate that VNS outperforms the Genetic Algorithm (GA) in both execution time and scalability, particularly 
+as the problem size increases. While Gurobi provides optimal solutions for small instances, it becomes impractical for larger 
+problems due to its higher memory consumption and longer processing times. In contrast, VNS offers a flexible, memory-efficient, 
+and time-saving solution, delivering near-optimal results with significantly reduced computational demands.
 
-Topical subheadings are allowed. Authors must ensure that their Methods section includes adequate experimental and characterization data necessary for others in the field to reproduce their work. Authors are encouraged to include RIIDs where appropriate. 
+Moving forward, research could benefit from the development of more specialized and problem-specific neighborhood operators for VNS, which may 
+lead to even better performance by enabling more targeted exploration of the solution space. Additionally, combining VNS with exact algorithms for 
+smaller problem instances presents an intriguing opportunity to balance accuracy and efficiency, creating a hybrid approach that could be more broadly 
+applicable across industries. Statistical methods could also be integrated to further refine the search process, ensuring that both local and global 
+optima are explored effectively.
 
-\textbf{Ethical approval declarations} (only required where applicable) Any article reporting experiment/s carried out on (i)~live vertebrate (or higher invertebrates), (ii)~humans or (iii)~human samples must include an unambiguous statement within the methods section that meets the following requirements: 
-
-\begin{enumerate}[1.]
-\item Approval: a statement which confirms that all experimental protocols were approved by a named institutional and/or licensing committee. Please identify the approving body in the methods section
-
-\item Accordance: a statement explicitly saying that the methods were carried out in accordance with the relevant guidelines and regulations
-
-\item Informed consent (for experiments involving humans or human tissue samples): include a statement confirming that informed consent was obtained from all participants and/or their legal guardian/s
-\end{enumerate}
-
-If your manuscript includes potentially identifying patient/participant information, or if it describes human transplantation research, or if it reports results of a clinical trial then  additional information will be required. Please visit (\url{https://www.nature.com/nature-research/editorial-policies}) for Nature Portfolio journals, (\url{https://www.springer.com/gp/authors-editors/journal-author/journal-author-helpdesk/publishing-ethics/14214}) for Springer Nature journals, or (\url{https://www.biomedcentral.com/getpublished/editorial-policies\#ethics+and+consent}) for BMC.
-
-\section{Discussion}\label{sec12}
-
-Discussions should be brief and focused. In some disciplines use of Discussion or `Conclusion' is interchangeable. It is not mandatory to use both. Some journals prefer a section `Results and Discussion' followed by a section `Conclusion'. Please refer to Journal-level guidance for any specific requirements. 
-
-\section{Conclusion}\label{sec13}
-
-Conclusions may be used to restate your hypothesis or research question, restate your major findings, explain the relevance and the added value of your work, highlight any limitations of your study, describe future directions for research and recommendations. 
-
-In some disciplines use of Discussion or 'Conclusion' is interchangeable. It is not mandatory to use both. Please refer to Journal-level guidance for any specific requirements. 
-
-\backmatter
-
-\bmhead{Supplementary information}
-
-If your article has accompanying supplementary file/s please state so here. 
-
-Authors reporting data from electrophoretic gels and blots should supply the full unprocessed scans for key as part of their Supplementary information. This may be requested by the editorial team/s if it is missing.
-
-Please refer to Journal-level guidance for any specific requirements.
-
-\bmhead{Acknowledgements}
-
-Acknowledgements are not compulsory. Where included they should be brief. Grant or contribution numbers may be acknowledged.
-
-Please refer to Journal-level guidance for any specific requirements.
-
-\section*{Declarations}
-
-Some journals require declarations to be submitted in a standardised format. Please check the Instructions for Authors of the journal to which you are submitting to see if you need to complete this section. If yes, your manuscript must contain the following sections under the heading `Declarations':
-
-\begin{itemize}
-\item Funding
-\item Conflict of interest/Competing interests (check journal-specific guidelines for which heading to use)
-\item Ethics approval and consent to participate
-\item Consent for publication
-\item Data availability 
-\item Materials availability
-\item Code availability 
-\item Author contribution
-\end{itemize}
-
-\noindent
-If any of the sections are not relevant to your manuscript, please include the heading and write `Not applicable' for that section. 
-
-%%===================================================%%
-%% For presentation purpose, we have included        %%
-%% \bigskip command. Please ignore this.             %%
-%%===================================================%%
-\bigskip
-\begin{flushleft}%
-Editorial Policies for:
-
-\bigskip\noindent
-Springer journals and proceedings: \url{https://www.springer.com/gp/editorial-policies}
-
-\bigskip\noindent
-Nature Portfolio journals: \url{https://www.nature.com/nature-research/editorial-policies}
-
-\bigskip\noindent
-\textit{Scientific Reports}: \url{https://www.nature.com/srep/journal-policies/editorial-policies}
-
-\bigskip\noindent
-BMC journals: \url{https://www.biomedcentral.com/getpublished/editorial-policies}
-\end{flushleft}
-
-\begin{appendices}
-
-\section{Section title of first appendix}\label{secA1}
-
-An appendix contains supplementary information that is not an essential part of the text itself but which may be helpful in providing a more comprehensive understanding of the research problem or it is information that is too cumbersome to be included in the body of the paper.
-
-%%=============================================%%
-%% For submissions to Nature Portfolio Journals %%
-%% please use the heading ``Extended Data''.   %%
-%%=============================================%%
-
-%%=============================================================%%
-%% Sample for another appendix section			       %%
-%%=============================================================%%
-
-%% \section{Example of another appendix section}\label{secA2}%
-%% Appendices may be used for helpful, supporting or essential material that would otherwise 
-%% clutter, break up or be distracting to the text. Appendices can consist of sections, figures, 
-%% tables and equations etc.
-
-\end{appendices}
-
-%%===========================================================================================%%
-%% If you are submitting to one of the Nature Portfolio journals, using the eJP submission   %%
-%% system, please include the references within the manuscript file itself. You may do this  %%
-%% by copying the reference list from your .bbl file, paste it into the main manuscript .tex %%
-%% file, and delete the associated \verb+\bibliography+ commands.                            %%
-%%===========================================================================================%%
+By sharing the results and methodologies from this study, it is hoped that others in the field of supply chain optimization can build upon these 
+insights. The adaptability of VNS, when combined with tailored heuristic techniques and exact methods, holds promise not only for the pistachio 
+industry but for solving complex logistical challenges across various sectors. The potential for future research lies in expanding the versatility 
+and precision of these algorithms, driving more efficient decision-making processes in increasingly intricate supply chains.
 
 %%\bibliographystyle{sn-nature}% common bib style file
 \bibliography{sn-bibliography}% common bib file
