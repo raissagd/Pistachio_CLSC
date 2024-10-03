@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\burl{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
@@ -7,6 +7,63 @@
 \providecommand{\doi}[1]{\url{https://doi.org/#1}}
 \bibcommenthead
 
+\bibitem{doula2014turning}
+\bibinfo{author}{Doula, M.}, \bibinfo{author}{Kouloumbis, P.} \&
+  \bibinfo{author}{Elaiopoulos, K.}
+\newblock \bibinfo{title}{Turning wastes into valuable materials: Valorization
+  of pistachio wastes in agricultural sector} \bibinfo{pages}{19--21}
+  (\bibinfo{year}{2014}).
+
+\bibitem{bartzas2017life}
+\bibinfo{author}{Bartzas, G.} \& \bibinfo{author}{Komnitsas, K.}
+\newblock \bibinfo{title}{Life cycle analysis of pistachio production in
+  greece}.
+\newblock \emph{\bibinfo{journal}{Science of the Total Environment}}
+  \textbf{\bibinfo{volume}{595}}, \bibinfo{pages}{13--24}
+  (\bibinfo{year}{2017}).
+
+\bibitem{casper2018reverse}
+\bibinfo{author}{Casper, R.} \& \bibinfo{author}{Sundin, E.}
+\newblock \bibinfo{title}{Reverse logistic transportation and packaging
+  concepts in automotive remanufacturing}.
+\newblock \emph{\bibinfo{journal}{Procedia Manufacturing}}
+  \textbf{\bibinfo{volume}{25}}, \bibinfo{pages}{154--160}
+  (\bibinfo{year}{2018}).
+
+\bibitem{govindan2015reverse}
+\bibinfo{author}{Govindan, K.}, \bibinfo{author}{Soleimani, H.} \&
+  \bibinfo{author}{Kannan, D.}
+\newblock \bibinfo{title}{Reverse logistics and closed-loop supply chain: A
+  comprehensive review to explore the future}.
+\newblock \emph{\bibinfo{journal}{European journal of operational research}}
+  \textbf{\bibinfo{volume}{240}}, \bibinfo{pages}{603--626}
+  (\bibinfo{year}{2015}).
+
+\bibitem{cheraghalipour2022bi}
+\bibinfo{author}{Cheraghalipour, A.} \& \bibinfo{author}{Roghanian, E.}
+\newblock \bibinfo{title}{A bi-level model for a closed-loop agricultural
+  supply chain considering biogas and compost}.
+\newblock \emph{\bibinfo{journal}{Environment, Development and Sustainability}}
+  \bibinfo{pages}{1--47} (\bibinfo{year}{2022}).
+
+\bibitem{devika2014designing}
+\bibinfo{author}{Devika, K.}, \bibinfo{author}{Jafarian, A.} \&
+  \bibinfo{author}{Nourbakhsh, V.}
+\newblock \bibinfo{title}{Designing a sustainable closed-loop supply chain
+  network based on triple bottom line approach: A comparison of metaheuristics
+  hybridization techniques}.
+\newblock \emph{\bibinfo{journal}{European journal of operational research}}
+  \textbf{\bibinfo{volume}{235}}, \bibinfo{pages}{594--615}
+  (\bibinfo{year}{2014}).
+
+\bibitem{zohal2016developing}
+\bibinfo{author}{Zohal, M.} \& \bibinfo{author}{Soleimani, H.}
+\newblock \bibinfo{title}{Developing an ant colony approach for green
+  closed-loop supply chain network design: a case study in gold industry}.
+\newblock \emph{\bibinfo{journal}{Journal of Cleaner Production}}
+  \textbf{\bibinfo{volume}{133}}, \bibinfo{pages}{314--337}
+  (\bibinfo{year}{2016}).
+
 \bibitem{gen2006genetic}
 \bibinfo{author}{Gen, M.}, \bibinfo{author}{Altiparmak, F.} \&
   \bibinfo{author}{Lin, L.}
@@ -14,5 +71,24 @@
   problem using priority-based encoding}.
 \newblock \emph{\bibinfo{journal}{OR spectrum}} \textbf{\bibinfo{volume}{28}},
   \bibinfo{pages}{337--354} (\bibinfo{year}{2006}).
+
+\bibitem{burke2010hybrid}
+\bibinfo{author}{Burke, E.~K.}, \bibinfo{author}{Li, J.} \&
+  \bibinfo{author}{Qu, R.}
+\newblock \bibinfo{title}{A hybrid model of integer programming and variable
+  neighbourhood search for highly-constrained nurse rostering problems}.
+\newblock \emph{\bibinfo{journal}{European Journal of Operational Research}}
+  \textbf{\bibinfo{volume}{203}}, \bibinfo{pages}{484--493}
+  (\bibinfo{year}{2010}).
+
+\bibitem{ribeiro2008efficient}
+\bibinfo{author}{Ribeiro, C.~C.}, \bibinfo{author}{Aloise, D.},
+  \bibinfo{author}{Noronha, T.~F.}, \bibinfo{author}{Rocha, C.} \&
+  \bibinfo{author}{Urrutia, S.}
+\newblock \bibinfo{title}{An efficient implementation of a vns/ils heuristic
+  for a real-life car sequencing problem}.
+\newblock \emph{\bibinfo{journal}{European Journal of Operational Research}}
+  \textbf{\bibinfo{volume}{191}}, \bibinfo{pages}{596--611}
+  (\bibinfo{year}{2008}).
 
 \end{thebibliography}

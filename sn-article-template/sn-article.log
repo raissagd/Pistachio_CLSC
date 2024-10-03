@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  2 OCT 2024 14:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  3 OCT 2024 11:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -707,34 +707,11 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [5]
-<./imgs/decode_flux.PNG, id=123, 482.40225pt x 298.716pt>
+<./imgs/decode_flux.PNG, id=136, 482.40225pt x 298.716pt>
 File: ./imgs/decode_flux.PNG Graphic file (type png)
 <use ./imgs/decode_flux.PNG>
-Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 282.
+Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 296.
 (pdftex.def)             Requested size: 297.60114pt x 184.29039pt.
-
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [6 <./imgs/decode_flux.PNG>]
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [7]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 344.
-
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [8]
-<./imgs/nbhd_op.png, id=146, 410.7345pt x 263.18324pt>
-File: ./imgs/nbhd_op.png Graphic file (type png)
-<use ./imgs/nbhd_op.png>
-Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 394.
-(pdftex.def)             Requested size: 297.60114pt x 190.69655pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -744,49 +721,74 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
+ [6]
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [7 <./imgs/decode_flux.PNG>]
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 368.
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [9]
+<./imgs/nbhd_op.png, id=169, 410.7345pt x 263.18324pt>
+File: ./imgs/nbhd_op.png Graphic file (type png)
+<use ./imgs/nbhd_op.png>
+Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 418.
+(pdftex.def)             Requested size: 297.60114pt x 190.69655pt.
+
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10 <./imgs/nbhd_op.png>]
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 457.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11]
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 481.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 457.
+(Font)              size <5> substituted on input line 481.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 457.
+(Font)              size <5> substituted on input line 481.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 457.
+(Font)              size <5> substituted on input line 481.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 457.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
+(Font)              size <5> substituted on input line 481.
 
 
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11] (sn-article.bbl
+ [12] (sn-article.bbl
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12])
+ [13])
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [13] (sn-article.aux)
+ [14] (sn-article.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 1
 L3 programming layer <2024-05-27>
@@ -803,17 +805,17 @@ Package rerunfilecheck Info: File `sn-article.out' has not changed.
 (rerunfilecheck)             Checksum: 2F650154D754903243C3676B0E39DE94;1526.
  ) 
 Here is how much of TeX's memory you used:
- 16060 strings out of 473919
- 252322 string characters out of 5726481
+ 16097 strings out of 473919
+ 253230 string characters out of 5726481
  1947908 words of memory out of 5000000
- 38596 multiletter control sequences out of 15000+600000
+ 38623 multiletter control sequences out of 15000+600000
  575208 words of font info for 106 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
- 90i,11n,117p,596b,596s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,117p,596b,606s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on sn-article.pdf (13 pages, 394111 bytes).
+Output written on sn-article.pdf (14 pages, 408956 bytes).
 PDF statistics:
- 282 PDF objects out of 1000 (max. 8388607)
- 58 named destinations out of 1000 (max. 500000)
+ 306 PDF objects out of 1000 (max. 8388607)
+ 68 named destinations out of 1000 (max. 500000)
  91 words of extra memory for PDF output out of 10000 (max. 10000000)
 

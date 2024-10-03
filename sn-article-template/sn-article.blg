@@ -5,44 +5,46 @@ Reallocating 'name_of_file' (item size: 1) to 10 items.
 The style file: sn-nature.bst
 Reallocating 'name_of_file' (item size: 1) to 16 items.
 Database file #1: sn-bibliography.bib
-You've used 1 entry,
+Warning--empty journal in doula2014turning
+You've used 10 entries,
             2710 wiz_defined-function locations,
-            1048 strings with 9492 characters,
-and the built_in function-call counts, 459 in all, are:
-= -- 32
-> -- 12
+            1107 strings with 11373 characters,
+and the built_in function-call counts, 4233 in all, are:
+= -- 324
+> -- 112
 < -- 0
-+ -- 6
-- -- 3
-* -- 58
-:= -- 56
-add.period$ -- 3
-call.type$ -- 1
-change.case$ -- 1
++ -- 56
+- -- 28
+* -- 524
+:= -- 475
+add.period$ -- 29
+call.type$ -- 10
+change.case$ -- 10
 chr.to.int$ -- 0
-cite$ -- 1
-duplicate$ -- 35
-empty$ -- 37
-format.name$ -- 4
-if$ -- 84
+cite$ -- 11
+duplicate$ -- 355
+empty$ -- 358
+format.name$ -- 38
+if$ -- 838
 int.to.chr$ -- 0
-int.to.str$ -- 1
-missing$ -- 9
-newline$ -- 15
-num.names$ -- 1
-pop$ -- 5
+int.to.str$ -- 10
+missing$ -- 86
+newline$ -- 59
+num.names$ -- 10
+pop$ -- 60
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 5
+skip$ -- 64
 stack$ -- 0
-substring$ -- 25
-swap$ -- 39
+substring$ -- 237
+swap$ -- 376
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 0
-while$ -- 3
-width$ -- 2
-write$ -- 20
+warning$ -- 1
+while$ -- 32
+width$ -- 12
+write$ -- 117
+(There was 1 warning)

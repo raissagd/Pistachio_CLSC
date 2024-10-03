@@ -144,25 +144,39 @@ for sustainable agricultural supply chain optimization.}
 
 \section{Introduction}\label{sec1}
 
-The growing role of agriculture in the economic development of many countries highlights the importance of integrating this 
-sector with other industries to stimulate overall economic growth. Agriculture not only supports food security but also acts 
-as a major contributor to exports, generating significant income and bolstering other sectors. Among various agricultural 
-products, pistachios stand out due to their high economic and nutritional value. As major producers such as the US, Turkey, 
-and Iran lead global production, the strategic importance of pistachios in international trade continues to rise.
+The growing role of agriculture in the economic development of many countries highlights the importance of integrating this sector with 
+other industries to stimulate overall economic growth. Agriculture not only supports food security but also acts as a major contributor 
+to exports, generating significant income and bolstering other sectors. Among various agricultural products, pistachios stand out due to 
+their high economic and nutritional value. As major producers such as the US, Turkey, and Iran lead global production, the strategic 
+importance of pistachios in international trade continues to rise.
 
-With the increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper 
-supply chain management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth 
-flow of goods from production to consumers. In particular, pistachio production faces challenges related to waste management, 
-as large volumes of by-products such as hulls and shells are generated during processing. Addressing these environmental concerns, 
-along with optimizing logistics, becomes crucial for sustaining both the economic and ecological viability of the pistachio industry.
+With the increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper supply 
+chain management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth flow of goods 
+from production to consumers. A key challenge in pistachio production is the management of its by-products, such as hulls and shells, 
+which, while free of heavy metals or pathogens, can degrade soil quality when improperly handled \cite{doula2014turning}. Additionally, these wastes are 
+known to impair the environment if not effectively reused or recycled \cite{bartzas2017life}. Therefore, eco-friendly practices for reusing this agricultural 
+waste are essential to reduce environmental pollution.
+
+Moreover, inefficiencies in supply chain networks for food and agricultural products, including pistachios, can have significant 
+implications for product quality and trade \cite{casper2018reverse}. Addressing these environmental and logistical concerns is crucial to sustaining both 
+the economic and ecological viability of the pistachio industry.
+
+One solution lies in the implementation of closed-loop supply chains (CLSCs), which are widely recognized as essential for modern 
+supply chain networks \cite{govindan2015reverse}. A CLSC integrates forward and reverse flows, aiming to maximize value through resource recovery and 
+waste minimization. This approach has already proven effective in various agricultural supply chains, such as in models designed 
+for biogas and compost production, where economic and environmental benefits were realized \cite{cheraghalipour2022bi}. Similarly, sustainable CLSCs have 
+been developed for industries like remanufacturing and recycling, integrating multiple facilities such as recovery, recycling, and 
+disposal centers \cite{devika2014designing}. In other sectors, such as the gold industry, multi-objective CLSC networks have demonstrated the potential 
+to simultaneously minimize costs and reduce carbon emissions through green logistics practices \cite{zohal2016developing}.
 
 Given the complex interplay of factors influencing pistachio production and trade, this study focuses on designing an optimal 
-supply chain network for pistachios. Specifically, we explore the development of a closed-loop supply chain (CLSC), which 
-integrates forward and reverse logistics to minimize waste and maximize resource utilization. While there has been extensive 
-research on CLSCs for other agricultural products, pistachios remain underexplored. Therefore, this work aims to fill that gap 
-by proposing a quantitative model for the design of a pistachio CLSC network. Through the application of several meta-heuristic 
-and hybrid algorithms, this study seeks to provide an effective solution for enhancing the sustainability and efficiency of the 
-pistachio supply chain.
+supply chain network for pistachios. Specifically, we explore the development of a CLSC, which integrates forward and reverse 
+logistics to minimize waste and maximize resource utilization. While there has been extensive research on CLSCs for other 
+agricultural products, pistachios remain underexplored. Therefore, this study introduces a mixed linear model to optimize the pistachio 
+supply chain by integrating forward and reverse logistics, with a focus on reusing by-products through composting. To reduce costs and 
+environmental impact, we apply the Variable Neighborhood Search (VNS) algorithm, comparing its effectiveness with and Exact Algorithm and a Genetic 
+Algorithm. Our findings underscore VNS’s superior performance in handling larger problem sizes, demonstrating its potential as a scalable 
+and efficient tool for sustainable supply chain management in agriculture.
 
 \section{Problem definition}
 
@@ -333,12 +347,22 @@ systematic changes in neighborhood structures to explore the solution space effe
 applying different neighborhood operators, VNS can escape local optima and discover high-quality solutions
 through continuous diversification and intensification phases. 
 
-The algorithm begins by initializing a solution and setting the maximum neighborhood size and time limit. 
-It then enters a loop, where it repeatedly applies the shaking and local search procedures to generate new candidate solutions. 
-If a better solution is found, it replaces the current best solution and resets the neighborhood size. 
-Otherwise, the algorithm increases the neighborhood size and continues the search. The process repeats until the time limit 
-is reached, at which point the best found solution is returned. Algorithm~\ref{algoVNS} provides a detailed outline of 
-the VNS algorithm.
+In our application, the VNS algorithm begins by initializing a solution and setting parameters such as the maximum neighborhood size and time limit. 
+It then follows a cycle of shaking and local search procedures to generate new candidate solutions. If an improvement is found, the current solution is 
+updated, and the neighborhood size is reset. Otherwise, the neighborhood size is increased, allowing the search to explore broader areas of the solution 
+space. This process continues until the time limit is reached, at which point the best solution found is returned. Algorithm~\ref{algoVNS} provides a detailed 
+outline of the VNS algorithm.
+
+This structure is particularly suited to problems with multiple constraints and complex solution spaces, similar to its successful use in other fields. 
+For instance, \cite{burke2010hybrid} applied a hybrid approach combining Integer Programming (IP) and VNS to nurse rostering problems, where the VNS 
+played a key role in refining solutions generated by the IP. Much like in our case, VNS helped manage a highly constrained solution space by iterating 
+through neighborhoods that addressed different subsets of the problem’s constraints. This hybrid method showed superior performance when compared to 
+other metaheuristics like genetic algorithms, demonstrating the flexibility and effectiveness of VNS in handling real-world, constraint-heavy problems.
+
+By comparing our implementation with approaches used in other domains, such as the car sequencing problem \cite{ribeiro2008efficient}, where a VNS/ILS 
+method was employed to balance multiple competing objectives, we aim to show that the inherent adaptability of VNS makes it a robust choice for 
+agricultural supply chain optimization. The success of VNS in handling such multi-objective, constrained problems reinforces its potential to 
+deliver high-quality solutions in our supply chain model, where both environmental and economic considerations are critical.
 
 \begin{algorithm}
     \caption{Variable Neighborhood Search (VNS)}\label{algoVNS}
