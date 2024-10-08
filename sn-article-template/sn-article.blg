@@ -8,43 +8,43 @@ Database file #1: sn-bibliography.bib
 Warning--empty journal in doula2014turning
 You've used 10 entries,
             2710 wiz_defined-function locations,
-            1107 strings with 11373 characters,
-and the built_in function-call counts, 4233 in all, are:
-= -- 324
-> -- 112
+            1108 strings with 11456 characters,
+and the built_in function-call counts, 4245 in all, are:
+= -- 320
+> -- 116
 < -- 0
-+ -- 56
-- -- 28
-* -- 524
-:= -- 475
++ -- 58
+- -- 29
+* -- 528
+:= -- 476
 add.period$ -- 29
 call.type$ -- 10
 change.case$ -- 10
 chr.to.int$ -- 0
 cite$ -- 11
-duplicate$ -- 355
+duplicate$ -- 357
 empty$ -- 358
-format.name$ -- 38
-if$ -- 838
+format.name$ -- 39
+if$ -- 840
 int.to.chr$ -- 0
 int.to.str$ -- 10
-missing$ -- 86
+missing$ -- 87
 newline$ -- 59
 num.names$ -- 10
-pop$ -- 60
+pop$ -- 61
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 64
+skip$ -- 65
 stack$ -- 0
-substring$ -- 237
-swap$ -- 376
+substring$ -- 230
+swap$ -- 380
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 32
+while$ -- 31
 width$ -- 12
 write$ -- 117
 (There was 1 warning)

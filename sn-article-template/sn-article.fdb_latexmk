@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex sn-article"] 1728227594.02981 "sn-article.aux" "sn-article.bbl" "sn-article" 1728227596.72501 0
-  "./sn-bibliography.bib" 1727966623 4465 870f7e68cbc2488895959a2e31579ceb ""
+["bibtex sn-article"] 1728402629.69984 "sn-article.aux" "sn-article.bbl" "sn-article" 1728402630.49145 0
+  "./sn-bibliography.bib" 1728402624 4106 4e1c35ca8c50ea638a42ddb6bed8190a ""
   "./sn-nature.bst" 1700572414 40058 442dafdf9f5aeb65ccddf1255f87db23 ""
-  "sn-article.aux" 1728227595 6341 6445a2c6f5bd93e7c2bb1cab33badcf1 "pdflatex"
+  "sn-article.aux" 1728402627 7940 383542e7b6c6ff2d34b62998fa68df3e "pdflatex"
   (generated)
   "sn-article.bbl"
   "sn-article.blg"
   (rewritten before read)
-["pdflatex"] 1728227594.39948 "c:/Users/Lenovo/Documents/IC/sn-article-template/sn-article.tex" "sn-article.pdf" "sn-article" 1728227596.72598 0
+["pdflatex"] 1728402623.40463 "c:/Users/Lenovo/Documents/IC/sn-article-template/sn-article.tex" "sn-article.pdf" "sn-article" 1728402630.49374 0
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1725028616 82705 9cc9f144eacd499bc23a611703921467 ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1725028625 11548 5894832a50cf542b108ceb5af710ad4a ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/tfm/public/rsfs/rsfs10.tfm" 1718805637 688 37338d6ab346c2f1466b29e195316aa4 ""
@@ -111,6 +111,7 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/breakurl/breakurl.sty" 1366019824 8782 9af34887a0e6e535b004c39238830991 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/caption/caption.sty" 1696169587 56128 c2ccf1a29d78c33bc553880402e4fb9a ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/caption/caption3.sty" 1696169587 72619 ee90b6612147680fd73c3b1406a74245 ""
+  "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/caption/subcaption.sty" 1696169587 12494 0c0cdb824278a4d51cefeb2e79901315 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/epstopdf-pkg/epstopdf-base.sty" 1623003186 13886 d1306dcf79a944f6988e688c1785f9ce ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/etoolbox/etoolbox.sty" 1601897756 46845 3b58f70c6e861a13d927bff09d35ecbc ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/float/float.sty" 1469023953 6916 16d2656a1984957e674b149555f1ea1d ""
@@ -153,13 +154,24 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/wrapfig/wrapfig.sty" 1044403200 26220 3701aebf80ccdef248c0c20dd062fea9 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/xkeyval/xkeyval.sty" 1656236919 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
-  "c:/Users/Lenovo/Documents/IC/sn-article-template/sn-article.tex" 1728227590 44744 5896365a7ca3b4d2b4561d648bc4f03a ""
+  "c:/Users/Lenovo/Documents/IC/sn-article-template/sn-article.tex" 1728402614 50535 8a4bbe1fac081dbca7186a988413bf0e ""
+  "imgs/VNSxGA_100.png" 1726604187 26078 c9c6bb347aff6a26609f460b29a7b619 ""
+  "imgs/VNSxGA_1600.png" 1728227496 25259 1355b1fde408682bfe0f186188fc95b7 ""
+  "imgs/VNSxGA_200.png" 1726604196 22471 61805c0782a5fca9575118606e28fb78 ""
+  "imgs/VNSxGA_400.png" 1726604204 22190 30b06fc75dc70dce82049d85e34c34de ""
+  "imgs/VNSxGA_800.png" 1726604214 21483 ba599a014319ead452146f8042049302 ""
+  "imgs/VNSxGUROBI_100.png" 1726604119 28077 abedddbadb29a9c53fa67efc15ab71ad ""
+  "imgs/VNSxGUROBI_1600.png" 1728334887 21742 00befedea617dcb86a19d0ca6ec6602c ""
+  "imgs/VNSxGUROBI_200.png" 1726604130 23580 fe959b0bbb15e1a722952f11b52884a6 ""
+  "imgs/VNSxGUROBI_400.png" 1726604139 24170 f684c40dc5401286d50afde2dc95c80b ""
+  "imgs/VNSxGUROBI_800.png" 1726604148 25587 a0210792c92f18f6b93af7657b51937e ""
   "imgs/decode_flux.PNG" 1726621331 47164 74f0f8b8fd741de34d9380889f0595bd ""
   "imgs/nbhd_op.png" 1725480620 54696 2fd0912f31ad5e4b73458e8c966b9781 ""
-  "sn-article.aux" 1728227595 6341 6445a2c6f5bd93e7c2bb1cab33badcf1 "pdflatex"
-  "sn-article.bbl" 1728227594 4318 a9386893169068465b95205a7bb595d6 "bibtex sn-article"
-  "sn-article.out" 1728227595 1526 2f650154d754903243c3676b0e39de94 "pdflatex"
-  "sn-article.tex" 1728227590 44744 5896365a7ca3b4d2b4561d648bc4f03a ""
+  "imgs/supplychain.PNG" 1725500067 55737 a1ed86d916b3497253cb7fcb0ea90397 ""
+  "sn-article.aux" 1728402627 7940 383542e7b6c6ff2d34b62998fa68df3e "pdflatex"
+  "sn-article.bbl" 1728402630 4371 15dc2b7bbbc11458abf2aea13f6b7373 "bibtex sn-article"
+  "sn-article.out" 1728402627 1526 2f650154d754903243c3676b0e39de94 "pdflatex"
+  "sn-article.tex" 1728402614 50535 8a4bbe1fac081dbca7186a988413bf0e ""
   "sn-jnl.cls" 1700572412 55331 2adf3041e7f64a0f542a04760be0043f ""
   (generated)
   "sn-article.aux"

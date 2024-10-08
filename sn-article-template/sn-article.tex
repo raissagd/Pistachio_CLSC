@@ -55,6 +55,7 @@
 \usepackage{algorithmicx}%
 \usepackage{algpseudocode}%
 \usepackage{listings}%
+\usepackage{subcaption}
 \usepackage[justification=centering]{caption}%
 %%%%
 
@@ -102,9 +103,10 @@
 %%  \sfx{IV}}\email{iauthor@gmail.com}
 %%=============================================================%%
 
-\author[1]{\fnm{Raissa} \sur{Gonçalves Diniz}}\email{raissagd@ufmg.br}
 
 \author[1,2]{\fnm{André} \sur{Costa Batista}}\email{andre-costa@ufmg.br}
+
+\author[1]{\fnm{Raissa} \sur{Gonçalves Diniz}}\email{raissagd@ufmg.br}
 
 \affil[1]{\orgdiv{Operations Research and Complex Systems Laboratory}, \orgname{Universidade Federal de Minas Gerais}, \orgaddress{\country{Brazil}}}
 
@@ -115,12 +117,13 @@
 %% Sample for unstructured abstract %%
 %%==================================%%
 
-\abstract{The increasing focus on sustainability in agriculture has led to concerns about managing agricultural by-products and optimizing resource usage. 
-This study addresses these challenges by proposing a mixed linear mathematical model for optimizing the pistachio supply chain network. The model integrates 
-forward and reverse logistics to reduce environmental impact, including the return of by-products to the network through composting. To minimize total fixed 
-and variable costs, we employ the Variable Neighborhood Search (VNS) algorithm and compare its performance with an exact algorithm (Gurobi) and a population-based 
-metaheuristic (Genetic Algorithm). Our results demonstrate the efficiency and scalability of VNS, especially for larger problem instances, making it a viable solution 
-for sustainable agricultural supply chain optimization.}
+\abstract{Supply chains are vital for the agricultural sector, particularly for high-value crops like pistachios, where efficient management can enhance both 
+economic growth and sustainability. Although there has been research on optimizing pistachio supply chains, most studies rely heavily on population-based 
+algorithms to solve these problems. In this study, we innovate by applying a Variable Neighborhood Search (VNS) algorithm and comparing its performance 
+against a population-based Genetic Algorithm (GA) and an exact method (Gurobi). Our findings reveal that VNS consistently outperforms GA in both execution 
+time and objective function value, particularly for larger instances. Additionally, VNS reduces execution time by nearly 97\% compared to the exact algorithm 
+in some of the larger instances, making it a highly efficient solution for pistachio supply chain optimization.
+}
 
 %%================================%%
 %% Sample for structured abstract %%
@@ -134,7 +137,7 @@ for sustainable agricultural supply chain optimization.}
 % 
 % \textbf{Conclusion:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.}
 
-\keywords{Optimization, Supply chain, Metaheuristics, Environmental impact, Variable Neighborhood Search}
+\keywords{Optimization, Supply chain, Metaheuristics, Variable Neighborhood Search}
 
 %%\pacs[JEL Classification]{D8, H51}
 
@@ -142,7 +145,8 @@ for sustainable agricultural supply chain optimization.}
 
 \maketitle
 
-\section{Introduction}\label{sec1}
+\section{Introduction}
+\label{sec:sec1}
 
 The growing role of agriculture in the economic development of many countries highlights the importance of integrating this sector with 
 other industries to stimulate overall economic growth. Agriculture not only supports food security but also acts as a major contributor 
@@ -159,28 +163,40 @@ waste are essential to reduce environmental pollution.
 
 Moreover, inefficiencies in supply chain networks for food and agricultural products, including pistachios, can have significant 
 implications for product quality and trade \cite{casper2018reverse}. Addressing these environmental and logistical concerns is crucial to sustaining both 
-the economic and ecological viability of the pistachio industry.
+the economic and ecological viability of the pistachio industry.  In the broader context of sustainable supply chains, several studies have focused on 
+optimizing resource use and minimizing waste through recovery and recycling practices. For example, sustainable supply chain models designed for 
+agriculture and other industries have shown significant environmental benefits by reducing waste and reusing by-products for processes like 
+biogas and compost production \cite{cheraghalipour2022bi}. Such approaches have been successfully applied in sectors such as manufacturing 
+and waste recovery, where efficient resource management and cost reduction have been key drivers \cite{devika2014designing, zohal2016developing}. 
+These strategies underline the importance of sustainability in modern supply chains and the potential for agricultural industries to implement similar measures.
 
-One solution lies in the implementation of closed-loop supply chains (CLSCs), which are widely recognized as essential for modern 
-supply chain networks \cite{govindan2015reverse}. A CLSC integrates forward and reverse flows, aiming to maximize value through resource recovery and 
-waste minimization. This approach has already proven effective in various agricultural supply chains, such as in models designed 
-for biogas and compost production, where economic and environmental benefits were realized \cite{cheraghalipour2022bi}. Similarly, sustainable CLSCs have 
-been developed for industries like remanufacturing and recycling, integrating multiple facilities such as recovery, recycling, and 
-disposal centers \cite{devika2014designing}. In other sectors, such as the gold industry, multi-objective CLSC networks have demonstrated the potential 
-to simultaneously minimize costs and reduce carbon emissions through green logistics practices \cite{zohal2016developing}.
+In related research, \cite{rajabi2023utilizing} worked on optimizing the pistachio supply chain using population-based algorithms, 
+such as Genetic Algorithms (GA). While their approach was effective, our study improves upon it by employing the 
+Variable Neighborhood Search (VNS) algorithm. VNS is particularly well-suited for larger and more complex problems due to its ability to 
+dynamically explore different neighborhood structures, offering more robust diversification and intensification strategies compared to GA. 
+Unlike population-based algorithms that rely heavily on crossover and mutation, VNS avoids issues like premature convergence by flexibly 
+exploring local optima, resulting in higher-quality solutions in less time, especially for large-scale networks like the pistachio supply chain.
 
-Given the complex interplay of factors influencing pistachio production and trade, this study focuses on designing an optimal 
-supply chain network for pistachios. Specifically, we explore the development of a CLSC, which integrates forward and reverse 
-logistics to minimize waste and maximize resource utilization. While there has been extensive research on CLSCs for other 
-agricultural products, pistachios remain underexplored. Therefore, this study introduces a mixed linear model to optimize the pistachio 
-supply chain by integrating forward and reverse logistics, with a focus on reusing by-products through composting. To reduce costs and 
-environmental impact, we apply the Variable Neighborhood Search (VNS) algorithm, comparing its effectiveness with and Exact Algorithm and a Genetic 
-Algorithm. Our findings underscore VNS’s superior performance in handling larger problem sizes, demonstrating its potential as a scalable 
-and efficient tool for sustainable supply chain management in agriculture.
+Given the complex interplay of factors influencing pistachio production and trade, and building upon this previous work, this study focuses on 
+designing an optimal supply chain network for pistachios by leveraging VNS. We propose a mixed linear model that integrates forward and backward 
+logistics for efficient resource management, including the reuse of by-products through composting. To reduce costs and environmental impact, 
+we apply the Variable Neighborhood Search (VNS) algorithm and compare its effectiveness with an Exact Algorithm and a Genetic Algorithm. Our 
+findings underscore VNS’s superior performance in handling larger problem sizes, demonstrating its potential as a scalable and efficient tool 
+for sustainable supply chain management in agriculture.
+
+The remainder of this paper is organized as follows. In Section~\ref{sec:sec2}, we present the Problem Definition, describing the pistachio supply chain network, 
+its components, and the cost-minimization objectives under capacity and demand constraints. Section~\ref{sec:sec3} focuses on the Heuristic Approach, where we 
+introduce the Variable Neighborhood Search (VNS) algorithm, along with its solution representation using priority-based encoding, neighborhood 
+structures, and algorithmic details. In Section~\ref{sec:sec4}, we detail the Results of our experiments, comparing VNS with both an exact algorithm (Gurobi) 
+and a population-based algorithm (Genetic Algorithm), highlighting VNS’s superior performance in larger instances. Finally, Section~\ref{sec:sec5} presents 
+the Conclusion, summarizing the key findings of the study, discussing the advantages of VNS for pistachio supply chain optimization, and 
+suggesting future research directions for improving solution efficiency and applicability in broader contexts.
+
 
 \section{Problem definition}
+\label{sec:sec2}
 
-The proposed network includes producers, processing centers, pistachio factories, 
+The proposed network, as illustrated in Figure~\ref{fig:supplychain} includes producers, processing centers, pistachio factories, 
 oil extraction centers, composting centers, and customers. Pistachios are transported 
 from orchards to processing centers, producing open-mouth pistachios, raw kernels, and 
 waste, which are then sent to factories, oil extraction centers, and composting centers, respectively. 
@@ -188,6 +204,14 @@ Open-mouth pistachios are roasted, packed, and shipped to customers, while pista
 is delivered to oil customers and cosmetic factories. Waste is converted into compost for 
 distribution. The model aims to minimize total costs \eqref{eq:custo}, including opening, transportation,
 and production costs, under the following capacity and demand constraints with no allowed shortages:
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./imgs/supplychain.PNG}
+    \caption{Proposed pistachio supply chain network}
+    \label{fig:supplychain}
+\end{figure}
+
     
 \begin{align}
     \min &\ z_1 + z_2 + z_3 \label{eq:custo}\\
@@ -256,6 +280,7 @@ and production costs, under the following capacity and demand constraints with n
 \end{itemize}
     
 \section{Heuristic approach}
+\label{sec:sec3}
 
 In this section, we present the methodology employed to address the optimization problem. The proposed approach 
 integrates priority-based encoding and the Variable Neighborhood Search (VNS) algorithm, 
@@ -388,6 +413,7 @@ deliver high-quality solutions in our supply chain model, where both environment
 \end{algorithm}
 
 \subsection{Neighborhood structures}
+
 In the context of the Variable Neighborhood Search (VNS) algorithm, neighborhood operators play a crucial role 
 in exploring the solution space by systematically altering the current solution to generate new candidate solutions. 
 The effectiveness of VNS relies heavily on the design and application of these operators, as they determine the 
@@ -413,6 +439,12 @@ and intensification phases. The neighborhood structures used are detailed below,
     which can enhance the search process by generating new configurations with minimal disruption.
 \end{itemize}
 
+While we also tested other general and more specific neighborhood structures, the four operators mentioned above proved to be the most effective 
+in our experiments. Our approach is based on the findings of \cite{devika2014designing}, who delve into the importance of neighborhood structures 
+within the Variable Neighborhood Search (VNS) algorithm for solving complex supply chain problems. Their study emphasizes the necessity of 
+designing efficient neighborhood structures to enhance the performance of VNS in achieving optimal solutions, particularly in multi-objective 
+contexts that consider environmental, social, and economic impacts.
+
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.8\textwidth]{./imgs/nbhd_op.png}
@@ -421,6 +453,7 @@ and intensification phases. The neighborhood structures used are detailed below,
 \end{figure}
 
 \section{Results}
+\label{sec:sec4}
     
 Our results demonstrate that the Variable Neighborhood Search (VNS) algorithm performs competitively against both an exact algorithm, 
 Gurobi, and a population-based metaheuristic, the Genetic Algorithm (GA), when considering execution time and memory efficiency, particularly 
@@ -430,37 +463,80 @@ time and memory usage, making it a more practical choice in these scenarios. Alt
 literature, its performance deteriorates with increasing problem size, both in terms of solution quality and execution time.
 
 \subsection{Comparison between VNS and an Exact Algorithm}
-As shown in Table \ref{tab:comparison_vns_gurobi}, Gurobi efficiently finds optimal solutions for smaller instances, such as 100 and 200, 
-where the solution difference between VNS and Gurobi is relatively small—4.19\% for 100 instances and 8.22\% for 200 instances. However, as 
-the problem size increases, the difference in solution quality becomes larger, with VNS being 20.12\% away from the optimal solution at 800 
-instances.
+
+As shown in Table \ref{tab:comparison_vns_gurobi}, Gurobi efficiently finds optimal solutions for smaller instances, such as those with 100 and 200 elements. 
+In these cases, the difference between the average objective function values of VNS and Gurobi is relatively small—4.19\% for the 100-instance set and 8.22\% 
+for the 200-instance set. However, as the problem size increases, the gap in solution quality widens significantly, with VNS being 20.12\% from the optimal 
+solution for the 800-instance set.
 
 The boxplots in Figure 2 further illustrate the variability of VNS across 30 runs compared to Gurobi's single optimal solution. 
 For instance 100, VNS results range from $7.15 \times 10^6$ to $8.75 \times 10^6$, closely matching Gurobi's solution of $7.06 \times 10^6$ 
 with only a 4.19\% difference. In instance 200, VNS shows slightly more variability, ranging from $1.40 \times 10^8$ to $1.75 \times 10^8$, 
-maintaining an 8.22\% gap from Gurobi's $1.37 \times 10^8$. As problem size increases, the VNS range widens—for instance 400, from 
+maintaining an 8.22\% gap from Gurobi's $1.37 \times 10^8$, in average. As problem size increases, the VNS range widens—for instance 400, from 
 $2.70 \times 10^8$ to $3.30 \times 10^8$, with a 13.62\% difference, and for instance 800, from $5.40 \times 10^8$ to $6.85 \times 10^8$, 
 showing a 20.12\% gap from Gurobi's $5.47 \times 10^8$. Although the difference in solution quality increases as the problem 
 size grows, VNS remains competitive by providing solutions much faster than Gurobi, particularly for larger instances.
 
-
 When examining execution time, the results clearly highlight Gurobi's inefficiency on larger instances. For example, at 
-400 instances, Gurobi takes over 70,000 seconds to solve the problem, while VNS takes just over 2,000 seconds, offering a 
+400 instances, Gurobi takes over 70,000 seconds to solve the problem, while VNS, in average, takes just over 2,000 seconds, offering a 
 remarkable 97.13\% reduction in time. By the time we reach 1600 instances, Gurobi is unable to find a solution due to its 
-excessive resource demands, while VNS continues to provide a feasible solution in approximately 17.766 seconds.
+excessive resource demands, while VNS continues to provide a feasible solution in approximately 17.766 seconds, with results varying from
+approximately $1.29 \times 10^9$ to $1.43 \times 10^9$ .
 
 These results emphasize that although the Exact Algorithm produces the best solutions for small instances, it becomes impractical for 
 larger problems due to its memory usage and excessive execution times. VNS, while not optimal, offers a more practical and 
 scalable solution for larger instances.
 
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_100.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 100}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_200.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 200}
+    \end{minipage}
+    
+    \vspace{0.5cm}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_400.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 400}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_800.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 800}
+    \end{minipage}
+    
+    \vspace{0.5cm}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_1600.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 1600. The exact algorithm was not able to return a solution due to excessive resource demands.}
+    \end{minipage}
+
+    \caption{Boxplot visualizations comparing the performance of the VNS algorithm and an exact algorithm (Gurobi) across different 
+    problem sizes, based on objective function values.}
+    \label{fig:VNSxGA_boxplots}
+\end{figure}
+
 \subsection{Comparison between VNS and GA}
+
 The performance of the Genetic Algorithm (GA) can be seen in Table \ref{tab:comparison_vns_ga}. For small instances, such as 100, the 
 difference between VNS and GA is negligible—only 0.71\%. However, as the problem size grows, GA's performance gradually worsens compared to VNS. 
 By 800 instances, the difference in solution quality rises to 5.26\%, indicating that VNS provides consistently better solutions for larger problems.
 
 Statistical tests conducted on the results further validate that VNS outperforms GA in all tested instances. VNS not only exhibits a lower average 
-solution value across small and large instances but also consistently produces more reliable and robust outcomes. The boxplots visually demonstrate
-VNS's lower median values compared to GA, reinforcing the statistical tests' conclusions. This shows that, although GA may perform competitively 
+solution value across small and large instances but also consistently produces more reliable and robust outcomes. The boxplots in \ref{fig:VNSxGA_boxplots} visually 
+demonstrate VNS's lower median values compared to GA, reinforcing the statistical tests' conclusions. This shows that, although GA may perform competitively 
 in smaller cases, such as in the 100-instance example, it falls significantly behind as the problem size increases, with VNS statistically 
 surpassing GA in solution quality.
 
@@ -474,6 +550,47 @@ applicability in real-world scenarios where timely solutions are crucial.
 In summary, while GA can compete with VNS in smaller problem instances, it lags behind as the complexity increases. VNS consistently provides 
 not only better solutions, as supported by statistical evidence, but also handles larger instances more efficiently, making it the more robust 
 and scalable option for large-scale optimization problems.
+
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGA_100.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 100}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGA_200.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 200}
+    \end{minipage}
+    
+    \vspace{0.5cm}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGA_400.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 400}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGA_800.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 800}
+    \end{minipage}
+    
+    \vspace{0.5cm}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGA_1600.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 1600}
+    \end{minipage}
+
+    \caption{Boxplot visualizations comparing the performance of the VNS algorithm and a population-based metaheuristic (genetic algorithm) across different 
+    problem sizes, based on objective function values.}
+    \label{fig:VNSxGA_boxplots}
+\end{figure}
     
 \begin{table}[h]
     \caption{Comparison of the VNS algorithm and the Exact Algorithm (Gurobi) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab2}
@@ -495,7 +612,9 @@ and scalable option for large-scale optimization problems.
 \begin{table}[h]
     \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab2}
     \label{tab:comparison_vns_ga}
-    \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
+    Comparison of the VNS algorithm and the Exact Algorithm (Gurobi) in
+    terms of the average objective function value of the best solutions and the average
+    execution time.    \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
     \toprule%
     & \multicolumn{3}{@{}c@{}}{Objective function evaluation}\\\cmidrule{2-4}\cmidrule{5-7}%
     Instance & VNS & GA & Difference\\
@@ -504,13 +623,14 @@ and scalable option for large-scale optimization problems.
     200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37\% \\
     400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31\% \\
     800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26\% \\
-    1600 & $1.36 \times 10^9$  & -                  & -      \\
+    1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$ & 4.64\%\\
     \botrule
     \end{tabular*}
 \end{table}
 
 
 \section{Conclusion}
+\label{sec:sec5}
 
 The conclusion of this study underscores the advantages of the Variable Neighborhood Search (VNS) algorithm in optimizing the 
 pistachio supply chain network. The proposed model effectively integrates various stages of the supply chain, from production

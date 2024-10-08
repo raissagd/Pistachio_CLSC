@@ -30,15 +30,6 @@
   \textbf{\bibinfo{volume}{25}}, \bibinfo{pages}{154--160}
   (\bibinfo{year}{2018}).
 
-\bibitem{govindan2015reverse}
-\bibinfo{author}{Govindan, K.}, \bibinfo{author}{Soleimani, H.} \&
-  \bibinfo{author}{Kannan, D.}
-\newblock \bibinfo{title}{Reverse logistics and closed-loop supply chain: A
-  comprehensive review to explore the future}.
-\newblock \emph{\bibinfo{journal}{European journal of operational research}}
-  \textbf{\bibinfo{volume}{240}}, \bibinfo{pages}{603--626}
-  (\bibinfo{year}{2015}).
-
 \bibitem{cheraghalipour2022bi}
 \bibinfo{author}{Cheraghalipour, A.} \& \bibinfo{author}{Roghanian, E.}
 \newblock \bibinfo{title}{A bi-level model for a closed-loop agricultural
@@ -63,6 +54,15 @@
 \newblock \emph{\bibinfo{journal}{Journal of Cleaner Production}}
   \textbf{\bibinfo{volume}{133}}, \bibinfo{pages}{314--337}
   (\bibinfo{year}{2016}).
+
+\bibitem{rajabi2023utilizing}
+\bibinfo{author}{Rajabi-Kafshgar, A.}, \bibinfo{author}{Gholian-Jouybari, F.},
+  \bibinfo{author}{Seyedi, I.} \& \bibinfo{author}{Hajiaghaei-Keshteli, M.}
+\newblock \bibinfo{title}{Utilizing hybrid metaheuristic approach to design an
+  agricultural closed-loop supply chain network}.
+\newblock \emph{\bibinfo{journal}{Expert Systems with Applications}}
+  \textbf{\bibinfo{volume}{217}}, \bibinfo{pages}{119504}
+  (\bibinfo{year}{2023}).
 
 \bibitem{gen2006genetic}
 \bibinfo{author}{Gen, M.}, \bibinfo{author}{Altiparmak, F.} \&

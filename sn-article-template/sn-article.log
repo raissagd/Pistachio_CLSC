@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  6 OCT 2024 12:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  8 OCT 2024 12:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -492,6 +492,8 @@ File: lstmisc.sty 2024/05/25 1.10b (Carsten Heinz)
 File: listings.cfg 2024/05/25 1.10b listings configuration
 ))
 Package: listings 2024/05/25 1.10b (Carsten Heinz)
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/caption\subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
@@ -522,48 +524,56 @@ Package caption Info: rotating package is loaded.
 Package caption Info: threeparttable package is loaded.
 Package caption Info: wrapfig package is loaded.
 )
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count336
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count337
+)
 
-Package amsthm Warning: Unknown theoremstyle `thmstyleone' on input line 75.
+Package amsthm Warning: Unknown theoremstyle `thmstyleone' on input line 76.
 
-\c@theorem=\count336
+\c@theorem=\count338
 
-Package amsthm Warning: Unknown theoremstyle `thmstyletwo' on input line 82.
+Package amsthm Warning: Unknown theoremstyle `thmstyletwo' on input line 83.
 
-\c@example=\count337
-\c@remark=\count338
+\c@example=\count339
+\c@remark=\count340
 
-Package amsthm Warning: Unknown theoremstyle `thmstylethree' on input line 86.
+Package amsthm Warning: Unknown theoremstyle `thmstylethree' on input line 87.
 
-\c@definition=\count339
+\c@definition=\count341
 (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count340
+\l__color_backend_stack_int=\count342
 \l__pdf_internal_box=\box77
 ) (sn-article.aux
 
 LaTeX Warning: Label `tab2' multiply defined.
 
+
+LaTeX Warning: Label `fig:VNSxGA_boxplots' multiply defined.
+
 )
 \openout1 = `sn-article.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 92.
-LaTeX Font Info:    ... okay on input line 92.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 93.
+LaTeX Font Info:    ... okay on input line 93.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -602,16 +612,16 @@ LaTeX Font Info:    ... okay on input line 92.
 
 (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count341
+\scratchcounter=\count343
 \scratchdimen=\dimen270
 \scratchbox=\box78
-\nofMPsegments=\count342
-\nofMParguments=\count343
+\nofMPsegments=\count344
+\nofMParguments=\count345
 \everyMPshowfont=\toks41
-\MPscratchCnt=\count344
+\MPscratchCnt=\count346
 \MPscratchDim=\dimen271
-\MPnumerator=\count345
-\makeMPintoPDFobject=\count346
+\MPnumerator=\count347
+\makeMPintoPDFobject=\count348
 \everyMPtoPDFconversion=\toks42
 ) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -619,66 +629,66 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring ON on input line 92.
+Package hyperref Info: Link coloring ON on input line 93.
  (sn-article.out) (sn-article.out)
 \@outlinefile=\write3
 \openout3 = `sn-article.out'.
 
-\c@lstlisting=\count347
+\c@lstlisting=\count349
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Calculating math sizes for size <12.045> on input line 144.
+LaTeX Font Info:    Calculating math sizes for size <12.045> on input line 147.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 144.
+(Font)              size <8> substituted on input line 147.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <8.43146> not available
-(Font)              size <8> substituted on input line 144.
+(Font)              size <8> substituted on input line 147.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 144.
+(Font)              size <8> substituted on input line 147.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 144.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 147.
 (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 144.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 147.
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 144.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 147.
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/jknappen\ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 144.
+(Font)              size <8> substituted on input line 147.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <8.43146> not available
-(Font)              size <8> substituted on input line 144.
+(Font)              size <8> substituted on input line 147.
 
-LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 144.
+LaTeX Font Info:    Calculating math sizes for size <11.04124> on input line 147.
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 144.
+(Font)              size <6> substituted on input line 147.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/b/it' in size <5.52061> not available
-(Font)              size <6> substituted on input line 144.
+(Font)              size <6> substituted on input line 147.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/b/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 144.
+(Font)              size <6> substituted on input line 147.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.52061> not available
-(Font)              size <6> substituted on input line 144.
+(Font)              size <6> substituted on input line 147.
 
-LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 144.
+LaTeX Font Info:    Calculating math sizes for size <10.03749> on input line 147.
 
 
 
@@ -692,11 +702,17 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [2]
+<./imgs/supplychain.PNG, id=81, 489.027pt x 287.8755pt>
+File: ./imgs/supplychain.PNG Graphic file (type png)
+<use ./imgs/supplychain.PNG>
+Package pdftex.def Info: ./imgs/supplychain.PNG  used on input line 210.
+(pdftex.def)             Requested size: 297.60114pt x 175.19527pt.
+
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [3]
+ [3 <./imgs/supplychain.PNG>]
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -707,10 +723,15 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [5]
-<./imgs/decode_flux.PNG, id=136, 482.40225pt x 298.716pt>
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6]
+<./imgs/decode_flux.PNG, id=150, 482.40225pt x 298.716pt>
 File: ./imgs/decode_flux.PNG Graphic file (type png)
 <use ./imgs/decode_flux.PNG>
-Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 296.
+Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 321.
 (pdftex.def)             Requested size: 297.60114pt x 184.29039pt.
 
 
@@ -721,57 +742,118 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [6]
+ [7]
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7 <./imgs/decode_flux.PNG>]
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [8]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 368.
-
+ [8 <./imgs/decode_flux.PNG>]
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-<./imgs/nbhd_op.png, id=169, 410.7345pt x 263.18324pt>
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 393.
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10]
+<./imgs/nbhd_op.png, id=182, 410.7345pt x 263.18324pt>
 File: ./imgs/nbhd_op.png Graphic file (type png)
 <use ./imgs/nbhd_op.png>
-Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 418.
+Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 450.
 (pdftex.def)             Requested size: 297.60114pt x 190.69655pt.
 
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [10 <./imgs/nbhd_op.png>]
+ [11 <./imgs/nbhd_op.png>]
+<./imgs/VNSxGUROBI_100.png, id=189, 505.89pt x 381.5856pt>
+File: ./imgs/VNSxGUROBI_100.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_100.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_100.png  used on input line 494.
+(pdftex.def)             Requested size: 167.39886pt x 126.26715pt.
+<./imgs/VNSxGUROBI_200.png, id=190, 505.89pt x 381.5856pt>
+File: ./imgs/VNSxGUROBI_200.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_200.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_200.png  used on input line 500.
+(pdftex.def)             Requested size: 167.39886pt x 126.26715pt.
+<./imgs/VNSxGUROBI_400.png, id=191, 499.3857pt x 381.5856pt>
+File: ./imgs/VNSxGUROBI_400.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_400.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_400.png  used on input line 508.
+(pdftex.def)             Requested size: 167.39886pt x 127.9091pt.
+<./imgs/VNSxGUROBI_800.png, id=192, 499.3857pt x 381.5856pt>
+File: ./imgs/VNSxGUROBI_800.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_800.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_800.png  used on input line 514.
+(pdftex.def)             Requested size: 167.39886pt x 127.9091pt.
+<./imgs/VNSxGUROBI_1600.png, id=193, 505.89pt x 381.5856pt>
+File: ./imgs/VNSxGUROBI_1600.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_1600.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_1600.png  used on input line 522.
+(pdftex.def)             Requested size: 167.39886pt x 126.26715pt.
+
+
+LaTeX Warning: Float too large for page by 4.58633pt on input line 529.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [11]
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 481.
+ [12]
+<./imgs/VNSxGA_100.png, id=201, 617.9085pt x 381.5856pt>
+File: ./imgs/VNSxGA_100.png Graphic file (type png)
+<use ./imgs/VNSxGA_100.png>
+Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 558.
+(pdftex.def)             Requested size: 167.39886pt x 103.373pt.
+<./imgs/VNSxGA_200.png, id=202, 617.9085pt x 381.5856pt>
+File: ./imgs/VNSxGA_200.png Graphic file (type png)
+<use ./imgs/VNSxGA_200.png>
+Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 564.
+(pdftex.def)             Requested size: 167.39886pt x 103.373pt.
+<./imgs/VNSxGA_400.png, id=203, 611.4042pt x 381.5856pt>
+File: ./imgs/VNSxGA_400.png Graphic file (type png)
+<use ./imgs/VNSxGA_400.png>
+Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 572.
+(pdftex.def)             Requested size: 167.39886pt x 104.47346pt.
+<./imgs/VNSxGA_800.png, id=204, 611.4042pt x 381.5856pt>
+File: ./imgs/VNSxGA_800.png Graphic file (type png)
+<use ./imgs/VNSxGA_800.png>
+Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 578.
+(pdftex.def)             Requested size: 167.39886pt x 104.47346pt.
+<./imgs/VNSxGA_1600.png, id=205, 623.6901pt x 381.5856pt>
+File: ./imgs/VNSxGA_1600.png Graphic file (type png)
+<use ./imgs/VNSxGA_1600.png>
+Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 586.
+(pdftex.def)             Requested size: 167.39886pt x 102.4123pt.
 
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 598.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 481.
+(Font)              size <5> substituted on input line 598.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 481.
+(Font)              size <5> substituted on input line 598.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 481.
+(Font)              size <5> substituted on input line 598.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 481.
+(Font)              size <5> substituted on input line 598.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -781,17 +863,27 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12] (sn-article.bbl
+ [13] (sn-article.bbl
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [13])
+ [14])
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [14] (sn-article.aux)
+ [15]
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [16 <./imgs/VNSxGUROBI_100.png> <./imgs/VNSxGUROBI_200.png> <./imgs/VNSxGUROBI_400.png> <./imgs/VNSxGUROBI_800.png> <./imgs/VNSxGUROBI_1600.png>]
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [17 <./imgs/VNSxGA_100.png> <./imgs/VNSxGA_200.png> <./imgs/VNSxGA_400.png> <./imgs/VNSxGA_800.png> <./imgs/VNSxGA_1600.png>] (sn-article.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 1
 L3 programming layer <2024-05-27>
@@ -808,17 +900,17 @@ Package rerunfilecheck Info: File `sn-article.out' has not changed.
 (rerunfilecheck)             Checksum: 2F650154D754903243C3676B0E39DE94;1526.
  ) 
 Here is how much of TeX's memory you used:
- 16097 strings out of 473919
- 253230 string characters out of 5726481
+ 16299 strings out of 473919
+ 257889 string characters out of 5726481
  1947908 words of memory out of 5000000
- 38623 multiletter control sequences out of 15000+600000
+ 38816 multiletter control sequences out of 15000+600000
  575208 words of font info for 106 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
- 90i,11n,117p,596b,604s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,131p,596b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on sn-article.pdf (14 pages, 409220 bytes).
+Output written on sn-article.pdf (17 pages, 646921 bytes).
 PDF statistics:
- 306 PDF objects out of 1000 (max. 8388607)
- 68 named destinations out of 1000 (max. 500000)
- 91 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 352 PDF objects out of 1000 (max. 8388607)
+ 74 named destinations out of 1000 (max. 500000)
+ 146 words of extra memory for PDF output out of 10000 (max. 10000000)
 
