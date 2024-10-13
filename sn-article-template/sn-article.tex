@@ -151,15 +151,16 @@ in some of the larger instances, making it a highly efficient solution for pista
 The growing role of agriculture in the economic development of many countries highlights the importance of integrating this sector with 
 other industries to stimulate overall economic growth. Agriculture not only supports food security but also acts as a major contributor 
 to exports, generating significant income and bolstering other sectors. Among various agricultural products, pistachios stand out due to 
-their high economic and nutritional value. As major producers such as the US, Turkey, and Iran lead global production, the strategic 
-importance of pistachios in international trade continues to rise.
+their high economic and nutritional value. As major producers such as the US, Turkey, and Iran lead global production, leading producers of pistachios
+worldwide in 2022 and 2023 \cite{statista2023pistachio}, the strategic importance of pistachios in international trade continues to rise.
 
-With the increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper supply 
-chain management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth flow of goods 
-from production to consumers. A key challenge in pistachio production is the management of its by-products, such as hulls and shells, 
-which, while free of heavy metals or pathogens, can degrade soil quality when improperly handled \cite{doula2014turning}. Additionally, these wastes are 
-known to impair the environment if not effectively reused or recycled \cite{bartzas2017life}. Therefore, eco-friendly practices for reusing this agricultural 
-waste are essential to reduce environmental pollution.
+With the increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper supply chain 
+management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth flow of goods from production 
+to consumers. A key challenge in pistachio production is the management of its by-products, such as hulls and shells, which, while free of heavy 
+metals or pathogens, can degrade soil quality and contribute to environmental pollution if not properly handled \cite{doula2014turning, bartzas2017life}. 
+Furthermore, improper disposal of these materials may lead to the growth of molds that increase the risk of aflatoxin contamination, posing serious 
+health risks such as liver cancer \cite{hokmabadi2018, dronavalli2019}. Therefore, eco-friendly practices for reusing agricultural waste are 
+essential to mitigate both environmental and health hazards.
 
 Moreover, inefficiencies in supply chain networks for food and agricultural products, including pistachios, can have significant 
 implications for product quality and trade \cite{casper2018reverse}. Addressing these environmental and logistical concerns is crucial to sustaining both 
@@ -171,13 +172,13 @@ and waste recovery, where efficient resource management and cost reduction have 
 These strategies underline the importance of sustainability in modern supply chains and the potential for agricultural industries to implement similar measures.
 
 In related research, \cite{rajabi2023utilizing} worked on optimizing the pistachio supply chain using population-based algorithms, 
-such as Genetic Algorithms (GA). While their approach was effective, our study improves upon it by employing the 
-Variable Neighborhood Search (VNS) algorithm. VNS is particularly well-suited for larger and more complex problems due to its ability to 
+such as Genetic Algorithms (GA) (\cite{fathollahi2018stochastic}, \cite{xie2022adaptive}). While their approach was effective, our study works further on 
+it upon it by employing the Variable Neighborhood Search (VNS) algorithm. VNS is particularly well-suited for larger and more complex problems due to its ability to 
 dynamically explore different neighborhood structures, offering more robust diversification and intensification strategies compared to GA. 
 Unlike population-based algorithms that rely heavily on crossover and mutation, VNS avoids issues like premature convergence by flexibly 
 exploring local optima, resulting in higher-quality solutions in less time, especially for large-scale networks like the pistachio supply chain.
 
-Given the complex interplay of factors influencing pistachio production and trade, and building upon this previous work, this study focuses on 
+Given the complex interplay of factors influencing pistachio production and trade, and building upon this previous work, this research focuses on 
 designing an optimal supply chain network for pistachios by leveraging VNS. We propose a mixed linear model that integrates forward and backward 
 logistics for efficient resource management, including the reuse of by-products through composting. To reduce costs and environmental impact, 
 we apply the Variable Neighborhood Search (VNS) algorithm and compare its effectiveness with an Exact Algorithm and a Genetic Algorithm. Our 
@@ -202,7 +203,10 @@ from orchards to processing centers, producing open-mouth pistachios, raw kernel
 waste, which are then sent to factories, oil extraction centers, and composting centers, respectively. 
 Open-mouth pistachios are roasted, packed, and shipped to customers, while pistachio oil 
 is delivered to oil customers and cosmetic factories. Waste is converted into compost for 
-distribution. The model aims to minimize total costs \eqref{eq:custo}, including opening, transportation,
+distribution. Notably, this is not a closed-loop supply chain (\cite{pishvaee2010memetic}, \cite{ahmadi2019integrated}, \cite{banasik2016simple}, 
+\cite{gholian2023metaheuristic}), as compost does not return to the producers but is treated 
+as a product for different customers. This distinction opens the possibility of exploring closed-loop systems in future research.
+The model aims to minimize total costs \eqref{eq:custo}, including opening, transportation,
 and production costs, under the following capacity and demand constraints with no allowed shortages:
 
 \begin{figure}[h!]
@@ -287,7 +291,7 @@ integrates priority-based encoding and the Variable Neighborhood Search (VNS) al
 which together form the core of our solution strategy. We begin by detailing the solution representation, 
 which utilizes priority-based encoding to efficiently manage and rank decision variables, allowing for effective 
 exploration of the solution space. This encoding scheme is crucial in guiding the search process and maintaining 
-feasibility while optimizing the objective function. Following this, we delve into the VNS algorithm, a robust 
+feasibility while optimizing the objective function. Following this, we explore the VNS algorithm, a robust 
 metaheuristic known for its flexibility and capacity to escape local optima through systematic changes in 
 neighborhood structures. The algorithm dynamically adjusts between multiple neighborhood structures, each 
 designed to explore different aspects of the solution landscape, thereby enhancing the search process. 
@@ -310,9 +314,13 @@ the source's capacity and the depot's demand. Once the shipment is fulfilled, th
 its demand is satisfied), and the process continues with the next highest priority node. This sequential process of arc appending 
 and priority updating repeats until all depots' demands are satisfied, resulting in a complete transportation tree.
 
-The supply chain is determined using a step-by-step, backward approach, starting from consumer demand and moving upward toward producers. 
-This method ensures resource allocation is optimized at each stage, preventing excess or unnecessary material flow. For example, 
-after determining the quantity of open-mouth pistachios required by consumers, we work backward to calculate the factories' 
+The effectiveness of using chromosome decodification in supply chain optimization has been well-documented in recent literature. 
+For instance, this approach has been applied successfully to the design of integrated forward/reverse logistics networks \cite{pishvaee2010memetic}, 
+multi-objective supply chain network designs \cite{altiparmak2006genetic}, and dynamic scheduling and routing problems in flexible manufacturing 
+systems \cite{liu2023integrated}. These studies highlight the versatility and effectiveness of this decodification method in handling complex 
+supply chain problems, including optimizing costs, responsiveness, and resource allocation across various supply chain configurations.
+
+For example, after determining the quantity of open-mouth pistachios required by consumers, we work backward to calculate the factories' 
 processing needs, ensuring their capacities are not overloaded. This then informs how much material the processing centers must supply, 
 aligning each upstream stage with the final demand and optimizing resource use throughout the chain.
 
@@ -378,16 +386,19 @@ updated, and the neighborhood size is reset. Otherwise, the neighborhood size is
 space. This process continues until the time limit is reached, at which point the best solution found is returned. Algorithm~\ref{algoVNS} provides a detailed 
 outline of the VNS algorithm.
 
-This structure is particularly suited to problems with multiple constraints and complex solution spaces, similar to its successful use in other fields. 
-For instance, \cite{burke2010hybrid} applied a hybrid approach combining Integer Programming (IP) and VNS to nurse rostering problems, where the VNS 
-played a key role in refining solutions generated by the IP. Much like in our case, VNS helped manage a highly constrained solution space by iterating 
-through neighborhoods that addressed different subsets of the problem’s constraints. This hybrid method showed superior performance when compared to 
-other metaheuristics like genetic algorithms, demonstrating the flexibility and effectiveness of VNS in handling real-world, constraint-heavy problems.
+This structure is well-suited for handling problems with multiple constraints and complex solution spaces, as shown by its application in various fields. 
+For example, VNS has been applied to vehicle routing problems with heterogeneous fleets, successfully balancing routing costs and fleet diversity while 
+setting new benchmarks \cite{imran2009variable}. It has also been used to solve the capacitated p-median problem by minimizing dissimilarity within 
+clusters while adhering to capacity constraints \cite{fleszar2008effective}. These cases underscore VNS's flexibility in addressing constrained 
+optimization challenges, similar to those faced in supply chain management.
 
-By comparing our implementation with approaches used in other domains, such as the car sequencing problem \cite{ribeiro2008efficient}, where a VNS/ILS 
-method was employed to balance multiple competing objectives, we aim to show that the inherent adaptability of VNS makes it a robust choice for 
-agricultural supply chain optimization. The success of VNS in handling such multi-objective, constrained problems reinforces its potential to 
-deliver high-quality solutions in our supply chain model, where both environmental and economic considerations are critical.
+Hybrid approaches combining VNS with other methods, like Integer Programming, have further demonstrated its ability to refine solutions for 
+highly constrained problems such as nurse rostering \cite{burke2010hybrid}.
+
+By comparing our approach with others, such as the car sequencing problem, where a VNS/ILS method balanced competing objectives \cite{ribeiro2008efficient}, 
+we highlight VNS’s adaptability and robustness in agricultural supply chain optimization. Its proven success in managing multi-objective, 
+constraint-heavy problems positions it as a strong candidate for delivering high-quality solutions in our model, where both environmental 
+and economic factors are crucial.
 
 \begin{algorithm}
     \caption{Variable Neighborhood Search (VNS)}\label{algoVNS}
@@ -429,10 +440,10 @@ and intensification phases. The neighborhood structures used are detailed below,
     the order of elements without altering the overall structure significantly.
     \item \textbf{Reversion:} The reversion operator reverses the order of all elements between the two selected indices. In this case, with elements 6 and 3 chosen, 
     the operator reverses the sequence between these two points. This operation can effectively rearrange subsequences, potentially moving the solution 
-    closer to a local optimum by drastically altering a segment of the sequence.
+    closer to a local optimum by drastically altering a segment of the sequence. \cite{vahdani2010scheduling}
     \item \textbf{Insertion:} In this operation, the unit in the second selected position is relocated immediately after the unit in the first position. 
     Subsequently, all units that were originally between these positions are shifted accordingly to the right. This allows the algorithm to make focused 
-    adjustments by repositioning a specific element within the sequence while maintaining the overall order of the other elements.
+    adjustments by repositioning a specific element within the sequence while maintaining the overall order of the other elements. \cite{rabiee2012scheduling}
     \item \textbf{Slide:} This operator begins by selecting two units of a solution randomly, like the other three. The first unit is removed, and the units 
     that were initially located between the two selected units are shifted toward the start position of the first unit. Finally, the initially 
     removed unit is placed at the position of the second unit. This sliding mechanism creates a subtle yet impactful reordering of the solution elements, 
@@ -440,7 +451,7 @@ and intensification phases. The neighborhood structures used are detailed below,
 \end{itemize}
 
 While we also tested other general and more specific neighborhood structures, the four operators mentioned above proved to be the most effective 
-in our experiments. Our approach is based on the findings of \cite{devika2014designing}, who delve into the importance of neighborhood structures 
+in our experiments. Our approach is also inspired by the findings of \cite{devika2014designing}, who discusses the importance of neighborhood structures 
 within the Variable Neighborhood Search (VNS) algorithm for solving complex supply chain problems. Their study emphasizes the necessity of 
 designing efficient neighborhood structures to enhance the performance of VNS in achieving optimal solutions, particularly in multi-objective 
 contexts that consider environmental, social, and economic impacts.
@@ -638,14 +649,14 @@ to composting, ensuring that all capacity and demand constraints are satisfied. 
 transportation, production, and facility operations, the model addresses the complexities of managing pistachio products and 
 by-products.
 
-Our results demonstrate that VNS outperforms the Genetic Algorithm (GA) in both execution time and scalability, particularly 
+Our results demonstrate that VNS outperforms the Genetic Algorithm (GA) in both execution time and obective function function value, particularly 
 as the problem size increases. While Gurobi provides optimal solutions for small instances, it becomes impractical for larger 
 problems due to its higher memory consumption and longer processing times. In contrast, VNS offers a flexible, memory-efficient, 
 and time-saving solution, delivering near-optimal results with significantly reduced computational demands.
 
 Moving forward, research could benefit from the development of more specialized and problem-specific neighborhood operators for VNS, which may 
 lead to even better performance by enabling more targeted exploration of the solution space. Additionally, combining VNS with exact algorithms for 
-smaller problem instances presents an intriguing opportunity to balance accuracy and efficiency, creating a hybrid approach that could be more broadly 
+smaller problem instances presents an intriguing opportunity to balance accuracy and efficiency, creating a math-heuristics that could be more broadly 
 applicable across industries. Statistical methods could also be integrated to further refine the search process, ensuring that both local and global 
 optima are explored effectively.
 

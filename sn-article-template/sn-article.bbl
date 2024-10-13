@@ -7,6 +7,14 @@
 \providecommand{\doi}[1]{\url{https://doi.org/#1}}
 \bibcommenthead
 
+\bibitem{statista2023pistachio}
+\bibinfo{author}{{Statista}}.
+\newblock \bibinfo{title}{Leading producers of pistachios worldwide in 2022 and
+  2023} (\bibinfo{year}{2023}).
+\newblock
+  \urlprefix\url{https://www.statista.com/statistics/933042/global-pistachio-production-by-country/}.
+\newblock \bibinfo{note}{Accessed: 2023-10-05}.
+
 \bibitem{doula2014turning}
 \bibinfo{author}{Doula, M.}, \bibinfo{author}{Kouloumbis, P.} \&
   \bibinfo{author}{Elaiopoulos, K.}
@@ -64,6 +72,60 @@
   \textbf{\bibinfo{volume}{217}}, \bibinfo{pages}{119504}
   (\bibinfo{year}{2023}).
 
+\bibitem{fathollahi2018stochastic}
+\bibinfo{author}{Fathollahi-Fard, A.~M.} \&
+  \bibinfo{author}{Hajiaghaei-Keshteli, M.}
+\newblock \bibinfo{title}{A stochastic multi-objective model for a closed-loop
+  supply chain with environmental considerations}.
+\newblock \emph{\bibinfo{journal}{Applied Soft Computing}}
+  \textbf{\bibinfo{volume}{69}}, \bibinfo{pages}{232--249}
+  (\bibinfo{year}{2018}).
+
+\bibitem{xie2022adaptive}
+\bibinfo{author}{Xie, Y.}, \bibinfo{author}{Sheng, Y.}, \bibinfo{author}{Qiu,
+  M.} \& \bibinfo{author}{Gui, F.}
+\newblock \bibinfo{title}{An adaptive decoding biased random key genetic
+  algorithm for cloud workflow scheduling}.
+\newblock \emph{\bibinfo{journal}{Engineering applications of artificial
+  intelligence}} \textbf{\bibinfo{volume}{112}}, \bibinfo{pages}{104879}
+  (\bibinfo{year}{2022}).
+
+\bibitem{pishvaee2010memetic}
+\bibinfo{author}{Pishvaee, M.~S.}, \bibinfo{author}{Farahani, R.~Z.} \&
+  \bibinfo{author}{Dullaert, W.}
+\newblock \bibinfo{title}{A memetic algorithm for bi-objective integrated
+  forward/reverse logistics network design}.
+\newblock \emph{\bibinfo{journal}{Computers \& operations research}}
+  \textbf{\bibinfo{volume}{37}}, \bibinfo{pages}{1100--1112}
+  (\bibinfo{year}{2010}).
+
+\bibitem{ahmadi2019integrated}
+\bibinfo{author}{Ahmadi, S.} \& \bibinfo{author}{Amin, S.~H.}
+\newblock \bibinfo{title}{An integrated chance-constrained stochastic model for
+  a mobile phone closed-loop supply chain network with supplier selection}.
+\newblock \emph{\bibinfo{journal}{Journal of cleaner production}}
+  \textbf{\bibinfo{volume}{226}}, \bibinfo{pages}{988--1003}
+  (\bibinfo{year}{2019}).
+
+\bibitem{banasik2016simple}
+\bibinfo{author}{Banasik, M.}, \bibinfo{author}{Stanis{\l}awska-Sachadyn, A.}
+  \& \bibinfo{author}{Sachadyn, P.}
+\newblock \bibinfo{title}{A simple modification of pcr thermal profile applied
+  to evade persisting contamination}.
+\newblock \emph{\bibinfo{journal}{Journal of Applied Genetics}}
+  \textbf{\bibinfo{volume}{57}}, \bibinfo{pages}{409--415}
+  (\bibinfo{year}{2016}).
+
+\bibitem{gholian2023metaheuristic}
+\bibinfo{author}{Gholian-Jouybari, F.}, \bibinfo{author}{Hashemi-Amiri, O.},
+  \bibinfo{author}{Mosallanezhad, B.} \& \bibinfo{author}{Hajiaghaei-Keshteli,
+  M.}
+\newblock \bibinfo{title}{Metaheuristic algorithms for a sustainable agri-food
+  supply chain considering marketing practices under uncertainty}.
+\newblock \emph{\bibinfo{journal}{Expert Systems with Applications}}
+  \textbf{\bibinfo{volume}{213}}, \bibinfo{pages}{118880}
+  (\bibinfo{year}{2023}).
+
 \bibitem{gen2006genetic}
 \bibinfo{author}{Gen, M.}, \bibinfo{author}{Altiparmak, F.} \&
   \bibinfo{author}{Lin, L.}
@@ -71,6 +133,41 @@
   problem using priority-based encoding}.
 \newblock \emph{\bibinfo{journal}{OR spectrum}} \textbf{\bibinfo{volume}{28}},
   \bibinfo{pages}{337--354} (\bibinfo{year}{2006}).
+
+\bibitem{altiparmak2006genetic}
+\bibinfo{author}{Altiparmak, F.}, \bibinfo{author}{Gen, M.},
+  \bibinfo{author}{Lin, L.} \& \bibinfo{author}{Paksoy, T.}
+\newblock \bibinfo{title}{A genetic algorithm approach for multi-objective
+  optimization of supply chain networks}.
+\newblock \emph{\bibinfo{journal}{Computers \& industrial engineering}}
+  \textbf{\bibinfo{volume}{51}}, \bibinfo{pages}{196--215}
+  (\bibinfo{year}{2006}).
+
+\bibitem{liu2023integrated}
+\bibinfo{author}{Liu, J.}, \bibinfo{author}{Sun, B.}, \bibinfo{author}{Li, G.}
+  \& \bibinfo{author}{Chen, Y.}
+\newblock \bibinfo{title}{An integrated scheduling approach considering
+  dispatching strategy and conflict-free route of amrs in flexible job shop}.
+\newblock \emph{\bibinfo{journal}{The International Journal of Advanced
+  Manufacturing Technology}} \textbf{\bibinfo{volume}{127}},
+  \bibinfo{pages}{1979--2002} (\bibinfo{year}{2023}).
+
+\bibitem{imran2009variable}
+\bibinfo{author}{Imran, A.}, \bibinfo{author}{Salhi, S.} \&
+  \bibinfo{author}{Wassan, N.~A.}
+\newblock \bibinfo{title}{A variable neighborhood-based heuristic for the
+  heterogeneous fleet vehicle routing problem}.
+\newblock \emph{\bibinfo{journal}{European Journal of Operational Research}}
+  \textbf{\bibinfo{volume}{197}}, \bibinfo{pages}{509--518}
+  (\bibinfo{year}{2009}).
+
+\bibitem{fleszar2008effective}
+\bibinfo{author}{Fleszar, K.} \& \bibinfo{author}{Hindi, K.~S.}
+\newblock \bibinfo{title}{An effective vns for the capacitated p-median
+  problem}.
+\newblock \emph{\bibinfo{journal}{European Journal of Operational Research}}
+  \textbf{\bibinfo{volume}{191}}, \bibinfo{pages}{612--622}
+  (\bibinfo{year}{2008}).
 
 \bibitem{burke2010hybrid}
 \bibinfo{author}{Burke, E.~K.}, \bibinfo{author}{Li, J.} \&
@@ -90,5 +187,23 @@
 \newblock \emph{\bibinfo{journal}{European Journal of Operational Research}}
   \textbf{\bibinfo{volume}{191}}, \bibinfo{pages}{596--611}
   (\bibinfo{year}{2008}).
+
+\bibitem{vahdani2010scheduling}
+\bibinfo{author}{Vahdani, B.} \& \bibinfo{author}{Zandieh, M.}
+\newblock \bibinfo{title}{Scheduling trucks in cross-docking systems: Robust
+  meta-heuristics}.
+\newblock \emph{\bibinfo{journal}{Computers \& Industrial Engineering}}
+  \textbf{\bibinfo{volume}{58}}, \bibinfo{pages}{12--24}
+  (\bibinfo{year}{2010}).
+
+\bibitem{rabiee2012scheduling}
+\bibinfo{author}{Rabiee, M.}, \bibinfo{author}{Zandieh, M.} \&
+  \bibinfo{author}{Jafarian, A.}
+\newblock \bibinfo{title}{Scheduling of a no-wait two-machine flow shop with
+  sequence-dependent setup times and probable rework using robust
+  meta-heuristics}.
+\newblock \emph{\bibinfo{journal}{International Journal of Production
+  Research}} \textbf{\bibinfo{volume}{50}}, \bibinfo{pages}{7428--7446}
+  (\bibinfo{year}{2012}).
 
 \end{thebibliography}

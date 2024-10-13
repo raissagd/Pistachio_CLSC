@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  12 OCT 2024 23:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  13 OCT 2024 15:16
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -698,26 +698,37 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 {C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
 
+Package natbib Warning: Citation `hokmabadi2018' on page 2 undefined on input line 162.
+
+
+Package natbib Warning: Citation `dronavalli2019' on page 2 undefined on input line 162.
+
+
+
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [2]
-<./imgs/supplychain.PNG, id=81, 489.027pt x 287.8755pt>
+<./imgs/supplychain.PNG, id=92, 489.027pt x 287.8755pt>
 File: ./imgs/supplychain.PNG Graphic file (type png)
 <use ./imgs/supplychain.PNG>
-Package pdftex.def Info: ./imgs/supplychain.PNG  used on input line 210.
+Package pdftex.def Info: ./imgs/supplychain.PNG  used on input line 214.
 (pdftex.def)             Requested size: 297.60114pt x 175.19527pt.
 
 
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [3 <./imgs/supplychain.PNG>]
+ [3]
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [4]
+ [4 <./imgs/supplychain.PNG>]
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -728,10 +739,10 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [6]
-<./imgs/decode_flux.PNG, id=150, 482.40225pt x 298.716pt>
+<./imgs/decode_flux.PNG, id=167, 482.40225pt x 298.716pt>
 File: ./imgs/decode_flux.PNG Graphic file (type png)
 <use ./imgs/decode_flux.PNG>
-Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 321.
+Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 329.
 (pdftex.def)             Requested size: 297.60114pt x 184.29039pt.
 
 
@@ -753,49 +764,18 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [9]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 393.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 404.
 
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [10]
-<./imgs/nbhd_op.png, id=182, 410.7345pt x 263.18324pt>
+<./imgs/nbhd_op.png, id=207, 410.7345pt x 263.18324pt>
 File: ./imgs/nbhd_op.png Graphic file (type png)
 <use ./imgs/nbhd_op.png>
-Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 450.
+Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 461.
 (pdftex.def)             Requested size: 297.60114pt x 190.69655pt.
-
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [11 <./imgs/nbhd_op.png>]
-<./imgs/VNSxGUROBI_100.png, id=189, 669.9429pt x 403.2666pt>
-File: ./imgs/VNSxGUROBI_100.png Graphic file (type png)
-<use ./imgs/VNSxGUROBI_100.png>
-Package pdftex.def Info: ./imgs/VNSxGUROBI_100.png  used on input line 494.
-(pdftex.def)             Requested size: 167.39886pt x 100.76102pt.
-<./imgs/VNSxGUROBI_200.png, id=190, 669.9429pt x 403.2666pt>
-File: ./imgs/VNSxGUROBI_200.png Graphic file (type png)
-<use ./imgs/VNSxGUROBI_200.png>
-Package pdftex.def Info: ./imgs/VNSxGUROBI_200.png  used on input line 500.
-(pdftex.def)             Requested size: 167.39886pt x 100.76102pt.
-<./imgs/VNSxGUROBI_400.png, id=191, 669.9429pt x 403.2666pt>
-File: ./imgs/VNSxGUROBI_400.png Graphic file (type png)
-<use ./imgs/VNSxGUROBI_400.png>
-Package pdftex.def Info: ./imgs/VNSxGUROBI_400.png  used on input line 508.
-(pdftex.def)             Requested size: 167.39886pt x 100.76102pt.
-<./imgs/VNSxGUROBI_800.png, id=192, 669.9429pt x 403.2666pt>
-File: ./imgs/VNSxGUROBI_800.png Graphic file (type png)
-<use ./imgs/VNSxGUROBI_800.png>
-Package pdftex.def Info: ./imgs/VNSxGUROBI_800.png  used on input line 514.
-(pdftex.def)             Requested size: 167.39886pt x 100.76102pt.
-<./imgs/VNSxGUROBI_1600.png, id=193, 683.6742pt x 411.939pt>
-File: ./imgs/VNSxGUROBI_1600.png Graphic file (type png)
-<use ./imgs/VNSxGUROBI_1600.png>
-Package pdftex.def Info: ./imgs/VNSxGUROBI_1600.png  used on input line 522.
-(pdftex.def)             Requested size: 167.39886pt x 100.85992pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -805,57 +785,88 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12]
+ [11]
+<./imgs/VNSxGUROBI_100.png, id=215, 669.9429pt x 403.2666pt>
+File: ./imgs/VNSxGUROBI_100.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_100.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_100.png  used on input line 505.
+(pdftex.def)             Requested size: 167.39886pt x 100.76102pt.
+<./imgs/VNSxGUROBI_200.png, id=216, 669.9429pt x 403.2666pt>
+File: ./imgs/VNSxGUROBI_200.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_200.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_200.png  used on input line 511.
+(pdftex.def)             Requested size: 167.39886pt x 100.76102pt.
+<./imgs/VNSxGUROBI_400.png, id=217, 669.9429pt x 403.2666pt>
+File: ./imgs/VNSxGUROBI_400.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_400.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_400.png  used on input line 519.
+(pdftex.def)             Requested size: 167.39886pt x 100.76102pt.
+<./imgs/VNSxGUROBI_800.png, id=218, 669.9429pt x 403.2666pt>
+File: ./imgs/VNSxGUROBI_800.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_800.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_800.png  used on input line 525.
+(pdftex.def)             Requested size: 167.39886pt x 100.76102pt.
+<./imgs/VNSxGUROBI_1600.png, id=219, 683.6742pt x 411.939pt>
+File: ./imgs/VNSxGUROBI_1600.png Graphic file (type png)
+<use ./imgs/VNSxGUROBI_1600.png>
+Package pdftex.def Info: ./imgs/VNSxGUROBI_1600.png  used on input line 533.
+(pdftex.def)             Requested size: 167.39886pt x 100.85992pt.
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12 <./imgs/nbhd_op.png>]
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [13 <./imgs/VNSxGUROBI_100.png> <./imgs/VNSxGUROBI_200.png> <./imgs/VNSxGUROBI_400.png> <./imgs/VNSxGUROBI_800.png> <./imgs/VNSxGUROBI_1600.png>]
-<./imgs/VNSxGA_100.png, id=213, 711.1368pt x 419.166pt>
+<./imgs/VNSxGA_100.png, id=239, 711.1368pt x 419.166pt>
 File: ./imgs/VNSxGA_100.png Graphic file (type png)
 <use ./imgs/VNSxGA_100.png>
-Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 558.
+Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 569.
 (pdftex.def)             Requested size: 167.39886pt x 98.67032pt.
-<./imgs/VNSxGA_200.png, id=214, 719.0865pt x 419.166pt>
+<./imgs/VNSxGA_200.png, id=240, 719.0865pt x 419.166pt>
 File: ./imgs/VNSxGA_200.png Graphic file (type png)
 <use ./imgs/VNSxGA_200.png>
-Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 564.
+Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 575.
 (pdftex.def)             Requested size: 167.39886pt x 97.5766pt.
-<./imgs/VNSxGA_400.png, id=215, 734.2632pt x 403.9893pt>
+<./imgs/VNSxGA_400.png, id=241, 734.2632pt x 403.9893pt>
 File: ./imgs/VNSxGA_400.png Graphic file (type png)
 <use ./imgs/VNSxGA_400.png>
-Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 572.
+Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 583.
 (pdftex.def)             Requested size: 167.39886pt x 92.10188pt.
-<./imgs/VNSxGA_800.png, id=216, 711.1368pt x 419.166pt>
+<./imgs/VNSxGA_800.png, id=242, 711.1368pt x 419.166pt>
 File: ./imgs/VNSxGA_800.png Graphic file (type png)
 <use ./imgs/VNSxGA_800.png>
-Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 578.
+Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 589.
 (pdftex.def)             Requested size: 167.39886pt x 98.67032pt.
-<./imgs/VNSxGA_1600.png, id=217, 739.3221pt x 419.166pt>
+<./imgs/VNSxGA_1600.png, id=243, 739.3221pt x 419.166pt>
 File: ./imgs/VNSxGA_1600.png Graphic file (type png)
 <use ./imgs/VNSxGA_1600.png>
-Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 586.
+Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 597.
 (pdftex.def)             Requested size: 167.39886pt x 94.90309pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 598.
+LaTeX Font Info:    Calculating math sizes for size <8.03> on input line 609.
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 598.
+(Font)              size <5> substituted on input line 609.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <4.015> not available
-(Font)              size <5> substituted on input line 598.
+(Font)              size <5> substituted on input line 609.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 598.
+(Font)              size <5> substituted on input line 609.
 
 
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <4.015> not available
-(Font)              size <5> substituted on input line 598.
+(Font)              size <5> substituted on input line 609.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -871,16 +882,35 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [15 <./imgs/VNSxGA_100.png> <./imgs/VNSxGA_200.png> <./imgs/VNSxGA_400.png> <./imgs/VNSxGA_800.png> <./imgs/VNSxGA_1600.png>] (sn-article.bbl
+Underfull \hbox (badness 7595) in paragraph at lines 11--17
+[]\OT1/cmr/m/n/10 Statista.  Lead-ing pro-duc-ers of pis-ta-chios world-wide in 2022 and
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--17
+\OT1/cmr/m/n/10 2023 (2023).  URL [][]$https : / / www . statista . com / statistics / 933042 /
+ []
+
+
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [16])
+ [16]
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [17] (sn-article.aux)
+ [17])
+
+Package natbib Warning: There were undefined citations.
+
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [18] (sn-article.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 1
 L3 programming layer <2024-05-27>
@@ -897,17 +927,17 @@ Package rerunfilecheck Info: File `sn-article.out' has not changed.
 (rerunfilecheck)             Checksum: 2F650154D754903243C3676B0E39DE94;1526.
  ) 
 Here is how much of TeX's memory you used:
- 16299 strings out of 473919
- 257889 string characters out of 5726481
+ 16356 strings out of 473919
+ 259342 string characters out of 5726481
  1947908 words of memory out of 5000000
- 38816 multiletter control sequences out of 15000+600000
+ 38859 multiletter control sequences out of 15000+600000
  575208 words of font info for 106 fonts, out of 8000000 for 9000
  1151 hyphenation exceptions out of 8191
- 90i,11n,131p,596b,610s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,131p,596b,645s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on sn-article.pdf (17 pages, 754614 bytes).
+Output written on sn-article.pdf (18 pages, 766374 bytes).
 PDF statistics:
- 352 PDF objects out of 1000 (max. 8388607)
- 74 named destinations out of 1000 (max. 500000)
+ 387 PDF objects out of 1000 (max. 8388607)
+ 88 named destinations out of 1000 (max. 500000)
  146 words of extra memory for PDF output out of 10000 (max. 10000000)
 
