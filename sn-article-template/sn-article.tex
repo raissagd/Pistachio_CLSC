@@ -186,17 +186,22 @@ suggesting future research directions for improving solution efficiency and appl
 \section{Problem definition}
 \label{sec:sec2}
 
-The proposed network, as illustrated in Figure~\ref{fig:supplychain} includes producers, processing centers, pistachio factories, 
+The network proposed by \cite{rajabi2023utilizing}, as illustrated in Figure \ref{fig:supplychain}, includes producers, processing centers, pistachio factories, 
 oil extraction centers, composting centers, and customers. Pistachios are transported 
 from orchards to processing centers, producing open-mouth pistachios, raw kernels, and 
 waste, which are then sent to factories, oil extraction centers, and composting centers, respectively. 
 Open-mouth pistachios are roasted, packed, and shipped to customers, while pistachio oil 
 is delivered to oil customers and cosmetic factories. Waste is converted into compost for 
-distribution. Notably, this is not a closed-loop supply chain (\cite{pishvaee2010memetic}, \cite{ahmadi2019integrated}, \cite{banasik2016simple}, 
-\cite{gholian2023metaheuristic}), as compost does not return to the producers but is treated 
-as a product for different customers. This distinction opens the possibility of exploring closed-loop systems in future research.
+distribution. Although the compost returns to the producers, ideally forming a closed-loop in the supply chain, mathematically, there is no connection between the compost customers and the producers who send the pistachios to the processing centers. In other words, the mathematical model of the flow does not implement a closed-loop, strictly speaking. It only interprets the flow of compost to its respective customers as feedback, even though these customers are not necessarily related to the variables associated with the producers. This has been done in other studies \cite{pishvaee2010memetic,ahmadi2019integrated,banasik2016simple,gholian2023metaheuristic}, and the strict implementation of a feedback loop could be a next step for research.
+
+% Notably, this is not a closed-loop supply chain (\cite{pishvaee2010memetic}, \cite{ahmadi2019integrated}, \cite{banasik2016simple}, 
+% \cite{gholian2023metaheuristic}), as compost does not return to the producers but is treated 
+% as a product for different customers. This distinction opens the possibility of exploring closed-loop systems in future research.
+% The model aims to minimize total costs \eqref{eq:custo}, including opening, transportation,
+% and production costs, under the following capacity and demand constraints with no allowed shortages:
+
 The model aims to minimize total costs \eqref{eq:custo}, including opening, transportation,
-and production costs, under the following capacity and demand constraints with no allowed shortages:
+and production costs, under the following capacity and demand constraints with no allowed shortages (see further details regarding the variables in the Table 5 of \cite{rajabi2023utilizing}):
 
 \begin{figure}[h!]
     \centering
@@ -208,9 +213,9 @@ and production costs, under the following capacity and demand constraints with n
     
 \begin{align}
     \min &\ z_1 + z_2 + z_3 \label{eq:custo}\\
-    \text{s.t.} \quad & \sum\limits_{j=1}^J X_{ij} \le Cpa_i, \quad \forall i \in I \label{eq:restricao1}\\
+    \text{s.t.:} \quad & \sum\limits_{j=1}^J X_{ij} \le Cpa_i, \quad \forall i \in I \label{eq:restricao1}\\
     & \sum\limits_{i=1}^I X_{ij} \le Cpu_j\times U_j, \quad \forall j \in J \label{eq:restricao2}\\
-    & \sum\limits_{e=1}^E Ow_{eq} + \sum\limits_{j=1}^J Gw_{jq} \le Cpy_q \times T_q, \quad \forall q \in Q \label{eq:restricao3}\\
+    & \sum\limits_{e=1}^E Ow_{eq} + \sum\limits_{j=1}^J Gw_{jq} \le Cpy_q \times Y_q, \quad \forall q \in Q \label{eq:restricao3}\\
     & \sum\limits_{j=1}^J Go_{jk} \le Cpw_k\times W_k, \quad \forall k \in K \label{eq:restricao4}\\
     & \sum\limits_{j=1}^J Gr_{je} \le Cpr_e\times R_e, \quad \forall e \in E \label{eq:restricao5}\\
     & \sum\limits_{e=1}^E O_{en_2} \le Cpv_s\times V_s, \quad \forall s \in S \label{eq:restricao6}\\
@@ -221,12 +226,12 @@ and production costs, under the following capacity and demand constraints with n
     & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11}\\
     & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12}\\
     & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13}\\
-    & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda k, \quad \forall e \in E \label{eq:restricao14}\\
+    & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14}\\
     & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15}\\
     & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q, \quad \forall q \in Q \label{eq:restricao16}\\
-    & \sum\limits_{k=1}^K P_{kn_1} \le Dp_{n_1}, \quad \forall n_1 \in N_1 \label{eq:restricao17}\\
-    & \sum\limits_{e=1}^E O_{en_2} \le Du_{n_2}, \quad \forall n_2 \in N_2 \label{eq:restricao18}\\
-    & \sum\limits_{s=1}^S L_{sn_3} \le Ds_{n_3}, \quad \forall n_3 \in N_3 \label{eq:restricao19}\\
+    & \sum\limits_{k=1}^K P_{kn_1} \ge Dp_{n_1}, \quad \forall n_1 \in N_1 \label{eq:restricao17}\\
+    & \sum\limits_{e=1}^E O_{en_2} \ge Du_{n_2}, \quad \forall n_2 \in N_2 \label{eq:restricao18}\\
+    & \sum\limits_{s=1}^S L_{sn_3} \ge Ds_{n_3}, \quad \forall n_3 \in N_3 \label{eq:restricao19}\\
     & \sum\limits_{q=1}^Q D_{qm} \le Dc_{m}, \quad \forall m \in M \label{eq:restricao20}
 \end{align}
 
