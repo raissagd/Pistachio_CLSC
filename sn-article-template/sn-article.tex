@@ -200,7 +200,7 @@ distribution. Although the compost returns to the producers, ideally forming a c
 % The model aims to minimize total costs \eqref{eq:custo}, including opening, transportation,
 % and production costs, under the following capacity and demand constraints with no allowed shortages:
 
-The model aims to minimize total costs \eqref{eq:custo}, including opening, transportation,
+The mixed-integer linear problem aims to minimize total costs \eqref{eq:custo}, including opening, transportation,
 and production costs, under the following capacity and demand constraints with no allowed shortages (see further details regarding the variables in the Table 5 of \cite{rajabi2023utilizing}):
 
 \begin{figure}[h!]
@@ -383,31 +383,27 @@ accordingly. Conversely, if excess waste is sent, the demand is set to zero. Onc
 needs are fulfilled by oil extraction centers, considering their available capacity. If no additional waste is needed, no waste is sent from the oil extraction 
 centers. Finally, the total cost of transporting waste is updated based on the assignments, ensuring efficient waste management across the supply chain.
 
-\subsection{VNS algorithm}
-The Variable Neighborhood Search (VNS) algorithm is a powerful metaheuristic that combines local search with
-systematic changes in neighborhood structures to explore the solution space effectively. By iteratively
-applying different neighborhood operators, VNS can escape local optima and discover high-quality solutions
-through continuous diversification and intensification phases. 
+\subsection{Variable Neighborhood Search}
+VNS is a well-known metaheuristic that combines local search with
+systematic changes in neighborhood structures to explore the solution space \cite{gendreau2010handbook}. It investigates remote regions of the solution space surrounding the current best solution, transitioning to a new solution only when an improvement is identified. The local search procedure is iteratively applied to refine solutions within these neighborhoods, driving them toward local optima.
 
-In our application, the VNS algorithm begins by initializing a solution and setting parameters such as the maximum neighborhood size and time limit. 
+The algorithm begins by initializing a solution and setting parameters such as the maximum neighborhood size and time limit. 
 It then follows a cycle of shaking and local search procedures to generate new candidate solutions. If an improvement is found, the current solution is 
 updated, and the neighborhood size is reset. Otherwise, the neighborhood size is increased, allowing the search to explore broader areas of the solution 
-space. This process continues until the time limit is reached, at which point the best solution found is returned. Algorithm~\ref{algoVNS} provides a detailed 
-outline of the VNS algorithm.
+space. This process continues until the time limit is reached, at which point the best solution found is returned. Algorithm \ref{algoVNS} provides a detailed 
+outline of VNS.
 
 This structure is well-suited for handling problems with multiple constraints and complex solution spaces, as shown by its application in various fields. 
 For example, VNS has been applied to vehicle routing problems with heterogeneous fleets, successfully balancing routing costs and fleet diversity while 
 setting new benchmarks \cite{imran2009variable}. It has also been used to solve the capacitated p-median problem by minimizing dissimilarity within 
 clusters while adhering to capacity constraints \cite{fleszar2008effective}. These cases underscore VNS's flexibility in addressing constrained 
-optimization challenges, similar to those faced in supply chain management.
-
-Hybrid approaches combining VNS with other methods, like Integer Programming, have further demonstrated its ability to refine solutions for 
+optimization challenges, similar to those faced in supply chain management. Hybrid approaches combining VNS with other methods, like Integer Programming, have further demonstrated its ability to refine solutions for 
 highly constrained problems such as nurse rostering \cite{burke2010hybrid}.
 
-By comparing our approach with others, such as the car sequencing problem, where a VNS/ILS method balanced competing objectives \cite{ribeiro2008efficient}, 
-we highlight VNS’s adaptability and robustness in agricultural supply chain optimization. Its proven success in managing multi-objective, 
-constraint-heavy problems positions it as a strong candidate for delivering high-quality solutions in our model, where both environmental 
-and economic factors are crucial.
+% By comparing our approach with others, such as the car sequencing problem, where a VNS/ILS method balanced competing objectives \cite{ribeiro2008efficient}, 
+% we highlight VNS’s adaptability and robustness in agricultural supply chain optimization. Its proven success in managing multi-objective, 
+% constraint-heavy problems positions it as a strong candidate for delivering high-quality solutions in our model, where both environmental 
+% and economic factors are crucial.
 
 \begin{algorithm}
     \caption{Variable Neighborhood Search (VNS)}\label{algoVNS}
@@ -434,14 +430,14 @@ and economic factors are crucial.
 
 \subsection{Neighborhood structures}
 
-In the context of the Variable Neighborhood Search (VNS) algorithm, neighborhood operators play a crucial role 
+In the context of VNS, neighborhood operators play a crucial role 
 in exploring the solution space by systematically altering the current solution to generate new candidate solutions. 
 The effectiveness of VNS relies heavily on the design and application of these operators, as they determine the 
 diversity and direction of the search process. In this study, we utilize four classic neighborhood operators: 
-Swap, Reversion, Insertion, and Slide. Each operator perturbs the solution in a distinct manner, allowing the 
+Swap, Reversion, Insertion, and Slide \cite{devika2014designing}. Each operator perturbs the solution in a distinct manner, allowing the 
 algorithm to escape local optima and explore different regions of the search space. By iteratively applying 
 these operators, VNS enhances its capability to find high-quality solutions through continuous diversification 
-and intensification phases. The neighborhood structures used are detailed below, and illustraed in Figure~\ref{fig:nbdh_op}.:
+and intensification phases. The neighborhood structures used are detailed below, and illustraed in Figure \ref{fig:nbdh_op}.:
 
 \begin{itemize}
     \item \textbf{Swap:} The swap operator exchanges the positions of two selected elements within the chromosome. 
@@ -459,11 +455,11 @@ and intensification phases. The neighborhood structures used are detailed below,
     which can enhance the search process by generating new configurations with minimal disruption.
 \end{itemize}
 
-While we also tested other general and more specific neighborhood structures, the four operators mentioned above proved to be the most effective 
-in our experiments. Our approach is also inspired by the findings of \cite{devika2014designing}, who discusses the importance of neighborhood structures 
-within the Variable Neighborhood Search (VNS) algorithm for solving complex supply chain problems. Their study emphasizes the necessity of 
-designing efficient neighborhood structures to enhance the performance of VNS in achieving optimal solutions, particularly in multi-objective 
-contexts that consider environmental, social, and economic impacts.
+% While we also tested other general and more specific neighborhood structures, the four operators mentioned above proved to be the most effective 
+% in our experiments. Our approach is also inspired by the findings of \cite{devika2014designing}, who discusses the importance of neighborhood structures 
+% within the Variable Neighborhood Search (VNS) algorithm for solving complex supply chain problems. Their study emphasizes the necessity of 
+% designing efficient neighborhood structures to enhance the performance of VNS in achieving optimal solutions, particularly in multi-objective 
+% contexts that consider environmental, social, and economic impacts.
 
 \begin{figure}[h!]
     \centering
