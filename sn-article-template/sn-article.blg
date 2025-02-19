@@ -5,48 +5,46 @@ Reallocating 'name_of_file' (item size: 1) to 10 items.
 The style file: sn-nature.bst
 Reallocating 'name_of_file' (item size: 1) to 16 items.
 Database file #1: sn-bibliography.bib
-Warning--I didn't find a database entry for "hokmabadi2018"
-Warning--I didn't find a database entry for "dronavalli2019"
 Warning--empty journal in doula2014turning
-You've used 23 entries,
+You've used 29 entries,
             2710 wiz_defined-function locations,
-            1189 strings with 14244 characters,
-and the built_in function-call counts, 9594 in all, are:
-= -- 716
-> -- 264
-< -- 0
-+ -- 132
-- -- 66
-* -- 1223
-:= -- 1067
-add.period$ -- 69
-call.type$ -- 23
-change.case$ -- 24
+            1225 strings with 15410 characters,
+and the built_in function-call counts, 11841 in all, are:
+= -- 881
+> -- 316
+< -- 1
++ -- 158
+- -- 79
+* -- 1510
+:= -- 1318
+add.period$ -- 87
+call.type$ -- 29
+change.case$ -- 29
 chr.to.int$ -- 0
-cite$ -- 24
-duplicate$ -- 800
-empty$ -- 821
-format.name$ -- 88
-if$ -- 1890
+cite$ -- 30
+duplicate$ -- 997
+empty$ -- 1028
+format.name$ -- 106
+if$ -- 2339
 int.to.chr$ -- 0
-int.to.str$ -- 23
-missing$ -- 200
-newline$ -- 125
-num.names$ -- 23
-pop$ -- 131
+int.to.str$ -- 29
+missing$ -- 250
+newline$ -- 155
+num.names$ -- 29
+pop$ -- 162
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 130
+skip$ -- 159
 stack$ -- 0
-substring$ -- 533
-swap$ -- 868
-text.length$ -- 0
+substring$ -- 633
+swap$ -- 1074
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 66
-width$ -- 25
-write$ -- 261
-(There were 3 warnings)
+while$ -- 81
+width$ -- 31
+write$ -- 327
+(There was 1 warning)

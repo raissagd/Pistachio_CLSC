@@ -145,8 +145,7 @@ VNS reduces execution time by nearly 97\% compared to the exact method in some o
 The growing role of agriculture in the economic development of many countries highlights the importance of integrating this sector with 
 other industries to stimulate overall economic growth. Agriculture not only supports food security but also acts as a major contributor 
 to exports, generating significant income and bolstering other sectors. Among various agricultural products, pistachios stand out due to 
-their high economic and nutritional value. As major producers such as the US, Turkey, and Iran lead global production, leading producers of pistachios
-worldwide in 2022 and 2023 \cite{statista2023pistachio}, the strategic importance of pistachios in international trade continues to rise.
+their high economic and nutritional value. Major producers such as the US, Turkey, and Iran dominate global pistachio production, remaining the leading producers worldwide in 2022 and 2023 \cite{statista2023pistachio}. As a result, the strategic importance of pistachios in international trade continues to grow.
 
 With the increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper supply chain 
 management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth flow of goods from production 
@@ -165,25 +164,21 @@ biogas and compost production \cite{cheraghalipour2022bi}. Such approaches have 
 and waste recovery, where efficient resource management and cost reduction have been key drivers \cite{devika2014designing, zohal2016developing}. 
 These strategies underline the importance of sustainability in modern supply chains and the potential for agricultural industries to implement similar measures.
 
-In related research, \cite{rajabi2023utilizing} worked on optimizing the pistachio supply chain using population-based algorithms, 
-such as Genetic Algorithms (GA) (\cite{fathollahi2018stochastic}, \cite{xie2022adaptive}). While their approach was effective, our study works further on 
-it upon it by employing the Variable Neighborhood Search (VNS) algorithm. VNS is particularly well-suited for larger and more complex problems due to its ability to 
-dynamically explore different neighborhood structures, offering more robust diversification and intensification strategies compared to GA. 
-Unlike population-based algorithms that rely heavily on crossover and mutation, VNS avoids issues like premature convergence by flexibly 
-exploring local optima, resulting in higher-quality solutions in less time, especially for large-scale networks like the pistachio supply chain.
+% O problema é que eles usaram também o Simulated Annealing e esqueci que ele não é baseado em população.
+In related research, Rajabi-Kafshgar et al. \cite{rajabi2023utilizing} focused on optimizing the pistachio supply chain using various algorithms, primarily population-based approaches such as Genetic Algorithms (GA) \cite{fathollahi2018stochastic,xie2022adaptive}, among others. Although the authors executed each algorithm a reasonable number of times, the paper provides limited evidence of any algorithm demonstrating statistically superior performance, as their comparisons are based on the best solutions found by each method. Additionally, some of the graphs in the article are not adequately edited, which may hinder the clarity of the presented results (see, for example, Fig. 15 in \cite{rajabi2023utilizing}).
+
+Furthermore, there is ongoing debate about whether the differences in bio-inspirations behind metaheuristics, such as the Imperialist Competitive Algorithm, the Keshtel Algorithm, and the Social Engineering Optimizer -- all of which were used by the authors -- can indeed lead to significant performance differences \cite{campelo2023lessons,aranha2022metaphor}. This raises questions about the practical impact of such design choices in algorithmic performance.
 
 Given the complex interplay of factors influencing pistachio production and trade, and building upon this previous work, this research focuses on 
-designing an optimal supply chain network for pistachios by leveraging VNS. We propose a mixed linear model that integrates forward and backward 
+designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm \cite{gendreau2010handbook}. VNS is particularly well-suited for large combinatorial optimization problems and it tipically involve few parameters \cite{hansen2010variable}. We address the mixed linear model of \cite{rajabi2023utilizing}, which integrates forward and backward 
 logistics for efficient resource management, including the reuse of by-products through composting. To reduce costs and environmental impact, 
-we apply the Variable Neighborhood Search (VNS) algorithm and compare its effectiveness with an Exact Algorithm and a Genetic Algorithm. Our 
-findings underscore VNS’s superior performance in handling larger problem sizes, demonstrating its potential as a scalable and efficient tool 
-for sustainable supply chain management in agriculture.
+we apply VNS and compare its effectiveness against GA and an exact method. Our findings highlight evidences for VNS's superior performance compared to GA in terms of objective function evaluation. It also achieves reasonable solutions while requiring significantly less computational time than the exact method for large-scale problems. This demonstrates its potential as a scalable and efficient tool for sustainable supply chain management in agriculture.
 
-The remainder of this paper is organized as follows. In Section~\ref{sec:sec2}, we present the Problem Definition, describing the pistachio supply chain network, 
+The remainder of this paper is organized as follows. In Section~\ref{sec:sec2}, we present the problem definition, describing the pistachio supply chain network, 
 its components, and the cost-minimization objectives under capacity and demand constraints. Section~\ref{sec:sec3} focuses on the Heuristic Approach, where we 
 introduce the Variable Neighborhood Search (VNS) algorithm, along with its solution representation using priority-based encoding, neighborhood 
-structures, and algorithmic details. In Section~\ref{sec:sec4}, we detail the Results of our experiments, comparing VNS with both an exact algorithm (Gurobi) 
-and a population-based algorithm (Genetic Algorithm), highlighting VNS’s superior performance in larger instances. Finally, Section~\ref{sec:sec5} presents 
+structures, and algorithmic details. In Section~\ref{sec:sec4}, we detail the results of our experiments, comparing VNS with both an exact method 
+and a population-based algorithm (GA). Finally, Section~\ref{sec:sec5} presents 
 the Conclusion, summarizing the key findings of the study, discussing the advantages of VNS for pistachio supply chain optimization, and 
 suggesting future research directions for improving solution efficiency and applicability in broader contexts.
 
