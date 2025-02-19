@@ -12,3 +12,11 @@ test_solution.pkl
 /template-latex/*.synctex.gz
 tests/GAxVNS/results/solutions_400_GA.pkl
 tests/run_parallel/results/script_800_results.pkl
+/sn-article-template/*.aux
+/sn-article-template/*.log
+/sn-article-template/*.bbl
+/sn-article-template/*.blg
+/sn-article-template/*.fdb_latexmk
+/sn-article-template/*.fls
+/sn-article-template/*.synctex.gz
+/sn-article-template/*.out
