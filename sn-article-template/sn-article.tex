@@ -280,33 +280,47 @@ and production costs, under the following capacity and demand constraints with n
 \section{Heuristic approach}
 \label{sec:sec3}
 
-In this section, we present the methodology employed to address the optimization problem. The proposed approach 
-integrates priority-based encoding and the Variable Neighborhood Search (VNS) algorithm, 
-which together form the core of our solution strategy. We begin by detailing the solution representation, 
-which utilizes priority-based encoding to efficiently manage and rank decision variables, allowing for effective 
-exploration of the solution space. This encoding scheme is crucial in guiding the search process and maintaining 
-feasibility while optimizing the objective function. Following this, we explore the VNS algorithm, a robust 
-metaheuristic known for its flexibility and capacity to escape local optima through systematic changes in 
-neighborhood structures. The algorithm dynamically adjusts between multiple neighborhood structures, each 
-designed to explore different aspects of the solution landscape, thereby enhancing the search process. 
-We will also discuss the specific configurations and parameters used, as well as the design of neighborhood 
-operators tailored to the problem characteristics. This comprehensive approach aims to deliver a high-quality 
-solution by leveraging the strengths of priority-based encoding and the adaptability of VNS.
+% Achei que essa introdução à seção poderia ser um pouco mais resumida.
+This section outlines the methodology for solving the optimization problem, combining priority-based encoding \cite{gen2006genetic} and VNS. Priority-based encoding ranks decision variables, enabling the exploration of the solution space while maintaining feasibility. The VNS algorithm systematically shifts between neighborhood structures to escape local optima and explore diverse solution landscapes. The approach includes tailored neighborhood operators and specific parameter configurations.
+
+% In this section, we present the methodology employed to address the optimization problem. The proposed approach 
+% integrates priority-based encoding and the Variable Neighborhood Search (VNS) algorithm, 
+% which together form the core of our solution strategy. We begin by detailing the solution representation, 
+% which utilizes priority-based encoding to efficiently manage and rank decision variables, allowing for effective 
+% exploration of the solution space. This encoding scheme is crucial in guiding the search process and maintaining 
+% feasibility while optimizing the objective function. Following this, we explore the VNS algorithm, a robust 
+% metaheuristic known for its flexibility and capacity to escape local optima through systematic changes in 
+% neighborhood structures. The algorithm dynamically adjusts between multiple neighborhood structures, each 
+% designed to explore different aspects of the solution landscape, thereby enhancing the search process. 
+% We will also discuss the specific configurations and parameters used, as well as the design of neighborhood 
+% operators tailored to the problem characteristics. This comprehensive approach aims to deliver a high-quality 
+% solution by leveraging the strengths of priority-based encoding and the adaptability of VNS.
 
 \subsection{Solution representation}
-In this work, a priority-based encoding scheme is used to represent the solution space effectively, drawing on chromosome-based 
-representations where each gene corresponds to a node (source or depot) in the transportation problem \cite{gen2006genetic}. 
-The transportation problem is modeled as a tree structure, with nodes representing sources or depots and edges representing 
-transportation arcs. The primary objective is to construct a transportation tree that meets all depot demands while minimizing 
-total transportation costs.
+As discussed in \cite{rajabi2023utilizing}, this work also employs the priority-based encoding scheme to represent the solution space. Following the approach proposed by Gen, Altiparmak, and Lin \cite{gen2006genetic} in their application of Genetic Algorithms (GA) to a simpler version of the problem, each source-depot pair in the supply chain is treated as a gene within the chromosome. The priority of each source-depot pair is encoded in the chromosome, which then guides the construction of the transportation tree.
 
-Each chromosome encodes the priority of nodes, guiding the construction of the transportation tree by establishing the most 
-cost-effective connections first. The decoding process starts by identifying the node with the highest priority in the chromosome 
-and connecting it to the corresponding node with the lowest transportation cost. For instance, if Depot 1 has the highest priority, 
-it is linked to the source that offers the lowest cost connection to Depot 1. The shipment amount is determined by the minimum of 
-the source's capacity and the depot's demand. Once the shipment is fulfilled, the depot's priority is updated (or set to zero if 
-its demand is satisfied), and the process continues with the next highest priority node. This sequential process of arc appending 
-and priority updating repeats until all depots' demands are satisfied, resulting in a complete transportation tree.
+The decoding process starts by identifying the node with the highest priority in the chromosome and connecting it to the corresponding node with the lowest transportation cost. The shipment amount is determined by the minimum of the source's capacity and the depot's demand. Once the shipment is fulfilled, the depot's priority is updated (or set to zero if its demand is satisfied), and the process continues with the next highest priority node. This sequential process of arc appending and priority updating repeats until all depots' demands are satisfied, resulting in a complete transportation tree.
+
+% É importante notar que, para o problema descrito pelas equações \eqref{eq:custo}-\eqref{eq:restricao20}, cada par fonte-depósito da cadeia tem sua própria sequência de prioridades, que deve ser respeitada durante a construção da árvore de transporte. Portanto, a solução como um todo é representada por um conjunto de cromossomos, ou vetores de uma maneira geral, onde cada um possui a sequência de prioridades de um par fonte-depósito. Em \cite{rajabi2023utilizing}, cada elemento é em um vetor é um número de 0 a 1 e a prioridade entre esses elementos é definida pela ordem crescente. No nosso trabalho, nós consideraremos números inteiros de 1 a $Z$, onde $Z$ é o número de fontes-depósitos em cada trecho da cadeia. A prioridade entre esses elementos é definida pela ordem crescente dos números. A representação por números reais de 0 a 1 é mais atraente para lidar com operadores de cruzamento e mutação tradicionais, como é o caso em \cite{rajabi2023utilizing}. No entanto, a representação por números inteiros de 1 a $Z$ é mais intuitiva e facilita a implementação de operadores de vizinhança específicos, como veremos a seguir. Vale ressaltar também que, no caso de valores de 0 a 1, pequenas perturbações nesses valores podem não mudar a ordem relativa dos elementos, o que implica na mesma solução. Isto não ocorre quando se trabalha com números inteiros.
+
+It is important to note that, for the problem described by equations \eqref{eq:custo}-\eqref{eq:restricao20}, each source-depot pair in the chain has its own priority sequence, which must be respected during the construction of the transportation tree. Therefore, the solution as a whole is represented by a set of chromosomes, or more generally, vectors, where each one contains the priority sequence of a source-depot pair. In \cite{rajabi2023utilizing}, each element in the vector is a number between 0 and 1, and the priority among these elements is defined by their ascending order. In our work, we consider integer numbers from 1 to 
+$Z$, where $Z$ is the number of source-depot pairs in each segment of the chain. The priority among these elements is defined by their ascending numerical order.
+
+The representation using real numbers between 0 and 1 is more suitable for handling traditional crossover and mutation operators, as is the case in \cite{rajabi2023utilizing}. However, the representation using integers from 1 to $Z$ is more intuitive and facilitates the implementation of specific neighborhood operators, as we will discuss later. It is also worth noting that, in the case of values between 0 and 1, small perturbations in these values may not change the relative order of the elements, resulting in the same solution. This does not occur when working with integer numbers.
+
+% , drawing on chromosome-based 
+% representations where each gene corresponds to a node (source or depot) in the transportation problem \cite{gen2006genetic}. 
+% The transportation problem is modeled as a tree structure, with nodes representing sources or depots and edges representing 
+% transportation arcs. The primary objective is to construct a transportation tree that meets all depot demands while minimizing 
+% total transportation costs.
+
+% Each chromosome encodes the priority of nodes, guiding the construction of the transportation tree by establishing the most 
+% cost-effective connections first. The decoding process starts by identifying the node with the highest priority in the chromosome 
+% and connecting it to the corresponding node with the lowest transportation cost. For instance, if Depot 1 has the highest priority, 
+% it is linked to the source that offers the lowest cost connection to Depot 1. The shipment amount is determined by the minimum of 
+% the source's capacity and the depot's demand. Once the shipment is fulfilled, the depot's priority is updated (or set to zero if 
+% its demand is satisfied), and the process continues with the next highest priority node. This sequential process of arc appending 
+% and priority updating repeats until all depots' demands are satisfied, resulting in a complete transportation tree.
 
 The effectiveness of using chromosome decodification in supply chain optimization has been well-documented in recent literature. 
 For instance, this approach has been applied successfully to the design of integrated forward/reverse logistics networks \cite{pishvaee2010memetic}, 
@@ -314,9 +328,11 @@ multi-objective supply chain network designs \cite{altiparmak2006genetic}, and d
 systems \cite{liu2023integrated}. These studies highlight the versatility and effectiveness of this decodification method in handling complex 
 supply chain problems, including optimizing costs, responsiveness, and resource allocation across various supply chain configurations.
 
-For example, after determining the quantity of open-mouth pistachios required by consumers, we work backward to calculate the factories' 
-processing needs, ensuring their capacities are not overloaded. This then informs how much material the processing centers must supply, 
-aligning each upstream stage with the final demand and optimizing resource use throughout the chain.
+The decoding process is explained in \cite{gen2006genetic} for a basic modeling of the supply chain problem. However, the authors of \cite{rajabi2023utilizing}, who employ this methodology, did not clarify how they adapted the decoding process from \cite{gen2006genetic} to the problem described by \eqref{eq:custo}-\eqref{eq:restricao20}, which involves significantly more constraints. This description is crucial because it is directly related to ensuring solution feasibility. Without it, a fair comparison of algorithms cannot be guaranteed. Therefore, we present as follows the methodology for adapting the decoding process to the problem at hand.
+
+% With the quantity of open-mouth pistachios required by consumers, we work backward to calculate the factories' 
+% processing needs, ensuring their capacities are not overloaded. This then informs how much material the processing centers must supply, 
+% aligning each upstream stage with the final demand and optimizing resource use throughout the chain.
 
 \begin{figure}[h!]
     \centering
@@ -325,48 +341,47 @@ aligning each upstream stage with the final demand and optimizing resource use t
     \label{fig:decode_flux}
 \end{figure}
 
-As shown in Figure~\ref{fig:decode_flux}, the decoding process begins with the flow of pistachio products from factories to consumers, ensuring that 
+As shown in Figure~\ref{fig:decode_flux}, the decoding process begins with the flow of pistachio products from factories to consumers \eqref{eq:restricao17}, ensuring that 
 all constraints are met: consumer demand is satisfied, the total amount of product leaving the factory does not exceed the 
 pistachio received from processing centers multiplied by the factory’s production rate, and the pistachio sent to any active 
-factory is within its capacity. Likewise, the distribution of cosmetic products from factories to consumers and the transfer of oil 
-from extraction centers to both oil consumers and cosmetic factories adhere to the same principles, ensuring all constraints are satisfied
+factory is within its capacity. Likewise, the distribution of cosmetic products from factories to consumers \eqref{eq:restricao19} and the transfer of oil 
+from extraction centers to both oil consumers and cosmetic factories \eqref{eq:restricao18} adhere to the same principles, ensuring all constraints are satisfied.
 
-The flow from processing centers to pistachio factories and oil extraction centers is regulated by constraints ensuring that the 
+The flow from processing centers to pistachio factories and oil extraction centers is regulated by constraints \eqref{eq:restricao7}-\eqref{eq:restricao9} ensuring that the 
 total pistachios leaving a processing center do not exceed the harvested amount sent by producers. Harvested pistachios are divided into three parts, 
 each assigned to a product type, with a $(1-\beta)$ loss factor applied to pistachios with shells and pits. Factories can receive more pistachios than 
-they process, but must meet a minimum intake, while oil extraction centers send no more than $(1-\lambda)$ of the kernels to consumers and cosmetics factories, 
-with the remaining $\lambda$ going to composting. All processing centers must respect their capacity limits to ensure efficient distribution.
+they process, but must meet a minimum intake, while oil extraction centers send no more than $(1-\lambda)$ of the kernels to consumers and cosmetics factories \eqref{eq:restricao13}, 
+with the remaining $\lambda$ going to composting \eqref{eq:restricao14}. All processing centers must respect their capacity limits to ensure efficient distribution.
 
 The decoding process for this specific flow is more complex and requires a targeted approach. First, we must determine the flow of in-shell pistachios from 
-processing centers to pistachio factories, and the flow of kernels from processing centers to oil extraction centers. Using the given constraints, we calculate 
+processing centers to pistachio factories, and the flow of kernels from processing centers to oil extraction centers. Using the given constraints \eqref{eq:restricao12}-\eqref{eq:restricao13}, we calculate 
 the quantity of harvested pistachios each processing center must receive to meet the demands of both pistachio factories and oil extraction centers.
 
 If the factory demand exceeds that of the oil extraction centers, the processing center must prioritize meeting the exact demand of the factories. Since 
-harvested pistachios are divided into three proportional parts, basing the allocation solely on the oil extraction center’s demand would leave the factories 
+harvested pistachios are divided into three proportional parts \eqref{eq:restricao11}, basing the allocation solely on the oil extraction center’s demand would leave the factories 
 undersupplied. The priority should be given to the entity with the greatest need, adjusting the remaining flow accordingly, as constraints allow for over-supply 
 but not shortages.
 
 Thus, we need to adjust the quantity of kernels shipped from the processing centers to the oil extraction centers, ensuring enough is sent to satisfy the 
 restrictions. This involves calculating the total amount of kernels required, identifying the oil extraction center with the lowest transportation cost, and 
-directing the additional flow there to minimize costs.
-
-If, instead, the oil extraction centers have higher demand, the process is reversed: the pistachio factories' flow is adjusted accordingly to balance 
+directing the additional flow there to minimize costs. If, instead, the oil extraction centers have higher demand, the process is reversed: the pistachio factories' flow is adjusted accordingly to balance 
 the supply while minimizing transportation costs.
 
-Next, the flow of harvested pistachios from producers to processing centers is also governed by constraints ensuring that no producer exceeds its production 
+Next, the flow of harvested pistachios from producers to processing centers is also governed by constraints \eqref{eq:restricao1}-\eqref{eq:restricao2} ensuring that no producer exceeds its production 
 capacity and no processing center receives more than it can process. While the capacity of each producer limits the supply, the demand for each 
 processing center has already been determined in a previous step. If producers' capacities are insufficient to meet the total demand, the solution 
-becomes infeasible. However, due to the constraints on product allocation between processing centers, this flow will always satisfy the condition of equality.
+becomes infeasible. Therefore, it depends on the feasibility of the problem, i.e., if the parameters $Cpa_i$ and $Cpu_j$ are such that the total demand can be met.
+
+% However, due to the constraints on product allocation between processing centers, this flow will always satisfy the condition of equality.
 
 Similarly, the flow of fertilizer from composting centers to consumers is governed by constraints that ensure composting centers do not receive more waste than 
 they can handle. The amount of fertilizer sent must be less than or equal to the waste received from processing and oil extraction centers, adjusted by the 
-composting center's production rate. Finally, for the waste flow from processing and oil extraction centers to composting centers, constraints also ensure that no 
+composting center's production rate \eqref{eq:restricao16}. Finally, for the waste flow from processing and oil extraction centers to composting centers, constraint \eqref{eq:restricao3} also ensures that no 
 composting center receives more waste than its capacity. Waste from each processing center is assigned to the composting center with the lowest associated cost, 
-ensuring that no composting center receives more waste than required. If the waste sent to a composting center falls short of its needs, the demand is adjusted 
+ensuring that no composting center receives more waste than required \eqref{eq:restricao20}. If the waste sent to a composting center falls short of its needs, the demand is adjusted 
 accordingly. Conversely, if excess waste is sent, the demand is set to zero. Once all processing centers have allocated their waste, any remaining composting 
 needs are fulfilled by oil extraction centers, considering their available capacity. If no additional waste is needed, no waste is sent from the oil extraction 
 centers. Finally, the total cost of transporting waste is updated based on the assignments, ensuring efficient waste management across the supply chain.
-
 
 \subsection{VNS algorithm}
 The Variable Neighborhood Search (VNS) algorithm is a powerful metaheuristic that combines local search with
