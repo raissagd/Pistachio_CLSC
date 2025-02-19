@@ -434,7 +434,7 @@ In the context of VNS, neighborhood operators play a crucial role
 in exploring the solution space by systematically altering the current solution to generate new candidate solutions. 
 The effectiveness of VNS relies heavily on the design and application of these operators, as they determine the 
 diversity and direction of the search process. In this study, we utilize four classic neighborhood operators: 
-Swap, Reversion, Insertion, and Slide \cite{devika2014designing}. Each operator perturbs the solution in a distinct manner, allowing the 
+Swap, Reversion, Insertion, and Slide \cite{devika2014designing}. Each operator modifies the solution in a distinct manner, allowing the 
 algorithm to escape local optima and explore different regions of the search space. By iteratively applying 
 these operators, VNS enhances its capability to find high-quality solutions through continuous diversification 
 and intensification phases. The neighborhood structures used are detailed below, and illustraed in Figure \ref{fig:nbdh_op}.:
@@ -455,6 +455,8 @@ and intensification phases. The neighborhood structures used are detailed below,
     which can enhance the search process by generating new configurations with minimal disruption.
 \end{itemize}
 
+It is important to emphasize that these operations are performed considering a priority vector within the set that characterizes a solution. Therefore, a priority vector, which represents a source-depot pair in the chain, is randomly selected, and one of these operations is applied to it.
+
 % While we also tested other general and more specific neighborhood structures, the four operators mentioned above proved to be the most effective 
 % in our experiments. Our approach is also inspired by the findings of \cite{devika2014designing}, who discusses the importance of neighborhood structures 
 % within the Variable Neighborhood Search (VNS) algorithm for solving complex supply chain problems. Their study emphasizes the necessity of 
@@ -468,83 +470,40 @@ and intensification phases. The neighborhood structures used are detailed below,
     \label{fig:nbdh_op}
 \end{figure}
 
-\section{Results}
+\section{Computational Experiments}
 \label{sec:sec4}
     
-Our results demonstrate that the Variable Neighborhood Search (VNS) algorithm performs competitively against both an exact algorithm, 
-Gurobi, and a population-based metaheuristic, the Genetic Algorithm (GA), when considering execution time and memory efficiency, particularly 
-on larger instances. While the Exact Algorithm guarantees optimal solutions, its memory consumption and execution time increase significantly as problem 
-sizes grow, often making it impractical for large-scale problems. VNS provides high-quality solutions with a significant reduction in both 
-time and memory usage, making it a more practical choice in these scenarios. Although the population-based metaheuristic is widely used in the 
-literature, its performance deteriorates with increasing problem size, both in terms of solution quality and execution time.
+% Our results demonstrate that the Variable Neighborhood Search (VNS) algorithm performs competitively against both an exact algorithm, 
+% Gurobi, and a population-based metaheuristic, the Genetic Algorithm (GA), when considering execution time and memory efficiency, particularly 
+% on larger instances. While the Exact Algorithm guarantees optimal solutions, its memory consumption and execution time increase significantly as problem 
+% sizes grow, often making it impractical for large-scale problems. VNS provides high-quality solutions with a significant reduction in both 
+% time and memory usage, making it a more practical choice in these scenarios. Although the population-based metaheuristic is widely used in the 
+% literature, its performance deteriorates with increasing problem size, both in terms of solution quality and execution time.
 
-\subsection{Comparison between VNS and an Exact Algorithm}
+The proposed method is tested on a set of instances with varying sizes. The size of each instance is defined by the number of elements in each entity of the problem, namely $I$, $J$, $K$, $E$, $S$, $Q$, $N_1$, $N_2$, $N_3$, and $M$. To construct the instances, values of 100, 200, 400, 800, and 1600 are considered for each of these entities. This means that the size of each entity is uniform across all of them, resulting in 100,500; 401,000; 1,602,000; 6,404,000; and 25,608,000 variables for each instance, respectively. Each instance is referenced by its base number of entities, i.e., 100, 200, 400, 800, and 1600.
 
-As shown in Table \ref{tab:comparison_vns_gurobi}, Gurobi efficiently finds optimal solutions for smaller instances, such as those with 100 and 200 elements. 
-In these cases, the difference between the average objective function values of VNS and Gurobi is relatively small—4.19\% for the 100-instance set and 8.22\% 
-for the 200-instance set. However, as the problem size increases, the gap in solution quality widens significantly, with VNS being 20.12\% from the optimal 
-solution for the 800-instance set.
+It is important to note that algorithms using the priority-based representation have a significantly smaller number of variables. This is because the total number of priorities is the sum of the priorities for each source-depot pair. In contrast, the mathematical model \eqref{eq:custo}-\eqref{eq:restricao20} has a number of variables equal to the sum of all possible transportation options for each source-depot pair, plus the binary variables indicating whether each entity is active or not. For the priority-based algorithms, the number of variables is 1,700; 3,400; 6,800; 13,600; and 27,200, respectively.
 
-The boxplots in Figure 2 further illustrate the variability of VNS across 30 runs compared to Gurobi's single optimal solution. 
-For instance 100, VNS results range from $7.15 \times 10^6$ to $8.75 \times 10^6$, closely matching Gurobi's solution of $7.06 \times 10^6$ 
-with only a 4.19\% difference. In instance 200, VNS shows slightly more variability, ranging from $1.40 \times 10^8$ to $1.75 \times 10^8$, 
-maintaining an 8.22\% gap from Gurobi's $1.37 \times 10^8$, in average. As problem size increases, the VNS range widens—for instance 400, from 
-$2.70 \times 10^8$ to $3.30 \times 10^8$, with a 13.62\% difference, and for instance 800, from $5.40 \times 10^8$ to $6.85 \times 10^8$, 
-showing a 20.12\% gap from Gurobi's $5.47 \times 10^8$. Although the difference in solution quality increases as the problem 
-size grows, VNS remains competitive by providing solutions much faster than Gurobi, particularly for larger instances.
+The other parameters of the model, such as capacities and demands, were randomly defined for each instance based on the information provided in Table 7 of \cite{rajabi2023utilizing}. The proposed method is compared with two other approaches: a Genetic Algorithm (GA) and an exact Mixed-Integer Linear Programming (MILP) algorithm implemented using Gurobi 11.0.3 \cite{gurobi}. The GA was implemented with mutation operators based on swapping elements within a priority vector and crossover operators based on exchanging subsequences of priorities between two vectors. In both cases, the vectors are selected randomly. The population size was set 100 and the Binary Tournament was applied as selection strategy.
 
-When examining execution time, the results clearly highlight Gurobi's inefficiency on larger instances. For example, at 
-400 instances, Gurobi takes over 70,000 seconds to solve the problem, while VNS, in average, takes just over 2,000 seconds, offering a 
-remarkable 97.13\% reduction in time. By the time we reach 1600 instances, Gurobi is unable to find a solution due to its 
-excessive resource demands, while VNS continues to provide a feasible solution in approximately 17.766 seconds, with results varying from
-approximately $1.29 \times 10^9$ to $1.43 \times 10^9$ .
+The stopping criterion for the proposed method and the GA was set to 100,000 evaluations. For each instance, the proposed method and the GA were executed 30 times. The experiments were conducted on a machine with the following configuration: Ubuntu 24.04.1 LTS, Intel Xeon E3-1240 V2 with 8 cores, and 32 GB of RAM.
 
-These results emphasize that although the Exact Algorithm produces the best solutions for small instances, it becomes impractical for 
-larger problems due to its memory usage and excessive execution times. VNS, while not optimal, offers a more practical and 
-scalable solution for larger instances.
-
-\begin{figure}[h!]
-    \centering
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_100.png}
-        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 100}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_200.png}
-        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 200}
-    \end{minipage}
-    
-    \vspace{0.5cm}
-
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_400.png}
-        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 400}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_800.png}
-        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 800}
-    \end{minipage}
-    
-    \vspace{0.5cm}
-
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_1600.png}
-        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 1600. The exact algorithm was not able to return a solution due to excessive resource demands.}
-    \end{minipage}
-
-    \caption{Boxplot visualizations comparing the performance of the VNS algorithm and an exact algorithm (Gurobi) across different 
-    problem sizes, based on objective function values.}
-    \label{fig:VNSxGA_boxplots}
-\end{figure}
+% * O método proposto é experimentado em um conjunto de instâncias com diferentes tamanhos.
+% * O tamanho de cada instância é definido de acordo com o número de elementos de cada entidade do problema, ou seja, $I$, $J$, $K$, $E$, $S$, $Q$, $N_1$, $N_2$, $N_3$, e $M$.
+% * Para formar as instâncias, são considerados valores de 100, 200, 400, 800 e 1600 para cada uma dessas entidades. Ou seja, o tamanho de cada instância, i.e., cada uma dessas entidades tem o mesmo valor. Isso equivale  100,500, 401,000, 1,602,000, 6,404,000 e 25,608,000 variáveis, respectivamente.
+% * Cada instância é referenciada pelo número base de entidades, ou seja, 100, 200, 400, 800 e 1600.
+% * É importante observar que os algoritmos com a representação de prioridades tem um número muito menor de variáveis, uma vez que o número total de prioridades é soma das quantidade prioridades em cada par fonte-depósito. E, no modelo original, o número de variáveis é igual a soma de cada possibilidade de transporte em cada par fonte-depósito mais o número de variáveis binárias que indicam se cada entidade está ativa ou não.
+% * O número de variáveis nos algoritmos baseados na representação de prioridades é de 1700, 3400, 6800, 13600 e 27200, respectivamente.
+% * Os outros parâmetros do modelo, tais como as capacidades e demandas, foram definidas aleatoriamente para cada instância seguindo as informações da Tabela 7 de \cite{rajabi2023utilizing}.
+% * O método proposto será comparado com dois outros métodos: GA e um algoritmo exato de Programação Linear Inteira-Mista implementado pelo Gurobi.
+% * O GA foi implementado com operadores de mutação baseado na troca de elementos dentro de um vetor de prioridades e de cruzamento baseado na troca de subsequências de prioridades entre dois vetores. Em ambos os casos, os vetores são escolhidos aleatoriamente.
+% * O critério de parada para o método proposto e o GA foi 100,000 avaliações.
+% * Para cada instância, o método proposto e o GA foi executado 30 vezes.
+% * A configuração da máquina onde os experimentos foram executados é: Ubuntu 24.04.1 LTS, Intel Xeon E3-1240 V2 com 8 núcleos, 32 GB de RAM.
 
 \subsection{Comparison between VNS and GA}
+
+The objective of this experiment was to compare the proposed methodology with a method similar to those used in the primary reference \cite{rajabi2023utilizing}. However, a fair comparison with the algorithms from \cite{rajabi2023utilizing} was not feasible, as the decoding methodology was not explicitly presented in their work. Consequently, the results of this experiment serve to establish a relationship between the proposed method in this study and the reference, providing insights into their relative performance and applicability.
 
 The performance of the Genetic Algorithm (GA) can be seen in Table \ref{tab:comparison_vns_ga}. For small instances, such as 100, the 
 difference between VNS and GA is negligible—only 0.71\%. However, as the problem size grows, GA's performance gradually worsens compared to VNS. 
@@ -644,6 +603,71 @@ and scalable option for large-scale optimization problems.
     \end{tabular*}
 \end{table}
 
+\subsection{Comparison between VNS and an Exact Algorithm}
+
+As shown in Table \ref{tab:comparison_vns_gurobi}, Gurobi efficiently finds optimal solutions for smaller instances, such as those with 100 and 200 elements. 
+In these cases, the difference between the average objective function values of VNS and Gurobi is relatively small—4.19\% for the 100-instance set and 8.22\% 
+for the 200-instance set. However, as the problem size increases, the gap in solution quality widens significantly, with VNS being 20.12\% from the optimal 
+solution for the 800-instance set.
+
+The boxplots in Figure 2 further illustrate the variability of VNS across 30 runs compared to Gurobi's single optimal solution. 
+For instance 100, VNS results range from $7.15 \times 10^6$ to $8.75 \times 10^6$, closely matching Gurobi's solution of $7.06 \times 10^6$ 
+with only a 4.19\% difference. In instance 200, VNS shows slightly more variability, ranging from $1.40 \times 10^8$ to $1.75 \times 10^8$, 
+maintaining an 8.22\% gap from Gurobi's $1.37 \times 10^8$, in average. As problem size increases, the VNS range widens—for instance 400, from 
+$2.70 \times 10^8$ to $3.30 \times 10^8$, with a 13.62\% difference, and for instance 800, from $5.40 \times 10^8$ to $6.85 \times 10^8$, 
+showing a 20.12\% gap from Gurobi's $5.47 \times 10^8$. Although the difference in solution quality increases as the problem 
+size grows, VNS remains competitive by providing solutions much faster than Gurobi, particularly for larger instances.
+
+When examining execution time, the results clearly highlight Gurobi's inefficiency on larger instances. For example, at 
+400 instances, Gurobi takes over 70,000 seconds to solve the problem, while VNS, in average, takes just over 2,000 seconds, offering a 
+remarkable 97.13\% reduction in time. By the time we reach 1600 instances, Gurobi is unable to find a solution due to its 
+excessive resource demands, while VNS continues to provide a feasible solution in approximately 17.766 seconds, with results varying from
+approximately $1.29 \times 10^9$ to $1.43 \times 10^9$ .
+
+These results emphasize that although the Exact Algorithm produces the best solutions for small instances, it becomes impractical for 
+larger problems due to its memory usage and excessive execution times. VNS, while not optimal, offers a more practical and 
+scalable solution for larger instances.
+
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_100.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 100}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_200.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 200}
+    \end{minipage}
+    
+    \vspace{0.5cm}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_400.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 400}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_800.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 800}
+    \end{minipage}
+    
+    \vspace{0.5cm}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGUROBI_1600.png}
+        \subcaption{I, J, K, E, S, Q, N1, N2, N3, M = 1600. The exact algorithm was not able to return a solution due to excessive resource demands.}
+    \end{minipage}
+
+    \caption{Boxplot visualizations comparing the performance of the VNS algorithm and an exact algorithm (Gurobi) across different 
+    problem sizes, based on objective function values.}
+    \label{fig:VNSxGA_boxplots}
+\end{figure}
 
 \section{Conclusion}
 \label{sec:sec5}
