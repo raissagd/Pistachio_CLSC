@@ -31,4 +31,4 @@ number_executions = 30
 results = RunMultipleMethodsMultipleTimes().run(data, methods, number_executions)
 
 # Salvando as soluções em um arquivo pickle
-PersistMultipleSolutions().save(results, 'solutions_100_GA', './tests/GAxVNS/results/')
+PersistMultipleSolutions().save(results, 'solutions_100_GA', './tests/GAxVNS/results_tempo/')
