@@ -481,6 +481,8 @@ class GeneticAlgorithm(Algorithm):
         convergence = super().solve(data)
         # Prevent early stopping in case of reusing the object
         self.n_eval = 0
+
+        tic = time()
         
         # Solve the problem using the genetic algorithm
         population = self.initialize_population(data)
@@ -535,5 +537,6 @@ class GeneticAlgorithm(Algorithm):
             convergence.add(best_solution)
             #(f"Best FX = {best_solution.FX}")
 
+        best_solution.execution_time = time()-tic
         best_solution.convergence = convergence
         return best_solution

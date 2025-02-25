@@ -20,3 +20,4 @@ tests/run_parallel/results/script_800_results.pkl
 /sn-article-template/*.fls
 /sn-article-template/*.synctex.gz
 /sn-article-template/*.out
+/data/data_1600.npz
