@@ -12,7 +12,7 @@ data.loadFile("data/data_100.npz")
 population_size = 100
 crossover_rate = 0.8
 mutation_rate = 0.2
-max_eval = 100000
+max_eval = 500 # 100000
 initialization = 1
 
 # Criando a instância do algoritmo genético
