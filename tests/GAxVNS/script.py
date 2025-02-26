@@ -26,7 +26,7 @@ ga = GeneticAlgorithm(
 
 # Executando o algoritmo 30 vezes em paralelo
 methods = [ga]
-number_executions = 30
+number_executions = 2
 
 results = RunMultipleMethodsMultipleTimes().run(data, methods, number_executions)
 
