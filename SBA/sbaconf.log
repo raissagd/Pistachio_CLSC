@@ -1,0 +1,484 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  8 MAR 2025 20:00
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**c:/Users/Lenovo/Documents/IC/SBA/sbaconf.tex
+(c:/Users/Lenovo/Documents/IC/SBA/sbaconf.tex
+LaTeX2e <2024-06-01> patch level 1
+L3 programming layer <2024-05-27>
+(ifacconf.cls
+Document Class: ifacconf 2008/04/14, 3.2ModD: IFAC conferences
+
+\@frontmatterwidth=\dimen141
+\@bls=\dimen142
+\eqntopsep=\skip49
+\eqnarraycolsep=\dimen143
+\labelwidthi=\dimen144
+\labelwidthii=\dimen145
+\labelwidthiii=\dimen146
+\labelwidthiv=\dimen147
+\@maxlistdepth=\count194
+\eqnbaselineskip=\skip50
+\eqnlineskip=\skip51
+\mathindent=\dimen148
+\rulepreskip=\dimen149
+\rulepostskip=\dimen150
+\Arrayrulewidth=\dimen151
+\crulepostskip=\dimen152
+\@Ldec=\dimen153
+\@Rdec=\dimen154
+\@Lpmdec=\dimen155
+\@Rpmdec=\dimen156
+\c@section=\count195
+\c@subsection=\count196
+\c@subsubsection=\count197
+\c@paragraph=\count198
+\c@subparagraph=\count199
+(C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/tools\theorem.sty
+Package: theorem 2023/07/05 v2.2c Theorem extension package (FMi)
+\theorem@style=\toks17
+\theorem@bodyfont=\toks18
+\theorempreskipamount=\skip52
+\theorempostskipamount=\skip53
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/tools\thp.sty
+File: thp.sty 2023/07/05 v2.2c Theorem extension package (FMi)
+)) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/base\newlfont.sty
+Package: newlfont 1998/08/17 v2.2m Standard LaTeX package
+LaTeX Info: Redefining \em on input line 57.
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/base\latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 52.
+))
+LaTeX Info: Redefining \rm on input line 595.
+LaTeX Info: Redefining \sf on input line 596.
+LaTeX Info: Redefining \tt on input line 597.
+LaTeX Info: Redefining \bf on input line 598.
+LaTeX Info: Redefining \it on input line 599.
+LaTeX Info: Redefining \sl on input line 600.
+LaTeX Info: Redefining \sc on input line 601.
+\c@thm=\count266
+\c@alg=\count267
+\c@algorithm=\count268
+\c@note=\count269
+\c@summ=\count270
+\c@case=\count271
+\@tempcntc=\count272
+\c@figure=\count273
+\c@table=\count274
+\t@glob@notes=\toks19
+\t@loc@notes=\toks20
+\note@cnt=\count275
+\c@author=\count276
+\n@author=\count277
+\c@collab=\count278
+\n@collab=\count279
+\c@address=\count280
+\sv@mathsurround=\dimen157
+\sv@hyphenpenalty=\count281
+\prev@elem=\count282
+\cur@elem=\count283
+\fm@box=\box52
+\fm@size=\dimen158
+\t@abstract=\box53
+\t@keyword=\box54
+\rep@mod=\count284
+\t@xtheight=\dimen159
+\@logoheight=\dimen160
+\@pubyear=\count285
+\c@firstpage=\count286
+\c@lastpage=\count287
+\slashbox=\box55
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 1506.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 1506.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 1506.
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/base\ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+\Slashbox=\box56
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 1507.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 1507.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 1507.
+\@frontindent=\dimen161
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks21
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/05/23 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen162
+\Gin@req@width=\dimen163
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2024/05/23 v2.17q AMS math features
+\@mathmargin=\skip54
+
+For additional information on amsmath, use the `?' option.
+(C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks22
+\ex@=\dimen164
+)) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen165
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+LaTeX Info: Redefining \operatorname on input line 43.
+)
+\inf@bad=\count288
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count289
+\leftroot@=\count290
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count291
+\DOTSCASE@=\count292
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box57
+\strutbox@=\box58
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen166
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count293
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count294
+\dotsspace@=\muskip17
+\c@parentequation=\count295
+\dspbrk@lvl=\count296
+\tag@help=\toks23
+\row@=\count297
+\column@=\count298
+\maxfields@=\count299
+\andhelp@=\toks24
+\eqnshift@=\dimen167
+\alignsep@=\dimen168
+\tagshift@=\dimen169
+\tagwidth@=\dimen170
+\totwidth@=\dimen171
+\lineht@=\dimen172
+\@envbody=\toks25
+\multlinegap=\skip55
+\multlinetaggap=\skip56
+\mathdisplay@stack=\toks26
+LaTeX Info: Redefining \[ on input line 2953.
+LaTeX Info: Redefining \] on input line 2954.
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/natbib\natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip57
+\bibsep=\skip58
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count300
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/algorithms\algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environment
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count301
+\float@exts=\toks27
+\float@box=\box59
+\@float@everytoks=\toks28
+\@floatcapt=\box60
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks29
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/algorithmicx\algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count302
+\c@ALG@rem=\count303
+\c@ALG@nested=\count304
+\ALG@tlm=\skip59
+\ALG@thistlm=\skip60
+\c@ALG@Lnr=\count305
+\c@ALG@blocknr=\count306
+\c@ALG@storecount=\count307
+\c@ALG@tmpcounter=\count308
+\ALG@tmplength=\skip61
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/algorithmicx\algpseudocode.sty
+Package: algpseudocode 
+
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/caption\subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen173
+\captionmargin=\dimen174
+\caption@leftmargin=\dimen175
+\caption@rightmargin=\dimen176
+\caption@width=\dimen177
+\caption@indent=\dimen178
+\caption@parindent=\dimen179
+\caption@hangindent=\dimen180
+\abovecaptionskip=\skip62
+\belowcaptionskip=\skip63
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+Package caption Info: \@makecaption = macro:->\@makefigurecaption  on input line 1175.
+)
+
+Package caption Warning: Unknown document class (or package),
+(caption)                standard defaults will be used.
+See the caption package documentation for explanation.
+
+\c@caption@flags=\count309
+\c@continuedfloat=\count310
+Package caption Info: float package is loaded.
+)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count311
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count312
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
+Package: babel 2024/06/02 v24.6 The Babel package
+\babel@savecnt=\count313
+\U@D=\dimen181
+\l@unhyphenated=\language79
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count314
+
+*************************************
+* Local config file bblopts.cfg used
+*
+(C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/babel-english\english.ldf
+Language: english 2017/06/06 v3.3r English support from the babel system
+Package babel Info: Hyphen rules for 'canadian' set to \l@english
+(babel)             (\language0). Reported on input line 102.
+Package babel Info: Hyphen rules for 'australian' set to \l@ukenglish
+(babel)             (\language73). Reported on input line 105.
+Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
+(babel)             (\language73). Reported on input line 108.
+)) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/en\babel-english.tex
+Package babel Info: Importing font and identification data for english
+(babel)             from babel-en.ini. Reported on input line 11.
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks30
+\inpenc@posthook=\toks31
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/ae\ae.sty
+Package: ae 2001/02/12 1.3 Almost European Computer Modern
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+))
+LaTeX Font Info:    Trying to load font information for T1+aer on input line 64.
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aer.fd
+File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count315
+\l__pdf_internal_box=\box61
+) (sbaconf.aux)
+\openout1 = `sbaconf.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count316
+\scratchdimen=\dimen182
+\scratchbox=\box62
+\nofMPsegments=\count317
+\nofMParguments=\count318
+\everyMPshowfont=\toks32
+\MPscratchCnt=\count319
+\MPscratchDim=\dimen183
+\MPnumerator=\count320
+\makeMPintoPDFobject=\count321
+\everyMPtoPDFconversion=\toks33
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/grfext\grfext.sty
+Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 504.
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Calculating math sizes for size <14> on input line 82.
+\c@sv@footnote=\count322
+
+
+
+
+[1{C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
+
+]
+<./imgs/supplychain.PNG, id=9, 489.027pt x 287.8755pt>
+File: ./imgs/supplychain.PNG Graphic file (type png)
+<use ./imgs/supplychain.PNG>
+Package pdftex.def Info: ./imgs/supplychain.PNG  used on input line 153.
+(pdftex.def)             Requested size: 239.00298pt x 140.69563pt.
+
+Overfull \hbox (1.93571pt too wide) detected at line 173
+[]
+ []
+
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[2 <./imgs/supplychain.PNG>]
+
+<./imgs/decode_flux.PNG, id=21, 482.40225pt x 298.716pt>
+File: ./imgs/decode_flux.PNG Graphic file (type png)
+<use ./imgs/decode_flux.PNG>
+Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 261.
+(pdftex.def)             Requested size: 239.00298pt x 147.99933pt.
+
+
+[3 <./imgs/decode_flux.PNG>]
+<./imgs/nbhd_op.png, id=26, 410.7345pt x 263.18324pt>
+File: ./imgs/nbhd_op.png Graphic file (type png)
+<use ./imgs/nbhd_op.png>
+Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 308.
+(pdftex.def)             Requested size: 239.00298pt x 153.14836pt.
+
+
+<./imgs/VNSxGA_100.png, id=27, 711.1368pt x 419.166pt>
+File: ./imgs/VNSxGA_100.png Graphic file (type png)
+<use ./imgs/VNSxGA_100.png>
+Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 346.
+(pdftex.def)             Requested size: 233.02647pt x 137.35301pt.
+<./imgs/VNSxGA_200.png, id=28, 719.0865pt x 419.166pt>
+File: ./imgs/VNSxGA_200.png Graphic file (type png)
+<use ./imgs/VNSxGA_200.png>
+Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 347.
+(pdftex.def)             Requested size: 238.20993pt x 138.85606pt.
+<./imgs/VNSxGA_400.png, id=29, 734.2632pt x 403.9893pt>
+File: ./imgs/VNSxGA_400.png Graphic file (type png)
+<use ./imgs/VNSxGA_400.png>
+Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 351.
+(pdftex.def)             Requested size: 243.3855pt x 133.90866pt.
+<./imgs/VNSxGA_800.png, id=30, 711.1368pt x 419.166pt>
+File: ./imgs/VNSxGA_800.png Graphic file (type png)
+<use ./imgs/VNSxGA_800.png>
+Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 352.
+(pdftex.def)             Requested size: 233.02647pt x 137.35301pt.
+<./imgs/VNSxGA_1600.png, id=31, 739.3221pt x 419.166pt>
+File: ./imgs/VNSxGA_1600.png Graphic file (type png)
+<use ./imgs/VNSxGA_1600.png>
+Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 358.
+(pdftex.def)             Requested size: 233.02647pt x 132.11473pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+
+[4 <./imgs/nbhd_op.png>]
+LaTeX Font Info:    Trying to load font information for T1+aett on input line 400.
+ (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aett.fd
+File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
+) (sbaconf.bbl
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[5 <./imgs/VNSxGA_100.png> <./imgs/VNSxGA_200.png> <./imgs/VNSxGA_400.png> <./imgs/VNSxGA_800.png> <./imgs/VNSxGA_1600.png>])
+
+
+
+[6
+
+] (sbaconf.aux)
+ ***********
+LaTeX2e <2024-06-01> patch level 1
+L3 programming layer <2024-05-27>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 7291 strings out of 473919
+ 121966 string characters out of 5726481
+ 1960908 words of memory out of 5000000
+ 30017 multiletter control sequences out of 15000+600000
+ 581442 words of font info for 83 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 67i,12n,77p,366b,388s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmb10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on sbaconf.pdf (6 pages, 508045 bytes).
+PDF statistics:
+ 113 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+
