@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: sbaconf.aux
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+The style file: ifacconf.bst
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+Database file #1: ifacconf.bib
+You've used 17 entries,
+            2921 wiz_defined-function locations,
+            698 strings with 8202 characters,
+and the built_in function-call counts, 10765 in all, are:
+= -- 872
+> -- 441
+< -- 7
++ -- 178
+- -- 141
+* -- 824
+:= -- 1621
+add.period$ -- 51
+call.type$ -- 17
+change.case$ -- 130
+chr.to.int$ -- 17
+cite$ -- 17
+duplicate$ -- 796
+empty$ -- 813
+format.name$ -- 200
+if$ -- 2098
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 178
+newline$ -- 94
+num.names$ -- 68
+pop$ -- 354
+preamble$ -- 1
+purify$ -- 114
+quote$ -- 0
+skip$ -- 257
+stack$ -- 0
+substring$ -- 584
+swap$ -- 430
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 150
+warning$ -- 0
+while$ -- 81
+width$ -- 0
+write$ -- 228
