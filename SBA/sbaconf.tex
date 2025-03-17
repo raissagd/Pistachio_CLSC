@@ -217,7 +217,7 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, and $z_3$ \eqref{eq:custo3}, w
 \section{Heuristic approach}
 \label{sec:heuristic}
 
-This section presents the methodology for solving the optimization problem using priority-based encoding (\cite{gen2006genetic}) and VNS. Priority-based encoding ranks decision variables to explore 
+This section presents the methodology for solving the optimization problem using priority-based encoding \citep{gen2006genetic} and VNS. Priority-based encoding ranks decision variables to explore 
 the solution space while maintaining feasibility, while VNS shifts between neighborhood structures to escape local optima. The approach includes tailored neighborhood operators and parameter configurations.
 
 \subsection{Solution Representation}
@@ -225,7 +225,7 @@ Following \cite{rajabi2023utilizing} and \cite{gen2006genetic}, we employ priori
 the construction of the transportation tree. The decoding process iteratively selects the highest-priority node, connecting it to the lowest-cost counterpart while ensuring feasibility constraints are met.
 
 Unlike \cite{rajabi2023utilizing}, which uses real numbers between 0 and 1, we use integers from 1 to $Z$ to enhance interpretability and facilitate neighborhood operations. The effectiveness 
-of this encoding has been demonstrated in supply chain optimization, as shown in the works of \cite{pishvaee2010memetic}, \cite{altiparmak2006genetic} and \cite{liu2023integrated}. 
+of this encoding has been already demonstrated in supply chain optimization \citep{pishvaee2010memetic,altiparmak2006genetic,liu2023integrated}.
 
 The decoding process ensures compliance with constraints \eqref{eq:custo}-\eqref{eq:restricao20} by sequentially determining flows from producers to processing centers, factories, and consumers 
 while minimizing transportation costs. Adjustments prioritize entities with the greatest need, maintaining feasibility. Similarly, composting and waste management follow strict capacity and demand 
@@ -246,8 +246,8 @@ while minimizing costs.
 \end{figure}
 
 \subsection{Variable Neighborhood Search (VNS)}
-VNS explores the solution space by systematically altering neighborhood structures (\cite{gendreau2010handbook}). It iterates through shaking and local search phases, accepting new solutions only if 
-they improve the objective function. This approach has been effective in solving constrained optimization problems, as demonstrated in the works of \cite{imran2009variable}, \cite{fleszar2008effective} and \cite{burke2010hybrid}.
+VNS explores the solution space by systematically altering neighborhood structures \citep{gendreau2010handbook}. It iterates through shaking and local search phases, accepting new solutions only if 
+they improve the objective function. This approach has been effective in solving constrained optimization problems \citep{imran2009variable,fleszar2008effective,burke2010hybrid}.
 
 The implementation of the VNS algorithm used in this study is outlined in Algorithm \ref{algoVNS}.
 
@@ -274,11 +274,11 @@ The implementation of the VNS algorithm used in this study is outlined in Algori
 \end{algorithm}
 
 \subsection{Neighborhood Structures}
-Four classic neighborhood operators (\cite{devika2014designing}), illustraed in Figure \ref{fig:nbdh_op}, enhance solution diversity:
+Four classic neighborhood operators \citep{devika2014designing}, illustraed in Figure \ref{fig:nbdh_op}, enhance solution diversity:
 \begin{itemize}
 \item \textbf{Swap:} Exchanges two elements in the chromosome.
-\item \textbf{Reversion:} Reverses a sequence between two selected indices \cite{vahdani2010scheduling}.
-\item \textbf{Insertion:} Moves an element to a new position, shifting others accordingly \cite{rabiee2012scheduling}.
+\item \textbf{Reversion:} Reverses a sequence between two selected indices \citep{vahdani2010scheduling}.
+\item \textbf{Insertion:} Moves an element to a new position, shifting others accordingly \citep{rabiee2012scheduling}.
 \item \textbf{Slide:} Removes an element, shifts others, and reinserts it at a new position.
 \end{itemize}
 

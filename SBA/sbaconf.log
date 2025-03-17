@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.10)  17 MAR 2025 10:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.10)  17 MAR 2025 10:56
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -440,14 +440,18 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 [4 <./imgs/nbhd_op.png>]
+LaTeX Font Info:    Trying to load font information for T1+aett on input line 381.
+ (C:\Users\Andre\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aett.fd
+File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
+) (sbaconf.bbl
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-LaTeX Font Info:    Trying to load font information for T1+aett on input line 381.
-(C:\Users\Andre\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aett.fd
-File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
-) (sbaconf.bbl
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [5 <./imgs/VNSxGA_100.png> <./imgs/VNSxGA_200.png> <./imgs/VNSxGA_400.png> <./imgs/VNSxGA_800.png> <./imgs/VNSxGA_1600.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 114--119
@@ -469,14 +473,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 114--119
 \T1/aett/m/n/10 global-[]pistachio-[]production-[]by-[]country/$\T1/aer/m/n/10 .
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
 )
 
-[6] (sbaconf.aux)
+
+
+[6
+
+] (sbaconf.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -491,7 +494,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  67i,12n,77p,1488b,388s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmb10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on sbaconf.pdf (6 pages, 509957 bytes).
+Output written on sbaconf.pdf (6 pages, 509916 bytes).
 PDF statistics:
  113 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
