@@ -1,4 +1,4 @@
-\begin{thebibliography}{18}
+\begin{thebibliography}{17}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\urlprefix}{URL }
@@ -68,11 +68,6 @@ Gen, M., Altiparmak, F., and Lin, L. (2006).
 Gendreau, M., Potvin, J.Y., et~al. (2010).
 \newblock \emph{Handbook of metaheuristics}, volume~2.
 \newblock Springer.
-
-\bibitem[{{Gurobi Optimization, LLC}(2024)}]{gurobi}
-{Gurobi Optimization, LLC} (2024).
-\newblock {Gurobi Optimizer Reference Manual}.
-\newblock \urlprefix\url{https://www.gurobi.com}.
 
 \bibitem[{Imran et~al.(2009)Imran, Salhi, and Wassan}]{imran2009variable}
 Imran, A., Salhi, S., and Wassan, N.A. (2009).

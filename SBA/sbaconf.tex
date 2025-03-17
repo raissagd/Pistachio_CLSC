@@ -11,6 +11,8 @@
 \usepackage{algorithmicx}%
 \usepackage{algpseudocode}%
 \usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{booktabs}
 %===============================================================================
 
 
@@ -296,13 +298,13 @@ Each operation is applied to a randomly selected priority vector within the solu
 \section{Computational Experiments}
 \label{sec:experiments}
 
-The proposed heuristic method was tested on instances of varying sizes, defined by the number of elements in each problem entity (I, J, K, E, S, Q, N1, N2, N3, and M). 
+The proposed heuristic method was tested on instances of varying sizes, defined by the number of elements in each problem entity ($I$, $J$, $K$, $E$, $S$, $Q$, $N_1$, $N_2$, $N_3$, and $M$). 
 The tested sizes were 100, 200, 400, 800, and 1600, leading to total variable counts of 100,500; 401,000; 1,602,000; 6,404,000; and 25,608,000, respectively. 
 However, algorithms using priority-based encoding have significantly fewer variables, as they only sum the priorities of source-depot pairs. In these cases, 
 the variable counts were reduced to 1,700; 3,400; 6,800; 13,600; and 27,200.
 
 Instance parameters, such as capacities and demands, were randomly generated following Table 7 in \cite{rajabi2023utilizing}. The proposed VNS-based approach was compared against a 
-Genetic Algorithm (GA) and an exact Mixed-Integer Linear Programming (MILP) method implemented using Gurobi 11.0.3 (\cite{gurobi}). The GA utilized swap-based mutations and 
+Genetic Algorithm (GA), which was one of the evolutionary algorithms used in the considered reference. The GA utilized swap-based mutations and 
 subsequence-exchanging crossovers, with randomly selected vectors, a population size of 100, and a Binary Tournament selection strategy.
 
 Both VNS and GA were run 30 times per instance, with a stopping criterion of 100,000 evaluations. Experiments were conducted on a system with Ubuntu 24.04.1 LTS, 
@@ -311,15 +313,13 @@ an Intel Xeon E3-1240 V2 (8 cores), and 32 GB RAM.
 \subsection{Comparison between VNS and GA}
 
 The comparison with GA aligns with methodologies from \cite{rajabi2023utilizing}, though an exact match was infeasible due to differences in decoding.
-Table \ref{tab:comparison_vns_ga} presents the average of the 30 best solutions for each algorithm. For small instances (100 entities), VNS and GA performed similarly, with only 
+Table \ref{tab:comparison_vns_ga} presents the average performance of the 30 best solutions for each algorithm. For small instances (100 entities), VNS and GA performed similarly, with only 
 a 0.71\% improvement in VNS. However, for larger instances, VNS consistently outperformed GA, achieving improvements between 3.4\% and 5.3\%. 
 
-Boxplots in Fig. \ref{fig:VNSxGA_boxplots} illustrate solution distributions, showing significant performance gaps in the 800 and 1600-instance cases. Welch's t-test 
-confirmed statistical significance (p-value $<$ 0.05). Additionally, GA had longer execution times, likely due to increased computational costs of its evolutionary operations as 
+Boxplots in Fig. \ref{fig:VNSxGA_boxplots} illustrate solution distributions, showing significant differences in the 800 and 1600-instance cases. The p-values obtained from the Independent Samples T-test (Welch Test) for these instances are below 0.05, demonstrating that the observed differences are statistically significant, assuming normality and unequal variances. These findings suggest that VNS performs significantly better than GA for large-scale problems from a statistical standpoint. Additionally, GA had longer execution times, likely due to increased computational costs of its evolutionary operations as 
 problem size grew.
 
-In summary, while GA is competitive in small instances, it scales poorly. VNS consistently yields superior solutions and handles larger instances more efficiently, 
-making it a more robust and scalable optimization approach.
+In summary, although GA performs comparably in small-scale instances, its scalability is limited. In contrast, VNS consistently delivers better solutions and demonstrates greater efficiency in handling larger problems, establishing it as a more robust and scalable optimization method.
 
 \begin{figure*}[h!]
   \centering
@@ -343,23 +343,37 @@ making it a more robust and scalable optimization approach.
   \label{fig:VNSxGA_boxplots}
 \end{figure*}
 
+% \begin{table}[hb]
+%   \begin{center}
+%   \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}
+%   \label{tab:comparison_vns_ga}
+%   \begin{tabular}{cccc}
+%   \hline
+%   Instance & VNS & GA & Difference (\%) \\ \hline
+%   100  & $7.41 \times 10^7$  & $7.46 \times 10^7$  & 0.71 \\  
+%   200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37 \\  
+%   400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31 \\  
+%   800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26 \\  
+%   1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 \\ \hline
+%   \end{tabular}
+%   \end{center}
+% \end{table}
 
-
-\begin{table}[hb]
-  \begin{center}
-  \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}
-  \label{tab:comparison_vns_ga}
-  \begin{tabular}{cccc}
-  \hline
-  Instance & VNS & GA & Difference (\%) \\ \hline
-  100  & $7.41 \times 10^7$  & $7.46 \times 10^7$  & 0.71 \\  
-  200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37 \\  
-  400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31 \\  
-  800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26 \\  
-  1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 \\ \hline
-  \end{tabular}
-  \end{center}
-\end{table}
+\begin{table*}[!htb]
+  \caption{Comparison of the VNS algorithm and a population-based metaheuristic (Genetic Algorithm) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab:comparison_vns_ga}
+  \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccccc}
+  \toprule%
+  & \multicolumn{3}{@{}c@{}}{Objective function evaluation (average)} & \multicolumn{2}{@{}c@{}}{Execution time (average)} \\\cmidrule{2-4}\cmidrule{5-6}%
+  Instance & VNS & GA & Difference (\%) & VNS & GA \\
+  \midrule
+  100  & $7.41 \times 10^6$  & $7.46 \times 10^6$  & 0.71 & 241s  & 6,595s \\
+  200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37 & 714s  &  \\
+  400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31 & 2,016s &  \\
+  800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26 & 5,538s & 82,687s \\
+  1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 & 17,767s & 217,958s \\
+  \bottomrule 
+  \end{tabular*}
+\end{table*}
 
 %===============================================================================
 \section{Conclusion}
@@ -372,8 +386,7 @@ solved using a Variable Neighborhood Search (VNS) algorithm, which explores the 
 Slide neighborhood structures.
 
 Comparative analysis highlights VNS’s superiority over Genetic Algorithms (GA) in both solution quality and computational efficiency, 
-especially for large-scale instances where exact methods become impractical due to memory and time limitations. However, for small to 
-medium-sized problems, exact methods remain the best choice as they guarantee optimal solutions.
+especially for large-scale instances where exact methods become impractical due to memory and time limitations.
 
 Future research could explore problem-specific neighborhood operators to enhance VNS performance further. Additionally, a hybrid approach 
 combining VNS with exact algorithms could improve both accuracy and efficiency, making the methodology more adaptable across industries.

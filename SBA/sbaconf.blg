@@ -5,44 +5,44 @@ Reallocating 'name_of_file' (item size: 1) to 9 items.
 The style file: ifacconf.bst
 Reallocating 'name_of_file' (item size: 1) to 9 items.
 Database file #1: ifacconf.bib
-You've used 18 entries,
+You've used 17 entries,
             2921 wiz_defined-function locations,
-            703 strings with 8393 characters,
-and the built_in function-call counts, 11158 in all, are:
-= -- 909
-> -- 451
-< -- 8
-+ -- 182
-- -- 144
-* -- 843
-:= -- 1690
-add.period$ -- 55
-call.type$ -- 18
-change.case$ -- 137
-chr.to.int$ -- 18
-cite$ -- 18
-duplicate$ -- 827
-empty$ -- 841
-format.name$ -- 204
-if$ -- 2174
+            698 strings with 8300 characters,
+and the built_in function-call counts, 10792 in all, are:
+= -- 876
+> -- 441
+< -- 7
++ -- 178
+- -- 141
+* -- 825
+:= -- 1623
+add.period$ -- 52
+call.type$ -- 17
+change.case$ -- 131
+chr.to.int$ -- 17
+cite$ -- 17
+duplicate$ -- 799
+empty$ -- 814
+format.name$ -- 200
+if$ -- 2104
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 184
-newline$ -- 100
-num.names$ -- 72
-pop$ -- 367
+missing$ -- 179
+newline$ -- 95
+num.names$ -- 68
+pop$ -- 354
 preamble$ -- 1
-purify$ -- 119
+purify$ -- 114
 quote$ -- 0
-skip$ -- 270
+skip$ -- 257
 stack$ -- 0
-substring$ -- 597
-swap$ -- 441
+substring$ -- 586
+swap$ -- 432
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 159
+type$ -- 150
 warning$ -- 0
-while$ -- 84
+while$ -- 81
 width$ -- 0
-write$ -- 242
+write$ -- 230
