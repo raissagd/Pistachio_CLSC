@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.10)  17 MAR 2025 10:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.10)  17 MAR 2025 10:38
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -387,6 +387,9 @@ Overfull \hbox (1.93571pt too wide) detected at line 169
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -394,88 +397,107 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 [2 <./imgs/supplychain.PNG>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-<./imgs/decode_flux.PNG, id=21, 482.40225pt x 298.716pt>
+
+
+
+
+[3]
+<./imgs/decode_flux.PNG, id=24, 482.40225pt x 298.716pt>
 File: ./imgs/decode_flux.PNG Graphic file (type png)
 <use ./imgs/decode_flux.PNG>
 Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 257.
 (pdftex.def)             Requested size: 239.00298pt x 147.99933pt.
 
 
-[3 <./imgs/decode_flux.PNG>]
-<./imgs/nbhd_op.png, id=26, 410.7345pt x 263.18324pt>
+<./imgs/nbhd_op.png, id=25, 410.7345pt x 263.18324pt>
 File: ./imgs/nbhd_op.png Graphic file (type png)
 <use ./imgs/nbhd_op.png>
 Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 304.
 (pdftex.def)             Requested size: 239.00298pt x 153.14836pt.
 
 
-<./imgs/VNSxGA_100.png, id=27, 711.1368pt x 419.166pt>
+[4 <./imgs/decode_flux.PNG> <./imgs/nbhd_op.png>]
+<./imgs/VNSxGA_100.png, id=32, 711.1368pt x 419.166pt>
 File: ./imgs/VNSxGA_100.png Graphic file (type png)
 <use ./imgs/VNSxGA_100.png>
 Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 342.
 (pdftex.def)             Requested size: 233.02647pt x 137.35301pt.
-<./imgs/VNSxGA_200.png, id=28, 719.0865pt x 419.166pt>
+<./imgs/VNSxGA_200.png, id=33, 719.0865pt x 419.166pt>
 File: ./imgs/VNSxGA_200.png Graphic file (type png)
 <use ./imgs/VNSxGA_200.png>
 Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 343.
 (pdftex.def)             Requested size: 238.20993pt x 138.85606pt.
-<./imgs/VNSxGA_400.png, id=29, 734.2632pt x 403.9893pt>
+<./imgs/VNSxGA_400.png, id=34, 734.2632pt x 403.9893pt>
 File: ./imgs/VNSxGA_400.png Graphic file (type png)
 <use ./imgs/VNSxGA_400.png>
 Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 347.
 (pdftex.def)             Requested size: 243.3855pt x 133.90866pt.
-<./imgs/VNSxGA_800.png, id=30, 711.1368pt x 419.166pt>
+<./imgs/VNSxGA_800.png, id=35, 711.1368pt x 419.166pt>
 File: ./imgs/VNSxGA_800.png Graphic file (type png)
 <use ./imgs/VNSxGA_800.png>
 Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 348.
 (pdftex.def)             Requested size: 233.02647pt x 137.35301pt.
-<./imgs/VNSxGA_1600.png, id=31, 739.3221pt x 419.166pt>
+<./imgs/VNSxGA_1600.png, id=36, 739.3221pt x 419.166pt>
 File: ./imgs/VNSxGA_1600.png Graphic file (type png)
 <use ./imgs/VNSxGA_1600.png>
 Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 354.
 (pdftex.def)             Requested size: 233.02647pt x 132.11473pt.
 
+
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 
-[4 <./imgs/nbhd_op.png>]
 LaTeX Font Info:    Trying to load font information for T1+aett on input line 396.
- (C:\Users\Andre\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aett.fd
+(C:\Users\Andre\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 ) (sbaconf.bbl
+
+[5]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \hbox (badness 10000) in paragraph at lines 114--119
+[]\T1/aer/m/n/10 Statista (2023).  Lead-ing pro-duc-ers of pis-ta-
+ []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 114--119
+\T1/aer/m/n/10 chios world-wide in 2022 and 2023.  URL
+ []
 
-[5 <./imgs/VNSxGA_100.png> <./imgs/VNSxGA_200.png> <./imgs/VNSxGA_400.png> <./imgs/VNSxGA_800.png> <./imgs/VNSxGA_1600.png>])
+
+Underfull \hbox (badness 10000) in paragraph at lines 114--119
+\T1/aett/m/n/10 https : / / www . statista . com / statistics / 933042 /
+ []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 114--119
+\T1/aett/m/n/10 global-[]pistachio-[]production-[]by-[]country/$\T1/aer/m/n/10 .
+ []
 
-[6
+)
 
-] (sbaconf.aux)
+[6 <./imgs/VNSxGA_100.png> <./imgs/VNSxGA_200.png> <./imgs/VNSxGA_400.png> <./imgs/VNSxGA_800.png> <./imgs/VNSxGA_1600.png>] (sbaconf.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 7334 strings out of 473529
- 122640 string characters out of 5714773
- 544631 words of memory out of 5000000
- 30434 multiletter control sequences out of 15000+600000
+ 7337 strings out of 473529
+ 122727 string characters out of 5714773
+ 541659 words of memory out of 5000000
+ 30437 multiletter control sequences out of 15000+600000
  582210 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  67i,12n,77p,1005b,388s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmb10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Andre/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on sbaconf.pdf (6 pages, 508206 bytes).
+Output written on sbaconf.pdf (6 pages, 510055 bytes).
 PDF statistics:
  113 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

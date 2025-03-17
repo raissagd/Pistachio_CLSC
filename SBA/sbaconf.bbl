@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{18}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \providecommand{\urlprefix}{URL }
@@ -109,6 +109,13 @@ Rajabi-Kafshgar, A., Gholian-Jouybari, F., Seyedi, I., and Hajiaghaei-Keshteli,
 \newblock Utilizing hybrid metaheuristic approach to design an agricultural
   closed-loop supply chain network.
 \newblock \emph{Expert Systems with Applications}, 217, 119504.
+
+\bibitem[{{Statista}(2023)}]{statista2023pistachio}
+{Statista} (2023).
+\newblock Leading producers of pistachios worldwide in 2022 and 2023.
+\newblock
+  \urlprefix\url{https://www.statista.com/statistics/933042/global-pistachio-production-by-country/}.
+\newblock Accessed: 2023-10-05.
 
 \bibitem[{Vahdani and Zandieh(2010)}]{vahdani2010scheduling}
 Vahdani, B. and Zandieh, M. (2010).
