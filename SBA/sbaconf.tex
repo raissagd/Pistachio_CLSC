@@ -11,6 +11,8 @@
 \usepackage{algorithmicx}%
 \usepackage{algpseudocode}%
 \usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{booktabs}
 %===============================================================================
 
 
@@ -79,7 +81,7 @@
 
 \begin{frontmatter}
 
-\title{Enhancing Metaheuristics for Pistachio Supply Chain Optimization}
+\title{Optimizing Pistachio Supply Chains with Enhanced Metaheuristics}
 
 \author[First]{Raissa Gon\c{c}alves Diniz} 
 \author[Second]{Andr\'e Costa Batista} 
@@ -90,11 +92,7 @@
 \renewcommand{\abstractname}{{\bf Abstract:~}}   
 
 \begin{abstract}                
-Supply chains are vital for the agricultural sector, particularly for high-value crops like pistachios, where efficient management can enhance both economic growth and sustainability. 
-Although there has been research on optimizing pistachio supply chains, most studies rely heavily on population-based algorithms to solve these problems. In this study, we propose to apply a 
-Variable Neighborhood Search (VNS) algorithm and compare its performance against a population-based metaheuristic (Genetic Algorithm, GA). Our findings reveal that VNS 
-consistently outperforms GA in both execution time and objective function value, particularly for larger instances. Therefore, the proposed method demonstrates its efficiency to 
-address supply chain optimization problems.
+Supply chains play a crucial role in the agricultural industry, especially for high-value crops such as pistachios, where effective management can drive economic growth and promote sustainability. While previous research has explored optimization strategies for pistachio supply chains, the majority of these studies predominantly rely on population-based algorithms to tackle these challenges. In this work, we introduce the use of a Variable Neighborhood Search (VNS) algorithm and evaluate its performance in comparison to a population-based metaheuristic, specifically the Genetic Algorithm (GA). The results indicate that VNS consistently achieves better performance than GA, both in terms of computational efficiency and solution quality, particularly for larger problem instances. As a result, the proposed method demonstrates to be an effective approach for addressing supply chain optimization problems.
 \end{abstract}
 
 \begin{keyword}
@@ -112,13 +110,13 @@ Supply Chain Optimization, Metaheuristics, Variable Neighborhood Search, Sustain
 \section{Introduction}
 \label{sec:intro}
 Agriculture plays a crucial role in economic development, contributing not only to food security but also to exports and industrial growth. Among high-value crops, 
-pistachios are particularly significant in international trade, with the US, Turkey, and Iran leading global production. Efficient supply chain management is essential 
+pistachios are particularly significant in international trade, with the US, Turkey, and Iran leading global production \citep{statista2023pistachio}. Efficient supply chain management is essential 
 to maintaining product quality, reducing environmental impact, and ensuring effective distribution. One key challenge in pistachio production is handling by-products 
-such as hulls and shells, which, if mismanaged, can degrade soil quality and pose health risks due to mold-induced aflatoxin contamination, as noted by \cite{dronavalli2019}. 
+such as hulls and shells, which, if mismanaged, can degrade soil quality and pose health risks due to mold-induced aflatoxin contamination \citep{dronavalli2019}. 
 Sustainable waste management strategies, such as composting and biogas production, have been explored to mitigate these issues, as discussed by \cite{cheraghalipour2022bi}.
 
 Supply chain inefficiencies can impact both product quality and trade. Prior studies, such as \cite{rajabi2023utilizing}, have explored optimization 
-techniques using Genetic Algorithms (GA) and other metaheuristics for pistachio logistics. However, these comparisons often rely on best-found solutions without 
+techniques using Genetic Algorithms (GA) and other evolutionary metaheuristics for pistachio logistics. However, these comparisons often rely on best-found solutions without 
 strong statistical validation of superior performance. Additionally, debates persist on whether differences in bio-inspired metaheuristics significantly affect solution quality.
 
 Building upon this foundation, this study aims to optimize pistachio supply chains using Variable Neighborhood Search (VNS), a heuristic well-suited for large 
@@ -136,26 +134,10 @@ concludes with key findings and future research directions.
 \section{Problem Definition}
 \label{sec:problem-def}
 
-The network proposed by \cite{rajabi2023utilizing}, as illustrated in Figure \ref{fig:supplychain}, includes producers, processing centers, pistachio factories, 
-oil extraction centers, composting centers, and customers. Pistachios are transported from orchards to processing centers, producing open-mouth pistachios, raw kernels, and 
-waste, which are then sent to factories, oil extraction centers, and composting centers, respectively. Open-mouth pistachios are roasted, packed, and shipped to customers, while pistachio oil 
-is delivered to oil customers and cosmetic factories. Waste is converted into compost for distribution. Although the compost returns to the producers, ideally forming a closed-loop in the supply chain, mathematically, there is 
-no connection between the compost customers and the producers who send the pistachios to the processing centers. In other words, the mathematical model of the flow does not implement 
-a closed-loop, strictly speaking. It only interprets the flow of compost to its respective customers as feedback, even though these customers are not necessarily related to the variables associated 
-with the producers. This has been done in other studies, such as \cite{pishvaee2010memetic}, \cite{ahmadi2019integrated}, and \cite{banasik2016simple}, and the strict implementation of a feedback 
-loop could be a next step for research.
+The network proposed by \cite{rajabi2023utilizing}, as depicted in Figure \ref{fig:supplychain}, consists of producers, processing centers, pistachio factories, oil extraction centers, composting centers, and customers. Pistachios are transported from orchards to processing centers, where they are processed into open-mouth pistachios, raw kernels, and waste. These outputs are then sent to factories, oil extraction centers, and composting centers, respectively. Open-mouth pistachios are roasted, packaged, and delivered to customers, while pistachio oil is supplied to oil customers and cosmetic factories. Waste is converted into compost for distribution. Although the compost is returned to the producers, ideally creating a closed-loop system, the mathematical model does not establish a direct connection between the compost customers and the producers who supply pistachios to the processing centers. Strictly speaking, the mathematical flow model does not implement a closed-loop. Instead, it interprets the flow of compost to its respective customers as feedback, even though these customers are not necessarily linked to the variables associated with the producers. Similar approaches have been adopted in other studies \citep{pishvaee2010memetic,ahmadi2019integrated,banasik2016simple}, and the strict implementation of a feedback loop could be a promising direction for future research.
 
 The mixed-integer linear problem aims to minimize total costs \eqref{eq:custo}, including opening, transportation, production costs, under the following capacity and demand constraints 
 with no allowed shortages (see further details regarding the variables in the Table 5 of \cite{rajabi2023utilizing}):
-
-\begin{figure}[h!]
-  \begin{center}
-      \includegraphics[width=8.4cm]{./imgs/supplychain.PNG}
-      \caption{Proposed pistachio supply chain network}
-      \label{fig:supplychain}
-  \end{center}
-\end{figure}
-
     
 \begin{align}
     \min &\ z_1 + z_2 + z_3 \label{eq:custo}\\
@@ -169,14 +151,13 @@ with no allowed shortages (see further details regarding the variables in the Ta
     & \sum\limits_{k=1}^K Go_{jk} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_1, \quad \forall j\in J \label{eq:restricao8}\\
     & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9}\\
     & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10}\\
-    & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11}
+    & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
+    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12}\\
+    & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13}\\
+    & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14}\\
+    & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15}
 \end{align}
-
 \begin{align}
-  & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12}\\
-  & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13}\\
-  & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14}\\
-  & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15}\\
   & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q, \quad \forall q \in Q \label{eq:restricao16}\\
   & \sum\limits_{k=1}^K P_{kn_1} \ge Dp_{n_1}, \quad \forall n_1 \in N_1 \label{eq:restricao17}\\
   & \sum\limits_{e=1}^E O_{en_2} \ge Du_{n_2}, \quad \forall n_2 \in N_2 \label{eq:restricao18}\\
@@ -184,6 +165,13 @@ with no allowed shortages (see further details regarding the variables in the Ta
   & \sum\limits_{q=1}^Q D_{qm} \le Dc_{m}, \quad \forall m \in M \label{eq:restricao20}
 \end{align}
 
+\begin{figure}
+  \begin{center}
+      \includegraphics[width=8.4cm]{./imgs/supplychain.PNG}
+      \caption{Proposed pistachio supply chain network}
+      \label{fig:supplychain}
+  \end{center}
+\end{figure}
     
 \begin{itemize}
 \item The objective function \eqref{eq:custo} minimizes the total costs of the supply chain, including opening, transportation, and production costs. The costs are divided into three components: 
@@ -218,25 +206,20 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, and $z_3$ \eqref{eq:custo3}, w
 \end{align}
 
 \begin{itemize}
-  \item The variables $R_j$, $Y_q$, $W_k$, $Z_e$, and $V_s$ are binary decision variables that indicate whether certain elements in the model are active. 
-  For example, $R_j = 1$ if facility $j$ is open, and 0 otherwise. The other variables in the model are continuous and positive, representing real numbers 
-  greater than or equal to zero, used for modeling flows, quantities, and other measurable factors.
-  \item The constraints \eqref{eq:restricao1}-\eqref{eq:restricao6} address the finite capacities and demands of each center within the supply chain. Specifically, constraint \eqref{eq:restricao1} limits the quantity of 
-  products shipped from producers to distribution centers. Constraints \eqref{eq:restricao2}-\eqref{eq:restricao6} then ensure that the quantities of products delivered to processing centers, compost 
-  centers, pistachio factories, oil extraction centers, and cosmetic factories do not exceed the capacities of these centers.
-  \item Products sent from any center must not exceed the orders received by that center. Therefore, constraint \eqref{eq:restricao7} stipulates that the quantity of products 
-  shipped from a processing center must be less than or equal to the quantity delivered to other centers. 
-  Constraints \eqref{eq:restricao8}-\eqref{eq:restricao11} specify the quantities of open-mouth pistachios, raw kernels, and waste produced through the dehulling process at each processing center. 
-  Similarly, constraints \eqref{eq:restricao12}-\eqref{eq:restricao16} regulate the flows within pistachio factories, oil extraction centers, cosmetic factories, and composting centers. 
-  \item Finally, to ensure that customer demand is met, constraints \eqref{eq:restricao17}-\eqref{eq:restricao20} guarantee that the products delivered to pistachio customers, pistachio oil customers, 
-  cosmetic customers, and compost markets meet or exceed their respective demands.
+  \item The variables $R_j$, $Y_q$, $W_k$, $Z_e$, and $V_s$ are binary decision variables that determine whether specific elements in the model are active. For instance, $R_j = 1$ indicates that facility $j$ is operational, and $R_j = 0$ otherwise. The remaining variables in the model are continuous and non-negative, representing real values greater than or equal to zero. These variables are used to model flows, quantities, and other measurable factors within the system.
+  
+  \item Constraints \eqref{eq:restricao1}-\eqref{eq:restricao6} address the capacity and demand limitations of each facility in the supply chain. Specifically, constraint \eqref{eq:restricao1} restricts the amount of products transported from producers to distribution centers. Constraints \eqref{eq:restricao2}-\eqref{eq:restricao6} ensure that the quantities of products sent to processing centers, composting centers, pistachio factories, oil extraction centers, and cosmetic factories do not exceed the capacities of these facilities.
+  
+  \item The quantity of products shipped from any facility must not surpass the orders received by that facility. Accordingly, constraint \eqref{eq:restricao7} states that the amount of products dispatched from a processing center must be less than or equal to the quantity received by other facilities. Constraints \eqref{eq:restricao8}-\eqref{eq:restricao11} define the quantities of open-mouth pistachios, raw kernels, and waste generated during the dehulling process at each processing center. Similarly, constraints \eqref{eq:restricao12}-\eqref{eq:restricao16} govern the flows within pistachio factories, oil extraction centers, cosmetic factories, and composting centers.
+  
+  \item Finally, to ensure that customer demand is satisfied, constraints \eqref{eq:restricao17}-\eqref{eq:restricao20} ensure that the quantities of products delivered to pistachio customers, pistachio oil customers, cosmetic customers, and compost markets meet or exceed their respective demands.
 \end{itemize}
 
 %===============================================================================
 \section{Heuristic approach}
 \label{sec:heuristic}
 
-This section presents the methodology for solving the optimization problem using priority-based encoding (\cite{gen2006genetic}) and VNS. Priority-based encoding ranks decision variables to explore 
+This section presents the methodology for solving the optimization problem using priority-based encoding \citep{gen2006genetic} and VNS. Priority-based encoding ranks decision variables to explore 
 the solution space while maintaining feasibility, while VNS shifts between neighborhood structures to escape local optima. The approach includes tailored neighborhood operators and parameter configurations.
 
 \subsection{Solution Representation}
@@ -244,7 +227,7 @@ Following \cite{rajabi2023utilizing} and \cite{gen2006genetic}, we employ priori
 the construction of the transportation tree. The decoding process iteratively selects the highest-priority node, connecting it to the lowest-cost counterpart while ensuring feasibility constraints are met.
 
 Unlike \cite{rajabi2023utilizing}, which uses real numbers between 0 and 1, we use integers from 1 to $Z$ to enhance interpretability and facilitate neighborhood operations. The effectiveness 
-of this encoding has been demonstrated in supply chain optimization, as shown in the works of \cite{pishvaee2010memetic}, \cite{altiparmak2006genetic} and \cite{liu2023integrated}. 
+of this encoding has been already demonstrated in supply chain optimization \citep{pishvaee2010memetic,altiparmak2006genetic,liu2023integrated}.
 
 The decoding process ensures compliance with constraints \eqref{eq:custo}-\eqref{eq:restricao20} by sequentially determining flows from producers to processing centers, factories, and consumers 
 while minimizing transportation costs. Adjustments prioritize entities with the greatest need, maintaining feasibility. Similarly, composting and waste management follow strict capacity and demand 
@@ -265,8 +248,8 @@ while minimizing costs.
 \end{figure}
 
 \subsection{Variable Neighborhood Search (VNS)}
-VNS explores the solution space by systematically altering neighborhood structures (\cite{gendreau2010handbook}). It iterates through shaking and local search phases, accepting new solutions only if 
-they improve the objective function. This approach has been effective in solving constrained optimization problems, as demonstrated in the works of \cite{imran2009variable}, \cite{fleszar2008effective} and \cite{burke2010hybrid}.
+VNS explores the solution space by systematically altering neighborhood structures \citep{gendreau2010handbook}. It iterates through shaking and local search phases, accepting new solutions only if 
+they improve the objective function. This approach has been effective in solving constrained optimization problems \citep{imran2009variable,fleszar2008effective,burke2010hybrid}.
 
 The implementation of the VNS algorithm used in this study is outlined in Algorithm \ref{algoVNS}.
 
@@ -293,11 +276,11 @@ The implementation of the VNS algorithm used in this study is outlined in Algori
 \end{algorithm}
 
 \subsection{Neighborhood Structures}
-Four classic neighborhood operators (\cite{devika2014designing}), illustraed in Figure \ref{fig:nbdh_op}, enhance solution diversity:
+Four classic neighborhood operators \citep{devika2014designing}, illustraed in Figure \ref{fig:nbdh_op}, enhance solution diversity:
 \begin{itemize}
 \item \textbf{Swap:} Exchanges two elements in the chromosome.
-\item \textbf{Reversion:} Reverses a sequence between two selected indices \cite{vahdani2010scheduling}.
-\item \textbf{Insertion:} Moves an element to a new position, shifting others accordingly \cite{rabiee2012scheduling}.
+\item \textbf{Reversion:} Reverses a sequence between two selected indices \citep{vahdani2010scheduling}.
+\item \textbf{Insertion:} Moves an element to a new position, shifting others accordingly \citep{rabiee2012scheduling}.
 \item \textbf{Slide:} Removes an element, shifts others, and reinserts it at a new position.
 \end{itemize}
 
@@ -315,13 +298,13 @@ Each operation is applied to a randomly selected priority vector within the solu
 \section{Computational Experiments}
 \label{sec:experiments}
 
-The proposed heuristic method was tested on instances of varying sizes, defined by the number of elements in each problem entity (I, J, K, E, S, Q, N1, N2, N3, and M). 
+The proposed heuristic method was tested on instances of varying sizes, defined by the number of elements in each problem entity ($I$, $J$, $K$, $E$, $S$, $Q$, $N_1$, $N_2$, $N_3$, and $M$). 
 The tested sizes were 100, 200, 400, 800, and 1600, leading to total variable counts of 100,500; 401,000; 1,602,000; 6,404,000; and 25,608,000, respectively. 
 However, algorithms using priority-based encoding have significantly fewer variables, as they only sum the priorities of source-depot pairs. In these cases, 
 the variable counts were reduced to 1,700; 3,400; 6,800; 13,600; and 27,200.
 
 Instance parameters, such as capacities and demands, were randomly generated following Table 7 in \cite{rajabi2023utilizing}. The proposed VNS-based approach was compared against a 
-Genetic Algorithm (GA) and an exact Mixed-Integer Linear Programming (MILP) method implemented using Gurobi 11.0.3 (\cite{gurobi}). The GA utilized swap-based mutations and 
+Genetic Algorithm (GA), which was one of the evolutionary algorithms used in the considered reference. The GA utilized swap-based mutations and 
 subsequence-exchanging crossovers, with randomly selected vectors, a population size of 100, and a Binary Tournament selection strategy.
 
 Both VNS and GA were run 30 times per instance, with a stopping criterion of 100,000 evaluations. Experiments were conducted on a system with Ubuntu 24.04.1 LTS, 
@@ -330,15 +313,13 @@ an Intel Xeon E3-1240 V2 (8 cores), and 32 GB RAM.
 \subsection{Comparison between VNS and GA}
 
 The comparison with GA aligns with methodologies from \cite{rajabi2023utilizing}, though an exact match was infeasible due to differences in decoding.
-Table \ref{tab:comparison_vns_ga} presents the average of the 30 best solutions for each algorithm. For small instances (100 entities), VNS and GA performed similarly, with only 
+Table \ref{tab:comparison_vns_ga} presents the average performance of the 30 best solutions for each algorithm. For small instances (100 entities), VNS and GA performed similarly, with only 
 a 0.71\% improvement in VNS. However, for larger instances, VNS consistently outperformed GA, achieving improvements between 3.4\% and 5.3\%. 
 
-Boxplots in Fig. \ref{fig:VNSxGA_boxplots} illustrate solution distributions, showing significant performance gaps in the 800 and 1600-instance cases. Welch's t-test 
-confirmed statistical significance (p-value $<$ 0.05). Additionally, GA had longer execution times, likely due to increased computational costs of its evolutionary operations as 
+Boxplots in Fig. \ref{fig:VNSxGA_boxplots} illustrate solution distributions, showing significant differences in the 800 and 1600-instance cases. The p-values obtained from the Independent Samples T-test (Welch Test) for these instances are below 0.05, demonstrating that the observed differences are statistically significant, assuming normality and unequal variances. These findings suggest that VNS performs significantly better than GA for large-scale problems from a statistical standpoint. Additionally, GA had longer execution times, likely due to increased computational costs of its evolutionary operations as 
 problem size grew.
 
-In summary, while GA is competitive in small instances, it scales poorly. VNS consistently yields superior solutions and handles larger instances more efficiently, 
-making it a more robust and scalable optimization approach.
+In summary, although GA performs comparably in small-scale instances, its scalability is limited. In contrast, VNS consistently delivers better solutions and demonstrates greater efficiency in handling larger problems, establishing it as a more robust and scalable optimization method.
 
 \begin{figure*}[h!]
   \centering
@@ -362,23 +343,37 @@ making it a more robust and scalable optimization approach.
   \label{fig:VNSxGA_boxplots}
 \end{figure*}
 
+% \begin{table}[hb]
+%   \begin{center}
+%   \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}
+%   \label{tab:comparison_vns_ga}
+%   \begin{tabular}{cccc}
+%   \hline
+%   Instance & VNS & GA & Difference (\%) \\ \hline
+%   100  & $7.41 \times 10^7$  & $7.46 \times 10^7$  & 0.71 \\  
+%   200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37 \\  
+%   400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31 \\  
+%   800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26 \\  
+%   1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 \\ \hline
+%   \end{tabular}
+%   \end{center}
+% \end{table}
 
-
-\begin{table}[hb]
-  \begin{center}
-  \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}
-  \label{tab:comparison_vns_ga}
-  \begin{tabular}{cccc}
-  \hline
-  Instance & VNS & GA & Difference (\%) \\ \hline
-  100  & $7.41 \times 10^7$  & $7.46 \times 10^7$  & 0.71 \\  
-  200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37 \\  
-  400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31 \\  
-  800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26 \\  
-  1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 \\ \hline
-  \end{tabular}
-  \end{center}
-\end{table}
+\begin{table*}[!htb]
+  \caption{Comparison of the VNS algorithm and a population-based metaheuristic (Genetic Algorithm) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab:comparison_vns_ga}
+  \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccccc}
+  \toprule%
+  & \multicolumn{3}{@{}c@{}}{Objective function evaluation (average)} & \multicolumn{2}{@{}c@{}}{Execution time (average)} \\\cmidrule{2-4}\cmidrule{5-6}%
+  Instance & VNS & GA & Difference (\%) & VNS & GA \\
+  \midrule
+  100  & $7.41 \times 10^6$  & $7.46 \times 10^6$  & 0.71 & 241s  & 6,595s \\
+  200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37 & 714s  &  \\
+  400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31 & 2,016s &  \\
+  800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26 & 5,538s & 82,687s \\
+  1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 & 17,767s & 217,958s \\
+  \bottomrule 
+  \end{tabular*}
+\end{table*}
 
 %===============================================================================
 \section{Conclusion}
@@ -391,8 +386,7 @@ solved using a Variable Neighborhood Search (VNS) algorithm, which explores the 
 Slide neighborhood structures.
 
 Comparative analysis highlights VNS’s superiority over Genetic Algorithms (GA) in both solution quality and computational efficiency, 
-especially for large-scale instances where exact methods become impractical due to memory and time limitations. However, for small to 
-medium-sized problems, exact methods remain the best choice as they guarantee optimal solutions.
+especially for large-scale instances where exact methods become impractical due to memory and time limitations.
 
 Future research could explore problem-specific neighborhood operators to enhance VNS performance further. Additionally, a hybrid approach 
 combining VNS with exact algorithms could improve both accuracy and efficiency, making the methodology more adaptable across industries.

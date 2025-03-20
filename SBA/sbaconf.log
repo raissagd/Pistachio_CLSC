@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  8 MAR 2025 20:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  19 MAR 2025 14:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -263,14 +263,39 @@ Package caption Info: New subtype `subfigure' on input line 238.
 \c@subfigure=\count311
 Package caption Info: New subtype `subtable' on input line 238.
 \c@subtable=\count312
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip64
+\multirow@cntb=\count313
+\multirow@dima=\skip65
+\bigstrutjot=\dimen181
+) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen182
+\lightrulewidth=\dimen183
+\cmidrulewidth=\dimen184
+\belowrulesep=\dimen185
+\belowbottomsep=\dimen186
+\aboverulesep=\dimen187
+\abovetopsep=\dimen188
+\cmidrulesep=\dimen189
+\cmidrulekern=\dimen190
+\defaultaddspace=\dimen191
+\@cmidla=\count314
+\@cmidlb=\count315
+\@aboverulesep=\dimen192
+\@belowrulesep=\dimen193
+\@thisruleclass=\count316
+\@lastruleclass=\count317
+\@thisrulewidth=\dimen194
 ) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
 Package: babel 2024/06/02 v24.6 The Babel package
-\babel@savecnt=\count313
-\U@D=\dimen181
+\babel@savecnt=\count318
+\U@D=\dimen195
 \l@unhyphenated=\language79
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
 \bbl@readstream=\read2
-\bbl@dirlevel=\count314
+\bbl@dirlevel=\count319
 
 *************************************
 * Local config file bblopts.cfg used
@@ -299,42 +324,42 @@ Package: ae 2001/02/12 1.3 Almost European Computer Modern
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
 ))
-LaTeX Font Info:    Trying to load font information for T1+aer on input line 64.
+LaTeX Font Info:    Trying to load font information for T1+aer on input line 66.
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aer.fd
 File: t1aer.fd 1997/11/16 Font definitions for T1/aer.
 ) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count315
+\l__color_backend_stack_int=\count320
 \l__pdf_internal_box=\box61
 ) (sbaconf.aux)
 \openout1 = `sbaconf.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
-LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count316
-\scratchdimen=\dimen182
+\scratchcounter=\count321
+\scratchdimen=\dimen196
 \scratchbox=\box62
-\nofMPsegments=\count317
-\nofMParguments=\count318
+\nofMPsegments=\count322
+\nofMParguments=\count323
 \everyMPshowfont=\toks32
-\MPscratchCnt=\count319
-\MPscratchDim=\dimen183
-\MPnumerator=\count320
-\makeMPintoPDFobject=\count321
+\MPscratchCnt=\count324
+\MPscratchDim=\dimen197
+\MPnumerator=\count325
+\makeMPintoPDFobject=\count326
 \everyMPtoPDFconversion=\toks33
 ) (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -368,8 +393,8 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Calculating math sizes for size <14> on input line 82.
-\c@sv@footnote=\count322
+LaTeX Font Info:    Calculating math sizes for size <14> on input line 84.
+\c@sv@footnote=\count327
 
 
 
@@ -377,18 +402,17 @@ LaTeX Font Info:    Calculating math sizes for size <14> on input line 82.
 [1{C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
 
 ]
-<./imgs/supplychain.PNG, id=9, 489.027pt x 287.8755pt>
-File: ./imgs/supplychain.PNG Graphic file (type png)
-<use ./imgs/supplychain.PNG>
-Package pdftex.def Info: ./imgs/supplychain.PNG  used on input line 153.
-(pdftex.def)             Requested size: 239.00298pt x 140.69563pt.
-
-Overfull \hbox (1.93571pt too wide) detected at line 173
+Overfull \hbox (3.74808pt too wide) detected at line 159
 []
  []
 
 
 
+<./imgs/supplychain.PNG, id=9, 489.027pt x 287.8755pt>
+File: ./imgs/supplychain.PNG Graphic file (type png)
+<use ./imgs/supplychain.PNG>
+Package pdftex.def Info: ./imgs/supplychain.PNG  used on input line 170.
+(pdftex.def)             Requested size: 239.00298pt x 140.69563pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -399,7 +423,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <./imgs/decode_flux.PNG, id=21, 482.40225pt x 298.716pt>
 File: ./imgs/decode_flux.PNG Graphic file (type png)
 <use ./imgs/decode_flux.PNG>
-Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 261.
+Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 244.
 (pdftex.def)             Requested size: 239.00298pt x 147.99933pt.
 
 
@@ -407,34 +431,34 @@ Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 261.
 <./imgs/nbhd_op.png, id=26, 410.7345pt x 263.18324pt>
 File: ./imgs/nbhd_op.png Graphic file (type png)
 <use ./imgs/nbhd_op.png>
-Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 308.
+Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 291.
 (pdftex.def)             Requested size: 239.00298pt x 153.14836pt.
 
 
 <./imgs/VNSxGA_100.png, id=27, 711.1368pt x 419.166pt>
 File: ./imgs/VNSxGA_100.png Graphic file (type png)
 <use ./imgs/VNSxGA_100.png>
-Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 346.
+Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 327.
 (pdftex.def)             Requested size: 233.02647pt x 137.35301pt.
 <./imgs/VNSxGA_200.png, id=28, 719.0865pt x 419.166pt>
 File: ./imgs/VNSxGA_200.png Graphic file (type png)
 <use ./imgs/VNSxGA_200.png>
-Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 347.
+Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 328.
 (pdftex.def)             Requested size: 238.20993pt x 138.85606pt.
 <./imgs/VNSxGA_400.png, id=29, 734.2632pt x 403.9893pt>
 File: ./imgs/VNSxGA_400.png Graphic file (type png)
 <use ./imgs/VNSxGA_400.png>
-Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 351.
+Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 332.
 (pdftex.def)             Requested size: 243.3855pt x 133.90866pt.
 <./imgs/VNSxGA_800.png, id=30, 711.1368pt x 419.166pt>
 File: ./imgs/VNSxGA_800.png Graphic file (type png)
 <use ./imgs/VNSxGA_800.png>
-Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 352.
+Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 333.
 (pdftex.def)             Requested size: 233.02647pt x 137.35301pt.
 <./imgs/VNSxGA_1600.png, id=31, 739.3221pt x 419.166pt>
 File: ./imgs/VNSxGA_1600.png Graphic file (type png)
 <use ./imgs/VNSxGA_1600.png>
-Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 358.
+Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 339.
 (pdftex.def)             Requested size: 233.02647pt x 132.11473pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -442,7 +466,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 [4 <./imgs/nbhd_op.png>]
-LaTeX Font Info:    Trying to load font information for T1+aett on input line 400.
+LaTeX Font Info:    Trying to load font information for T1+aett on input line 394.
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 ) (sbaconf.bbl
@@ -455,28 +479,49 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[5 <./imgs/VNSxGA_100.png> <./imgs/VNSxGA_200.png> <./imgs/VNSxGA_400.png> <./imgs/VNSxGA_800.png> <./imgs/VNSxGA_1600.png>])
+[5 <./imgs/VNSxGA_100.png> <./imgs/VNSxGA_200.png> <./imgs/VNSxGA_400.png> <./imgs/VNSxGA_800.png> <./imgs/VNSxGA_1600.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 109--114
+[]\T1/aer/m/n/10 Statista (2023).  Lead-ing pro-duc-ers of pis-ta-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--114
+\T1/aer/m/n/10 chios world-wide in 2022 and 2023.  URL
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--114
+\T1/aett/m/n/10 https : / / www . statista . com / statistics / 933042 /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--114
+\T1/aett/m/n/10 global-[]pistachio-[]production-[]by-[]country/$\T1/aer/m/n/10 .
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[6
+)
 
-] (sbaconf.aux)
+[6] (sbaconf.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 1
 L3 programming layer <2024-05-27>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 7291 strings out of 473919
- 121966 string characters out of 5726481
- 1960908 words of memory out of 5000000
- 30017 multiletter control sequences out of 15000+600000
+ 7430 strings out of 473919
+ 124501 string characters out of 5726481
+ 1961908 words of memory out of 5000000
+ 30148 multiletter control sequences out of 15000+600000
  581442 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 67i,12n,77p,366b,388s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 67i,12n,77p,1470b,388s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmb10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on sbaconf.pdf (6 pages, 508045 bytes).
+Output written on sbaconf.pdf (6 pages, 512517 bytes).
 PDF statistics:
  113 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

@@ -69,11 +69,6 @@ Gendreau, M., Potvin, J.Y., et~al. (2010).
 \newblock \emph{Handbook of metaheuristics}, volume~2.
 \newblock Springer.
 
-\bibitem[{{Gurobi Optimization, LLC}(2024)}]{gurobi}
-{Gurobi Optimization, LLC} (2024).
-\newblock {Gurobi Optimizer Reference Manual}.
-\newblock \urlprefix\url{https://www.gurobi.com}.
-
 \bibitem[{Imran et~al.(2009)Imran, Salhi, and Wassan}]{imran2009variable}
 Imran, A., Salhi, S., and Wassan, N.A. (2009).
 \newblock A variable neighborhood-based heuristic for the heterogeneous fleet
@@ -109,6 +104,13 @@ Rajabi-Kafshgar, A., Gholian-Jouybari, F., Seyedi, I., and Hajiaghaei-Keshteli,
 \newblock Utilizing hybrid metaheuristic approach to design an agricultural
   closed-loop supply chain network.
 \newblock \emph{Expert Systems with Applications}, 217, 119504.
+
+\bibitem[{{Statista}(2023)}]{statista2023pistachio}
+{Statista} (2023).
+\newblock Leading producers of pistachios worldwide in 2022 and 2023.
+\newblock
+  \urlprefix\url{https://www.statista.com/statistics/933042/global-pistachio-production-by-country/}.
+\newblock Accessed: 2023-10-05.
 
 \bibitem[{Vahdani and Zandieh(2010)}]{vahdani2010scheduling}
 Vahdani, B. and Zandieh, M. (2010).
