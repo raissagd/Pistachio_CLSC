@@ -505,7 +505,7 @@ The stopping criterion for the proposed method and the GA was set to 100,000 eva
 
 The objective of this experiment was to compare the proposed methodology with a method similar to those used in the primary reference \cite{rajabi2023utilizing}. However, a fair comparison with the algorithms from \cite{rajabi2023utilizing} was not feasible, as the decoding methodology was not explicitly presented in their work. Consequently, the results of this experiment serve to establish a relationship between the proposed method in this study and the reference, providing insights into their relative performance and applicability.
 
-The average performance of the proposed method compared to the Genetic Algorithm (GA) is presented in Table \ref{tab:comparison_vns_ga}, which shows the average of the 30 best solutions found for each algorithm. For small instances, such as the 100-one, the difference between VNS and GA is negligible, with only a 0.71\% improvement. However, for larger instances, VNS demonstrates a significantly better performance, outperforming GA by 3.4 to 5.3\% on average. The boxplots in Fig \ref{fig:VNSxGA_boxplots} illustrate the distribution of objective function values for each algorithm across different instance sizes. Notably, significant differences are observed in the 800 and 1600 instances. The p-values from the Independent Samples T-test (Welch Test) for these instances are less than 0.05, confirming that the differences are statistically significant under the assumptions of normality and unequal variances. These results indicate that VNS is statistically superior to GA for large-scale instances.
+The average performance of the proposed method compared to the Genetic Algorithm (GA) is presented in Table \ref{tab1}, which shows the average of the 30 best solutions found for each algorithm and the average execution time. For small instances, such as the 100-one, the difference between VNS and GA is negligible, with only a 0.71\% improvement. However, for larger instances, VNS demonstrates a significantly better performance, outperforming GA by 3.4 to 5.3\% on average. The boxplots in Fig \ref{fig:VNSxGA_boxplots} illustrate the distribution of objective function values for each algorithm across different instance sizes. Notably, significant differences are observed in the 800 and 1600 instances. The p-values from the Independent Samples T-test (Welch Test) for these instances are less than 0.05, confirming that the differences are statistically significant under the assumptions of normality and unequal variances. These results indicate that VNS is statistically superior to GA for large-scale instances.
 % However, as the problem size grows, GA's performance gradually worsens compared to VNS. By 800 instances, the difference in solution quality rises to 5.26\%, indicating that VNS provides consistently better solutions for larger problems.
 
 % Statistical tests conducted on the results further validate that VNS outperforms GA in all tested instances. VNS not only exhibits a lower average 
@@ -569,19 +569,36 @@ and scalable for large-scale optimization problems.
 \end{figure}
 
 
+% \begin{table}[!htb]
+%     \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab2}
+%     \label{tab:comparison_vns_ga}
+%     \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
+%     \toprule%
+%     & \multicolumn{3}{@{}c@{}}{Objective function evaluation}\\\cmidrule{2-4}\cmidrule{5-7}%
+%     Instance & VNS & GA & Difference\\
+%     \midrule
+%     100  & $7.41 \times 10^7$  & $7.46 \times 10^7$  & 0.71\% \\
+%     200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37\% \\
+%     400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31\% \\
+%     800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26\% \\
+%     1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$ & 4.64\%\\
+%     \botrule
+%     \end{tabular*}
+% \end{table}
+
 \begin{table}[!htb]
-    \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab2}
-    \label{tab:comparison_vns_ga}
-    \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
+    \caption{Comparison of the VNS algorithm and a population-based metaheuristic (Genetic Algorithm) in terms of the average objective function value of the best solutions and the average execution time.}\label{tab1}
+    \label{tab:comparison_vns_gurobi}
+    \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccccc}
     \toprule%
-    & \multicolumn{3}{@{}c@{}}{Objective function evaluation}\\\cmidrule{2-4}\cmidrule{5-7}%
-    Instance & VNS & GA & Difference\\
+    & \multicolumn{3}{@{}c@{}}{Objective function evaluation (average)} & \multicolumn{2}{@{}c@{}}{Execution time (average)} \\\cmidrule{2-4}\cmidrule{5-6}%
+    Instance & VNS & GA & Difference & VNS & GA \\
     \midrule
-    100  & $7.41 \times 10^7$  & $7.46 \times 10^7$  & 0.71\% \\
-    200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37\% \\
-    400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31\% \\
-    800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26\% \\
-    1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$ & 4.64\%\\
+    100  & $7.36 \times 10^6$  & $7.46 \times 10^7$  & 0.71\% & 241s  & 6,595s \\
+    200  & $1.49 \times 10^8$  & $1.55 \times 10^8$  & 3.37\% & 714s  & 14,349s \\
+    400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31\% & 2,016s & 33,941s \\
+    800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26\% & 5,538s & 82,687s \\
+    1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64\% & 17,767s & 217,958s\\
     \botrule
     \end{tabular*}
 \end{table}
@@ -590,7 +607,7 @@ and scalable for large-scale optimization problems.
 
 This experiment focuses on a comparison between the proposed VNS and an exact MILP algorithm. The goal is to evaluate the effectiveness of VNS in finding high-quality solutions compared to an exact algorithm, which guarantees optimal solutions. The comparison is conducted in terms of the average objective function values of the best solutions found and the average execution time. By analyzing these metrics, we aim to assess the trade-off between solution quality and computational efficiency, particularly in scenarios where the MILP approach may become computationally prohibitive for larger instances. In fact, the MILP approach was unable to solve the 1600 instance due to memory constraints and it terminated the 800 instance prematurely due to the same memory constraints. This implies that the solution found for the 800 instance might not be the global optimum.
 
-As shown in Table \ref{tab:comparison_vns_gurobi}, the exact method efficiently finds optimal solutions for smaller instances, such as the 100 and 200 ones. 
+As shown in Table \ref{tab2}, the exact method efficiently finds optimal solutions for smaller instances, such as the 100 and 200 ones. 
 In these cases, the difference between the average objective function values of VNS and exact method is about 4.19\% for the 100 instance set and 8.22\% 
 for the 200 instance set. However, as the problem size increases, the gap in solution quality widens significantly, with VNS being 20.12\% from the optimal 
 solution for the 800 instance set.
