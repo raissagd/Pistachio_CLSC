@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  22 MAR 2025 17:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  24 MAR 2025 16:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -399,7 +399,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [1{C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
 
 ]
-Overfull \hbox (1.93571pt too wide) detected at line 132
+Overfull \hbox (1.93571pt too wide) detected at line 133
 []
  []
 
@@ -411,27 +411,11 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <./imgs/supplychain.PNG, id=9, 489.027pt x 287.8755pt>
 File: ./imgs/supplychain.PNG Graphic file (type png)
 <use ./imgs/supplychain.PNG>
-Package pdftex.def Info: ./imgs/supplychain.PNG  used on input line 151.
+Package pdftex.def Info: ./imgs/supplychain.PNG  used on input line 152.
 (pdftex.def)             Requested size: 239.00298pt x 140.69563pt.
 
 
 [2 <./imgs/supplychain.PNG>]
-
-LaTeX Warning: Reference `eq' on page 3 undefined on input line 194.
-
-
-LaTeX Warning: Reference `eq' on page 3 undefined on input line 194.
-
-
-LaTeX Warning: Reference `eq' on page 3 undefined on input line 194.
-
-
-LaTeX Warning: Reference `eq' on page 3 undefined on input line 194.
-
-
-LaTeX Warning: Reference `eq' on page 3 undefined on input line 194.
-
-
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
@@ -439,7 +423,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <./imgs/decode_flux.PNG, id=21, 482.40225pt x 298.716pt>
 File: ./imgs/decode_flux.PNG Graphic file (type png)
 <use ./imgs/decode_flux.PNG>
-Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 228.
+Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 229.
 (pdftex.def)             Requested size: 239.00298pt x 147.99933pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -450,7 +434,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <./imgs/nbhd_op.png, id=25, 410.7345pt x 263.18324pt>
 File: ./imgs/nbhd_op.png Graphic file (type png)
 <use ./imgs/nbhd_op.png>
-Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 276.
+Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 277.
 (pdftex.def)             Requested size: 239.00298pt x 153.14836pt.
 
 
@@ -460,33 +444,33 @@ Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 276.
 <./imgs/VNSxGA_100.png, id=32, 711.1368pt x 419.166pt>
 File: ./imgs/VNSxGA_100.png Graphic file (type png)
 <use ./imgs/VNSxGA_100.png>
-Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 316.
+Package pdftex.def Info: ./imgs/VNSxGA_100.png  used on input line 317.
 (pdftex.def)             Requested size: 233.02647pt x 137.35301pt.
 <./imgs/VNSxGA_200.png, id=33, 719.0865pt x 419.166pt>
 File: ./imgs/VNSxGA_200.png Graphic file (type png)
 <use ./imgs/VNSxGA_200.png>
-Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 317.
+Package pdftex.def Info: ./imgs/VNSxGA_200.png  used on input line 318.
 (pdftex.def)             Requested size: 238.20993pt x 138.85606pt.
 <./imgs/VNSxGA_400.png, id=34, 734.2632pt x 403.9893pt>
 File: ./imgs/VNSxGA_400.png Graphic file (type png)
 <use ./imgs/VNSxGA_400.png>
-Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 321.
+Package pdftex.def Info: ./imgs/VNSxGA_400.png  used on input line 322.
 (pdftex.def)             Requested size: 243.3855pt x 133.90866pt.
 <./imgs/VNSxGA_800.png, id=35, 711.1368pt x 419.166pt>
 File: ./imgs/VNSxGA_800.png Graphic file (type png)
 <use ./imgs/VNSxGA_800.png>
-Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 322.
+Package pdftex.def Info: ./imgs/VNSxGA_800.png  used on input line 323.
 (pdftex.def)             Requested size: 233.02647pt x 137.35301pt.
 <./imgs/VNSxGA_1600.png, id=36, 739.3221pt x 419.166pt>
 File: ./imgs/VNSxGA_1600.png Graphic file (type png)
 <use ./imgs/VNSxGA_1600.png>
-Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 328.
+Package pdftex.def Info: ./imgs/VNSxGA_1600.png  used on input line 329.
 (pdftex.def)             Requested size: 233.02647pt x 132.11473pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-LaTeX Font Info:    Trying to load font information for T1+aett on input line 383.
+LaTeX Font Info:    Trying to load font information for T1+aett on input line 368.
 (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/ae\t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 ) (sbaconf.bbl
@@ -523,21 +507,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 109--114
 LaTeX2e <2024-06-01> patch level 1
 L3 programming layer <2024-05-27>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
- 7414 strings out of 473919
- 123594 string characters out of 5726481
+ 7413 strings out of 473919
+ 123590 string characters out of 5726481
  1956908 words of memory out of 5000000
- 30137 multiletter control sequences out of 15000+600000
+ 30136 multiletter control sequences out of 15000+600000
  581442 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  67i,12n,77p,1447b,390s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmb10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on sbaconf.pdf (6 pages, 515751 bytes).
+Output written on sbaconf.pdf (6 pages, 515507 bytes).
 PDF statistics:
  113 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

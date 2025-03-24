@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex sbaconf"] 1742675429.74576 "sbaconf.aux" "sbaconf.bbl" "sbaconf" 1742675432.16412 0
+["bibtex sbaconf"] 1742675429.74576 "sbaconf.aux" "sbaconf.bbl" "sbaconf" 1742843688.73281 0
   "./ifacconf.bib" 1741295440 11544 269af92439a5936c44c1f6aa96d56290 ""
   "./ifacconf.bst" 1633534322 30606 0a94c3be66b01cc15224e14423d70f48 ""
-  "sbaconf.aux" 1742675431 6236 34df8bd6fcde6f84dcc7180544f4f843 "pdflatex"
+  "sbaconf.aux" 1742843686 6236 34df8bd6fcde6f84dcc7180544f4f843 "pdflatex"
   (generated)
   "sbaconf.bbl"
   "sbaconf.blg"
   (rewritten before read)
-["pdflatex"] 1742675430.09924 "c:/Users/Lenovo/Documents/IC/SBA/sbaconf.tex" "sbaconf.pdf" "sbaconf" 1742675432.16499 0
-  "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1741293801 82705 9cc9f144eacd499bc23a611703921467 ""
+["pdflatex"] 1742843684.10988 "c:/Users/Lenovo/Documents/IC/SBA/sbaconf.tex" "sbaconf.pdf" "sbaconf" 1742843688.73464 0
+  "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1742754955 82705 9cc9f144eacd499bc23a611703921467 ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1724336691 24264540 49d27c373074f0bd51e55e96fee01217 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/tfm/jknappen/ec/ecrm1000.tfm" 993062122 3148 7e594c8240c71e432203f65ab5f95a51 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/tfm/public/ae/aeb10.tfm" 1057861800 6132 78e5594f4fe2bad148a7cb22806d1f42 ""
@@ -113,7 +113,7 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/tools/theorem.sty" 1717270872 4956 6e559071f22138800525418e87153986 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/tools/thp.sty" 1717270872 1908 5fa75347055b144adc918ef80d6061f0 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "c:/Users/Lenovo/Documents/IC/SBA/sbaconf.tex" 1742675426 53750 0a84aecebab9eb29db4c15e4721b27f2 ""
+  "c:/Users/Lenovo/Documents/IC/SBA/sbaconf.tex" 1742843682 53046 c429bed204a4bc3a9b9ab5b44e5ca432 ""
   "ifacconf.cls" 1633534322 65509 4f55878f71691d56a61642cb8e426222 ""
   "imgs/VNSxGA_100.png" 1728786981 37774 8095b527cba2c28a4b21471b9dfdaa26 ""
   "imgs/VNSxGA_1600.png" 1728787097 45398 2f40e723c24c5d61d9db9edb91d59648 ""
@@ -123,9 +123,9 @@
   "imgs/decode_flux.PNG" 1726621331 47164 74f0f8b8fd741de34d9380889f0595bd ""
   "imgs/nbhd_op.png" 1725480620 54696 2fd0912f31ad5e4b73458e8c966b9781 ""
   "imgs/supplychain.PNG" 1725500067 55737 a1ed86d916b3497253cb7fcb0ea90397 ""
-  "sbaconf.aux" 1742675431 6236 34df8bd6fcde6f84dcc7180544f4f843 "pdflatex"
+  "sbaconf.aux" 1742843686 6236 34df8bd6fcde6f84dcc7180544f4f843 "pdflatex"
   "sbaconf.bbl" 1742675430 5641 43a3e2d0cca69dcfea6760823df0f769 "bibtex sbaconf"
-  "sbaconf.tex" 1742675426 53750 0a84aecebab9eb29db4c15e4721b27f2 ""
+  "sbaconf.tex" 1742843682 53046 c429bed204a4bc3a9b9ab5b44e5ca432 ""
   (generated)
   "sbaconf.aux"
   "sbaconf.log"

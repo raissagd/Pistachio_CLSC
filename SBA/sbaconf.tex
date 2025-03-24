@@ -67,7 +67,8 @@ eficiente pode impulsionar o crescimento econômico e promover a sustentabilidad
 cadeias, a maioria dos estudos concentra-se no uso de algoritmos populacionais para enfrentar esses desafios. Neste trabalho, propomos a aplicação do algoritmo de 
 Busca em Vizinhança Variável (VNS) e avaliamos seu desempenho em comparação com uma metaheurística populacional, especificamente o Algoritmo Genético (GA). Os resultados
 mostram que o VNS apresenta consistentemente um desempenho superior ao GA, tanto em termos de eficiência computacional quanto de qualidade das soluções, especialmente 
-em instâncias de maior porte. Esses achados destacam o potencial do método proposto como uma abordagem eficaz para a otimização de cadeias de suprimentos.\end{abstract}
+em instâncias de maior porte. Esses achados destacam o potencial do método proposto como uma abordagem eficaz para a otimização de cadeias de suprimentos.
+\end{abstract}
 
 \begin{keyword}
 Otimização de Cadeias de Suprimentos, Metaheurísticas, Busca em Vizinhança Variável, Sustentabilidade
@@ -191,7 +192,7 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, e $z_3$ \eqref{eq:custo3}, que
   
   \item As restrições \eqref{eq:restricao1}-\eqref{eq:restricao6} tratam das limitações de capacidade e demanda de cada instalação na cadeia de suprimentos. Em particular, a restrição \eqref{eq:restricao1} limita a quantidade de produtos transportados dos produtores para os centros de distribuição. Já as restrições \eqref{eq:restricao2}-\eqref{eq:restricao6} garantem que as quantidades enviadas para os centros de processamento, compostagem, fábricas de pistache, centros de extração de óleo e fábricas de cosméticos não ultrapassem as capacidades dessas instalações.
   
-  \item A quantidade de produtos enviados de qualquer instalação não deve ultrapassar os pedidos recebidos por essa instalação. Consequentemente, a restrição \eqref{eq} estabelece que a quantidade de produtos expedidos de um centro de processamento deve ser menor ou igual à quantidade recebida por outras instalações. As restrições \eqref{eq}-\eqref{eq} definem as quantidades de pistaches de casca aberta, sementes cruas e resíduos gerados durante o processo de descascamento em cada centro de processamento. De forma similar, as restrições \eqref{eq}-\eqref{eq} regem os fluxos dentro das fábricas de pistache, centros de extração de óleo, fábricas de cosméticos e centros de compostagem.
+  \item A quantidade de produtos enviados de qualquer instalação não deve ultrapassar os pedidos recebidos por essa instalação. Consequentemente, a restrição \eqref{eq:restricao7} estabelece que a quantidade de produtos expedidos de um centro de processamento deve ser menor ou igual à quantidade recebida por outras instalações. As restrições \eqref{eq:restricao8}-\eqref{eq:restricao11} definem as quantidades de pistaches de casca aberta, sementes cruas e resíduos gerados durante o processo de descascamento em cada centro de processamento. De forma similar, as restrições \eqref{eq:restricao12}-\eqref{eq:restricao16} regem os fluxos dentro das fábricas de pistache, centros de extração de óleo, fábricas de cosméticos e centros de compostagem.
   
   \item Por fim, para garantir que a demanda dos clientes seja atendida, as restrições \eqref{eq:restricao17}-\eqref{eq:restricao20} asseguram que as quantidades de produtos entregues aos clientes de pistache, óleo de pistache, cosméticos e composto satisfaçam ou superem suas respectivas demandas.
 \end{itemize}
@@ -331,22 +332,6 @@ mas também demonstra maior eficiência no tratamento de problemas de grande esc
   \caption{Boxplots comparando o desempenho do algoritmo VNS e de uma meta-heurística baseada em população (Algoritmo Genético) em diferentes tamanhos de problema, com base nos valores da função objetivo.}
   \label{fig:VNSxGA_boxplots}
 \end{figure*}
-
-% \begin{table}[hb]
-%   \begin{center}
-%   \caption{Comparison of the VNS algorithm and a population-based metaheuristic (genetic algorithm) in terms of the average objective function value of the best solutions and the average execution time.}
-%   \label{tab:comparison_vns_ga}
-%   \begin{tabular}{cccc}
-%   \hline
-%   Instance & VNS & GA & Difference (\%) \\ \hline
-%   100  & $7.41 \times 10^7$  & $7.46 \times 10^7$  & 0.71 \\  
-%   200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37 \\  
-%   400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31 \\  
-%   800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26 \\  
-%   1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 \\ \hline
-%   \end{tabular}
-%   \end{center}
-% \end{table}
 
 \begin{table*}[!htb]
   \caption{Comparação entre o algoritmo VNS e uma meta-heurística baseada em população (Algoritmo Genético) em termos do valor médio da função objetivo das melhores soluções e do tempo médio de execução.}
