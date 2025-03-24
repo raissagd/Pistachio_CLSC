@@ -83,7 +83,7 @@ class VariableNeighborhoodSearch(Algorithm):
 
         solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
-        convergence.add(solution)
+        convergence.add(solution, self.n_eval) # Add FX e numero de avaliações
 
         #print(f"Initial FX: {solution.FX}")
         operator_index = 0
@@ -110,7 +110,7 @@ class VariableNeighborhoodSearch(Algorithm):
             else:
                 # If the new solution is not better, try the next operator
                 operator_index += 1
-            convergence.add(solution)
+            convergence.add(solution, self.n_eval) 
 
         #print(f"Final solution: {solution.FX}")
         solution.execution_time = time()-tic
@@ -386,7 +386,7 @@ class IteratedLocalSearch(Algorithm):
         solution.generateChromosome(data)
         solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
-        convergence.add(solution)
+        convergence.add(solution, self.n_eval)
         #print(f"Initial FX: {solution.FX}")
 
         # Local search on the initial solution
@@ -401,7 +401,7 @@ class IteratedLocalSearch(Algorithm):
             if candidate.FX < solution.FX:
                 solution = candidate
             
-            convergence.add(solution)
+            convergence.add(solution, self.n_eval)
 
         #print(f"Final solution: {solution.FX}")
         solution.convergence = convergence
@@ -487,7 +487,7 @@ class GeneticAlgorithm(Algorithm):
         # Solve the problem using the genetic algorithm
         population = self.initialize_population(data)
         best_solution = min(population, key=lambda sol: sol.FX)
-        convergence.add(best_solution)
+        convergence.add(best_solution, self.n_eval)
 
         while self.n_eval < self.max_eval:
             new_population = []
@@ -534,7 +534,7 @@ class GeneticAlgorithm(Algorithm):
                 best_solution = min(population, key=lambda sol: sol.FX)
             else:
                 best_solution = min(new_population, key=lambda sol: sol.FX)
-            convergence.add(best_solution)
+            convergence.add(best_solution, self.n_eval)
             #(f"Best FX = {best_solution.FX}")
 
         best_solution.execution_time = time()-tic

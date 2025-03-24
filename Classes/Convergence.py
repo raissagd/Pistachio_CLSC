@@ -25,16 +25,18 @@ class Convergence:
         """
         Initializes an instance of the Convergence class.
         """
-        self.convergence = []
+        self.convergence = [[], []]
 
-    def add(self, solution):
+
+    def add(self, solution, num_evals):
         """
         Adds a solution's convergence value to the list.
 
         Args:
             solution: The solution object containing the convergence value.
         """
-        self.convergence.append(solution.FX)
+        self.convergence[0].append(num_evals)
+        self.convergence[1].append(solution.FX)
 
     def get(self):
         """
