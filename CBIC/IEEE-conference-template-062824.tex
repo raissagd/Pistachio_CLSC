@@ -27,7 +27,7 @@
 \title{Aprimoramento de Metaheurísticas para Otimização da Cadeia de Suprimentos de Pistache}
 
 \author{\IEEEauthorblockN{1\textsuperscript{st} Raissa Gon\c{c}alves Diniz}
-\IEEEauthorblockA{\textit{Laboratório de Pesquisa Operacional e Sistemas Complexos} \\
+\IEEEauthorblockA{\textit{Operations Research and Complex Systems Laboratory} \\
 \textit{Universidade Federal de Minas Gerais}\\
 Belo Horizonte, Brasil \\
 raissagd@ufmg.br}
@@ -45,7 +45,7 @@ andre-costa@ufmg.br}
     As cadeias de suprimentos desempenham um papel fundamental na indústria agrícola, especialmente no caso de culturas de alto valor, como o pistache, onde uma gestão 
     eficiente pode impulsionar o crescimento econômico e promover a sustentabilidade. Embora pesquisas anteriores tenham explorado estratégias de otimização para essas 
     cadeias, a maioria dos estudos concentra-se no uso de algoritmos populacionais para enfrentar esses desafios. Neste trabalho, propomos a aplicação do algoritmo de 
-    Busca em Vizinhança Variável (VNS) e avaliamos seu desempenho em comparação com uma metaheurística populacional, especificamente o Algoritmo Genético (GA). Os resultados
+    Busca em Vizinhança Variável (Variable Neighborhood Search - VNS) e avaliamos seu desempenho em comparação com uma metaheurística populacional, especificamente o Algoritmo Genético (Genetic Algorithm - GA). Os resultados
     mostram que o VNS apresenta consistentemente um desempenho superior ao GA, tanto em termos de eficiência computacional quanto de qualidade das soluções, especialmente 
     em instâncias de maior porte. Esses achados destacam o potencial do método proposto como uma abordagem eficaz para a otimização de cadeias de suprimentos.
 \end{abstract}
@@ -61,16 +61,16 @@ andre-costa@ufmg.br}
 A agricultura desempenha um papel fundamental no desenvolvimento econômico, contribuindo não apenas para a segurança alimentar, mas também para as exportações e o crescimento industrial. 
 Entre as culturas de alto valor, os pistaches se destacam no comércio internacional, com os Estados Unidos, a Turquia e o Irã liderando a produção global \cite{b22}. 
 A gestão eficiente de cadeias de suprimentos é essencial para manter a qualidade dos produtos, reduzir impactos ambientais e garantir uma distribuição eficaz. Um dos principais desafios na 
-rodução de pistache é o manejo dos subprodutos, como cascas e resíduos da polpa, que, se descartados de forma inadequada, podem comprometer a qualidade do solo e gerar riscos à saúde 
+produção de pistache é o manejo dos subprodutos, como cascas e resíduos da polpa, que, se descartados de forma inadequada, podem comprometer a qualidade do solo e gerar riscos à saúde 
 devido à contaminação por aflatoxinas produzidas por fungos \cite{b26}. Estratégias sustentáveis de gestão de resíduos, como compostagem e produção de biogás, têm sido 
 exploradas para mitigar esses problemas, conforme discutido por \cite{b6}.
 
 Falhas na cadeia de suprimentos exercem impacto significativo tanto na qualidade dos produtos quanto nas operações comerciais. Estudos anteriores, como o de \cite{b2}, investigaram técnicas 
-de otimização baseadas em Algoritmos Genéticos (GA) e outras meta-heurísticas evolucionárias para a logística do pistache. No entanto, muitas dessas comparações se baseiam apenas 
+de otimização baseadas em Algoritmos Genéticos (Genetic Algorithm - GA) e outras meta-heurísticas evolucionárias para a logística do pistache. No entanto, muitas dessas comparações se baseiam apenas 
 nas melhores soluções encontradas, sem uma validação estatística robusta que comprove a superioridade dos resultados. Além disso, ainda há debate sobre a influência real das 
 diferenças entre meta-heurísticas bioinspiradas na qualidade das soluções obtidas.
 
-Neste contexto, o presente estudo propõe a otimização da cadeia de suprimentos do pistache mediante a aplicação da Busca em Vizinhança Variável (VNS), uma heurística reconhecida por sua 
+Neste contexto, o presente estudo propõe a otimização da cadeia de suprimentos do pistache mediante a aplicação da Busca em Vizinhança Variável (Variable Neighborhood Search - VNS), uma heurística reconhecida por sua 
 eficiência na resolução de problemas combinatórios complexos e que requer parametrização mínima. O modelo misto linear proposto por \cite{b2} para a logística direta e reversa foi considerado, 
 incorporando o reaproveitamento de subprodutos como estratégia para minimização de custos e redução de impactos ambientais. Os resultados demonstram que o VNS supera o GA na avaliação da função objetivo, ao 
 mesmo tempo em que obtém soluções competitivas com um tempo computacional significativamente menor em comparação a um método exato.
@@ -89,7 +89,7 @@ são então enviados para fábricas, centros de extração de óleo e centros de
 pistache é fornecido aos clientes de óleo e fábricas de cosméticos. Os resíduos são convertidos em composto para distribuição. Embora o composto seja devolvido aos produtores, idealmente criando um sistema 
 de circuito fechado, o modelo matemático não estabelece uma conexão direta entre os clientes de composto e os produtores que fornecem pistaches aos centros de processamento. Estritamente falando, o modelo 
 matemático de fluxo não implementa um circuito fechado. Em vez disso, interpreta o fluxo de composto para seus respectivos clientes como um feedback, mesmo que esses clientes não estejam necessariamente 
-vinculados às variáveis associadas aos produtores. Abordagens semelhantes foram adotadas em outros estudos \cite{b11,b19,b20}, e a implementação rigorosa de um circuito de feedback poderia ser uma direção promissora para pesquisas futuras. 
+vinculados às variáveis associadas aos produtores. Abordagens semelhantes foram adotadas em outros estudos (\cite{b11,b19,b20}), e a implementação rigorosa de um circuito de feedback poderia ser uma direção promissora para pesquisas futuras. 
 
 O problema linear misto visa minimizar os custos totais \eqref{eq:custo}, incluindo custos de abertura, transporte e produção, sob as seguintes restrições de capacidade e demanda, não tolerando escassez (ver
 mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
@@ -107,11 +107,11 @@ mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
     & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9}\\
     & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10}\\
     & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
-    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12}\\
-    & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13}
+    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12}
 \end{align}
 
 \begin{align}
+  & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} & \\
   & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14} \\
   & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15} \\
   & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q, \quad \forall q \in Q \label{eq:restricao16}\\
@@ -124,7 +124,7 @@ mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
 \begin{figure}
   \begin{center}
       \includegraphics[width=8.4cm]{./imgs/supplychain.PNG}
-      \caption{Cadeia de Suprimentos de PistacFhe proposta}
+      \caption{Cadeia de Suprimentos de Pistache proposta}
       \label{fig:supplychain}
   \end{center}
 \end{figure}
@@ -175,8 +175,8 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, e $z_3$ \eqref{eq:custo3}, que
 \section{Metodologia}
 \label{sec:heuristic1}
 
-Esta seção apresenta a metodologia utilizada para resolver o problema de otimização, empregando codificação baseada em prioridade \cite{b12} e o algoritmo de Busca em Vizinhança Variável (VNS). A codificação 
-baseada em prioridade ordena as variáveis de decisão para explorar o espaço de soluções mantendo a viabilidade, enquanto a VNS alterna entre diferentes estruturas de vizinhança para escapar de ótimos locais. 
+Esta seção apresenta a metodologia utilizada para resolver o problema de otimização, empregando codificação baseada em prioridade \cite{b12} e o algoritmo VNS. A codificação 
+baseada em prioridade ordena as variáveis de decisão para explorar o espaço de soluções mantendo a viabilidade, enquanto o VNS alterna entre diferentes estruturas de vizinhança para escapar de ótimos locais. 
 Nossa abordagem inclui operadores de vizinhança personalizados e configurações de parâmetros adequadas.
 
 \subsection{Representação da Solução}
@@ -185,7 +185,7 @@ orientam a construção da árvore de transporte. O processo de decodificação 
 restrições de viabilidade.
 
 Diferentemente de \cite{b2}, que utiliza números reais entre 0 e 1, adotamos números inteiros de 1 a $Z$ para melhorar a interpretabilidade e facilitar as operações de vizinhança. A eficácia 
-dessa codificação já foi demonstrada em otimização de cadeias de suprimentos \cite{b11,b12,b13}.
+dessa codificação já foi demonstrada em otimização de cadeias de suprimentos (\cite{b11,b12,b13}).
 
 O processo de decodificação garante a conformidade com as restrições \eqref{eq:custo}-\eqref{eq:restricao20}, determinando sequencialmente os fluxos dos produtores para os centros de processamento, fábricas e 
 consumidores, minimizando os custos de transporte. Ajustes são feitos para priorizar as entidades com maior necessidade, assegurando a viabilidade. Da mesma forma, a compostagem e o gerenciamento de resíduos 
@@ -200,14 +200,14 @@ de processamento e compostagem, enquanto minimizam os custos.
 \begin{figure}[h!]
   \begin{center}
   \includegraphics[width=8.4cm]{./imgs/decode_flux.PNG}
-  \caption{Etapas de decodificação do fluxo de produtos na cadeia de suprimentos}
+  \caption{Etapas de decodificação do fluxo na cadeia de suprimentos}
   \label{fig:decode_flux}
   \end{center}
 \end{figure}
 
 \subsection{Busca em Vizinhança Variável (VNS)}
-A Busca em Vizinhança Variável (VNS) explora o espaço de soluções alterando sistematicamente as estruturas de vizinhança \cite{b27}. O algoritmo alterna entre as fases de perturbação 
-(\textit{shaking}) e busca local, aceitando novas soluções apenas se melhorarem a função objetivo. Essa abordagem tem se mostrado eficaz na resolução de problemas de otimização com restrições \cite{b14,b15,b9}.
+O VNS explora o espaço de soluções alterando sistematicamente as estruturas de vizinhança \cite{b27}. O algoritmo alterna entre as fases de perturbação 
+(\textit{shaking}) e busca local, aceitando novas soluções apenas se melhorarem a função objetivo. Essa abordagem tem se mostrado eficaz na resolução de problemas de otimização com restrições (\cite{b14,b15,b9}).
 
 A implementação do algoritmo VNS utilizado neste estudo está descrita no Algoritmo \ref{algoVNS}.
 
@@ -262,7 +262,7 @@ Os tamanhos testados foram 100, 200, 400, 800 e 1600, resultando em contagens to
 Entretanto, algoritmos que utilizam codificação baseada em prioridade possuem um número significativamente menor de variáveis, pois consideram apenas as prioridades dos pares fonte-depósito.
 Nesses casos, as contagens de variáveis foram reduzidas para 1.700; 3.400; 6.800; 13.600; e 27.200.
 
-Os parâmetros das instâncias, como capacidades e demandas, foram gerados aleatoriamente conforme a Tabela 7 de \cite{b2}. A abordagem baseada em VNS foi comparada com um Algoritmo Genético (GA),
+Os parâmetros das instâncias, como capacidades e demandas, foram gerados aleatoriamente conforme a Tabela 7 de \cite{b2}. A abordagem baseada no VNS foi comparada com o GA,
 que foi uma das meta-heurísticas evolucionárias utilizadas na referência considerada. O GA utilizou mutações baseadas em troca (\textit{swap-based mutations}) e cruzamentos de subsequências (\textit{subsequence-exchanging crossovers}),
 com vetores selecionados aleatoriamente, uma população de 100 indivíduos e uma estratégia de seleção por Torneio Binário.
 
@@ -301,12 +301,12 @@ mas também demonstra maior eficiência no tratamento de problemas de grande esc
       } \\
       \multicolumn{2}{c}{(e) $I, J, K, E, S, Q, N1, N2, N3, M = 1600$} \\
   \end{tabular}
-  \caption{Boxplots comparando o desempenho do algoritmo VNS e de uma meta-heurística baseada em população (Algoritmo Genético) em diferentes tamanhos de problema, com base nos valores da função objetivo.}
+  \caption{Boxplots comparando o desempenho do algoritmo VNS e de uma meta-heurística baseada em população (GA) em diferentes tamanhos de problema, com base nos valores da função objetivo.}
   \label{fig:VNSxGA_boxplots}
 \end{figure*}
 
 \begin{table*}[!htb]
-  \caption{Comparação entre o algoritmo VNS e uma meta-heurística baseada em população (Algoritmo Genético) em termos do valor médio da função objetivo das melhores soluções e do tempo médio de execução.}
+  \caption{Comparação entre o algoritmo VNS e uma meta-heurística baseada em população (GA) em termos do valor médio da função objetivo das melhores soluções e do tempo médio de execução.}
   \label{tab:comparison_vns_ga}
   \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccccc}
   \toprule%
@@ -329,10 +329,9 @@ mas também demonstra maior eficiência no tratamento de problemas de grande esc
 
 Este estudo apresenta um modelo de otimização para a cadeia de suprimentos de pistache, abordando as complexidades do gerenciamento de produtos e subprodutos ao longo de múltiplas etapas. 
 Ao integrar produção, transporte e operações das instalações, o modelo garante uma alocação eficiente de recursos, respeitando as restrições de capacidade e demanda. Formulado como um problema 
-de Programação Linear Inteira Mista (MILP), ele é resolvido por meio do algoritmo Variable Neighborhood Search (VNS), que explora o espaço de soluções utilizando estruturas de vizinhança como 
-Swap, Reversion, Insertion e Slide.
+de Programação Linear Inteira Mista (MILP), ele é resolvido por meio do algoritmo VNS, que explora o espaço de soluções utilizando estruturas de vizinhança como Swap, Reversion, Insertion e Slide.
 
-A análise comparativa demonstra a superioridade do VNS em relação aos Algoritmo Genético (GA), tanto em qualidade das soluções quanto em eficiência computacional, especialmente para 
+A análise comparativa demonstra a superioridade do VNS em relação ao GA, tanto em qualidade das soluções quanto em eficiência computacional, especialmente para 
 instâncias de grande escala, onde métodos exatos se tornam inviáveis devido a limitações de tempo e memória.
 
 Pesquisas futuras podem explorar operadores de vizinhança específicos para o problema, aprimorando ainda mais o desempenho do VNS. Além disso, uma abordagem híbrida, combinando VNS com métodos 

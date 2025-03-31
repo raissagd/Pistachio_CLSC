@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1742843896.22557 "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1742843899.4997 0
+["pdflatex"] 1743448520.07924 "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1743448523.49297 0
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1742754955 82705 9cc9f144eacd499bc23a611703921467 ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1724336691 24264540 49d27c373074f0bd51e55e96fee01217 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -91,10 +91,10 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ptm.fd" 1585253778 1007 15056f4a61917ceed3a44e4ac11fcc52 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "IEEE-conference-template-062824.aux" 1742843898 4835 176f932bda8865570dc124c2d6dee470 "pdflatex"
-  "IEEE-conference-template-062824.tex" 1742843891 32792 d85ce93c0af504493857f7d7787b0542 ""
+  "IEEE-conference-template-062824.aux" 1743448522 4788 f8399f3249754ddf49adad770e6762f0 "pdflatex"
+  "IEEE-conference-template-062824.tex" 1743448518 32701 045974e00ca0dae59220c04b5b79e18f ""
   "IEEEtran.cls" 1440654524 288304 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" 1742843891 32792 d85ce93c0af504493857f7d7787b0542 ""
+  "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" 1743448518 32701 045974e00ca0dae59220c04b5b79e18f ""
   "imgs/VNSxGA_100.png" 1728786981 37774 8095b527cba2c28a4b21471b9dfdaa26 ""
   "imgs/VNSxGA_1600.png" 1728787097 45398 2f40e723c24c5d61d9db9edb91d59648 ""
   "imgs/VNSxGA_200.png" 1728787013 38918 e400c2dffb61f6a53860d0d3476918ab ""
