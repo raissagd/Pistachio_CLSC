@@ -21,7 +21,12 @@ class Log:
         Parameters:
         data (dict): A dictionary containing the data to be logged.
         """
-        self.df = pd.concat([self.df, pd.DataFrame([data])], ignore_index=True) # Appending the new data as a new row in the DataFrame
+        new_entry = pd.DataFrame([data])
+    
+        if self.df.empty:
+            self.df = new_entry
+        else:
+            self.df = pd.concat([self.df, new_entry], ignore_index=True)
 
     def get(self):
         """
@@ -61,3 +66,6 @@ class Neighborhood_op_log(Log):
             "Evaluations": evaluations, "Success": success, "% Improvement": improvement
         }
         return super().log(data)  # Calling the parent log method to store the data
+
+    def save(self, filename, filepath):
+        self.df.to_csv(filepath + filename + ".csv", index=False)
