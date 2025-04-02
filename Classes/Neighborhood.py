@@ -10,6 +10,7 @@ class Neighborhood(ABC):
 
     def __init__(self, N):
         self.N = N  # Number of iterations
+        self.name = self.__class__.__name__  # Name of the class
 
     def selectRandomChromosome(self, solution):
         # List of chromosomes (S1, S2, ..., S8)

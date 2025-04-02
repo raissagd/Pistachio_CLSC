@@ -3,8 +3,8 @@ import numpy as np
 
 class Problem:
 
-    def __init__(self):
-        pass
+    def __init__(self, name=None):
+        self.instance = name
 
     def generate(self, I, J, K, E, Q, S, N1, N2, N3, M):
         """
@@ -32,6 +32,8 @@ class Problem:
         self.N2 = N2
         self.N3 = N3
         self.M = M
+
+        self.instance = f"Problem_{I}"
 
         # Fixed costs
         self.Fu = np.random.uniform(low=20000, high=40000, size=self.J)
@@ -88,7 +90,7 @@ class Problem:
         Args:
         - filename: Name of the file to save.
         """
-        np.savez_compressed(filename, I=self.I, K=self.K, J=self.J, E=self.E,
+        np.savez_compressed(filename,  instance=self.instance, I=self.I, K=self.K, J=self.J, E=self.E,
                             Q=self.Q, S=self.S, N1=self.N1, N2=self.N2, N3=self.N3, M=self.M,
                             Fu=self.Fu, Fy=self.Fy, Fw=self.Fw, Fr=self.Fr, Fv=self.Fv, CI=self.CI, Cy=self.Cy, Cw=self.Cw, Cr=self.Cr,
                             Cv=self.Cv, Cu1=self.Cu1, Cu2=self.Cu2, CX=self.CX, CK=self.CK, CE=self.CE, CJ=self.CJ, CS=self.CS, CN=self.CN,
@@ -104,6 +106,7 @@ class Problem:
         - filename: Name of the file to load.
         """
         data = np.load(filename)
+        self.instance = str(data["instance"]) # Convert bytes to string
 
         # Assigning values to instance variables
         self.I, self.K, self.J, self.E, self.Q, self.S, self.N1, self.N2, self.N3, self.M = [

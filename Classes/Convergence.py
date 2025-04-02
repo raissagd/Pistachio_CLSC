@@ -27,7 +27,6 @@ class Convergence:
         """
         self.convergence = [[], []]
 
-
     def add(self, solution, num_evals):
         """
         Adds a solution's convergence value to the list.
@@ -46,6 +45,7 @@ class Convergence:
             numpy.ndarray: The convergence values.
         """
         return np.array(self.convergence)
+    
     def __eq__(self, other):
         """
         Overload of the equality operator (==) for the Convergence class.
