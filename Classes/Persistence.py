@@ -102,6 +102,12 @@ class PersistMultipleSolutions:
         """
         with open(filepath + filename + self.format, 'wb') as file:
             pickle.dump(solutions, file)
+        
+        for i in range(len(solutions)):
+            for j in range(len(solutions[i])):
+                for k in range(len(solutions[i][j])):
+                    if solutions[i][j][k].log is not None:
+                        solutions[i][j][k].log.save(f"VNS{i}_Execution{k}", filepath)
 
     def load(self, filename='', filepath=''):
         """

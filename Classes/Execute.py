@@ -1,5 +1,6 @@
 from joblib import Parallel, delayed
 from Persistence import PersistMultipleSolutions
+from Log import Neighborhood_op_log
 
 class RunSingleMethodMultipleTimes:
     """
@@ -29,7 +30,8 @@ class RunSingleMethodMultipleTimes:
         Returns:
             A list of results from running the method multiple times.
         """
-        results = Parallel(n_jobs=-1)(delayed(method.solve)(data) for _ in range(number_times))
+        logs = [Neighborhood_op_log() for _ in range(number_times)] # Create a list of log objects for each run
+        results = Parallel(n_jobs=-1)(delayed(method.solve)(data, log=logs[n]) for n in range(number_times))
         return results
 
 class RunMultipleMethodsMultipleTimes:
@@ -68,7 +70,7 @@ class RunMultipleMethodsMultipleTimes:
             saving = PersistMultipleSolutions()
         for method in methods:
             results.append([])
-            results[n].append(RunSingleMethodMultipleTimes().run(
+            results[-1].append(RunSingleMethodMultipleTimes().run(
                 data=data, method=method, number_times=number_times)
             )
             if pre_save:

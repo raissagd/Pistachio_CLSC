@@ -4,7 +4,7 @@ from Solution import Solution
 from Convergence import Convergence
 from abc import ABC, abstractmethod
 from time import time
-
+from Log import Neighborhood_op_log
 
 class Algorithm(ABC):
     def __init__(self):
@@ -25,14 +25,18 @@ class VariableNeighborhoodSearch(Algorithm):
         6:    until k = kmax
     """
 
-    def __init__(self, operators, max_eval, initialization):
+    def __init__(self, operators, max_eval, initialization, name="VNS"):
         self.operators = operators  # Operators for generating neighbors
         self.max_eval = max_eval  # Maximum number of iterations
         self.n_eval = 1  # Number of evaluations
-        self.initializaton = initialization  # Initialization method
+        self.initialization = initialization  # Initialization method
+        self.log = None # Log for storing neighborhood operations
+        self.name = name # Name of the algorithm
 
-    def best_improvement(self, solution, data, operator_index, number_of_neighbors):
+    def best_improvement(self, solution, data, operator_index, number_of_neighbors, log):
         failure_counter = 0
+        initial_FX = solution.FX
+
         while True:
             neighbors = []  # List to store the neighbor solutions
             Fx_neighbors = []  # List to store the fitness values of the neighbor solutions
@@ -46,37 +50,39 @@ class VariableNeighborhoodSearch(Algorithm):
                 Fx_neighbors.append(neighbor.FX)  # Store its fitness value
 
             best_neighbor_index = np.argmin(Fx_neighbors)
-            # Select the best neighbor
-            best_neighbor = neighbors[best_neighbor_index]
+            best_neighbor = neighbors[best_neighbor_index] # Select the best neighbor    
 
             # Update the current solution if the best neighbor is better
             if Fx_neighbors[best_neighbor_index] < solution.FX:
                 solution = best_neighbor
                 failure_counter = 0
+                success = 1
             else:
                 failure_counter += 1
+                success = 0
                 if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
                     break
+
+            if log is not None:
+                log.log(data.instance, self.name, self.operators[operator_index].name, self.n_eval, success, (initial_FX - solution.FX) / initial_FX * 100 if success else 0 ) # Log the neighborhood operation
         
         return solution
 
     def perturbation(self, solution, data, operator_index):
-        # Select the operator for perturbation
-        operator = self.operators[operator_index]
+        operator = self.operators[operator_index] # Select the operator for perturbation
 
-        # Generate a perturbed solution
-        solution = operator.applyChange(solution)
+        solution = operator.applyChange(solution) # Generate a perturbed solution
 
         solution.evaluate(data)  # Evaluate the perturbed solution
 
         self.n_eval += 1
         return solution
 
-    def solve(self, data):
+    def solve(self, data, log=None):
         convergence = super().solve(data)
         tic = time()
         solution = Solution()  # Create a new solution
-        if (self.initializaton == 0):
+        if (self.initialization == 0):
             solution.generateChromosomeDeterministic(data)
         else:
             solution.generateChromosomeStochastic(data)
@@ -91,11 +97,9 @@ class VariableNeighborhoodSearch(Algorithm):
 
         # Neighborhood change
         while True:
-            perturbed_solution = self.perturbation(
-                solution, data, operator_index)  # Shake the current solution
-            # Local search on the perturbed solution
-            new_solution = self.best_improvement(
-                perturbed_solution, data, operator_index, number_of_neighbors)
+            perturbed_solution = self.perturbation(solution, data, operator_index)  # Shake the current solution
+
+            new_solution = self.best_improvement(perturbed_solution, data, operator_index, number_of_neighbors, log) # Local search on the perturbed solution
 
             if new_solution.FX < solution.FX:
                 # If the new solution is better, update the current solution and repeat the process
@@ -115,6 +119,11 @@ class VariableNeighborhoodSearch(Algorithm):
         #print(f"Final solution: {solution.FX}")
         solution.execution_time = time()-tic
         solution.convergence = convergence
+        
+        solution.log = log
+        # log_data = self.log.get()
+        # log_data.to_csv(f'./tests/run_parallel/{data.instance}_{self.name}.csv', index=False)
+        
         return solution
 
 
