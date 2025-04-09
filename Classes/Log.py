@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 class Log:
     """
@@ -68,4 +69,11 @@ class Neighborhood_op_log(Log):
         return super().log(data)  # Calling the parent log method to store the data
 
     def save(self, filename, filepath):
-        self.df.to_csv(filepath + filename + ".csv", index=False)
+        if not filename or not filepath:
+            #print(f"[⚠️ Warning] Skipping log save due to missing filename or filepath.")
+            return
+
+        os.makedirs(filepath, exist_ok=True)
+        full_path = os.path.join(filepath, filename + ".csv")
+        #print(f"✅ Saving log to: {full_path}")
+        self.df.to_csv(full_path, index=False)
