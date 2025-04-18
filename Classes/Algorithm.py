@@ -64,7 +64,7 @@ class VariableNeighborhoodSearch(Algorithm):
                     break
 
             if log is not None:
-                log.log(data.instance, self.name, self.operators[operator_index].name, self.n_eval, success, (initial_FX - solution.FX) / initial_FX * 100 if success else 0 ) # Log the neighborhood operation
+                log.log(data.instance, self.name, self.operators[operator_index].name, self.n_eval, success, (initial_FX - solution.FX) / initial_FX * 100 if success else 0, solution.FX  ) # Log the neighborhood operation
         
         return solution
 

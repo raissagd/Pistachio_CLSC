@@ -47,10 +47,10 @@ class Neighborhood_op_log(Log):
         """
         Initializes the log with predefined column names for neighborhood operations.
         """
-        columns = ["Instance", "Algorithm", "Operator", "Evaluations", "Success", "% Improvement"]
+        columns = ["Instance", "Algorithm", "Operator", "Evaluations", "Success", "% Improvement", "FX"]
         super().__init__(columns)  # Calling the parent class constructor with predefined columns
 
-    def log(self, instance, alg, operator, evaluations, success, improvement):
+    def log(self, instance, alg, operator, evaluations, success, improvement, FX):
         """
         Logs a neighborhood operation with specific attributes.
         
@@ -63,8 +63,13 @@ class Neighborhood_op_log(Log):
         improvement (float): Percentage of improvement achieved.
         """
         data = {
-            "Instance": instance, "Algorithm": alg, "Operator": operator, 
-            "Evaluations": evaluations, "Success": success, "% Improvement": improvement
+        "Instance": instance,
+        "Algorithm": alg,
+        "Operator": operator,
+        "Evaluations": evaluations,
+        "Success": success,
+        "% Improvement": improvement,
+        "FX": FX
         }
         return super().log(data)  # Calling the parent log method to store the data
 
