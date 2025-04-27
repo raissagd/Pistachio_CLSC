@@ -170,7 +170,7 @@ In related research, Rajabi-Kafshgar et al. \cite{rajabi2023utilizing} focused o
 Furthermore, there is ongoing debate about whether the differences in bio-inspirations behind metaheuristics, such as the Imperialist Competitive Algorithm, the Keshtel Algorithm, and the Social Engineering Optimizer -- all of which were used by the authors -- can indeed lead to significant performance differences \cite{campelo2023lessons,aranha2022metaphor}. This raises questions about the practical impact of such design choices in algorithmic performance.
 
 Given the complex interplay of factors influencing pistachio production and trade, and building upon this previous work, this research focuses on 
-designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm \cite{gendreau2010handbook}. VNS is particularly well-suited for large combinatorial optimization problems and it tipically involve few parameters \cite{hansen2010variable}. We address the mixed linear model of \cite{rajabi2023utilizing}, which integrates forward and backward 
+designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm \cite{gendreau2010handbook}. VNS is particularly well-suited for large combinatorial optimization problems and it typically involve few parameters \cite{hansen2010variable}. We address the mixed linear model of \cite{rajabi2023utilizing}, which integrates forward and backward 
 logistics for efficient resource management, including the reuse of by-products through composting. To reduce costs and environmental impact, 
 we apply VNS and compare its effectiveness against GA and an exact method. Our findings highlight evidences for VNS's superior performance compared to GA in terms of objective function evaluation. It also achieves reasonable solutions while requiring significantly less computational time than the exact method for large-scale problems. This demonstrates its potential as a scalable and efficient tool for sustainable supply chain management in agriculture.
 
@@ -322,10 +322,10 @@ The representation using real numbers between 0 and 1 is more suitable for handl
 % its demand is satisfied), and the process continues with the next highest priority node. This sequential process of arc appending 
 % and priority updating repeats until all depots' demands are satisfied, resulting in a complete transportation tree.
 
-The effectiveness of using chromosome decodification in supply chain optimization has been well-documented in recent literature. 
+The effectiveness of using chromosome decoding in supply chain optimization has been well-documented in recent literature. 
 For instance, this approach has been applied successfully to the design of integrated forward/reverse logistics networks \cite{pishvaee2010memetic}, 
 multi-objective supply chain network designs \cite{altiparmak2006genetic}, and dynamic scheduling and routing problems in flexible manufacturing 
-systems \cite{liu2023integrated}. These studies highlight the versatility and effectiveness of this decodification method in handling complex 
+systems \cite{liu2023integrated}. These studies highlight the versatility and effectiveness of this decoding method in handling complex 
 supply chain problems, including optimizing costs, responsiveness, and resource allocation across various supply chain configurations.
 
 The decoding process is explained in \cite{gen2006genetic} for a basic modeling of the supply chain problem. However, the authors of \cite{rajabi2023utilizing}, who employ this methodology, did not clarify how they adapted the decoding process from \cite{gen2006genetic} to the problem described by \eqref{eq:custo}-\eqref{eq:restricao20}, which involves significantly more constraints. This description is crucial because it is directly related to ensuring solution feasibility. Without it, a fair comparison of algorithms cannot be guaranteed. Therefore, we present as follows the methodology for adapting the decoding process to the problem at hand.
@@ -337,7 +337,7 @@ The decoding process is explained in \cite{gen2006genetic} for a basic modeling 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.8\textwidth]{./imgs/decode_flux.PNG}
-    \caption{Decodification steps of the transportation tree}
+    \caption{Decoding steps of the transportation tree}
     \label{fig:decode_flux}
 \end{figure}
 
