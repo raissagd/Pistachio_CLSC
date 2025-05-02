@@ -196,6 +196,8 @@ INPUT .\imgs\decode_flux.PNG
 INPUT .\imgs\decode_flux.PNG
 INPUT .\imgs\decode_flux.PNG
 INPUT .\imgs\decode_flux.PNG
+INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmb10.tfm
+INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcrb1000.tfm
 INPUT .\imgs\nbhd_op.png
 INPUT .\imgs\nbhd_op.png
 INPUT .\imgs\nbhd_op.png
@@ -206,8 +208,8 @@ INPUT .\imgs\nbhd_op.png
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb7t.vf
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr7t.vf
-INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr7t.vf
+INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
 INPUT .\imgs\VNSxGA_100.png
 INPUT .\imgs\VNSxGA_100.png
 INPUT .\imgs\VNSxGA_100.png
@@ -255,6 +257,8 @@ INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\sy
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri7t.vf
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT IEEE-conference-template-062824.aux
+INPUT C:\Users\Lenovo\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrb1000.pk
+INPUT C:\Users\Lenovo\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrb1000.pk
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb

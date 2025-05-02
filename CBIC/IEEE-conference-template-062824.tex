@@ -45,8 +45,8 @@ andre-costa@ufmg.br}
     As cadeias de suprimentos desempenham um papel fundamental na indústria agrícola, especialmente no caso de culturas de alto valor, como o pistache, onde uma gestão 
     eficiente pode impulsionar o crescimento econômico e promover a sustentabilidade. Embora pesquisas anteriores tenham explorado estratégias de otimização para essas 
     cadeias, a maioria dos estudos concentra-se no uso de algoritmos populacionais para enfrentar esses desafios. Neste trabalho, propomos a aplicação do algoritmo de 
-    Busca em Vizinhança Variável (Variable Neighborhood Search - VNS) e avaliamos seu desempenho em comparação com uma metaheurística populacional, especificamente o Algoritmo Genético (Genetic Algorithm - GA). Os resultados
-    mostram que o VNS apresenta consistentemente um desempenho superior ao GA, tanto em termos de eficiência computacional quanto de qualidade das soluções, especialmente 
+    Busca em Vizinhança Variável (Variable Neighborhood Search - VNS) e avaliamos seu desempenho em comparação com uma metaheurística populacional, especificamente o Algoritmo Genético (Genetic Algorithm - GA). 
+    Os resultados mostram que o VNS apresenta consistentemente um desempenho superior ao GA, tanto em termos de eficiência computacional quanto de qualidade das soluções, especialmente 
     em instâncias de maior porte. Esses achados destacam o potencial do método proposto como uma abordagem eficaz para a otimização de cadeias de suprimentos.
 \end{abstract}
 
@@ -70,10 +70,13 @@ de otimização baseadas em Algoritmos Genéticos (Genetic Algorithm - GA) e out
 nas melhores soluções encontradas, sem uma validação estatística robusta que comprove a superioridade dos resultados. Além disso, ainda há debate sobre a influência real das 
 diferenças entre meta-heurísticas bioinspiradas na qualidade das soluções obtidas.
 
-Neste contexto, o presente estudo propõe a otimização da cadeia de suprimentos do pistache mediante a aplicação da Busca em Vizinhança Variável (Variable Neighborhood Search - VNS), uma heurística reconhecida por sua 
-eficiência na resolução de problemas combinatórios complexos e que requer parametrização mínima. O modelo misto linear proposto por \cite{b2} para a logística direta e reversa foi considerado, 
-incorporando o reaproveitamento de subprodutos como estratégia para minimização de custos e redução de impactos ambientais. Os resultados demonstram que o VNS supera o GA na avaliação da função objetivo, ao 
-mesmo tempo em que obtém soluções competitivas com um tempo computacional significativamente menor em comparação a um método exato.
+Neste estudo, propõe-se a otimização da cadeia de suprimentos do pistache utilizando a metaheurística Busca em Vizinhança Variável (Variable Neighborhood Search - VNS), que é amplamente reconhecida 
+por sua eficácia na resolução de problemas combinatórios complexos com baixa necessidade de parametrização. O modelo matemático utilizado é baseado na formulação mista linear proposta por \cite{b2} 
+para a logística direta e reversa, que foca na minimização de custos e na redução de impactos ambientais por meio do reaproveitamento de subprodutos. A principal contribuição deste trabalho está na 
+aplicação do VNS a esse modelo, avaliando seu desempenho em comparação com o Algoritmo Genético (GA). Os resultados demonstram que o VNS apresenta vantagens em termos de qualidade 
+das soluções e tempo computacional. Embora o uso de metaheurísticas para otimização de cadeias de suprimentos não seja novo, a aplicação específica do VNS neste contexto oferece uma alternativa 
+interessante e promissora, especialmente em problemas de maior escala e complexidade. Essa abordagem pode contribuir para o aprimoramento da eficiência na gestão de cadeias de suprimentos agrícolas, 
+mantendo a sustentabilidade e otimizando os custos operacionais.
 
 A estrutura deste artigo organiza-se da seguinte forma: a Seção~\ref{sec:problem-def1} apresenta a definição do problema, descrevendo a estrutura da cadeia de suprimentos e os 
 objetivos de otimização. A Seção~\ref{sec:heuristic1} detalha a abordagem heurística, explicando a metodologia VNS e sua implementação. A Seção~\ref{sec:experiments1} compara os 
@@ -104,13 +107,13 @@ mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
     & \sum\limits_{e=1}^E O_{en_2} \le Cpv_s\times V_s, \quad \forall s \in S \label{eq:restricao6}\\
     & \sum\limits_{k=1}^K Go_{jk} + \sum\limits_{e=1} Gr_{je} + \sum\limits_{q=1}^Q Gw_{jq} \le \sum\limits_{i=1} X_{ij}, \quad \forall j \in J \label{eq:restricao7} \\
     & \sum\limits_{k=1}^K Go_{jk} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_1, \quad \forall j\in J \label{eq:restricao8} \\
-    & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9}\\
-    & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10}\\
-    & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
-    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12}
+    & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9}
 \end{align}
 
 \begin{align}
+  & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10} \\
+  & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
+  & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12} \\
   & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} & \\
   & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14} \\
   & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15} \\
@@ -184,8 +187,9 @@ Seguindo \cite{b2} e \cite{b12}, utilizamos a codificação baseada em prioridad
 orientam a construção da árvore de transporte. O processo de decodificação seleciona iterativamente o nó de maior prioridade, conectando-o à alternativa de menor custo, garantindo sempre o cumprimento das 
 restrições de viabilidade.
 
-Diferentemente de \cite{b2}, que utiliza números reais entre 0 e 1, adotamos números inteiros de 1 a $Z$ para melhorar a interpretabilidade e facilitar as operações de vizinhança. A eficácia 
-dessa codificação já foi demonstrada em otimização de cadeias de suprimentos (\cite{b11,b12,b13}).
+Diferentemente de \cite{b2}, que utiliza números reais entre 0 e 1, adotamos números inteiros de 1 a $Z$, o que melhora a interpretabilidade das soluções e facilita as operações de 
+vizinhança. A codificação inteira oferece uma distinção mais clara entre soluções, o que é especialmente útil em problemas combinatórios, como a otimização de cadeias de suprimentos. 
+Sua eficácia já foi demonstrada em estudos anteriores (\cite{b11}, \cite{b12}, \cite{b13}).
 
 O processo de decodificação garante a conformidade com as restrições \eqref{eq:custo}-\eqref{eq:restricao20}, determinando sequencialmente os fluxos dos produtores para os centros de processamento, fábricas e 
 consumidores, minimizando os custos de transporte. Ajustes são feitos para priorizar as entidades com maior necessidade, assegurando a viabilidade. Da mesma forma, a compostagem e o gerenciamento de resíduos 
@@ -205,6 +209,109 @@ de processamento e compostagem, enquanto minimizam os custos.
   \end{center}
 \end{figure}
 
+Para a decodificação de cada fluxo da cadeia de suprimentos, utilizamos a função decodingStep. Este procedimento corresponde exatamente ao Procedure 1 apresentado na Fig. 3 do artigo \cite{b12}. 
+Trata-se de um algoritmo de transporte baseado em prioridades, no qual as unidades de produto são alocadas sucessivamente a partir da fonte ou destino de maior prioridade, de acordo com o vetor cromossomo. 
+Em cada iteração, seleciona-se a fonte ou destino mais prioritário e realiza-se a alocação para o nó adjacente de menor custo, respeitando as restrições de capacidade e demanda. O processo se repete até que 
+todas as demandas sejam atendidas. O fluxo completo de decodificação pode ser visto nos pseudocódigo dos Algoritmos \ref{algoDecode1} e \ref{algoDecode2}.
+
+\begin{algorithm}
+  \caption{Decodificação do cromossomo para a cadeia de suprimentos (Parte 1)}
+  \label{algoDecode1}
+  \begin{algorithmic}[1]
+  \Procedure{Decode}{dados}
+  \State \textbf{Entrada:} dados estruturados contendo:
+  \State - Capacidades e demandas para todas as instalações
+  \State - Custos unitários de transporte
+  \State - Taxas de perda para cada estágio do processo
+  \State - Demandas dos consumidores
+  \State - Segmentos de cromossomo ($S_1, S_2, \ldots, S_8$) representando prioridades de transporte
+  \State \textbf{Saída:} custototal, variáveis de decisão contínuas ($X, P, L, O, O_c, G_o, G_r, D, G_w, O_w$) e variáveis binárias de abertura ($U, W, R, V, Y$)
+  
+  \State \textbf{// Passo 1: Inicializar variáveis e ler dados de entrada}
+  \State custototal $\leftarrow 0$
+
+  \State \textbf{// Passo 2: Decodificar Fábricas de Pistache → Consumidores de Pistache}
+  \State $a_1 \leftarrow$ capacidades das fábricas de pistache
+  \State $b_1 \leftarrow$ demandas dos consumidores de pistache
+  \State $c_1 \leftarrow$ custos de transporte
+  \State $(custo1, P) \leftarrow \text{decodingStep}(S_1, a_1, b_1, c_1)$
+  \State custototal $\leftarrow$ custototal + custo1
+  
+  \State \textbf{// Passo 3: Decodificar Fábricas de Cosméticos → Consumidores de Cosméticos}
+  \State $a_2 \leftarrow$ capacidades das fábricas de cosméticos
+  \State $b_2 \leftarrow$ demandas dos consumidores de cosméticos
+  \State $c_2 \leftarrow$ custos de transporte
+  \State $(custo2, L) \leftarrow \text{decodingStep}(S_2, a_2, b_2, c_2)$
+  \State custototal $\leftarrow$ custototal + custo2
+  
+  \State \textbf{// Passo 4: Decodificar Centros de Extração de Óleo → (Consumidores de Óleo + Fábricas de Cosméticos)}
+  \State $a_3 \leftarrow$ capacidades dos centros de extração de óleo
+  \State $b_3 \leftarrow$ demandas dos consumidores de óleo e fábricas de cosméticos
+  \State $c_3 \leftarrow$ custos de transporte
+  \State $(custo3, OO_c) \leftarrow \text{decodingStep}(S_3, a_3, b_3, c_3)$
+  \State Separar $OO_c$ em $O$ (consumidores de óleo) e $O_c$ (fábricas de cosméticos)
+  \State custototal $\leftarrow$ custototal + custo3
+  
+  \State \textbf{// Passo 5: Decodificar Centro de Processamento → Fábricas de Pistache}
+  \State $a_4 \leftarrow$ capacidades dos centros de processamento
+  \State $b_4 \leftarrow$ demandas ajustadas das fábricas de pistache
+  \State $c_4 \leftarrow$ custos de transporte
+  \State $(\_\_, G_o) \leftarrow \text{decodingStep}(S_4, a_4, b_4, c_4)$
+  
+  \State \textbf{// Passo 6: Decodificar Centro de Processamento → Centros de Extração de Óleo}
+  \State $a_5 \leftarrow$ capacidades dos centros de processamento
+  \State $b_5 \leftarrow$ demandas ajustadas dos centros de extração de óleo
+  \State $c_5 \leftarrow$ custos de transporte
+  \State $(\_\_, G_r) \leftarrow \text{decodingStep}(S_5, a_5, b_5, c_5)$
+  \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Decodificação do cromossomo para a cadeia de suprimentos (Parte 2)}
+  \label{algoDecode2}
+  \begin{algorithmic}[1]
+  \Procedure{Decode}{continuação}
+  \State \textbf{// Passo 7: Ajustar demandas nos Centros de Processamento}
+  \For{cada centro de processamento $j$}
+      \State Calcular saídas necessárias com base nos fluxos de pistache e óleo
+      \State Atualizar $G_o$ e $G_r$ para corresponder às capacidades efetivas
+  \EndFor
+
+  \State \textbf{// Passo 8: Decodificar Produtores de Pistache → Centros de Processamento}
+  \State $a_6 \leftarrow$ capacidades dos produtores de pistache
+  \State $b_6 \leftarrow$ demandas atualizadas nos centros de processamento
+  \State $c_6 \leftarrow$ custos de transporte
+  \State $(custo6, X) \leftarrow \text{decodingStep}(S_6, a_6, b_6, c_6)$
+  \State custototal $\leftarrow$ custototal + custo6
+    
+  \State \textbf{// Passo 9: Decodificar Centros de Compostagem → Consumidores de Compostagem}
+  \State $a_7 \leftarrow$ capacidades dos centros de compostagem
+  \State $b_7 \leftarrow$ demandas dos consumidores de compostagem
+  \State $c_7 \leftarrow$ custos de transporte
+  \State $(custo7, D) \leftarrow \text{decodingStep}(S_7, a_7, b_7, c_7)$
+  \State custototal $\leftarrow$ custototal + custo7
+    
+  \State \textbf{// Passo 10: Atribuir fluxos de resíduos}
+  \State Calcular resíduos dos centros de processamento
+  \State $a_8 \leftarrow$ capacidades disponíveis dos centros de compostagem
+  \State $b_8 \leftarrow$ demandas de resíduos dos centros de processamento e extração de óleo
+  \State $c_8 \leftarrow$ custos de transporte
+  \State $(\_\_, O_w) \leftarrow \text{decodingStep}(S_8, a_8, b_8, c_8)$
+  \State Atualizar custototal
+    
+  \State \textbf{// Passo 11: Definir variáveis binárias de abertura}
+  \State $U \leftarrow$ centros de processamento abertos
+  \State $W \leftarrow$ fábricas de pistache abertas
+  \State $R \leftarrow$ centros de extração de óleo abertos
+  \State $V \leftarrow$ fábricas de cosméticos abertas
+  \State $Y \leftarrow$ centros de compostagem abertas
+    
+  \State \textbf{return} custototal, variáveis de decisão e variáveis binárias de abertura
+  \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
 \subsection{Busca em Vizinhança Variável (VNS)}
 O VNS explora o espaço de soluções alterando sistematicamente as estruturas de vizinhança \cite{b27}. O algoritmo alterna entre as fases de perturbação 
 (\textit{shaking}) e busca local, aceitando novas soluções apenas se melhorarem a função objetivo. Essa abordagem tem se mostrado eficaz na resolução de problemas de otimização com restrições (\cite{b14,b15,b9}).
@@ -212,7 +319,8 @@ O VNS explora o espaço de soluções alterando sistematicamente as estruturas d
 A implementação do algoritmo VNS utilizado neste estudo está descrita no Algoritmo \ref{algoVNS}.
 
 \begin{algorithm}
-    \caption{Busca em Vizinhança Variável (VNS)}\label{algoVNS}
+    \caption{Busca em Vizinhança Variável (VNS)}
+    \label{algoVNS}
     \begin{algorithmic}[1]
     \Require Solução inicial $x$, tamanho máximo da vizinhança $k_{\text{max}}$, limite de tempo $t_{\text{max}}$
     \State \textbf{Saída:} Melhor solução encontrada $x^*$
@@ -266,8 +374,12 @@ Os parâmetros das instâncias, como capacidades e demandas, foram gerados aleat
 que foi uma das meta-heurísticas evolucionárias utilizadas na referência considerada. O GA utilizou mutações baseadas em troca (\textit{swap-based mutations}) e cruzamentos de subsequências (\textit{subsequence-exchanging crossovers}),
 com vetores selecionados aleatoriamente, uma população de 100 indivíduos e uma estratégia de seleção por Torneio Binário.
 
-Tanto o VNS quanto o GA foram executados 30 vezes por instância, com um critério de parada de 100.000 avaliações da função objetivo. Os experimentos foram conduzidos em um sistema com Ubuntu 24.04.1 LTS,
-processador Intel Xeon E3-1240 V2 (8 núcleos) e 32 GB de RAM.
+Tanto o VNS quanto o GA foram executados 30 vezes por instância. O critério de parada adotado foi um número máximo de avaliações da função objetivo, definido empiricamente de acordo 
+com a complexidade de cada instância. Os valores foram escolhidos com base em testes preliminares, buscando equilibrar custo computacional e qualidade das soluções obtidas. 
+Especificamente, foram utilizadas 6.250 avaliações para as instâncias de tamanho 100; 12.500 para as de tamanho 200; 24.000 para as de 400; 500.000 para as de 800; e 100.000 
+para as de 1600.
+
+Os experimentos foram conduzidos em um sistema com Ubuntu 24.04.1 LTS, processador Intel Xeon E3-1240 V2 (8 núcleos) e 32 GB de RAM.
 
 \subsection{Comparação entre VNS e GA}
 
