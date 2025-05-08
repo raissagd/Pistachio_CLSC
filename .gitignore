@@ -11,7 +11,6 @@ test_solution.pkl
 /template-latex/*.fls
 /template-latex/*.synctex.gz
 tests/GAxVNS/results/solutions_400_GA.pkl
-tests/run_parallel/results/script_800_results.pkl
 /sn-article-template/*.aux
 /sn-article-template/*.log
 /sn-article-template/*.bbl
@@ -21,4 +20,5 @@ tests/run_parallel/results/script_800_results.pkl
 /sn-article-template/*.synctex.gz
 /sn-article-template/*.out
 /data/data_1600.npz
-/tests/run_parallel/new_results/
+tests/run_parallel/initial_results/script_800_results.pkl
+tests/run_parallel/initial_results/script_1600_results.pkl
