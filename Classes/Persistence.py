@@ -88,7 +88,7 @@ class PersistMultipleSolutions:
     def __init__(self) -> None:
         self.format = '.pkl'
 
-    def save(self, solutions=None, filename='', filepath=''):
+    def save(self, solutions=None, filename='', filepath='', log=True):
         """
         Save the solutions to a file.
 
@@ -103,11 +103,17 @@ class PersistMultipleSolutions:
         with open(filepath + filename + self.format, 'wb') as file:
             pickle.dump(solutions, file)
         
-        for i in range(len(solutions)):
-            for j in range(len(solutions[i])):
-                for k in range(len(solutions[i][j])):
-                    if solutions[i][j][k].log is not None:
-                        solutions[i][j][k].log.save(f"VNS{i}_Execution{k}", filepath)
+        # Only attempt to save logs if log parameter is True
+        if log:
+            try:
+                for i in range(len(solutions)):
+                    for j in range(len(solutions[i])):
+                        for k in range(len(solutions[i][j])):
+                            # Check if the solution object has a log attribute
+                            if hasattr(solutions[i][j][k], 'log') and solutions[i][j][k].log is not None:
+                                solutions[i][j][k].log.save(f"VNS{i}_Execution{k}", filepath)
+            except (AttributeError, IndexError, TypeError) as e:
+                print(f"Warning: Could not save log files. Error: {e}")
 
     def load(self, filename='', filepath=''):
         """

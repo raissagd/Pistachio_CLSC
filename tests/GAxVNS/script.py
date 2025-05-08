@@ -6,7 +6,7 @@ from Execute import RunMultipleMethodsMultipleTimes
 from Persistence import PersistMultipleSolutions
 
 data = Problem()
-data.loadFile("data/data_200.npz")
+data.loadFile("data/data_10.npz")
 
 # Genetic Algorithm parameters
 population_size = 100
@@ -28,7 +28,7 @@ ga = GeneticAlgorithm(
 methods = [ga]
 number_executions = 30
 
-results = RunMultipleMethodsMultipleTimes().run(data, methods, number_executions)
+results = RunMultipleMethodsMultipleTimes().run(data, methods, number_executions, log=False)
 
 # Salvando as soluções em um arquivo pickle
-PersistMultipleSolutions().save(results, 'solutions_200_GA', './tests/GAxVNS/results_tempo/')
+PersistMultipleSolutions().save(results, 'teste', './tests/GAxVNS/results', logs=False)

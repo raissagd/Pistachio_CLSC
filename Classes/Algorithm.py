@@ -116,7 +116,7 @@ class VariableNeighborhoodSearch(Algorithm):
                 operator_index += 1
             convergence.add(solution, self.n_eval) 
 
-        #print(f"Final solution: {solution.FX}")
+        print(f"Final solution: {solution.FX}")
         solution.execution_time = time()-tic
         solution.convergence = convergence
         
@@ -486,7 +486,7 @@ class GeneticAlgorithm(Algorithm):
                 selected.append(population[pairs[i+1]])
         return selected
 
-    def solve(self, data):
+    def solve(self, data, log=None):
         convergence = super().solve(data)
         # Prevent early stopping in case of reusing the object
         self.n_eval = 0
@@ -544,7 +544,7 @@ class GeneticAlgorithm(Algorithm):
             else:
                 best_solution = min(new_population, key=lambda sol: sol.FX)
             convergence.add(best_solution, self.n_eval)
-            #(f"Best FX = {best_solution.FX}")
+            #print(f"Best FX = {best_solution.FX}")
 
         best_solution.execution_time = time()-tic
         best_solution.convergence = convergence

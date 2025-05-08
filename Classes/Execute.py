@@ -18,7 +18,7 @@ class RunSingleMethodMultipleTimes:
     def __init__(self) -> None:
         pass
 
-    def run(self, data=None, method=None, number_times=30):
+    def run(self, data=None, method=None, number_times=30, log=True):
         """
         Runs the specified method multiple times.
 
@@ -30,7 +30,11 @@ class RunSingleMethodMultipleTimes:
         Returns:
             A list of results from running the method multiple times.
         """
-        logs = [Neighborhood_op_log() for _ in range(number_times)] # Create a list of log objects for each run
+        if log:
+            logs = [Neighborhood_op_log() for _ in range(number_times)]
+        else:
+            logs = [None for _ in range(number_times)]
+        
         results = Parallel(n_jobs=-1)(delayed(method.solve)(data, log=logs[n]) for n in range(number_times))
         return results
 
@@ -50,8 +54,7 @@ class RunMultipleMethodsMultipleTimes:
     def __init__(self) -> None:
         pass
 
-    def run(self, data=None, methods=None, number_times=30, pre_save=True,
-            filename=''):
+    def run(self, data=None, methods=None, number_times=30, pre_save=True, filename='', log=True):
         """
         Runs multiple methods multiple times on a given problem.
 
@@ -78,8 +81,7 @@ class RunMultipleMethodsMultipleTimes:
                 
         return results
     
-    def resume(self, data=None, methods=None, number_times=30, results=None,
-               pre_save=True, filename=''):
+    def resume(self, data=None, methods=None, number_times=30, results=None, pre_save=True, filename='', log=True):
         """
         Resumes the execution of methods on the given data.
 
