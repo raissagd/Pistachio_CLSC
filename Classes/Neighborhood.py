@@ -374,3 +374,138 @@ class ENS(Neighborhood):
                         np.array(chromosome_list))
 
         return solution_copy
+
+class FixedCostSwap(Neighborhood):
+    """
+    Performs cost-aware swaps of facility activation states to reduce total fixed opening costs in a supply chain network.
+    """
+
+    def __init__(self, N, data):
+        super().__init__(N)
+        self.data = data  # Store data as an instance attribute
+
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            # Select a random chromosome
+            chromosome_attr, chromosome = self.selectRandomChromosome(
+                solution_copy)
+
+            # Chromosome 1: Pistachio Factories -> Pistachio Consumers (K + N1)
+            if chromosome_attr == 'S1':
+                opened = np.where(solution_copy.W == 1)[0]
+                closed = np.where(solution_copy.W == 0)[0]
+                cost_opened = self.data.Fw[opened]
+                cost_closed = self.data.Fw[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr,
+                        np.array(chromosome_list))
+            
+            # Chromosome 2: Cosmetics Factories -> Cosmetics Consumers (S + N3)
+            elif chromosome_attr == 'S2':
+                opened = np.where(solution_copy.V == 1)[0]
+                closed = np.where(solution_copy.V == 0)[0]
+                cost_opened = self.data.Fv[opened]
+                cost_closed = self.data.Fv[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr,
+                        np.array(chromosome_list))
+            
+            # Chromosome 3: Oil extraction centers -> oil consumers + cosmetics factories (E + N2 + S)
+            elif chromosome_attr == 'S3':
+                opened_e = np.where(solution_copy.R == 1)[0]
+                closed_e = np.where(solution_copy.R == 0)[0]
+                cost_opened = self.data.Fr[opened_e]
+                cost_closed = self.data.Fr[opened_e]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened_e[i]
+                j = closed_e[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr,
+                        np.array(chromosome_list))
+                
+            # Chromosome 4: Processing center -> pistachio factories (J + K)
+            elif chromosome_attr == 'S4':
+                opened = np.where(solution_copy.U == 1)[0]
+                closed = np.where(solution_copy.U == 0)[0]
+                cost_opened = self.data.Fu[opened]
+                cost_closed = self.data.Fu[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr,
+                        np.array(chromosome_list))
+                
+            # Chromosome 5: Processing center -> oil extraction center (J + E)
+            elif chromosome_attr == 'S5':
+                opened = np.where(solution_copy.U == 1)[0]
+                closed = np.where(solution_copy.U == 0)[0]
+                cost_opened = self.data.Fu[opened]
+                cost_closed = self.data.Fu[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr,
+                        np.array(chromosome_list))
+            
+            # Chromosome 6: Pistachio producers -> processing centers (I + J)
+            elif chromosome_attr == 'S6':
+                pass
+
+            # Chromosome 7: Composting centers -> composting consumers (Q + M)
+            elif chromosome_attr == 'S7':
+                opened = np.where(solution_copy.Y == 1)[0]
+                closed = np.where(solution_copy.Y == 0)[0]
+                cost_opened = self.data.Fy[opened]
+                cost_closed = self.data.Fy[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr,
+                        np.array(chromosome_list))
+
+            # Chromosome 8: Oil extraction centers -> composting centers (E + Q)
+            elif chromosome_attr == 'S8':
+                opened = np.where(solution_copy.R == 1)[0]
+                closed = np.where(solution_copy.R == 0)[0]
+                cost_opened = self.data.Fr[opened]
+                cost_closed = self.data.Fr[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr,
+                        np.array(chromosome_list))
+                
+        return solution_copy
