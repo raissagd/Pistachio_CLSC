@@ -1,8 +1,3 @@
-""" import sys
-sys.path.insert(0, 'Classes/')
-from Persistence import PersistMultipleSolutions
-import numpy as np
-"""
 import sys
 sys.path.append(r'../../')
 from Classes.Persistence import PersistMultipleSolutions
@@ -10,7 +5,7 @@ import numpy as np
 
 # Load the solutions from the pickle file
 persist = PersistMultipleSolutions()
-solutions = persist.load(filename='script_400_results', filepath='./results/')
+solutions = persist.load(filename='script_800', filepath='./new_results/')
 
 # Extract the FX attribute
 try:
@@ -22,4 +17,4 @@ except AttributeError as e:
 if 'fx_values' in locals():
     fx_array = np.array(fx_values)
     # Save the array to a .npz fileS
-    np.savez('./results/script_400_execution_time.npz', fx_array=fx_array)
+    np.savez('./new_results/script_800_execution_time.npz', fx_array=fx_array)

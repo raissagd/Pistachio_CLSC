@@ -116,7 +116,7 @@ class VariableNeighborhoodSearch(Algorithm):
                 operator_index += 1
             convergence.add(solution, self.n_eval) 
 
-        print(f"Final solution: {solution.FX}")
+        #print(f"Final solution: {solution.FX}")
         solution.execution_time = time()-tic
         solution.convergence = convergence
         
