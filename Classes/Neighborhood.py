@@ -509,3 +509,36 @@ class FixedCostSwap(Neighborhood):
                         np.array(chromosome_list))
                 
         return solution_copy
+    
+class TransportCostSwap(Neighborhood):
+    """
+    Performs cost-aware swaps of facility activation states to reduce total transport costs in a supply chain network.
+    """
+
+    def __init__(self, N, data):
+        super().__init__(N)
+        self.data = data  # Store data as an instance attribute
+    
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+        
+        for _ in range(self.N):
+            
+            chromosome_attr, chromosome = self.selectRandomChromosome(
+                solution_copy)
+            
+            # Chromosome 1: Pistachio Factories -> Pistachio Consumers (K + N1)
+            if chromosome_attr == 'S1':
+                costmatrix = self.data.Cp
+
+                # Alternatively, using numpy's argmin on flattened array
+                flat_idx = np.argmin(costmatrix)
+                i, j = np.unravel_index(flat_idx, costmatrix.shape)
+                
+                if solution_copy.P[i, j] == 0:
+                    k = np.where(solution_copy.P[i] == 1)[0][0]
+                    # Swap the elements at indices i and j
+                    chromosome_list = list(chromosome)
+                    chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
+                    setattr(solution_copy, chromosome_attr,
+                            np.array(chromosome_list))
