@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
 import copy
+import scipy.sparse
 
 
 class Neighborhood(ABC):
@@ -508,6 +509,8 @@ class FixedCostSwap(Neighborhood):
                 setattr(solution_copy, chromosome_attr,
                         np.array(chromosome_list))
                 
+                # continue
+                
         return solution_copy
     
 class TransportCostSwap(Neighborhood):
@@ -524,21 +527,152 @@ class TransportCostSwap(Neighborhood):
         
         for _ in range(self.N):
             
-            chromosome_attr, chromosome = self.selectRandomChromosome(
-                solution_copy)
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
             
             # Chromosome 1: Pistachio Factories -> Pistachio Consumers (K + N1)
             if chromosome_attr == 'S1':
                 costmatrix = self.data.Cp
 
-                # Alternatively, using numpy's argmin on flattened array
                 flat_idx = np.argmin(costmatrix)
                 i, j = np.unravel_index(flat_idx, costmatrix.shape)
                 
-                if solution_copy.P[i, j] == 0:
-                    k = np.where(solution_copy.P[i] == 1)[0][0]
-                    # Swap the elements at indices i and j
-                    chromosome_list = list(chromosome)
-                    chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
-                    setattr(solution_copy, chromosome_attr,
-                            np.array(chromosome_list))
+                if (solution_copy.P[i, j] == 0): 
+                    # Obter os índices onde a condição é verdadeira
+                    k_indices = np.where(solution_copy.P[i].toarray()[0] == 1)[0]
+                    
+                    # Verificar se algum '1' foi encontrado antes de tentar acessar [0]
+                    if len(k_indices) > 0:
+                        k = k_indices[0]
+                        # Swap the elements at indices i and j
+                        chromosome_list = list(chromosome)
+                        chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
+                        setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+
+                    
+            # Chromosome 2: Cosmetics Factories -> Cosmetics Consumers (S + N3)
+            elif chromosome_attr == 'S2':
+                costmatrix = self.data.Cl
+
+                flat_idx = np.argmin(costmatrix)
+                i, j = np.unravel_index(flat_idx, costmatrix.shape)
+                
+                if (solution_copy.L[i, j] == 0): 
+                    k_indices = np.where(solution_copy.L[i].toarray()[0] == 1)[0]
+                    
+                    if len(k_indices) > 0:
+                        k = k_indices[0]
+                        chromosome_list = list(chromosome)
+                        chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
+                        setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+
+
+            # Chromosome 3: Oil extraction centers -> oil consumers + cosmetics factories (E + N2 + S)
+            elif chromosome_attr == 'S3':
+                # Transporte E -> S
+                costmatrix_s = self.data.CS
+                flat_idx_s = np.argmin(costmatrix_s)
+                i_s, j_s = np.unravel_index(flat_idx_s, costmatrix_s.shape)
+
+                if (solution_copy.Oc[i_s, j_s] == 0): 
+                    k_s_indices = np.where(solution_copy.Oc[i_s].toarray()[0] == 1)[0]  # índice do ativo
+                    if len(k_s_indices) > 0:
+                        k_s = k_s_indices[0]
+                        solution_copy.Oces[i_s, j_s], solution_copy.Oces[i_s, k_s] = 1, 0
+
+                # Transporte E -> N2
+                costmatrix_n2 = self.data.CN
+                flat_idx_n2 = np.argmin(costmatrix_n2)
+                i_n2, j_n2 = np.unravel_index(flat_idx_n2, costmatrix_n2.shape)
+
+                if (solution_copy.O[i_n2, j_n2] == 0): 
+                    k_n2_indices = np.where(solution_copy.O[i_n2].toarray()[0] == 1)[0]
+                    if len(k_n2_indices) > 0:
+                        k_n2 = k_n2_indices[0]
+                        solution_copy.Oen2[i_n2, j_n2], solution_copy.Oen2[i_n2, k_n2] = 1, 0
+
+
+            # Chromosome 4: Processing center -> pistachio factories (J + K)
+            elif chromosome_attr == 'S4':
+                costmatrix = self.data.CK
+
+                flat_idx = np.argmin(costmatrix)
+                i, j = np.unravel_index(flat_idx, costmatrix.shape)
+                
+                if (solution_copy.Go[i, j] == 0): 
+                    k_indices = np.where(solution_copy.Go[i].toarray()[0] == 1)[0]
+                    
+                    if len(k_indices) > 0:
+                        k = k_indices[0]
+                        chromosome_list = list(chromosome)
+                        chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
+                        setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+                        
+                    
+            # Chromosome 5: Processing center -> oil extraction center (J + E)
+            elif chromosome_attr == 'S5':
+                costmatrix = self.data.CE
+
+                flat_idx = np.argmin(costmatrix)
+                i, j = np.unravel_index(flat_idx, costmatrix.shape)
+                
+                if (solution_copy.Gr[i, j] == 0): 
+                    k_indices = np.where(solution_copy.Gr[i].toarray()[0] == 1)[0]
+                    
+                    if len(k_indices) > 0:
+                        k = k_indices[0]
+                        chromosome_list = list(chromosome)
+                        chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
+                        setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+
+                    
+            # Chromosome 6: Pistachio producers -> processing centers (I + J)
+            elif chromosome_attr == 'S6':
+                costmatrix = self.data.CX
+
+                flat_idx = np.argmin(costmatrix)
+                i, j = np.unravel_index(flat_idx, costmatrix.shape)
+                
+                if (solution_copy.X[i, j] == 0): 
+                    k_indices = np.where(solution_copy.X[i].toarray()[0] == 1)[0]
+                    
+                    if len(k_indices) > 0:
+                        k = k_indices[0]
+                        chromosome_list = list(chromosome)
+                        chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
+                        setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+
+                    
+            # Chromosome 7: Composting centers -> composting consumers (Q + M)
+            elif chromosome_attr == 'S7':
+                costmatrix = self.data.Cd
+
+                flat_idx = np.argmin(costmatrix)
+                i, j = np.unravel_index(flat_idx, costmatrix.shape)
+                
+                if (solution_copy.D[i, j] == 0): 
+                    k_indices = np.where(solution_copy.D[i].toarray()[0] == 1)[0]
+                    
+                    if len(k_indices) > 0:
+                        k = k_indices[0]
+                        chromosome_list = list(chromosome)
+                        chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
+                        setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+
+                    
+            # Chromosome 8: Oil extraction centers -> composting centers (E + Q)
+            elif chromosome_attr == 'S8':
+                costmatrix = self.data.CQ
+
+                flat_idx = np.argmin(costmatrix)
+                i, j = np.unravel_index(flat_idx, costmatrix.shape)
+                
+                if (solution_copy.Ow[i, j] == 0): 
+                    k_indices = np.where(solution_copy.Ow[i].toarray()[0] == 1)[0]
+                    
+                    if len(k_indices) > 0:
+                        k = k_indices[0]
+                        chromosome_list = list(chromosome)
+                        chromosome_list[i], chromosome_list[k] = chromosome_list[k], chromosome_list[i]
+                        setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+                    
+        return solution_copy
