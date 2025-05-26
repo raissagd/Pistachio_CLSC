@@ -1,11 +1,11 @@
 import sys
-sys.path.insert(0, 'Classes/')
-from Persistence import PersistMultipleSolutions
+sys.path.append(r'../../')
+from Classes.Persistence import PersistMultipleSolutions
 import numpy as np
 
 # Carregar as soluções do arquivo pickle
 persist = PersistMultipleSolutions()
-solutions = persist.load(filename='solutions_400_GA', filepath='./tests/GAxVNS/results/')
+solutions = persist.load(filename='GA_800', filepath='./new_results/')
 
 # Extrair o atributo FX de cada solução
 try:
@@ -17,4 +17,4 @@ except AttributeError as e:
 if 'fx_values' in locals():
     fx_array = np.array(fx_values)
     # Salvar o array em um arquivo .npz
-    np.savez('solutions_400_GA_FX.npz', fx_array=fx_array)
+    np.savez('./new_results/GA_800_FX.npz', fx_array=fx_array)
