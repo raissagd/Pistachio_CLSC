@@ -94,7 +94,7 @@ de circuito fechado, o modelo matemático não estabelece uma conexão direta en
 matemático de fluxo não implementa um circuito fechado. Em vez disso, interpreta o fluxo de composto para seus respectivos clientes como um feedback, mesmo que esses clientes não estejam necessariamente 
 vinculados às variáveis associadas aos produtores. Abordagens semelhantes foram adotadas em outros estudos (\cite{b11,b19,b20}), e a implementação rigorosa de um circuito de feedback poderia ser uma direção promissora para pesquisas futuras. 
 
-O problema linear misto visa minimizar os custos totais \eqref{eq:custo}, incluindo custos de abertura, transporte e produção, sob as seguintes restrições de capacidade e demanda, não tolerando escassez (ver
+O problema linear misto visa minimizar os custos totais \eqref{eq:custo}, incluindo custos de abertura, produção e transporte, sob as seguintes restrições de capacidade e demanda, não tolerando escassez (ver
 mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
 
 \begin{align}
@@ -139,7 +139,7 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, e $z_3$ \eqref{eq:custo3}, que
 
 \begin{align}
   z_1 &= \sum_{j=1}^J Fu_j \cdot U_j 
-      + \sum_{q=1}^Q Fy_q \cdot Y_q
+      + \sum_{q=1}^Q Fy_q \cdot Y_q 
       + \sum_{k=1}^{K} Fw_k \cdot W_k \notag \\
       &\quad + \sum_{e=1}^{E} Fr_e \cdot R_e
       + \sum_{s=1}^S Fv_s \cdot V_s
@@ -151,7 +151,10 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, e $z_3$ \eqref{eq:custo3}, que
       + \sum_{j=1}^J\sum_{k=1}^K Cu_{1j} \cdot Go_{jk} \notag \\
       &\quad + \sum_{j=1}^J\sum_{e=1}^E Cu_{2j} \cdot Gr_{je} 
       + \sum_{q=1}^Q\sum_{m=1}^M Cy_q \cdot D_{qm} \notag \\
-      &\quad + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cw_k \cdot P_{kn_1}
+      &\quad + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cw_k \cdot P_{kn_1} \notag \\
+      &\quad + \sum_{e=1}^E Cr_e \cdot \left( \sum_{n_2=1}^{N_2} O_{en_2} 
+      + \sum_{s=1}^S Oc_{es} \right) \notag \\
+      &\quad + \sum_{s=1}^S\sum_{n_3=1}^{N_3} Cv_s \cdot L_{sn_3}
       \label{eq:custo2}
 \end{align}
 
@@ -160,7 +163,11 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, e $z_3$ \eqref{eq:custo3}, que
       + \sum_{j=1}^J\sum_{k=1}^K CK_{jk} \cdot Go_{jk} \notag \\
       &\quad + \sum_{j=1}^J\sum_{q=1}^Q CJ_{jq} \cdot Gw_{jq}
       + \sum_{e=1}^E\sum_{s=1}^S CS_{es} \cdot Oc_{es} \notag \\
-      &\quad + \sum_{e=1}^E\sum_{q=1}^Q CQ_{eq} \cdot Ow_{eq}
+      &\quad + \sum_{e=1}^E\sum_{n_2=1}^{N_2} CN_{en_2} \cdot Oc_{en_2}
+      + \sum_{e=1}^E\sum_{q=1}^Q CQ_{eq} \cdot Ow_{eq} \notag \\
+      &\quad + \sum_{s=1}^S\sum_{n_3=1}^{N_3} Cl_{sn_3} \cdot L_{sn_3}
+      + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cp_{kn_1} \cdot P_{kn_1} \notag \\
+      &\quad + \sum_{q=1}^Q\sum_{m=1}^M Cd_{qm} \cdot D_{qm}
       \label{eq:custo3}
 \end{align}
 
@@ -376,20 +383,21 @@ com vetores selecionados aleatoriamente, uma população de 100 indivíduos e um
 
 Tanto o VNS quanto o GA foram executados 30 vezes por instância. O critério de parada adotado foi um número máximo de avaliações da função objetivo, definido empiricamente de acordo 
 com a complexidade de cada instância. Os valores foram escolhidos com base em testes preliminares, buscando equilibrar custo computacional e qualidade das soluções obtidas. 
-Especificamente, foram utilizadas 6.250 avaliações para as instâncias de tamanho 100; 12.500 para as de tamanho 200; 24.000 para as de 400; 500.000 para as de 800; e 100.000 
+Especificamente, foram utilizadas 6.250 avaliações para as instâncias de tamanho 100; 12.500 para as de tamanho 200; 25.000 para as de 400; 500.000 para as de 800; e 100.000 
 para as de 1600.
 
 Os experimentos foram conduzidos em um sistema com Ubuntu 24.04.1 LTS, processador Intel Xeon E3-1240 V2 (8 núcleos) e 32 GB de RAM.
 
 \subsection{Comparação entre VNS e GA}
 
-A comparação com o GA segue a metodologia de \cite{b2}, embora uma correspondência exata não tenha sido possível devido às diferenças no processo de decodificação.
-A Tabela \ref{tab:comparison_vns_ga} apresenta o desempenho médio das 30 melhores soluções obtidas por cada algoritmo. Para instâncias pequenas (100 elementos), VNS e GA apresentaram desempenho semelhante,
-com uma melhoria de apenas 0,71\% para o VNS. No entanto, em instâncias maiores, o VNS superou consistentemente o GA, alcançando melhorias entre 3,4\% e 5,3\%.
+A comparação com o GA segue a metodologia de \cite{b2}, embora uma correspondência exata não tenha sido possível devido às diferenças no processo de decodificação. 
+A Tabela \ref{tab:comparison_vns_ga} apresenta o desempenho médio das 30 melhores soluções obtidas por cada algoritmo. Para instâncias pequenas (tamanho 100), o 
+VNS superou o GA com uma melhoria de 4,48\%. À medida que o tamanho do problema aumentou, essa superioridade se manteve e, em alguns casos, foi ainda mais acentuada.
+O VNS apresentou melhorias variando de 4,64\% a 9,87\% em relação ao GA nas instâncias maiores, com destaque para o ganho de 9,87\% na instância de 200 elementos.
 
 Os boxplots na Fig. \ref{fig:VNSxGA_boxplots} ilustram a distribuição das soluções, destacando diferenças significativas nos casos de 800 e 1600 instâncias. Os valores de p obtidos no teste t para amostras 
-independentes (teste de Welch) para essas instâncias são inferiores a 0,05, indicando que as diferenças observadas são estatisticamente significativas, considerando normalidade e variâncias desiguais. 
-Esses resultados sugerem que o VNS tem um desempenho significativamente superior ao GA em problemas de grande escala do ponto de vista estatístico. Além disso, o GA apresentou tempos de execução mais 
+independentes (teste de Welch) para essas instâncias são inferiores a 0.05, indicando que as diferenças observadas são estatisticamente significativas, considerando normalidade e variâncias desiguais. 
+Esses resultados sugerem que o VNS tem um desempenho significativamente superior ao GA em problemas de grande escala do ponto de vista estatístico. Além disso, o GA apresentou tempos de execução muito mais 
 longos, provavelmente devido ao aumento dos custos computacionais de suas operações evolutivas à medida que o tamanho do problema crescia.
 
 Em resumo, embora o GA tenha um desempenho competitivo em instâncias pequenas, sua escalabilidade é limitada. Em contraste, o VNS não apenas obtém soluções superiores,
@@ -398,18 +406,18 @@ mas também demonstra maior eficiência no tratamento de problemas de grande esc
 \begin{figure*}[h!]
   \centering
   \begin{tabular}{cc}
-      \includegraphics[width=0.45\textwidth]{./imgs/VNSxGA_100.png} & 
-      \includegraphics[width=0.46\textwidth]{./imgs/VNSxGA_200.png} \\
+      \includegraphics[width=0.45\textwidth]{./imgs/boxplot_VNSxGA_100.png} & 
+      \includegraphics[width=0.46\textwidth]{./imgs/boxplot_VNSxGA_200.png} \\
       (a) $I, J, K, E, S, Q, N1, N2, N3, M = 100$ & 
       (b) $I, J, K, E, S, Q, N1, N2, N3, M = 200$ \\
       \vspace{0.5cm} \\ 
-      \includegraphics[width=0.47\textwidth]{./imgs/VNSxGA_400.png} & 
-      \includegraphics[width=0.45\textwidth]{./imgs/VNSxGA_800.png} \\
+      \includegraphics[width=0.47\textwidth]{./imgs/boxplot_VNSxGA_400.png} & 
+      \includegraphics[width=0.45\textwidth]{./imgs/boxplot_VNSxGA_800.png} \\
       (c) $I, J, K, E, S, Q, N1, N2, N3, M = 400$ & 
       (d) $I, J, K, E, S, Q, N1, N2, N3, M = 800$ \\
       \vspace{0.5cm} \\ 
       \multicolumn{2}{c}{
-          \includegraphics[width=0.45\textwidth]{./imgs/VNSxGA_1600.png} 
+          \includegraphics[width=0.45\textwidth]{./imgs/boxplot_VNSxGA_1600.png} 
       } \\
       \multicolumn{2}{c}{(e) $I, J, K, E, S, Q, N1, N2, N3, M = 1600$} \\
   \end{tabular}
@@ -420,16 +428,16 @@ mas também demonstra maior eficiência no tratamento de problemas de grande esc
 \begin{table*}[!htb]
   \caption{Comparação entre o algoritmo VNS e uma meta-heurística baseada em população (GA) em termos do valor médio da função objetivo das melhores soluções e do tempo médio de execução.}
   \label{tab:comparison_vns_ga}
-  \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccccc}
+  \begin{tabular*}{\textwidth}{@{\extracolsep\fill}lcccccc}
   \toprule%
-  & \multicolumn{3}{@{}c@{}}{Avaliação da função objetivo (média)} & \multicolumn{2}{@{}c@{}}{Tempo de Execução (média)} \\\cmidrule{2-4}\cmidrule{5-6}%
-  Instância & VNS & GA & Diferença (\%) & VNS & GA \\
+  & \multicolumn{3}{@{}c@{}}{Avaliação da função objetivo (média)} & \multicolumn{3}{@{}c@{}}{Tempo de Execução (média)} \\\cmidrule{2-4}\cmidrule{5-7}%
+  Instância & VNS & GA & Diferença (\%) & VNS & GA & Diferença (\%) \\
   \midrule
-  100  & $7.41 \times 10^6$  & $7.46 \times 10^6$  & 0.71 & 241s  & 6,595s \\
-  200  & $1.50 \times 10^8$  & $1.55 \times 10^8$  & 3.37 & 714s  & 14,349s \\
-  400  & $3.08 \times 10^8$  & $3.24 \times 10^8$  & 5.31 & 2,016s & 33,941s \\
-  800  & $6.57 \times 10^8$  & $6.92 \times 10^8$  & 5.26 & 5,538s & 82,687s \\
-  1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 & 17,767s & 217,958s \\
+  100  & $7.44 \times 10^7$  & $7.78 \times 10^7$  & 4.48 & 370s    & 60,480s  & 197.57 \\
+  200  & $1.51 \times 10^8$  & $1.66 \times 10^8$  & 9.87 & 1,193s  & 23,210s  & 180.45 \\
+  400  & $3.12 \times 10^8$  & $3.42 \times 10^8$  & 9.17 & 3,917s  & 27,590s  & 150.27 \\
+  800  & $6.58 \times 10^8$  & $7.08 \times 10^8$  & 7.36 & 11,512s & 48,803s  & 123.65 \\
+  1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 & 17,767s & 217,958s  & 1126.95 \\
   \bottomrule 
   \end{tabular*}
 \end{table*}
