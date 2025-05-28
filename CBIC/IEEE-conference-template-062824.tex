@@ -384,7 +384,7 @@ com vetores selecionados aleatoriamente, uma população de 100 indivíduos e um
 Tanto o VNS quanto o GA foram executados 30 vezes por instância. O critério de parada adotado foi um número máximo de avaliações da função objetivo, definido empiricamente de acordo 
 com a complexidade de cada instância. Os valores foram escolhidos com base em testes preliminares, buscando equilibrar custo computacional e qualidade das soluções obtidas. 
 Especificamente, foram utilizadas 6.250 avaliações para as instâncias de tamanho 100; 12.500 para as de tamanho 200; 25.000 para as de 400; 500.000 para as de 800; e 100.000 
-para as de 1600.
+para as de 1600. Adicionalmente, o VNS também pode parar a execucação quando todos os operadores de vizinhança falharem em melhorar a solução atual.
 
 Os experimentos foram conduzidos em um sistema com Ubuntu 24.04.1 LTS, processador Intel Xeon E3-1240 V2 (8 núcleos) e 32 GB de RAM.
 
@@ -393,37 +393,7 @@ Os experimentos foram conduzidos em um sistema com Ubuntu 24.04.1 LTS, processad
 A comparação com o GA segue a metodologia de \cite{b2}, embora uma correspondência exata não tenha sido possível devido às diferenças no processo de decodificação. 
 A Tabela \ref{tab:comparison_vns_ga} apresenta o desempenho médio das 30 melhores soluções obtidas por cada algoritmo. Para instâncias pequenas (tamanho 100), o 
 VNS superou o GA com uma melhoria de 4,48\%. À medida que o tamanho do problema aumentou, essa superioridade se manteve e, em alguns casos, foi ainda mais acentuada.
-O VNS apresentou melhorias variando de 4,64\% a 9,87\% em relação ao GA nas instâncias maiores, com destaque para o ganho de 9,87\% na instância de 200 elementos.
-
-Os boxplots na Fig. \ref{fig:VNSxGA_boxplots} ilustram a distribuição das soluções, destacando diferenças significativas nos casos de 800 e 1600 instâncias. Os valores de p obtidos no teste t para amostras 
-independentes (teste de Welch) para essas instâncias são inferiores a 0.05, indicando que as diferenças observadas são estatisticamente significativas, considerando normalidade e variâncias desiguais. 
-Esses resultados sugerem que o VNS tem um desempenho significativamente superior ao GA em problemas de grande escala do ponto de vista estatístico. Além disso, o GA apresentou tempos de execução muito mais 
-longos, provavelmente devido ao aumento dos custos computacionais de suas operações evolutivas à medida que o tamanho do problema crescia.
-
-Em resumo, embora o GA tenha um desempenho competitivo em instâncias pequenas, sua escalabilidade é limitada. Em contraste, o VNS não apenas obtém soluções superiores,
-mas também demonstra maior eficiência no tratamento de problemas de grande escala, estabelecendo-se como um método de otimização mais robusto e escalável.
-
-\begin{figure*}[h!]
-  \centering
-  \begin{tabular}{cc}
-      \includegraphics[width=0.45\textwidth]{./imgs/boxplot_VNSxGA_100.png} & 
-      \includegraphics[width=0.46\textwidth]{./imgs/boxplot_VNSxGA_200.png} \\
-      (a) $I, J, K, E, S, Q, N1, N2, N3, M = 100$ & 
-      (b) $I, J, K, E, S, Q, N1, N2, N3, M = 200$ \\
-      \vspace{0.5cm} \\ 
-      \includegraphics[width=0.47\textwidth]{./imgs/boxplot_VNSxGA_400.png} & 
-      \includegraphics[width=0.45\textwidth]{./imgs/boxplot_VNSxGA_800.png} \\
-      (c) $I, J, K, E, S, Q, N1, N2, N3, M = 400$ & 
-      (d) $I, J, K, E, S, Q, N1, N2, N3, M = 800$ \\
-      \vspace{0.5cm} \\ 
-      \multicolumn{2}{c}{
-          \includegraphics[width=0.45\textwidth]{./imgs/boxplot_VNSxGA_1600.png} 
-      } \\
-      \multicolumn{2}{c}{(e) $I, J, K, E, S, Q, N1, N2, N3, M = 1600$} \\
-  \end{tabular}
-  \caption{Boxplots comparando o desempenho do algoritmo VNS e de uma meta-heurística baseada em população (GA) em diferentes tamanhos de problema, com base nos valores da função objetivo.}
-  \label{fig:VNSxGA_boxplots}
-\end{figure*}
+O VNS apresentou melhorias variando de 4,48\% a 9,87\% em relação ao GA nas instâncias maiores, com destaque para o ganho de 9,87\% na instância de 200 elementos.
 
 \begin{table*}[!htb]
   \caption{Comparação entre o algoritmo VNS e uma meta-heurística baseada em população (GA) em termos do valor médio da função objetivo das melhores soluções e do tempo médio de execução.}
@@ -433,14 +403,76 @@ mas também demonstra maior eficiência no tratamento de problemas de grande esc
   & \multicolumn{3}{@{}c@{}}{Avaliação da função objetivo (média)} & \multicolumn{3}{@{}c@{}}{Tempo de Execução (média)} \\\cmidrule{2-4}\cmidrule{5-7}%
   Instância & VNS & GA & Diferença (\%) & VNS & GA & Diferença (\%) \\
   \midrule
-  100  & $7.44 \times 10^7$  & $7.78 \times 10^7$  & 4.48 & 370s    & 60,480s  & 197.57 \\
-  200  & $1.51 \times 10^8$  & $1.66 \times 10^8$  & 9.87 & 1,193s  & 23,210s  & 180.45 \\
-  400  & $3.12 \times 10^8$  & $3.42 \times 10^8$  & 9.17 & 3,917s  & 27,590s  & 150.27 \\
-  800  & $6.58 \times 10^8$  & $7.08 \times 10^8$  & 7.36 & 11,512s & 48,803s  & 123.65 \\
+  100  & $7.44 \times 10^7$  & $7.78 \times 10^7$  & 4.48 & 369.59s    & 60,480.38s  & 197.57 \\
+  200  & $1.51 \times 10^8$  & $1.66 \times 10^8$  & 9.87 & 1,192.69s  & 23,210.39s  & 180.45 \\
+  400  & $3.12 \times 10^8$  & $3.42 \times 10^8$  & 9.17 & 3,917.46s  & 27,590.31s  & 150.27 \\
+  800  & $6.58 \times 10^8$  & $7.08 \times 10^8$  & 7.36 & 11,512.24s & 48,803.09s  & 123.65 \\
   1600 & $1.36 \times 10^9$  & $1.43 \times 10^9$  & 4.64 & 17,767s & 217,958s  & 1126.95 \\
   \bottomrule 
   \end{tabular*}
 \end{table*}
+
+% Os boxplots na Fig. \ref{fig:VNSxGA_boxplots} ilustram a distribuição das soluções, destacando diferenças significativas nos casos de 800 e 1600 instâncias. Os valores de p obtidos no teste t para amostras 
+% independentes (teste de Welch) para essas instâncias são inferiores a 0.05, indicando que as diferenças observadas são estatisticamente significativas, considerando normalidade e variâncias desiguais. 
+% Esses resultados sugerem que o VNS tem um desempenho significativamente superior ao GA em problemas de grande escala do ponto de vista estatístico. Além disso, o GA apresentou tempos de execução muito mais 
+% longos, provavelmente devido ao aumento dos custos computacionais de suas operações evolutivas à medida que o tamanho do problema crescia.
+
+% Os boxplots na Fig. \ref{fig:VNSxGA_boxplots} ilustram a distribuição das soluções, com diferenças mais significativas nas instâncias maiores.
+% Esses resultados sugerem que o VNS tem um desempenho superior ao GA em problemas de grande escala. Além disso, o GA apresentou tempos de execução muito mais 
+% longos, provavelmente devido ao critério de parada adicional do VNS, que leva em consideração o esgotamento dos operadores de vizinhança, enquanto o GA depende de um número fixo de avaliações da função objetivo.
+% Ao mesmo tempo, isso sugere que o VNS pode estar sendo mais eficiente em encontrar soluções do ponto de vista da função objetivo com um número menor de avaliações.
+
+Os boxplots na Fig. \ref{fig:VNSxGA_boxplots} ilustram a distribuição das soluções, com diferenças mais significativas nas instâncias maiores. Esses resultados 
+sugerem que o VNS tem um desempenho superior ao GA em problemas de grande escala. Além disso, o GA apresentou tempos de execução muito mais longos, provavelmente 
+devido ao critério de parada adicional do VNS, que leva em consideração o esgotamento dos operadores de vizinhança, enquanto o GA depende de um número fixo de 
+avaliações da função objetivo. Ao mesmo tempo, isso sugere que o VNS pode estar sendo mais eficiente em encontrar boas soluções com um número menor de avaliações. 
+
+Os testes estatísticos apresentados na Tabela \ref{tab:estatisticas_tests} reforçam essas observações: nas instâncias 800 e 1600, ambas as distribuições passaram no teste de normalidade de Shapiro-Wilk 
+($p > 0.05$), permitindo o uso do teste t de Welch, que indicou diferenças estatisticamente significativas ($p < 0{,}05$). Já nas demais instâncias, pelo menos 
+uma das distribuições não seguiu normalidade, sendo aplicado o teste de Mann-Whitney, que também revelou diferenças significativas. Assim, conclui-se que o VNS 
+foi consistentemente mais eficaz estatisticamente, especialmente à medida que o tamanho do problema aumentou.
+
+\begin{table*}[!htb]
+  \caption{Resultados dos testes estatísticos para as instâncias analisadas. Inclui o p-valor do teste de normalidade (Shapiro-Wilk) para o GA e o VNS, e o teste de comparação adequado (Mann-Whitney ou t-teste), com seus respectivos p-valores.}
+  \label{tab:estatisticas_tests}
+  \centering
+  \begin{tabular}{cccccc}
+    \toprule
+    Instância & Shapiro GA (p-valor) & Shapiro VNS (p-valor) & Teste Comparativo & p-valor do Teste \\
+    \midrule
+    100  & 0.00039   & $1.77 \times 10^{-8}$ & Mann-Whitney & $2.80 \times 10^{-7}$ \\
+    200  & 0.8845    & 0.0193                & Mann-Whitney & $2.04 \times 10^{-11}$ \\
+    400  & 0.0112    & 0.4451                & Mann-Whitney & $5.47 \times 10^{-11}$ \\
+    800  & 0.6487    & 0.1659                & t-teste      & $4.05 \times 10^{-17}$ \\
+    1600 & 0.2945    & 0.5287                & t-teste      & $1.84 \times 10^{-14}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+Em resumo, embora o GA tenha um desempenho competitivo em instâncias pequenas, sua escalabilidade é limitada. Em contraste, o VNS não apenas obtém soluções superiores,
+mas também demonstra maior eficiência no tratamento de problemas de grande escala, estabelecendo-se como um método de otimização mais robusto e escalável.
+
+\begin{figure*}[h!]
+  \centering
+  \begin{tabular}{cc}
+      \includegraphics[width=0.45\textwidth]{./imgs/GAxVNS_100.png} & 
+      \includegraphics[width=0.46\textwidth]{./imgs/GAxVNS_200.png} \\
+      (a) $I, J, K, E, S, Q, N1, N2, N3, M = 100$ & 
+      (b) $I, J, K, E, S, Q, N1, N2, N3, M = 200$ \\
+      \vspace{0.5cm} \\ 
+      \includegraphics[width=0.47\textwidth]{./imgs/GAxVNS_400.png} & 
+      \includegraphics[width=0.45\textwidth]{./imgs/GAxVNS_800.png} \\
+      (c) $I, J, K, E, S, Q, N1, N2, N3, M = 400$ & 
+      (d) $I, J, K, E, S, Q, N1, N2, N3, M = 800$ \\
+      \vspace{0.5cm} \\ 
+      \multicolumn{2}{c}{
+          \includegraphics[width=0.45\textwidth]{./imgs/GAxVNS_1600.png} 
+      } \\
+      \multicolumn{2}{c}{(e) $I, J, K, E, S, Q, N1, N2, N3, M = 1600$} \\
+  \end{tabular}
+  \caption{Boxplots comparando o desempenho do algoritmo VNS e de uma meta-heurística baseada em população (GA) em diferentes tamanhos de problema, com base nos valores da função objetivo.}
+  \label{fig:VNSxGA_boxplots}
+\end{figure*}
 
 %===============================================================================
 
