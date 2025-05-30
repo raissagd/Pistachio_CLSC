@@ -5,6 +5,8 @@ from Convergence import Convergence
 from abc import ABC, abstractmethod
 from time import time
 from Log import Neighborhood_op_log
+import random
+import math
 
 class Algorithm(ABC):
     def __init__(self):
@@ -25,13 +27,15 @@ class VariableNeighborhoodSearch(Algorithm):
         6:    until k = kmax
     """
 
-    def __init__(self, operators, max_eval, initialization, name="VNS"):
+    def __init__(self, operators, max_eval, initialization, name="VNS", init_temp=100, cooling_rate=0.995):
         self.operators = operators  # Operators for generating neighbors
         self.max_eval = max_eval  # Maximum number of iterations
         self.n_eval = 1  # Number of evaluations
         self.initialization = initialization  # Initialization method
         self.log = None # Log for storing neighborhood operations
         self.name = name # Name of the algorithm
+        self.T = init_temp;
+        self.cooling_rate = cooling_rate;
 
     def best_improvement(self, solution, data, operator_index, number_of_neighbors, log):
         failure_counter = 0
@@ -77,7 +81,19 @@ class VariableNeighborhoodSearch(Algorithm):
 
         self.n_eval += 1
         return solution
-
+    
+    def accept(self, old_fx, new_fx):
+        delta = new_fx - old_fx
+        if delta < 0:
+            # always accepts better solutions
+            return True
+        elif delta == 0:
+            # rejects equal solutions
+            return False
+        else:
+            # accepts worse solutions with a probability of exp(−Δ/T)
+            return random.random() < math.exp(-delta / self.T)
+        
     def solve(self, data, log=None):
         convergence = super().solve(data)
         tic = time()
@@ -101,7 +117,10 @@ class VariableNeighborhoodSearch(Algorithm):
 
             new_solution = self.best_improvement(perturbed_solution, data, operator_index, number_of_neighbors, log) # Local search on the perturbed solution
 
-            if new_solution.FX < solution.FX:
+            old_fx = solution.FX
+            new_fx = new_solution.FX
+
+            """ if new_solution.FX < solution.FX:
                 # If the new solution is better, update the current solution and repeat the process
                 solution = new_solution
                 operator_index = 0
@@ -114,7 +133,24 @@ class VariableNeighborhoodSearch(Algorithm):
             else:
                 # If the new solution is not better, try the next operator
                 operator_index += 1
-            convergence.add(solution, self.n_eval) 
+            convergence.add(solution, self.n_eval)  """
+
+            if self.accept(old_fx, new_fx):
+                solution = new_solution
+                if new_fx < old_fx:
+                    operator_index = 0
+                self.T *= self.cooling_rate
+
+            elif self.n_eval >= self.max_eval:
+                break
+
+            else:
+                # Tries next operator (or ends if all operators have been tested)
+                operator_index += 1
+                if operator_index >= len(self.operators):
+                    break
+
+            convergence.add(solution, self.n_eval)
 
         #print(f"Final solution: {solution.FX}")
         solution.execution_time = time()-tic
