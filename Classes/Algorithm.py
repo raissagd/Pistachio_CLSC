@@ -7,6 +7,7 @@ from time import time
 from Log import Neighborhood_op_log
 import random
 import math
+import copy
 
 class Algorithm(ABC):
     def __init__(self):
@@ -98,6 +99,7 @@ class VariableNeighborhoodSearch(Algorithm):
         convergence = super().solve(data)
         tic = time()
         solution = Solution()  # Create a new solution
+
         if (self.initialization == 0):
             solution.generateChromosomeDeterministic(data)
         else:
@@ -107,7 +109,9 @@ class VariableNeighborhoodSearch(Algorithm):
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
         convergence.add(solution, self.n_eval) # Add FX e numero de avaliações
 
-        #print(f"Initial FX: {solution.FX}")
+        best_overall = copy.deepcopy(solution)  # Keep track of the best overall solution
+
+        print(f"Initial FX: {solution.FX}")
         operator_index = 0
         number_of_neighbors = 15
 
@@ -137,6 +141,8 @@ class VariableNeighborhoodSearch(Algorithm):
 
             if self.accept(old_fx, new_fx):
                 solution = new_solution
+                if new_solution.FX < best_overall.FX:
+                    best_overall = copy.deepcopy(new_solution)
                 if new_fx < old_fx:
                     operator_index = 0
                 self.T *= self.cooling_rate
@@ -148,11 +154,12 @@ class VariableNeighborhoodSearch(Algorithm):
                 # Tries next operator (or ends if all operators have been tested)
                 operator_index += 1
                 if operator_index >= len(self.operators):
-                    break
+                    operator_index = 0
 
             convergence.add(solution, self.n_eval)
 
-        #print(f"Final solution: {solution.FX}")
+        print(f"Final solution: {best_overall.FX}")
+        print(f"Number of evaluations: {self.n_eval}")
         solution.execution_time = time()-tic
         solution.convergence = convergence
         
@@ -160,7 +167,7 @@ class VariableNeighborhoodSearch(Algorithm):
         # log_data = self.log.get()
         # log_data.to_csv(f'./tests/run_parallel/{data.instance}_{self.name}.csv', index=False)
         
-        return solution
+        return best_overall
 
 
 class ExactAlgorithm(Algorithm):
