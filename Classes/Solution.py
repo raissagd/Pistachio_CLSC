@@ -4,10 +4,8 @@ from scipy.sparse import csr_matrix
 class Solution:
     def __init__(self):
         self.FX = None  # Objective function value
-        self.S1, self.S2, self.S3, self.S4, self.S5, self.S6, self.S7, self.S8 = [
-            None] * 8  # Chromosomes
-        self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [
-            None] * 15  # Decision variables
+        self.S1, self.S2, self.S3, self.S4, self.S5, self.S6, self.S7, self.S8 = [None] * 8  # Chromosomes
+        self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [None] * 15  # Decision variables
         self.convergence = None  # Convergence curve
 
     def calculate_priorities(self, transportation_matrix):
@@ -133,8 +131,7 @@ class Solution:
             else:  # Select a depot
                 j = l-K
                 possible_sources = np.nonzero(v[:K])[0]
-                k = possible_sources[np.argmin(
-                    c[possible_sources, j].flatten())]
+                k = possible_sources[np.argmin(c[possible_sources, j].flatten())]
 
             # Assign available amount of units
             g[k, j] = np.minimum(a[k], b[j])
@@ -195,7 +192,7 @@ class Solution:
         b2 = data.Ds
         c2 = data.Cl + data.Cv[:, None]
         # L = how much cosmetic was sent to each consumer
-        cost2, self.L = self.decodingStep(self.S2, a2, b2, c2)
+        cost2, self.L  = self.decodingStep(self.S2, a2, b2, c2)
         totalcost += cost2
 
         # --------------------------------------------------------------------------------------------------------
@@ -220,15 +217,13 @@ class Solution:
         # Step 1: Processing center -> pistachio factories
         a4 = data.Cpu
         b4 = np.sum(self.P, axis=1) / data.gammak
-        _, self.Go = self.decodingStep(
-            self.S4, a4, b4, data.CK + data.Cu1[:, None])
+        _, self.Go = self.decodingStep(self.S4, a4, b4, data.CK + data.Cu1[:, None])
 
         # --------------------------------
         # Step 2: Processing center -> oil extraction center
         a5 = data.Cpu
         b5 = (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1)) / (1 - data.lamb)
-        _, self.Gr = self.decodingStep(
-            self.S5, a5, b5, data.CE + data.Cu2[:, None])
+        _, self.Gr = self.decodingStep(self.S5, a5, b5, data.CE + data.Cu2[:, None])
 
         # --------------------------------
         # Step 3: enforcing equality constraints
@@ -336,16 +331,16 @@ class Solution:
                 b8 = b8 / delta
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
                 _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
+                
                 # Composting centers -> composting consumers
-                a7 = data.gammaq * \
-                    (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0))
-                b7 = data.Dc
-                c7 = data.Cd + data.Cy[:, None]
+                # Recalcular S7 devido a mudanças em Ow
+                a7_new = data.gammaq * (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0))
+                b7_new = data.Dc
+                c7_new = data.Cd + data.Cy[:, None]
                 totalcost -= cost7
-                cost7, self.D = self.decodingStep(self.S7, a7, b7, c7)
-                totalcost += cost7
+                cost7_new, self.D = self.decodingStep(self.S7, a7_new, b7_new, c7_new)
+                totalcost += cost7_new
             else:
-
                 # Calculating cost and transportation matrix
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
                 _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)

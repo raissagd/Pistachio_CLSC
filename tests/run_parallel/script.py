@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, 'Classes/')
 from Problem import Problem
 from Algorithm import VariableNeighborhoodSearch
-from Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, FixedCostSwap, TransportCostSwap
+from Neighborhood import Swap, Reversion, Insertion, Slide, ETN, RS, SPS, SRPS, FixedCostSwap, TransportCostSwap, SourceCostBoost
 from Execute import RunMultipleMethodsMultipleTimes
 from Persistence import PersistMultipleSolutions
 import pandas as pd
@@ -18,9 +18,11 @@ data.loadFile("data/data_30.npz")
 
 #vns1 = VariableNeighborhoodSearch([FixedCostSwap(3, data)], number_evaluations, 1, name='teste')
 #vns1 = VariableNeighborhoodSearch([Reversion(2)], number_evaluations, 1, name='teste')
-vns1 = VariableNeighborhoodSearch([TransportCostSwap(2, data)], number_evaluations, 1, name='teste')
+vns1 = VariableNeighborhoodSearch([Reversion(2), SourceCostBoost(2, data)], number_evaluations, 1, name='teste')
+#vns1 = VariableNeighborhoodSearch([TransportCostSwap(2, data)], number_evaluations, 1, name='teste')
+#vns1 = VariableNeighborhoodSearch([SourceCostBoost(2, data)], number_evaluations, 1, name='teste')
 methods = [vns1]
-number_executions = 1
+number_executions = 30
 
 results = RunMultipleMethodsMultipleTimes().run(data, methods, number_executions, log=False)
 

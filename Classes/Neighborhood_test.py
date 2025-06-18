@@ -15,5 +15,5 @@ vns1 = VariableNeighborhoodSearch([TransportCostSwap(2, data)], number_evaluatio
 solution = Solution()
 solution.generateChromosomeStochastic(data)
 
-with open('solution_test.pickle', 'wb') as f:
+with open('solution_test_3.pickle', 'wb') as f:
     pickle.dump(solution, f)
