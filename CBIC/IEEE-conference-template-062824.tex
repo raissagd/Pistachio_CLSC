@@ -200,9 +200,11 @@ Seguindo \cite{b2} e \cite{b12}, utilizamos a codificação baseada em prioridad
 orientam a construção da árvore de transporte. O processo de decodificação seleciona iterativamente o nó de maior prioridade, conectando-o à alternativa de menor custo, garantindo sempre o cumprimento das 
 restrições de viabilidade.
 
-Diferentemente de \cite{b2}, que utiliza números reais entre 0 e 1, adotamos números inteiros de 1 a $Z$, o que melhora a interpretabilidade das soluções e facilita as operações de 
-vizinhança. A codificação inteira oferece uma distinção mais clara entre soluções, o que é especialmente útil em problemas combinatórios, como a otimização de cadeias de suprimentos. 
-Sua eficácia já foi demonstrada em estudos anteriores (\hspace{-0.03em}\cite{b11,b12,b13}).
+Diferentemente de \cite{b2}, que utiliza codificação real com valores contínuos entre 0 e 1, adotamos uma abordagem baseada em números inteiros sequenciais de 1 a $Z$, onde $Z$ representa o número total 
+de elementos considerados na ordenação de prioridades para um dado fluxo logístico (por exemplo, a soma entre fontes e destinos de transporte em determinado segmento da cadeia). Essa representação ordinal, 
+atribuída com base nos custos médios de transporte, visa aprimorar a interpretabilidade das soluções e facilitar a implementação de operadores de vizinhança. Além disso, a codificação inteira permite uma 
+distinção mais clara entre soluções vizinhas, o que se mostra vantajoso em problemas combinatórios, como é o caso da otimização de cadeias de suprimentos. A eficácia desse tipo de codificação já foi 
+demonstrada em estudos anteriores (\hspace{-0.03em}\cite{b11,b12,b13}).
 
 O processo de decodificação garante a conformidade com as restrições \eqref{eq:custo}-\eqref{eq:restricao20}, determinando sequencialmente os fluxos dos produtores para os centros de processamento, fábricas e 
 consumidores, minimizando os custos de transporte. Ajustes são feitos para priorizar as entidades com maior necessidade, assegurando a viabilidade. Da mesma forma, a compostagem e o gerenciamento de resíduos 
