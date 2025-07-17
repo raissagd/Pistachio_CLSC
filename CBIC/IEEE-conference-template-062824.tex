@@ -46,7 +46,7 @@ andre-costa@ufmg.br}
 \begin{abstract}
     As cadeias de suprimentos desempenham um papel fundamental na indústria agrícola, especialmente no caso de culturas de alto valor, como o pistache, onde uma gestão 
     eficiente pode impulsionar o crescimento econômico e promover a sustentabilidade. Embora pesquisas anteriores tenham explorado estratégias de otimização para essas 
-    cadeias, a maioria dos estudos concentra-se no uso de algoritmos populacionais para enfrentar esses desafios. Neste trabalho, propomos a aplicação do algoritmo de 
+    cadeias, a maioria dos estudos concentra-se no uso de algoritmos populacionais para enfrentar esses desafios. Neste trabalho, apresenta-se a aplicação do algoritmo de 
     Busca em Vizinhança Variável (\textit{Variable Neighborhood Search - VNS}) e avaliamos seu desempenho em comparação com uma metaheurística populacional, especificamente 
     o Algoritmo Genético (\textit{Genetic Algorithm - GA}). Os resultados mostram que o VNS apresenta consistentemente um desempenho superior ao GA, tanto em termos de 
     eficiência computacional quanto de qualidade das soluções, especialmente em instâncias de maior porte. Esses achados destacam o potencial do método proposto como uma 
@@ -194,14 +194,14 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, e $z_3$ \eqref{eq:custo3}, que
 
 Esta seção apresenta a metodologia utilizada para resolver o problema de otimização, empregando codificação baseada em prioridade \cite{b12} e o algoritmo VNS. A codificação 
 baseada em prioridade ordena as variáveis de decisão para explorar o espaço de soluções mantendo a viabilidade, enquanto o VNS alterna entre diferentes estruturas de vizinhança para escapar de ótimos locais. 
-Nossa abordagem inclui operadores de vizinhança personalizados e configurações de parâmetros adequadas.
+A abordagem proposta inclui operadores de vizinhança personalizados e configurações de parâmetros adequadas.
 
 \subsection{Representação da Solução}
-Seguindo \cite{b2} e \cite{b12}, utilizamos a codificação baseada em prioridade para representar as soluções. Cada par origem-destino é tratado como um gene, cujas prioridades 
+Seguindo \cite{b2} e \cite{b12}, é utilizada a codificação baseada em prioridade para representar as soluções. Cada par origem-destino é tratado como um gene, cujas prioridades 
 orientam a construção da árvore de transporte. O processo de decodificação seleciona iterativamente o nó de maior prioridade, conectando-o à alternativa de menor custo, garantindo sempre o cumprimento das 
 restrições de viabilidade.
 
-Diferentemente de \cite{b2}, que utiliza codificação real com valores contínuos entre 0 e 1, adotamos uma abordagem baseada em números inteiros sequenciais de 1 a $Z$, onde $Z$ representa o número total 
+Diferentemente de \cite{b2}, que utiliza codificação real com valores contínuos entre 0 e 1, emprega-se uma abordagem baseada em números inteiros sequenciais de 1 a $Z$, onde $Z$ representa o número total 
 de elementos considerados na ordenação de prioridades para um dado fluxo logístico (por exemplo, a soma entre fontes e destinos de transporte em determinado segmento da cadeia). Essa representação ordinal, 
 atribuída com base nos custos médios de transporte, visa aprimorar a interpretabilidade das soluções e facilitar a implementação de operadores de vizinhança. Além disso, a codificação inteira permite uma 
 distinção mais clara entre soluções vizinhas, o que se mostra vantajoso em problemas combinatórios, como é o caso da otimização de cadeias de suprimentos. A eficácia desse tipo de codificação já foi 
@@ -225,7 +225,7 @@ de processamento e compostagem, enquanto minimizam os custos.
   \end{center}
 \end{figure}
 
-Para a decodificação de cada fluxo da cadeia de suprimentos, utilizamos a função \textit{decodingStep}. Este procedimento corresponde exatamente ao \textit{Procedure 1} apresentado na Fig. 3 do artigo \cite{b12}. 
+Para a decodificação de cada fluxo da cadeia de suprimentos, é utilizada a função \textit{decodingStep}. Este procedimento corresponde exatamente ao \textit{Procedure 1} apresentado na Fig. 3 do artigo \cite{b12}. 
 Trata-se de um algoritmo de transporte baseado em prioridades, no qual as unidades de produto são alocadas sucessivamente a partir da fonte ou destino de maior prioridade, de acordo com o vetor cromossomo. 
 Em cada iteração, seleciona-se a fonte ou destino mais prioritário e realiza-se a alocação para o nó adjacente de menor custo, respeitando as restrições de capacidade e demanda. O processo se repete até que 
 todas as demandas sejam atendidas. O fluxo completo de decodificação pode ser visto nos pseudocódigo dos Algoritmos \ref{algoDecode1} e \ref{algoDecode2}.
