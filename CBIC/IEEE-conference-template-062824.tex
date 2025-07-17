@@ -18,6 +18,8 @@
 \usepackage{subcaption}
 \usepackage{multirow}
 \usepackage{booktabs}
+\usepackage{amsmath}  % já está incluído no seu caso
+\allowdisplaybreaks   % permite quebra de página em ambientes align, gather, etc.
 
 \begin{document}
 
@@ -86,13 +88,27 @@ resultados experimentais entre VNS e GA. Por fim, a Seção~\ref{sec:conclusion1
 \section{Definição do Problema}
 \label{sec:problem-def1}
 
-A rede proposta por \cite{b2}, conforme ilustrado na Figura \ref{fig:supplychain}, é composta por produtores, centros de processamento, fábricas de pistache, centros de extração de óleo, 
-centros de compostagem e clientes. Os pistaches são transportados dos pomares para os centros de processamento, onde são transformados em pistaches de casca aberta, sementes cruas e resíduos. Esses produtos 
-são então enviados para fábricas, centros de extração de óleo e centros de compostagem, respectivamente. Os pistaches de casca aberta são torrados, embalados e entregues aos clientes, enquanto o óleo de 
-pistache é fornecido aos clientes de óleo e fábricas de cosméticos. Os resíduos são convertidos em composto para distribuição. Embora o composto seja devolvido aos produtores, idealmente criando um sistema 
-de circuito fechado, o modelo matemático não estabelece uma conexão direta entre os clientes de composto e os produtores que fornecem pistaches aos centros de processamento. Estritamente falando, o modelo 
-matemático de fluxo não implementa um circuito fechado. Em vez disso, interpreta o fluxo de composto para seus respectivos clientes como um feedback, mesmo que esses clientes não estejam necessariamente 
-vinculados às variáveis associadas aos produtores. Abordagens semelhantes foram adotadas em outros estudos (\hspace{-0.03em}\cite{b11,b19,b20}), e a implementação rigorosa de um circuito de feedback poderia ser uma direção promissora para pesquisas futuras. 
+A rede logística proposta por \cite{b2}, ilustrada na Figura~\ref{fig:supplychain}, descreve o fluxo de produtos e subprodutos ao longo da cadeia de suprimentos do pistache. O processo tem 
+início com os produtores (\(i\)), que enviam os pistaches colhidos aos centros de processamento (\(j\)). Nesses centros, os pistaches são transformados em três componentes principais: 
+pistaches de casca aberta, sementes cruas e resíduos orgânicos.
+
+Cada um desses componentes segue fluxos específicos. Os pistaches de casca aberta são encaminhados às fábricas de pistache (\(k\)), que os processam e os distribuem aos clientes finais (\(n1\)). 
+As sementes cruas são enviadas aos centros de extração de óleo (\(e\)), responsáveis pela produção de óleo de pistache, o qual é direcionado tanto a clientes finais (\(n2\)) quanto às fábricas de cosméticos
+(\(s\)). Estas, por sua vez, processam o óleo em produtos cosméticos que são fornecidos aos respectivos consumidores (\(n3\)). Os resíduos orgânicos gerados no processamento inicial são destinados aos centros 
+de compostagem (\(q\)), onde são transformados em composto, posteriormente distribuído aos clientes de compostagem (\(m\)).
+
+Embora, em termos práticos, o composto produzido possa ser reutilizado pelos próprios produtores agrícolas, estabelecendo um sistema de circuito fechado, o modelo matemático adotado não representa 
+explicitamente essa retroalimentação. Em vez disso, os clientes de composto não estão diretamente associados aos produtores originais, caracterizando um ciclo de feedback implícito. Essa abordagem, 
+já adotada em trabalhos anteriores (\hspace{-0.03em}\cite{b11,b19,b20}), preserva a simplicidade estrutural do modelo. No entanto, a inclusão de uma modelagem rigorosa desse circuito de retorno 
+representa uma direção promissora para investigações futuras, especialmente no contexto de cadeias de suprimentos sustentáveis.
+
+\begin{figure}
+  \begin{center}
+      \includegraphics[width=8.4cm]{./imgs/fluxo_pt.PNG}
+      \caption{Estrutura da cadeia de suprimentos do pistache proposta.}
+      \label{fig:supplychain}
+  \end{center}
+\end{figure}
 
 O problema linear misto visa minimizar os custos totais \eqref{eq:custo}, incluindo custos de abertura, produção e transporte, sob as seguintes restrições de capacidade e demanda, não tolerando escassez (ver
 mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
@@ -107,30 +123,20 @@ mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
     & \sum\limits_{e=1}^E O_{en_2} \le Cpv_s\times V_s, \quad \forall s \in S \label{eq:restricao6}\\
     & \sum\limits_{k=1}^K Go_{jk} + \sum\limits_{e=1} Gr_{je} + \sum\limits_{q=1}^Q Gw_{jq} \le \sum\limits_{i=1} X_{ij}, \quad \forall j \in J \label{eq:restricao7} \\
     & \sum\limits_{k=1}^K Go_{jk} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_1, \quad \forall j\in J \label{eq:restricao8} \\
-    & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9}
+    & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9} \\
+    & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10} \\
+    & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
+    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12} \\
+    & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} \\
+    & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14} \\
+    & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15} \\
+    & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q, \quad \forall q \in Q \label{eq:restricao16} \\
+    & \sum\limits_{k=1}^K P_{kn_1} \ge Dp_{n_1}, \quad \forall n_1 \in N_1 \label{eq:restricao17}\\
+    & \sum\limits_{e=1}^E O_{en_2} \ge Du_{n_2}, \quad \forall n_2 \in N_2 \label{eq:restricao18}\\
+    & \sum\limits_{s=1}^S L_{sn_3} \ge Ds_{n_3}, \quad \forall n_3 \in N_3 \label{eq:restricao19}\\
+    & \sum\limits_{q=1}^Q D_{qm} \le Dc_{m}, \quad \forall m \in M \label{eq:restricao20}
 \end{align}
 
-\begin{align}
-  & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10} \\
-  & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
-  & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12} \\
-  & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} & \\
-  & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14} \\
-  & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15} \\
-  & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q, \quad \forall q \in Q \label{eq:restricao16}\\
-  & \sum\limits_{k=1}^K P_{kn_1} \ge Dp_{n_1}, \quad \forall n_1 \in N_1 \label{eq:restricao17}\\
-  & \sum\limits_{e=1}^E O_{en_2} \ge Du_{n_2}, \quad \forall n_2 \in N_2 \label{eq:restricao18}\\
-  & \sum\limits_{s=1}^S L_{sn_3} \ge Ds_{n_3}, \quad \forall n_3 \in N_3 \label{eq:restricao19}\\
-  & \sum\limits_{q=1}^Q D_{qm} \le Dc_{m}, \quad \forall m \in M \label{eq:restricao20}
-\end{align}
-
-\begin{figure}
-  \begin{center}
-      \includegraphics[width=8.4cm]{./imgs/fluxo_pt.PNG}
-      \caption{Cadeia de Suprimentos de Pistache proposta}
-      \label{fig:supplychain}
-  \end{center}
-\end{figure}
     
 \begin{itemize}
 \item A função objetivo \eqref{eq:custo} minimiza os custos totais da cadeia de suprimentos, incluindo custos de abertura, transporte e produção. Os custos são divididos em três componentes: 

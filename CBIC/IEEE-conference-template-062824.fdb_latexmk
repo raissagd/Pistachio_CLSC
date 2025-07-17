@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1752783852.72577 "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1752783854.12435 0
+["pdflatex"] 1752784914.47474 "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1752784915.96607 0
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1745772277 82705 9cc9f144eacd499bc23a611703921467 ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrb1000.pk" 1745773376 11160 0ea52f30246f4ea9c05b8dc01fae37d4 ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1724336691 24264540 49d27c373074f0bd51e55e96fee01217 ""
@@ -95,10 +95,10 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ptm.fd" 1585253778 1007 15056f4a61917ceed3a44e4ac11fcc52 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "IEEE-conference-template-062824.aux" 1752783853 5613 556933e7ae47a360524837ecdbc89164 "pdflatex"
-  "IEEE-conference-template-062824.tex" 1752783850 43680 fadb37832c7140655dc2c43ed96674d7 ""
+  "IEEE-conference-template-062824.aux" 1752784915 5627 9ee4b42ba5b38c351e385ea84866c708 "pdflatex"
+  "IEEE-conference-template-062824.tex" 1752784912 44264 270f6b93196cbd988cf002bd85ecd9c5 ""
   "IEEEtran.cls" 1440654524 288304 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" 1752783850 43680 fadb37832c7140655dc2c43ed96674d7 ""
+  "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" 1752784912 44264 270f6b93196cbd988cf002bd85ecd9c5 ""
   "imgs/GAxVNS_100.png" 1748460583 29731 e46e45688c72bef3d6677c5ad66d3a7a ""
   "imgs/GAxVNS_1600.png" 1748460782 28505 b8011044c3257e43274ca16775b695ea ""
   "imgs/GAxVNS_200.png" 1748460609 27782 3d8acce2206c58083b74ef35666bec69 ""

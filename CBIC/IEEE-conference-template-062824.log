@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  17 JUL 2025 17:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  17 JUL 2025 17:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -335,20 +335,20 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 ) (IEEE-conference-template-062824.aux)
 \openout1 = `IEEE-conference-template-062824.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
 
 -- Lines per column: 56 (exact).
 (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
@@ -372,12 +372,12 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 42.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 42.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 44.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 44.
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 42.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 44.
  (C:\Users\Lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -388,15 +388,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 ]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-<./imgs/fluxo_pt.PNG, id=9, 673.76718pt x 350.05782pt>
+<./imgs/fluxo_pt.PNG, id=10, 673.76718pt x 350.05782pt>
 File: ./imgs/fluxo_pt.PNG Graphic file (type png)
 <use ./imgs/fluxo_pt.PNG>
-Package pdftex.def Info: ./imgs/fluxo_pt.PNG  used on input line 129.
+Package pdftex.def Info: ./imgs/fluxo_pt.PNG  used on input line 107.
 (pdftex.def)             Requested size: 239.00298pt x 124.17256pt.
+
+Overfull \hbox (2.22844pt too wide) detected at line 138
+[]
+ []
+
+
+
 
 
 [2 <./imgs/fluxo_pt.PNG>]
@@ -407,34 +410,34 @@ Package pdftex.def Info: ./imgs/fluxo_pt.PNG  used on input line 129.
 <./imgs/decode_flux.PNG, id=26, 482.40225pt x 298.716pt>
 File: ./imgs/decode_flux.PNG Graphic file (type png)
 <use ./imgs/decode_flux.PNG>
-Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 213.
+Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 219.
 (pdftex.def)             Requested size: 239.00298pt x 147.99933pt.
 
-Underfull \hbox (badness 2012) in paragraph at lines 235--236
+Underfull \hbox (badness 2012) in paragraph at lines 241--242
 [] \OT1/ptm/b/n/10 Sa[]^^Pda: \OT1/ptm/m/n/10 cus-to-to-tal, vari[]aveis de de-cis[]ao cont[]^^Pnuas
  []
 
 LaTeX Info: Symbol \textrightarrow not provided by
             font family ptm in TS1 encoding.
-            Default family used instead on input line 240.
+            Default family used instead on input line 246.
 LaTeX Info: Symbol \textrightarrow not provided by
             font family ptm in TS1 encoding.
-            Default family used instead on input line 247.
+            Default family used instead on input line 253.
 LaTeX Info: Symbol \textrightarrow not provided by
             font family ptm in TS1 encoding.
-            Default family used instead on input line 254.
-LaTeX Info: Symbol \textrightarrow not provided by
-            font family ptm in TS1 encoding.
-            Default family used instead on input line 262.
+            Default family used instead on input line 260.
 LaTeX Info: Symbol \textrightarrow not provided by
             font family ptm in TS1 encoding.
             Default family used instead on input line 268.
 LaTeX Info: Symbol \textrightarrow not provided by
             font family ptm in TS1 encoding.
-            Default family used instead on input line 288.
+            Default family used instead on input line 274.
 LaTeX Info: Symbol \textrightarrow not provided by
             font family ptm in TS1 encoding.
-            Default family used instead on input line 295.
+            Default family used instead on input line 294.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family ptm in TS1 encoding.
+            Default family used instead on input line 301.
 
 
 
@@ -444,7 +447,7 @@ LaTeX Info: Symbol \textrightarrow not provided by
 <./imgs/nbhd_op.png, id=32, 410.7345pt x 263.18324pt>
 File: ./imgs/nbhd_op.png Graphic file (type png)
 <use ./imgs/nbhd_op.png>
-Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 365.
+Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 371.
 (pdftex.def)             Requested size: 239.00298pt x 153.14836pt.
 
 
@@ -453,27 +456,27 @@ Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 365.
 <./imgs/GAxVNS_100.png, id=37, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_100.png Graphic file (type png)
 <use ./imgs/GAxVNS_100.png>
-Package pdftex.def Info: ./imgs/GAxVNS_100.png  used on input line 458.
+Package pdftex.def Info: ./imgs/GAxVNS_100.png  used on input line 464.
 (pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
 <./imgs/GAxVNS_200.png, id=38, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_200.png Graphic file (type png)
 <use ./imgs/GAxVNS_200.png>
-Package pdftex.def Info: ./imgs/GAxVNS_200.png  used on input line 459.
+Package pdftex.def Info: ./imgs/GAxVNS_200.png  used on input line 465.
 (pdftex.def)             Requested size: 237.36346pt x 178.01692pt.
 <./imgs/GAxVNS_400.png, id=39, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_400.png Graphic file (type png)
 <use ./imgs/GAxVNS_400.png>
-Package pdftex.def Info: ./imgs/GAxVNS_400.png  used on input line 463.
+Package pdftex.def Info: ./imgs/GAxVNS_400.png  used on input line 469.
 (pdftex.def)             Requested size: 242.52063pt x 181.88757pt.
 <./imgs/GAxVNS_800.png, id=40, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_800.png Graphic file (type png)
 <use ./imgs/GAxVNS_800.png>
-Package pdftex.def Info: ./imgs/GAxVNS_800.png  used on input line 464.
+Package pdftex.def Info: ./imgs/GAxVNS_800.png  used on input line 470.
 (pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
 <./imgs/GAxVNS_1600.png, id=41, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_1600.png Graphic file (type png)
 <use ./imgs/GAxVNS_1600.png>
-Package pdftex.def Info: ./imgs/GAxVNS_1600.png  used on input line 470.
+Package pdftex.def Info: ./imgs/GAxVNS_1600.png  used on input line 476.
 (pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -481,24 +484,27 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 [6]
-Underfull \hbox (badness 2368) in paragraph at lines 517--518
+Underfull \hbox (badness 2368) in paragraph at lines 523--524
 \OT1/ptm/m/n/8 food sup-ply chain con-si-de-ring mar-ke-ting prac-ti-ces un-der un-cer-
  []
 
 
-Underfull \hbox (badness 5374) in paragraph at lines 518--519
+Underfull \vbox (badness 1838) has occurred while \output is active []
+
+
+
+
+Underfull \hbox (badness 5374) in paragraph at lines 524--525
 \OT1/ptm/m/n/8 2023,"2023. [On-line]. Avai-la-ble: $https : / / www . statista . com / statistics /
  []
 
 
-
-
-Underfull \hbox (badness 5403) in paragraph at lines 525--526
+Underfull \hbox (badness 5403) in paragraph at lines 531--532
 []\OT1/ptm/m/n/8 Campelo, F., & Ara-nha, C. (2023). Les-sons from the Evo-
  []
 
 
-Underfull \hbox (badness 4608) in paragraph at lines 525--526
+Underfull \hbox (badness 4608) in paragraph at lines 531--532
 \OT1/ptm/m/n/8 lu-ti-o-nary Com-pu-ta-tion Bes-ti-ary. \OT1/ptm/m/it/8 Ar-ti-fi-cial Life\OT1/ptm/m/n/8 , \OT1/ptm/m/it/8 29\OT1/ptm/m/n/8 (4), 421--432.
  []
 
@@ -550,7 +556,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  67i,12n,77p,861b,420s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrb1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE-conference-template-062824.pdf (8 pages, 492661 bytes).
+Output written on IEEE-conference-template-062824.pdf (8 pages, 493222 bytes).
 PDF statistics:
  137 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
