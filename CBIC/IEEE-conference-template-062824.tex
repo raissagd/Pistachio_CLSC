@@ -390,10 +390,10 @@ Os parâmetros das instâncias, como capacidades e demandas, foram gerados aleat
 que foi uma das meta-heurísticas evolucionárias utilizadas na referência considerada. O GA utilizou mutações baseadas em troca (\textit{swap-based mutations}) e cruzamentos de subsequências (\textit{subsequence-exchanging crossovers}),
 com vetores selecionados aleatoriamente, uma população de 100 indivíduos e uma estratégia de seleção por Torneio Binário.
 
-Tanto o VNS quanto o GA foram executados 30 vezes por instância. O critério de parada adotado foi um número máximo de avaliações da função objetivo, definido empiricamente de acordo 
-com a complexidade de cada instância. Os valores foram escolhidos com base em testes preliminares, buscando equilibrar custo computacional e qualidade das soluções obtidas. 
-Especificamente, foram utilizadas 6.250 avaliações para as instâncias de tamanho 100; 12.500 para as de tamanho 200; 25.000 para as de 400; 500.000 para as de 800; e 100.000 
-para as de 1600. Adicionalmente, o VNS também pode parar a execucação quando todos os operadores de vizinhança falharem em melhorar a solução atual.
+Tanto o VNS quanto o GA foram executados 30 vezes por instância. O critério de parada adotado foi um número máximo de avaliações da função objetivo, definido empiricamente 
+a partir de testes sucessivos, de forma a equilibrar custo computacional e qualidade das soluções. Especificamente, foram utilizadas 6.250 avaliações para instâncias de 
+tamanho 100; 12.500 para 200; 25.000 para 400; 50.000 para 800; e 100.000 para 1.600. Adicionalmente, o VNS também interrompe a execução caso todos os operadores de 
+vizinhança falhem em melhorar a solução atual.
 
 Os experimentos foram conduzidos em um sistema com Ubuntu 24.04.1 LTS, processador Intel Xeon E3-1240 V2 (8 núcleos) e 32 GB de RAM.
 
