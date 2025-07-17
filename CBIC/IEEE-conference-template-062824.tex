@@ -225,10 +225,12 @@ de processamento e compostagem, enquanto minimizam os custos.
   \end{center}
 \end{figure}
 
-Para a decodificação de cada fluxo da cadeia de suprimentos, é utilizada a função \textit{decodingStep}. Este procedimento corresponde exatamente ao \textit{Procedure 1} apresentado na Fig. 3 do artigo \cite{b12}. 
-Trata-se de um algoritmo de transporte baseado em prioridades, no qual as unidades de produto são alocadas sucessivamente a partir da fonte ou destino de maior prioridade, de acordo com o vetor cromossomo. 
-Em cada iteração, seleciona-se a fonte ou destino mais prioritário e realiza-se a alocação para o nó adjacente de menor custo, respeitando as restrições de capacidade e demanda. O processo se repete até que 
-todas as demandas sejam atendidas. O fluxo completo de decodificação pode ser visto nos pseudocódigo dos Algoritmos \ref{algoDecode1} e \ref{algoDecode2}.
+Para a decodificação de cada fluxo da cadeia de suprimentos, é utilizada a função \textit{decodingStep}, que implementa um algoritmo de transporte baseado em prioridades, 
+conforme apresentado no \textit{Procedure 1} de \cite{b12}. A lógica completa está detalhada nos Algoritmos~\ref{algoDecode1} e~\ref{algoDecode2}, que descrevem a 
+conversão do cromossomo em variáveis de decisão do modelo. O Algoritmo~\ref{algoDecode1} executa a alocação dos produtos entre instalações (como fábricas, centros 
+de extração e consumidores), com base nas prioridades definidas nos segmentos do cromossomo, respeitando custos, capacidades e demandas. Já o Algoritmo~\ref{algoDecode2} 
+complementa o fluxo com ajustes de equilíbrio nos centros de processamento, geração e alocação de resíduos para compostagem, além da ativação das variáveis binárias que 
+indicam quais instalações estão operando. Juntos, esses algoritmos viabilizam a decodificação completa de uma solução viável a partir da estrutura de prioridades codificada.
 
 \begin{algorithm}
   \caption{Decodificação do cromossomo para a cadeia de suprimentos (Parte 1)}
