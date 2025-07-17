@@ -92,7 +92,7 @@ são então enviados para fábricas, centros de extração de óleo e centros de
 pistache é fornecido aos clientes de óleo e fábricas de cosméticos. Os resíduos são convertidos em composto para distribuição. Embora o composto seja devolvido aos produtores, idealmente criando um sistema 
 de circuito fechado, o modelo matemático não estabelece uma conexão direta entre os clientes de composto e os produtores que fornecem pistaches aos centros de processamento. Estritamente falando, o modelo 
 matemático de fluxo não implementa um circuito fechado. Em vez disso, interpreta o fluxo de composto para seus respectivos clientes como um feedback, mesmo que esses clientes não estejam necessariamente 
-vinculados às variáveis associadas aos produtores. Abordagens semelhantes foram adotadas em outros estudos (\cite{b11,b19,b20}), e a implementação rigorosa de um circuito de feedback poderia ser uma direção promissora para pesquisas futuras. 
+vinculados às variáveis associadas aos produtores. Abordagens semelhantes foram adotadas em outros estudos (\hspace{-0.03em}\cite{b11,b19,b20}), e a implementação rigorosa de um circuito de feedback poderia ser uma direção promissora para pesquisas futuras. 
 
 O problema linear misto visa minimizar os custos totais \eqref{eq:custo}, incluindo custos de abertura, produção e transporte, sob as seguintes restrições de capacidade e demanda, não tolerando escassez (ver
 mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
@@ -126,7 +126,7 @@ mais detalhes sobre as variáveis na Tabela 5 de \cite{b2}):
 
 \begin{figure}
   \begin{center}
-      \includegraphics[width=8.4cm]{./imgs/supplychain.PNG}
+      \includegraphics[width=8.4cm]{./imgs/fluxo_pt.PNG}
       \caption{Cadeia de Suprimentos de Pistache proposta}
       \label{fig:supplychain}
   \end{center}
@@ -196,7 +196,7 @@ restrições de viabilidade.
 
 Diferentemente de \cite{b2}, que utiliza números reais entre 0 e 1, adotamos números inteiros de 1 a $Z$, o que melhora a interpretabilidade das soluções e facilita as operações de 
 vizinhança. A codificação inteira oferece uma distinção mais clara entre soluções, o que é especialmente útil em problemas combinatórios, como a otimização de cadeias de suprimentos. 
-Sua eficácia já foi demonstrada em estudos anteriores (\cite{b11}, \cite{b12}, \cite{b13}).
+Sua eficácia já foi demonstrada em estudos anteriores (\hspace{-0.03em}\cite{b11,b12,b13}).
 
 O processo de decodificação garante a conformidade com as restrições \eqref{eq:custo}-\eqref{eq:restricao20}, determinando sequencialmente os fluxos dos produtores para os centros de processamento, fábricas e 
 consumidores, minimizando os custos de transporte. Ajustes são feitos para priorizar as entidades com maior necessidade, assegurando a viabilidade. Da mesma forma, a compostagem e o gerenciamento de resíduos 
@@ -321,7 +321,7 @@ todas as demandas sejam atendidas. O fluxo completo de decodificação pode ser 
 
 \subsection{Busca em Vizinhança Variável (VNS)}
 O VNS explora o espaço de soluções alterando sistematicamente as estruturas de vizinhança \cite{b27}. O algoritmo alterna entre as fases de perturbação 
-(\textit{shaking}) e busca local, aceitando novas soluções apenas se melhorarem a função objetivo. Essa abordagem tem se mostrado eficaz na resolução de problemas de otimização com restrições (\cite{b14,b15,b9}).
+(\textit{shaking}) e busca local, aceitando novas soluções apenas se melhorarem a função objetivo. Essa abordagem tem se mostrado eficaz na resolução de problemas de otimização com restrições (\hspace{-0.03em}\cite{b9,b14,b15}).
 
 A implementação do algoritmo VNS utilizado neste estudo está descrita no Algoritmo \ref{algoVNS}.
 
