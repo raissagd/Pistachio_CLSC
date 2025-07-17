@@ -47,9 +47,10 @@ andre-costa@ufmg.br}
     As cadeias de suprimentos desempenham um papel fundamental na indústria agrícola, especialmente no caso de culturas de alto valor, como o pistache, onde uma gestão 
     eficiente pode impulsionar o crescimento econômico e promover a sustentabilidade. Embora pesquisas anteriores tenham explorado estratégias de otimização para essas 
     cadeias, a maioria dos estudos concentra-se no uso de algoritmos populacionais para enfrentar esses desafios. Neste trabalho, propomos a aplicação do algoritmo de 
-    Busca em Vizinhança Variável (Variable Neighborhood Search - VNS) e avaliamos seu desempenho em comparação com uma metaheurística populacional, especificamente o Algoritmo Genético (Genetic Algorithm - GA). 
-    Os resultados mostram que o VNS apresenta consistentemente um desempenho superior ao GA, tanto em termos de eficiência computacional quanto de qualidade das soluções, especialmente 
-    em instâncias de maior porte. Esses achados destacam o potencial do método proposto como uma abordagem eficaz para a otimização de cadeias de suprimentos.
+    Busca em Vizinhança Variável (\textit{Variable Neighborhood Search - VNS}) e avaliamos seu desempenho em comparação com uma metaheurística populacional, especificamente 
+    o Algoritmo Genético (\textit{Genetic Algorithm - GA}). Os resultados mostram que o VNS apresenta consistentemente um desempenho superior ao GA, tanto em termos de 
+    eficiência computacional quanto de qualidade das soluções, especialmente em instâncias de maior porte. Esses achados destacam o potencial do método proposto como uma 
+    abordagem eficaz para a otimização de cadeias de suprimentos.
 \end{abstract}
 
 
@@ -68,11 +69,11 @@ devido à contaminação por aflatoxinas produzidas por fungos \cite{b26}. Estra
 exploradas para mitigar esses problemas, conforme discutido por \cite{b6}.
 
 Falhas na cadeia de suprimentos exercem impacto significativo tanto na qualidade dos produtos quanto nas operações comerciais. Estudos anteriores, como o de \cite{b2}, investigaram técnicas 
-de otimização baseadas em Algoritmos Genéticos (Genetic Algorithm - GA) e outras meta-heurísticas evolucionárias para a logística do pistache. No entanto, muitas dessas comparações se baseiam apenas 
+de otimização baseadas em Algoritmos Genéticos (\textit{Genetic Algorithm - GA}) e outras meta-heurísticas evolucionárias para a logística do pistache. No entanto, muitas dessas comparações se baseiam apenas 
 nas melhores soluções encontradas, sem uma validação estatística robusta que comprove a superioridade dos resultados. Além disso, ainda há debate sobre a influência real das 
 diferenças entre meta-heurísticas bioinspiradas na qualidade das soluções obtidas.
 
-Neste estudo, propõe-se a otimização da cadeia de suprimentos do pistache utilizando a metaheurística Busca em Vizinhança Variável (Variable Neighborhood Search - VNS), que é amplamente reconhecida 
+Neste estudo, propõe-se a otimização da cadeia de suprimentos do pistache utilizando a metaheurística Busca em Vizinhança Variável (\textit{Variable Neighborhood Search - VNS}), que é amplamente reconhecida 
 por sua eficácia na resolução de problemas combinatórios complexos com baixa necessidade de parametrização. O modelo matemático utilizado é baseado na formulação mista linear proposta por \cite{b2} 
 para a logística direta e reversa, que foca na minimização de custos e na redução de impactos ambientais por meio do reaproveitamento de subprodutos. A principal contribuição deste trabalho está na 
 aplicação do VNS a esse modelo, avaliando seu desempenho em comparação com o Algoritmo Genético (GA). Os resultados demonstram que o VNS apresenta vantagens em termos de qualidade 
@@ -224,7 +225,7 @@ de processamento e compostagem, enquanto minimizam os custos.
   \end{center}
 \end{figure}
 
-Para a decodificação de cada fluxo da cadeia de suprimentos, utilizamos a função decodingStep. Este procedimento corresponde exatamente ao Procedure 1 apresentado na Fig. 3 do artigo \cite{b12}. 
+Para a decodificação de cada fluxo da cadeia de suprimentos, utilizamos a função \textit{decodingStep}. Este procedimento corresponde exatamente ao \textit{Procedure 1} apresentado na Fig. 3 do artigo \cite{b12}. 
 Trata-se de um algoritmo de transporte baseado em prioridades, no qual as unidades de produto são alocadas sucessivamente a partir da fonte ou destino de maior prioridade, de acordo com o vetor cromossomo. 
 Em cada iteração, seleciona-se a fonte ou destino mais prioritário e realiza-se a alocação para o nó adjacente de menor custo, respeitando as restrições de capacidade e demanda. O processo se repete até que 
 todas as demandas sejam atendidas. O fluxo completo de decodificação pode ser visto nos pseudocódigo dos Algoritmos \ref{algoDecode1} e \ref{algoDecode2}.
@@ -489,7 +490,7 @@ mas também demonstra maior eficiência no tratamento de problemas de grande esc
 
 Este estudo apresenta um modelo de otimização para a cadeia de suprimentos de pistache, abordando as complexidades do gerenciamento de produtos e subprodutos ao longo de múltiplas etapas. 
 Ao integrar produção, transporte e operações das instalações, o modelo garante uma alocação eficiente de recursos, respeitando as restrições de capacidade e demanda. Formulado como um problema 
-de Programação Linear Inteira Mista (MILP), ele é resolvido por meio do algoritmo VNS, que explora o espaço de soluções utilizando estruturas de vizinhança como Swap, Reversion, Insertion e Slide.
+de Programação Linear Inteira Mista (MILP), ele é resolvido por meio do algoritmo VNS, que explora o espaço de soluções utilizando estruturas de vizinhança como \textit{Swap}, \textit{Reversion}, \textit{Insertion} e \textit{Slide}.
 
 A análise comparativa demonstra a superioridade do VNS em relação ao GA, tanto em qualidade das soluções quanto em eficiência computacional, especialmente para 
 instâncias de grande escala, onde métodos exatos se tornam inviáveis devido a limitações de tempo e memória.
