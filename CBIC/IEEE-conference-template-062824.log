@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  17 JUL 2025 18:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  17 JUL 2025 18:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -459,27 +459,27 @@ Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 374.
 <./imgs/GAxVNS_100.png, id=37, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_100.png Graphic file (type png)
 <use ./imgs/GAxVNS_100.png>
-Package pdftex.def Info: ./imgs/GAxVNS_100.png  used on input line 467.
+Package pdftex.def Info: ./imgs/GAxVNS_100.png  used on input line 468.
 (pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
 <./imgs/GAxVNS_200.png, id=38, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_200.png Graphic file (type png)
 <use ./imgs/GAxVNS_200.png>
-Package pdftex.def Info: ./imgs/GAxVNS_200.png  used on input line 468.
+Package pdftex.def Info: ./imgs/GAxVNS_200.png  used on input line 469.
 (pdftex.def)             Requested size: 237.36346pt x 178.01692pt.
 <./imgs/GAxVNS_400.png, id=39, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_400.png Graphic file (type png)
 <use ./imgs/GAxVNS_400.png>
-Package pdftex.def Info: ./imgs/GAxVNS_400.png  used on input line 472.
+Package pdftex.def Info: ./imgs/GAxVNS_400.png  used on input line 473.
 (pdftex.def)             Requested size: 242.52063pt x 181.88757pt.
 <./imgs/GAxVNS_800.png, id=40, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_800.png Graphic file (type png)
 <use ./imgs/GAxVNS_800.png>
-Package pdftex.def Info: ./imgs/GAxVNS_800.png  used on input line 473.
+Package pdftex.def Info: ./imgs/GAxVNS_800.png  used on input line 474.
 (pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
 <./imgs/GAxVNS_1600.png, id=41, 578.16pt x 433.62pt>
 File: ./imgs/GAxVNS_1600.png Graphic file (type png)
 <use ./imgs/GAxVNS_1600.png>
-Package pdftex.def Info: ./imgs/GAxVNS_1600.png  used on input line 479.
+Package pdftex.def Info: ./imgs/GAxVNS_1600.png  used on input line 480.
 (pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -492,22 +492,22 @@ Underfull \vbox (badness 1838) has occurred while \output is active []
 
 
 
-Underfull \hbox (badness 2368) in paragraph at lines 526--527
+Underfull \hbox (badness 2368) in paragraph at lines 527--528
 \OT1/ptm/m/n/8 food sup-ply chain con-si-de-ring mar-ke-ting prac-ti-ces un-der un-cer-
  []
 
 
-Underfull \hbox (badness 5374) in paragraph at lines 527--528
+Underfull \hbox (badness 5374) in paragraph at lines 528--529
 \OT1/ptm/m/n/8 2023,"2023. [On-line]. Avai-la-ble: $https : / / www . statista . com / statistics /
  []
 
 
-Underfull \hbox (badness 5403) in paragraph at lines 534--535
+Underfull \hbox (badness 5403) in paragraph at lines 535--536
 []\OT1/ptm/m/n/8 Campelo, F., & Ara-nha, C. (2023). Les-sons from the Evo-
  []
 
 
-Underfull \hbox (badness 4608) in paragraph at lines 534--535
+Underfull \hbox (badness 4608) in paragraph at lines 535--536
 \OT1/ptm/m/n/8 lu-ti-o-nary Com-pu-ta-tion Bes-ti-ary. \OT1/ptm/m/it/8 Ar-ti-fi-cial Life\OT1/ptm/m/n/8 , \OT1/ptm/m/it/8 29\OT1/ptm/m/n/8 (4), 421--432.
  []
 
@@ -553,13 +553,13 @@ L3 programming layer <2024-05-27>
 Here is how much of TeX's memory you used:
  7595 strings out of 473919
  128664 string characters out of 5726481
- 1965908 words of memory out of 5000000
+ 1966908 words of memory out of 5000000
  30362 multiletter control sequences out of 15000+600000
  600627 words of font info for 123 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  67i,12n,77p,861b,418s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrb1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE-conference-template-062824.pdf (8 pages, 496166 bytes).
+Output written on IEEE-conference-template-062824.pdf (8 pages, 496382 bytes).
 PDF statistics:
  137 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

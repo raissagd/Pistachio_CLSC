@@ -388,7 +388,8 @@ Nesses casos, as contagens de variáveis foram reduzidas para 1.700; 3.400; 6.80
 
 Os parâmetros das instâncias, como capacidades e demandas, foram gerados aleatoriamente conforme a Tabela 7 de \cite{b2}. A abordagem baseada no VNS foi comparada com o GA,
 que foi uma das meta-heurísticas evolucionárias utilizadas na referência considerada. O GA utilizou mutações baseadas em troca (\textit{swap-based mutations}) e cruzamentos de subsequências (\textit{subsequence-exchanging crossovers}),
-com vetores selecionados aleatoriamente, uma população de 100 indivíduos e uma estratégia de seleção por Torneio Binário.
+com vetores selecionados aleatoriamente, uma população de 100 indivíduos e uma estratégia de seleção por Torneio Binário. Além disso, seus outros principais parâmetros foram definidos com base em valores tradicionais da literatura: 
+taxa de cruzamento de 0,8 e taxa de mutação de 0,2. O processo de inicialização utilizou geração estocástica dos cromossomos.
 
 Tanto o VNS quanto o GA foram executados 30 vezes por instância. O critério de parada adotado foi um número máximo de avaliações da função objetivo, definido empiricamente 
 a partir de testes sucessivos, de forma a equilibrar custo computacional e qualidade das soluções. Especificamente, foram utilizadas 6.250 avaliações para instâncias de 
