@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  17 JUL 2025 18:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  21 JUL 2025 17:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -392,7 +392,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: ./imgs/fluxo_pt.PNG Graphic file (type png)
 <use ./imgs/fluxo_pt.PNG>
 Package pdftex.def Info: ./imgs/fluxo_pt.PNG  used on input line 108.
-(pdftex.def)             Requested size: 239.00298pt x 124.17256pt.
+(pdftex.def)             Requested size: 256.0748pt x 133.04471pt.
+
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 108--109
+ [] 
+ []
+
 
 Overfull \hbox (2.22844pt too wide) detected at line 139
 []
@@ -407,104 +412,137 @@ Overfull \hbox (2.22844pt too wide) detected at line 139
 
 
 [3]
-<./imgs/decode_flux.PNG, id=26, 482.40225pt x 298.716pt>
-File: ./imgs/decode_flux.PNG Graphic file (type png)
-<use ./imgs/decode_flux.PNG>
-Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 222.
-(pdftex.def)             Requested size: 239.00298pt x 147.99933pt.
+<./imgs/chromossome.PNG, id=26, 710.655pt x 234.1247pt>
+File: ./imgs/chromossome.PNG Graphic file (type png)
+<use ./imgs/chromossome.PNG>
+Package pdftex.def Info: ./imgs/chromossome.PNG  used on input line 216.
+(pdftex.def)             Requested size: 258.0pt x 84.99931pt.
 
-Underfull \hbox (badness 2012) in paragraph at lines 246--247
-[] \OT1/ptm/b/n/10 Sa[]^^Pda: \OT1/ptm/m/n/10 cus-to-to-tal, vari[]aveis de de-cis[]ao cont[]^^Pnuas
+Overfull \hbox (6.0pt too wide) in paragraph at lines 216--217
+ [][] 
  []
 
-LaTeX Info: Symbol \textrightarrow not provided by
-            font family ptm in TS1 encoding.
-            Default family used instead on input line 251.
-LaTeX Info: Symbol \textrightarrow not provided by
-            font family ptm in TS1 encoding.
-            Default family used instead on input line 258.
-LaTeX Info: Symbol \textrightarrow not provided by
-            font family ptm in TS1 encoding.
-            Default family used instead on input line 265.
-LaTeX Info: Symbol \textrightarrow not provided by
-            font family ptm in TS1 encoding.
-            Default family used instead on input line 273.
-LaTeX Info: Symbol \textrightarrow not provided by
-            font family ptm in TS1 encoding.
-            Default family used instead on input line 279.
-LaTeX Info: Symbol \textrightarrow not provided by
-            font family ptm in TS1 encoding.
-            Default family used instead on input line 299.
-LaTeX Info: Symbol \textrightarrow not provided by
-            font family ptm in TS1 encoding.
-            Default family used instead on input line 306.
+<./imgs/decode_flux.PNG, id=27, 482.40225pt x 298.716pt>
+File: ./imgs/decode_flux.PNG Graphic file (type png)
+<use ./imgs/decode_flux.PNG>
+Package pdftex.def Info: ./imgs/decode_flux.PNG  used on input line 234.
+(pdftex.def)             Requested size: 256.0748pt x 158.57396pt.
 
+Overfull \hbox (4.0748pt too wide) in paragraph at lines 234--235
+ [] 
+ []
 
-
-
-[4 <./imgs/decode_flux.PNG>]
-
-<./imgs/nbhd_op.png, id=32, 410.7345pt x 263.18324pt>
-File: ./imgs/nbhd_op.png Graphic file (type png)
-<use ./imgs/nbhd_op.png>
-Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 376.
-(pdftex.def)             Requested size: 239.00298pt x 153.14836pt.
-
-
-[5 <./imgs/nbhd_op.png>]
-
-<./imgs/GAxVNS_100.png, id=37, 578.16pt x 433.62pt>
-File: ./imgs/GAxVNS_100.png Graphic file (type png)
-<use ./imgs/GAxVNS_100.png>
-Package pdftex.def Info: ./imgs/GAxVNS_100.png  used on input line 470.
-(pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
-<./imgs/GAxVNS_200.png, id=38, 578.16pt x 433.62pt>
-File: ./imgs/GAxVNS_200.png Graphic file (type png)
-<use ./imgs/GAxVNS_200.png>
-Package pdftex.def Info: ./imgs/GAxVNS_200.png  used on input line 471.
-(pdftex.def)             Requested size: 237.36346pt x 178.01692pt.
-<./imgs/GAxVNS_400.png, id=39, 578.16pt x 433.62pt>
-File: ./imgs/GAxVNS_400.png Graphic file (type png)
-<use ./imgs/GAxVNS_400.png>
-Package pdftex.def Info: ./imgs/GAxVNS_400.png  used on input line 475.
-(pdftex.def)             Requested size: 242.52063pt x 181.88757pt.
-<./imgs/GAxVNS_800.png, id=40, 578.16pt x 433.62pt>
-File: ./imgs/GAxVNS_800.png Graphic file (type png)
-<use ./imgs/GAxVNS_800.png>
-Package pdftex.def Info: ./imgs/GAxVNS_800.png  used on input line 476.
-(pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
-<./imgs/GAxVNS_1600.png, id=41, 578.16pt x 433.62pt>
-File: ./imgs/GAxVNS_1600.png Graphic file (type png)
-<use ./imgs/GAxVNS_1600.png>
-Package pdftex.def Info: ./imgs/GAxVNS_1600.png  used on input line 482.
-(pdftex.def)             Requested size: 232.19843pt x 174.14627pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 
-[6]
-Underfull \vbox (badness 1838) has occurred while \output is active []
+
+Underfull \hbox (badness 2012) in paragraph at lines 261--262
+[] \OT1/ptm/b/n/10 Sa[]^^Pda: \OT1/ptm/m/n/10 cus-to-to-tal, vari[]aveis de de-cis[]ao cont[]^^Pnuas
+ []
+
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family ptm in TS1 encoding.
+            Default family used instead on input line 266.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family ptm in TS1 encoding.
+            Default family used instead on input line 273.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family ptm in TS1 encoding.
+            Default family used instead on input line 280.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family ptm in TS1 encoding.
+            Default family used instead on input line 288.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family ptm in TS1 encoding.
+            Default family used instead on input line 294.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family ptm in TS1 encoding.
+            Default family used instead on input line 314.
+LaTeX Info: Symbol \textrightarrow not provided by
+            font family ptm in TS1 encoding.
+            Default family used instead on input line 321.
+<./imgs/nbhd_op.png, id=28, 410.7345pt x 263.18324pt>
+File: ./imgs/nbhd_op.png Graphic file (type png)
+<use ./imgs/nbhd_op.png>
+Package pdftex.def Info: ./imgs/nbhd_op.png  used on input line 391.
+(pdftex.def)             Requested size: 239.00298pt x 153.14836pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+
+[4 <./imgs/chromossome.PNG> <./imgs/decode_flux.PNG>]
+
+
+
+[5]
+
+<./imgs/GAxVNS_100.png, id=38, 578.16pt x 433.62pt>
+File: ./imgs/GAxVNS_100.png Graphic file (type png)
+<use ./imgs/GAxVNS_100.png>
+Package pdftex.def Info: ./imgs/GAxVNS_100.png  used on input line 485.
+(pdftex.def)             Requested size: 154.80157pt x 116.09972pt.
+<./imgs/GAxVNS_200.png, id=39, 578.16pt x 433.62pt>
+File: ./imgs/GAxVNS_200.png Graphic file (type png)
+<use ./imgs/GAxVNS_200.png>
+Package pdftex.def Info: ./imgs/GAxVNS_200.png  used on input line 486.
+(pdftex.def)             Requested size: 154.80157pt x 116.09972pt.
+<./imgs/GAxVNS_400.png, id=40, 578.16pt x 433.62pt>
+File: ./imgs/GAxVNS_400.png Graphic file (type png)
+<use ./imgs/GAxVNS_400.png>
+Package pdftex.def Info: ./imgs/GAxVNS_400.png  used on input line 487.
+(pdftex.def)             Requested size: 154.80157pt x 116.09972pt.
+<./imgs/GAxVNS_800.png, id=41, 578.16pt x 433.62pt>
+File: ./imgs/GAxVNS_800.png Graphic file (type png)
+<use ./imgs/GAxVNS_800.png>
+Package pdftex.def Info: ./imgs/GAxVNS_800.png  used on input line 499.
+(pdftex.def)             Requested size: 154.80157pt x 116.09972pt.
+<./imgs/GAxVNS_1600.png, id=42, 578.16pt x 433.62pt>
+File: ./imgs/GAxVNS_1600.png Graphic file (type png)
+<use ./imgs/GAxVNS_1600.png>
+Package pdftex.def Info: ./imgs/GAxVNS_1600.png  used on input line 499.
+(pdftex.def)             Requested size: 154.80157pt x 116.09972pt.
+
+Overfull \hbox (6.94844pt too wide) in paragraph at lines 484--501
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+
+[6 <./imgs/nbhd_op.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
 
-Underfull \hbox (badness 2368) in paragraph at lines 529--530
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[7 <./imgs/GAxVNS_100.png> <./imgs/GAxVNS_200.png> <./imgs/GAxVNS_400.png> <./imgs/GAxVNS_800.png> <./imgs/GAxVNS_1600.png>]
+Underfull \hbox (badness 2368) in paragraph at lines 546--547
 \OT1/ptm/m/n/8 food sup-ply chain con-si-de-ring mar-ke-ting prac-ti-ces un-der un-cer-
  []
 
 
-Underfull \hbox (badness 5374) in paragraph at lines 530--531
+
+
+Underfull \hbox (badness 5374) in paragraph at lines 547--548
 \OT1/ptm/m/n/8 2023,"2023. [On-line]. Avai-la-ble: $https : / / www . statista . com / statistics /
  []
 
 
-Underfull \hbox (badness 5403) in paragraph at lines 537--538
+Underfull \hbox (badness 5403) in paragraph at lines 554--555
 []\OT1/ptm/m/n/8 Campelo, F., & Ara-nha, C. (2023). Les-sons from the Evo-
  []
 
 
-Underfull \hbox (badness 4608) in paragraph at lines 537--538
+Underfull \hbox (badness 4608) in paragraph at lines 554--555
 \OT1/ptm/m/n/8 lu-ti-o-nary Com-pu-ta-tion Bes-ti-ary. \OT1/ptm/m/it/8 Ar-ti-fi-cial Life\OT1/ptm/m/n/8 , \OT1/ptm/m/it/8 29\OT1/ptm/m/n/8 (4), 421--432.
  []
 
@@ -521,44 +559,24 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[7]
-
-LaTeX Warning: Text page 8 contains only floats.
-
-
-Overfull \vbox (25.50368pt too high) has occurred while \output is active []
-
-
-
-
-LaTeX Warning: Text page 8 contains only floats.
-
-
-Overfull \vbox (25.50368pt too high) has occurred while \output is active []
-
-
-
-
-Overfull \vbox (8.70377pt too high) has occurred while \output is active []
-
- [8 <./imgs/GAxVNS_100.png> <./imgs/GAxVNS_200.png> <./imgs/GAxVNS_400.png> <./imgs/GAxVNS_800.png> <./imgs/GAxVNS_1600.png>] (IEEE-conference-template-062824.aux)
+[8] (IEEE-conference-template-062824.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 1
 L3 programming layer <2024-05-27>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 7595 strings out of 473919
- 128664 string characters out of 5726481
- 1966908 words of memory out of 5000000
- 30362 multiletter control sequences out of 15000+600000
+ 7603 strings out of 473919
+ 128882 string characters out of 5726481
+ 1974908 words of memory out of 5000000
+ 30370 multiletter control sequences out of 15000+600000
  600627 words of font info for 123 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 67i,12n,77p,861b,418s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 67i,18n,77p,861b,431s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrb1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE-conference-template-062824.pdf (8 pages, 496622 bytes).
+Output written on IEEE-conference-template-062824.pdf (8 pages, 517573 bytes).
 PDF statistics:
- 137 PDF objects out of 1000 (max. 8388607)
+ 139 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

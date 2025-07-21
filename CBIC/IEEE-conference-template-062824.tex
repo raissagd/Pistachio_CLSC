@@ -105,7 +105,7 @@ representa uma direção promissora para investigações futuras, especialmente 
 
 \begin{figure}
   \begin{center}
-      \includegraphics[width=8.4cm]{./imgs/fluxo_pt.PNG}
+      \includegraphics[width=9cm]{./imgs/fluxo_pt.PNG}
       \caption{Estrutura da cadeia de suprimentos do pistache proposta.}
       \label{fig:supplychain}
   \end{center}
@@ -207,6 +207,18 @@ atribuída com base nos custos médios de transporte, visa aprimorar a interpret
 distinção mais clara entre soluções vizinhas, o que se mostra vantajoso em problemas combinatórios, como é o caso da otimização de cadeias de suprimentos. A eficácia desse tipo de codificação já foi 
 demonstrada em estudos anteriores (\hspace{-0.03em}\cite{b11,b12,b13}).
 
+A Figura~\ref{fig:cromossomo} apresenta a estrutura do cromossomo adotado, composto por oito segmentos ($S_1$ a $S_8$), cada um responsável por ordenar as prioridades 
+em um fluxo logístico específico da cadeia de suprimentos. A parte inferior da figura ilustra um exemplo de cromossomo completo, com prioridades inteiras associadas a 
+cada par origem-destino. Essa estrutura modular facilita a aplicação de operadores de vizinhança e o processo de decodificação baseado em transporte prioritário.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./imgs/chromossome.PNG}
+    \caption{Representação da estrutura do cromossomo baseado em prioridade. A parte inferior mostra um exemplo de um cromossomo preenchido com as prioridades inteiras.}
+    \label{fig:cromossomo}
+\end{figure}
+
+
 O processo de decodificação garante a conformidade com as restrições \eqref{eq:custo}-\eqref{eq:restricao20}, determinando sequencialmente os fluxos dos produtores para os centros de processamento, fábricas e 
 consumidores, minimizando os custos de transporte. Ajustes são feitos para priorizar as entidades com maior necessidade, assegurando a viabilidade. Da mesma forma, a compostagem e o gerenciamento de resíduos 
 seguem restrições rigorosas de capacidade e demanda para otimizar a distribuição.
@@ -219,18 +231,21 @@ de processamento e compostagem, enquanto minimizam os custos.
 
 \begin{figure}[h!]
   \begin{center}
-  \includegraphics[width=8.4cm]{./imgs/decode_flux.PNG}
+  \includegraphics[width=9cm]{./imgs/decode_flux.PNG}
   \caption{Etapas de decodificação do fluxo na cadeia de suprimentos}
   \label{fig:decode_flux}
   \end{center}
 \end{figure}
 
-Para a decodificação de cada fluxo da cadeia de suprimentos, é utilizada a função \textit{decodingStep}, que implementa um algoritmo de transporte baseado em prioridades, 
-conforme apresentado no \textit{Procedure 1} de \cite{b12}. A lógica completa está detalhada nos Algoritmos~\ref{algoDecode1} e~\ref{algoDecode2}, que descrevem a 
-conversão do cromossomo em variáveis de decisão do modelo. O Algoritmo~\ref{algoDecode1} executa a alocação dos produtos entre instalações (como fábricas, centros 
-de extração e consumidores), com base nas prioridades definidas nos segmentos do cromossomo, respeitando custos, capacidades e demandas. Já o Algoritmo~\ref{algoDecode2} 
-complementa o fluxo com ajustes de equilíbrio nos centros de processamento, geração e alocação de resíduos para compostagem, além da ativação das variáveis binárias que 
-indicam quais instalações estão operando. Juntos, esses algoritmos viabilizam a decodificação completa de uma solução viável a partir da estrutura de prioridades codificada.
+Para a decodificação de cada fluxo logístico da cadeia de suprimentos, utiliza-se a função \textit{decodingStep}, que implementa um algoritmo de transporte baseado em prioridades, conforme apresentado 
+no \textit{Procedure 1} de \cite{b12}. Essa função atua iterativamente, alocando unidades de produto de uma fonte para um destino com base em um vetor cromossômico que define a ordem de prioridade entre 
+os nós logísticos, sempre respeitando as capacidades das fontes e as demandas dos destinos, além dos custos unitários de transporte. Os Algoritmos~\ref{algoDecode1} e~\ref{algoDecode2} detalham o processo 
+completo de decodificação de uma solução. O Algoritmo~\ref{algoDecode1} inicia o processo ao decodificar os fluxos principais entre fábricas, centros de extração, consumidores e centros de processamento, 
+utilizando os segmentos cromossômicos $S_1$ a $S_5$. Já o Algoritmo~\ref{algoDecode2} realiza ajustes adicionais nos fluxos para garantir a coerência entre entradas e saídas nos centros intermediários, 
+decodifica o transporte dos produtores para os centros de processamento ($S_6$), aloca os resíduos gerados nos processos para centros de compostagem ($S_7$ e $S_8$), e determina quais instalações devem 
+ser efetivamente abertas com base nos fluxos obtidos. Ao final do processo, obtém-se um conjunto completo de variáveis de decisão contínuas e binárias que representam uma solução viável e coerente para 
+o problema de otimização proposto.
+
 
 \begin{algorithm}
   \caption{Decodificação do cromossomo para a cadeia de suprimentos (Parte 1)}
@@ -466,25 +481,27 @@ mas também demonstra maior eficiência no tratamento de problemas de grande esc
 
 \begin{figure*}[h!]
   \centering
-  \begin{tabular}{cc}
-      \includegraphics[width=0.45\textwidth]{./imgs/GAxVNS_100.png} & 
-      \includegraphics[width=0.46\textwidth]{./imgs/GAxVNS_200.png} \\
-      (a) $I, J, K, E, S, Q, N1, N2, N3, M = 100$ & 
-      (b) $I, J, K, E, S, Q, N1, N2, N3, M = 200$ \\
-      \vspace{0.5cm} \\ 
-      \includegraphics[width=0.47\textwidth]{./imgs/GAxVNS_400.png} & 
-      \includegraphics[width=0.45\textwidth]{./imgs/GAxVNS_800.png} \\
-      (c) $I, J, K, E, S, Q, N1, N2, N3, M = 400$ & 
-      (d) $I, J, K, E, S, Q, N1, N2, N3, M = 800$ \\
-      \vspace{0.5cm} \\ 
-      \multicolumn{2}{c}{
-          \includegraphics[width=0.45\textwidth]{./imgs/GAxVNS_1600.png} 
-      } \\
-      \multicolumn{2}{c}{(e) $I, J, K, E, S, Q, N1, N2, N3, M = 1600$} \\
+  \begin{tabular}{ccc}
+    \includegraphics[width=0.30\textwidth]{./imgs/GAxVNS_100.png} &
+    \includegraphics[width=0.30\textwidth]{./imgs/GAxVNS_200.png} &
+    \includegraphics[width=0.30\textwidth]{./imgs/GAxVNS_400.png} \\
+    (a) $I, J, K, E, S, Q, N1, N2, N3, M = 100$ &
+    (b) $= 200$ &
+    (c) $= 400$ \\
+    \multicolumn{3}{c}{\vspace{0.8em}} \\
+    \multicolumn{3}{c}{
+      \begin{tabular}{cc}
+        \includegraphics[width=0.30\textwidth]{./imgs/GAxVNS_800.png} &
+        \includegraphics[width=0.30\textwidth]{./imgs/GAxVNS_1600.png} \\
+        (d) $= 800$ &
+        (e) $= 1600$
+      \end{tabular}
+    }
   \end{tabular}
   \caption{Boxplots comparando o desempenho do algoritmo VNS e de uma meta-heurística baseada em população (GA) em diferentes tamanhos de problema, com base nos valores da função objetivo.}
   \label{fig:VNSxGA_boxplots}
 \end{figure*}
+
 
 %===============================================================================
 
