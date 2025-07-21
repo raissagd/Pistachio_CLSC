@@ -508,11 +508,13 @@ class FixedCostSwap(Neighborhood):
 
 class TransportCostSwap(Neighborhood):
     """
-    Operador que, em cada cromossomo, identifica a aresta inativa de menor custo e aumenta a prioridade do cliente correspondente, mantendo a permutação válida de prioridades.
+    Operador que identifica arestas inativas de alto potencial de economia
+    e promove tanto a fonte quanto o cliente envolvidos, com base em critérios heurísticos.
     """
-    def __init__(self, N, data):
+    def __init__(self, N, data, top_k=10):
         super().__init__(N)
         self.data = data
+        self.top_k = top_k
 
     def applyChange(self, solution):
         sol = copy.deepcopy(solution)
@@ -520,69 +522,97 @@ class TransportCostSwap(Neighborhood):
         for _ in range(self.N):
             attr, chrom = self.selectRandomChromosome(sol)
 
-            # --- escolhe fluxo e matriz de custo conforme o cromossomo ---
+            # Seleção das matrizes de custo e fluxo
             if attr == 'S1':
-                flow = sol.P.toarray(); cost = self.data.Cp
+                cost = self.data.Cp
+                flow = sol.P.toarray()
             elif attr == 'S2':
-                flow = sol.L.toarray(); cost = self.data.Cl
+                cost = self.data.Cl
+                flow = sol.L.toarray()
             elif attr == 'S3':
-                O  = sol.O .toarray()
-                Oc = sol.Oc.toarray()
-                flow = np.hstack((O, Oc))
                 cost = np.hstack((self.data.CN, self.data.CS))
+                flow = np.hstack((sol.O.toarray(), sol.Oc.toarray()))
             elif attr == 'S4':
-                flow = sol.Go.toarray(); cost = self.data.CK
+                cost = self.data.CK
+                flow = sol.Go.toarray()
             elif attr == 'S5':
-                flow = sol.Gr.toarray(); cost = self.data.CE
+                cost = self.data.CE
+                flow = sol.Gr.toarray()
             elif attr == 'S6':
-                flow = sol.X.toarray(); cost = self.data.CX
+                cost = self.data.CX
+                flow = sol.X.toarray()
             elif attr == 'S7':
-                flow = sol.D.toarray(); cost = self.data.Cd
+                cost = self.data.Cd
+                flow = sol.D.toarray()
             elif attr == 'S8':
-                flow = sol.Ow.toarray(); cost = self.data.CQ
+                cost = self.data.CQ
+                flow = sol.Ow.toarray()
             else:
                 continue
 
-            K, J = flow.shape
+            K, J = cost.shape
 
-            # --- arestas ativas/inativas ---
             ativa   = np.argwhere(flow > 0)
             inativa = np.argwhere(flow == 0)
+
             if inativa.size == 0:
                 continue
 
-            # --- escolhe a inativa de menor custo ---
-            custos_in = np.array([cost[k,j] for (k,j) in inativa])
-            idx_chp  = np.argmin(custos_in)
-            k_chp, j_chp = inativa[idx_chp]
+            # Calcula os custos das arestas inativas
+            custos_in = np.array([cost[k, j] for (k, j) in inativa])
+            top_idxs  = np.argsort(custos_in)[:self.top_k]  # top-k arestas inativas mais baratas
 
-            # --- monta novo cromossomo ajustando só o cliente j_chp ---
+            melhores = []
+            for idx in top_idxs:
+                k, j = inativa[idx]
+
+                # Verifica se o cliente j já recebe de outra fonte
+                fontes_ativas_para_j = ativa[ativa[:, 1] == j]
+                if len(fontes_ativas_para_j) == 0:
+                    continue
+
+                # Custo atual médio que o cliente j está recebendo
+                custo_atual = np.mean([cost[ka, j] for (ka, _) in fontes_ativas_para_j])
+                custo_novo  = cost[k, j]
+
+                # Se a nova aresta é melhor, registra
+                if custo_novo < custo_atual:
+                    ganho_estimado = custo_atual - custo_novo
+                    melhores.append((ganho_estimado, k, j))
+
+            if not melhores:
+                continue
+
+            # Escolhe o melhor par (ganho mais alto)
+            _, k_chp, j_chp = max(melhores)
+
+            # Atualiza prioridade no cromossomo (cliente e fonte)
             chrom_old = chrom.copy()
             chrom_new = chrom_old.copy()
 
-            # prioridade antiga e máxima
-            p_old = chrom_old[K + j_chp]
-            p_max = chrom_old.max()
+            p_old_src = chrom_old[k_chp]
+            p_old_cli = chrom_old[K + j_chp]
+            p_max     = chrom_old.max()
 
-            # “desce” em 1 todas as prioridades > p_old
-            mask = chrom_new > p_old
-            chrom_new[mask] -= 1
+            # Ajusta prioridades: cliente e fonte vão para o topo
+            chrom_new[chrom_new > p_old_src] -= 1
+            chrom_new[chrom_new > p_old_cli] -= 1
+            chrom_new[k_chp]      = p_max
+            chrom_new[K + j_chp]  = p_max
 
-            # e leva o cliente à máxima prioridade
-            chrom_new[K + j_chp] = p_max
-
-            # --- atualiza e segue ---
             setattr(sol, attr, chrom_new)
 
         return sol
     
 class SourceCostBoost(Neighborhood):
     """
-    Operator that boosts the priority of the globally cheapest source (row-sum of costs) in each chromosome.
+    Operador que promove uma fonte inativa com maior potencial de economia,
+    baseado na média dos menores custos da linha de custo da matriz (estimativa local).
     """
-    def __init__(self, N, data):
+    def __init__(self, N, data, top_k=5):
         super().__init__(N)
         self.data = data
+        self.top_k = top_k  # número de menores custos considerados por fonte
 
     def applyChange(self, solution):
         sol = copy.deepcopy(solution)
@@ -590,48 +620,64 @@ class SourceCostBoost(Neighborhood):
         for _ in range(self.N):
             attr, chrom = self.selectRandomChromosome(sol)
 
-            # Select cost matrix and flow dimensions based on chromosome
+            # Mapeamento das matrizes de custo e fluxos
             if attr == 'S1':
                 cost = self.data.Cp
+                flow = sol.P.toarray()
             elif attr == 'S2':
                 cost = self.data.Cl
+                flow = sol.L.toarray()
             elif attr == 'S3':
                 cost = np.hstack((self.data.CN, self.data.CS))
+                flow = np.hstack((sol.O.toarray(), sol.Oc.toarray()))
             elif attr == 'S4':
                 cost = self.data.CK
+                flow = sol.Go.toarray()
             elif attr == 'S5':
                 cost = self.data.CE
+                flow = sol.Gr.toarray()
             elif attr == 'S6':
                 cost = self.data.CX
+                flow = sol.X.toarray()
             elif attr == 'S7':
                 cost = self.data.Cd
+                flow = sol.D.toarray()
             elif attr == 'S8':
                 cost = self.data.CQ
+                flow = sol.Ow.toarray()
             else:
                 continue
 
-            # cost is K x J
             K, J = cost.shape
 
-            # 1) Identify source with minimal total cost (sum across clients)
-            row_sums = cost.sum(axis=1)
-            k_min = np.argmin(row_sums)
+            # Verifica fontes inativas (sem fluxo positivo)
+            flow_sum_by_source = flow.sum(axis=1)
+            fontes_inativas = np.where(flow_sum_by_source == 0)[0]
 
-            # 2) Adjust priorities: boost source k_min
+            if len(fontes_inativas) == 0:
+                continue  # nada a boostar
+
+            # Avalia a atratividade de cada fonte inativa
+            atratividade = []
+            for k in fontes_inativas:
+                menores_custos = np.partition(cost[k], self.top_k)[:self.top_k]
+                score = menores_custos.mean()
+                atratividade.append((score, k))
+
+            # Escolhe a mais promissora (menor score)
+            _, k_melhor = min(atratividade)
+
+            # Atualiza prioridade da fonte escolhida
             chrom_old = chrom.copy()
             chrom_new = chrom_old.copy()
 
-            p_old = chrom_old[k_min]
+            p_old = chrom_old[k_melhor]
             p_max = chrom_old.max()
 
-            # decrease by 1 all entries > p_old
             mask = chrom_new > p_old
             chrom_new[mask] -= 1
+            chrom_new[k_melhor] = p_max
 
-            # set the cheapest source to top priority
-            chrom_new[k_min] = p_max
-
-            # update solution
             setattr(sol, attr, chrom_new)
 
         return sol
