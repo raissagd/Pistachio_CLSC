@@ -515,7 +515,12 @@ de Programação Linear Inteira Mista (MILP), ele é resolvido por meio do algor
 A análise comparativa demonstra a superioridade do VNS em relação ao GA, tanto em qualidade das soluções quanto em eficiência computacional, especialmente para 
 instâncias de grande escala, onde métodos exatos se tornam inviáveis devido a limitações de tempo e memória.
 
-Pesquisas futuras podem explorar operadores de vizinhança específicos para o problema, aprimorando ainda mais o desempenho do VNS. Além disso, uma abordagem híbrida, combinando VNS com métodos 
+Reconhece-se que a comparação entre os algoritmos pode ser influenciada pelos critérios de parada adotados. Embora ambos os métodos utilizem o mesmo número máximo de avaliações da função 
+objetivo como critério principal, o VNS possui um critério adicional de parada antecipada quando todos os operadores de vizinhança falham em melhorar a solução atual consecutivamente. 
+Essa diferença metodológica pode contribuir para os menores tempos de execução observados no VNS, sugerindo maior eficiência na convergência. Como trabalho futuro, recomenda-se a 
+investigação de critérios de parada unificados para permitir comparações ainda mais rigorosas entre as abordagens.
+
+Como perspectiva de melhoria adicional, pesquisas futuras podem explorar operadores de vizinhança específicos para o problema, aprimorando ainda mais o desempenho do VNS. Além disso, uma abordagem híbrida, combinando VNS com métodos 
 exatos, pode melhorar tanto a precisão quanto a eficiência da solução, tornando a metodologia mais aplicável a diferentes setores.
 
 O código e conjunto de dados utilizados neste estudo estão disponíveis em: \url{https://github.com/raissagd/Pistachio_CLSC}.
