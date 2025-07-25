@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1753129434.12136 "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1753129435.79994 0
+["pdflatex"] 1753307622.83079 "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" "IEEE-conference-template-062824.pdf" "IEEE-conference-template-062824" 1753307624.48669 0
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1745772277 82705 9cc9f144eacd499bc23a611703921467 ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrb1000.pk" 1745773376 11160 0ea52f30246f4ea9c05b8dc01fae37d4 ""
   "C:/Users/Lenovo/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1724336691 24264540 49d27c373074f0bd51e55e96fee01217 ""
@@ -95,16 +95,16 @@
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/psnfss/ot1ptm.fd" 1585253778 1007 15056f4a61917ceed3a44e4ac11fcc52 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "IEEE-conference-template-062824.aux" 1753129435 5927 4dfae746959cab4dc780b6a68d43f4c9 "pdflatex"
-  "IEEE-conference-template-062824.tex" 1753129431 46322 c6e0b4c9088deba0c5a9cb14c6c0c8e8 ""
+  "IEEE-conference-template-062824.aux" 1753307624 5927 4dfae746959cab4dc780b6a68d43f4c9 "pdflatex"
+  "IEEE-conference-template-062824.tex" 1753307621 46317 b901f6cc325f7b29a516e237104ca030 ""
   "IEEEtran.cls" 1440654524 288304 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" 1753129431 46322 c6e0b4c9088deba0c5a9cb14c6c0c8e8 ""
+  "c:/Users/Lenovo/Documents/IC/CBIC/IEEE-conference-template-062824.tex" 1753307621 46317 b901f6cc325f7b29a516e237104ca030 ""
   "imgs/GAxVNS_100.png" 1748460583 29731 e46e45688c72bef3d6677c5ad66d3a7a ""
   "imgs/GAxVNS_1600.png" 1748460782 28505 b8011044c3257e43274ca16775b695ea ""
   "imgs/GAxVNS_200.png" 1748460609 27782 3d8acce2206c58083b74ef35666bec69 ""
   "imgs/GAxVNS_400.png" 1748460634 27852 d25a77d9b2a950b12287dc9459d849a1 ""
   "imgs/GAxVNS_800.png" 1748460660 26050 60204d14a59855ca60a7d237c5aa4430 ""
-  "imgs/chromossome.PNG" 1753129299 26261 4896c0e8c2ae5315d230f6e3ebd0bb30 ""
+  "imgs/chromo.PNG" 1753307616 34034 9e3cdd96abd1e1f4f45236f19dfcf12c ""
   "imgs/decode_flux.PNG" 1726621331 47164 74f0f8b8fd741de34d9380889f0595bd ""
   "imgs/fluxo_pt.PNG" 1752782875 57593 b658ffa59138e8d0fa2fe4b810647030 ""
   "imgs/nbhd_op.png" 1725480620 54696 2fd0912f31ad5e4b73458e8c966b9781 ""

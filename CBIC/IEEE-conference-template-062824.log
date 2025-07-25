@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  21 JUL 2025 17:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.8.22)  23 JUL 2025 18:53
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -412,11 +412,11 @@ Overfull \hbox (2.22844pt too wide) detected at line 139
 
 
 [3]
-<./imgs/chromossome.PNG, id=26, 710.655pt x 234.1247pt>
-File: ./imgs/chromossome.PNG Graphic file (type png)
-<use ./imgs/chromossome.PNG>
-Package pdftex.def Info: ./imgs/chromossome.PNG  used on input line 216.
-(pdftex.def)             Requested size: 258.0pt x 84.99931pt.
+<./imgs/chromo.PNG, id=26, 897.3525pt x 311.66437pt>
+File: ./imgs/chromo.PNG Graphic file (type png)
+<use ./imgs/chromo.PNG>
+Package pdftex.def Info: ./imgs/chromo.PNG  used on input line 216.
+(pdftex.def)             Requested size: 258.0pt x 89.60518pt.
 
 Overfull \hbox (6.0pt too wide) in paragraph at lines 216--217
  [][] 
@@ -473,7 +473,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 
-[4 <./imgs/chromossome.PNG> <./imgs/decode_flux.PNG>]
+[4 <./imgs/chromo.PNG> <./imgs/decode_flux.PNG>]
 
 
 
@@ -567,14 +567,14 @@ L3 programming layer <2024-05-27>
  ) 
 Here is how much of TeX's memory you used:
  7603 strings out of 473919
- 128882 string characters out of 5726481
+ 128847 string characters out of 5726481
  1974908 words of memory out of 5000000
  30370 multiletter control sequences out of 15000+600000
  600627 words of font info for 123 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  67i,18n,77p,861b,431s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Lenovo\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrb1000.pk><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/Lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on IEEE-conference-template-062824.pdf (8 pages, 517573 bytes).
+Output written on IEEE-conference-template-062824.pdf (8 pages, 523152 bytes).
 PDF statistics:
  139 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
