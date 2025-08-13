@@ -169,6 +169,174 @@ class VariableNeighborhoodSearch(Algorithm):
         
         return best_overall
 
+class VariableNeighborhoodSearch2(Algorithm):
+    """
+    VNS2 - Modified Variable Neighborhood Search
+    
+    Principais modificações em relação ao VNS original:
+    1. Para cada solução base, testa TODOS os operadores antes de desistir
+    2. Critério de aceitação: aceita melhorias imediatamente, usa SA apenas quando todos operadores falharam
+    3. Perturbação sempre da mesma base (não da última aceita)
+    """
+
+    def __init__(self, operators, max_eval, initialization, name="VNS2", init_temp=100, cooling_rate=0.995):
+        self.operators = operators  # Operators for generating neighbors
+        self.max_eval = max_eval  # Maximum number of iterations
+        self.n_eval = 1  # Number of evaluations
+        self.initialization = initialization  # Initialization method
+        self.log = None # Log for storing neighborhood operations
+        self.name = name # Name of the algorithm
+        self.T = init_temp
+        self.cooling_rate = cooling_rate
+
+    def best_improvement(self, solution, data, operator_index, number_of_neighbors, log):
+        """
+        Busca local que aplica best improvement usando um operador específico
+        """
+        failure_counter = 0
+        initial_FX = solution.FX
+
+        while True:
+            neighbors = []  # List to store the neighbor solutions
+            Fx_neighbors = []  # List to store the fitness values of the neighbor solutions
+
+            for _ in range(number_of_neighbors):
+                # Generate a neighbor solution (apply an operator to the current solution)
+                neighbor = self.operators[operator_index].applyChange(solution)
+                neighbor.evaluate(data)  # Evaluate the neighbor solution
+                self.n_eval += 1
+                neighbors.append(neighbor)  # Store it
+                Fx_neighbors.append(neighbor.FX)  # Store its fitness value
+
+            best_neighbor_index = np.argmin(Fx_neighbors)
+            best_neighbor = neighbors[best_neighbor_index] # Select the best neighbor    
+
+            # Update the current solution if the best neighbor is better
+            if Fx_neighbors[best_neighbor_index] < solution.FX:
+                solution = best_neighbor
+                failure_counter = 0
+                success = 1
+            else:
+                failure_counter += 1
+                success = 0
+                if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
+                    break
+
+            if log is not None:
+                log.log(data.instance, self.name, self.operators[operator_index].name, 
+                       self.n_eval, success, 
+                       (initial_FX - solution.FX) / initial_FX * 100 if success else 0, 
+                       solution.FX) # Log the neighborhood operation
+        
+        return solution
+
+    def perturbation(self, solution, data, operator_index):
+        """
+        Perturbação da solução usando um operador específico
+        """
+        operator = self.operators[operator_index] # Select the operator for perturbation
+        perturbed_solution = operator.applyChange(solution) # Generate a perturbed solution
+        perturbed_solution.evaluate(data)  # Evaluate the perturbed solution
+        self.n_eval += 1
+        return perturbed_solution
+    
+    def accept_worse_solution(self, old_fx, new_fx):
+        """
+        Critério de aceitação para soluções piores (Simulated Annealing)
+        Usado apenas quando todos os operadores falharam
+        """
+        delta = new_fx - old_fx
+        if delta < 0:
+            # always accepts better solutions
+            return True
+        elif delta == 0:
+            # rejects equal solutions
+            return False
+        else:
+            # accepts worse solutions with a probability of exp(−Δ/T)
+            return random.random() < math.exp(-delta / self.T)
+        
+    def solve(self, data, log=None):
+        convergence = super().solve(data)
+        tic = time()
+        solution = Solution()  # Create a new solution
+
+        if (self.initialization == 0):
+            solution.generateChromosomeDeterministic(data)
+        else:
+            solution.generateChromosomeStochastic(data)
+
+        solution.evaluate(data)
+        self.n_eval = 1  # Prevent early stopping in case of reusing the object
+        convergence.add(solution, self.n_eval) # Add FX e numero de avaliações
+
+        best_overall = copy.deepcopy(solution)  # Keep track of the best overall solution
+        base_solution = copy.deepcopy(solution)  # Solução base fixa para perturbações
+
+        print(f"Initial FX: {solution.FX}")
+        number_of_neighbors = 15
+
+        # Loop principal do VNS2
+        while self.n_eval < self.max_eval:
+            found_improvement = False
+            
+            # FASE 1: Testa TODOS os operadores na base atual
+            for operator_index in range(len(self.operators)):
+                if self.n_eval >= self.max_eval:
+                    break
+                    
+                # 1. Perturba a base fixa (não a última aceita)
+                perturbed_solution = self.perturbation(base_solution, data, operator_index)
+                
+                # 2. Aplica busca local na solução perturbada
+                improved_solution = self.best_improvement(perturbed_solution, data, operator_index, number_of_neighbors, log)
+                
+                # 3. Compara o resultado final com a base (não com a perturbada)
+                if improved_solution.FX < base_solution.FX:
+                    # Encontrou melhoria! Atualiza a base e para de testar outros operadores
+                    base_solution = copy.deepcopy(improved_solution)
+                    found_improvement = True
+                    
+                    # Atualiza melhor solução global
+                    if improved_solution.FX < best_overall.FX:
+                        best_overall = copy.deepcopy(improved_solution)
+                    
+                    print(f"Operator {operator_index} improved: {improved_solution.FX}")
+                    break  # Para de testar outros operadores e recomeça do 0
+                
+                convergence.add(base_solution, self.n_eval)
+            
+            # FASE 2: Se nenhum operador melhorou, usa Simulated Annealing
+            if not found_improvement and self.n_eval < self.max_eval:
+                # Pega uma das soluções perturbadas (pode ser a última testada)
+                random_operator = random.randint(0, len(self.operators) - 1)
+                perturbed_solution = self.perturbation(base_solution, data, random_operator)
+                final_solution = self.best_improvement(perturbed_solution, data, random_operator, number_of_neighbors, log)
+                
+                # Aplica critério de Simulated Annealing
+                if self.accept_worse_solution(base_solution.FX, final_solution.FX):
+                    print(f"SA accepted worse solution: {base_solution.FX} -> {final_solution.FX}")
+                    base_solution = copy.deepcopy(final_solution)
+                    
+                    # Atualiza melhor global se necessário
+                    if final_solution.FX < best_overall.FX:
+                        best_overall = copy.deepcopy(final_solution)
+                
+                # Resfria temperatura independente de aceitar ou não
+                self.T *= self.cooling_rate
+                convergence.add(base_solution, self.n_eval)
+            
+            # Se não encontrou melhoria e não aceitou via SA, pode estar convergido
+            # (o loop continuará até max_eval ser atingido)
+
+        print(f"Final solution: {best_overall.FX}")
+        print(f"Number of evaluations: {self.n_eval}")
+        
+        best_overall.execution_time = time() - tic
+        best_overall.convergence = convergence
+        best_overall.log = log
+        
+        return best_overall
 
 class ExactAlgorithm(Algorithm):
     def __init__(self):
