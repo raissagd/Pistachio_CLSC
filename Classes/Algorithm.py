@@ -167,6 +167,7 @@ class VariableNeighborhoodSearch(Algorithm):
         # log_data = self.log.get()
         # log_data.to_csv(f'./tests/run_parallel/{data.instance}_{self.name}.csv', index=False)
         
+        best_overall.log = log
         return best_overall
 
 class VariableNeighborhoodSearch2(Algorithm):

@@ -75,10 +75,8 @@ class Neighborhood_op_log(Log):
 
     def save(self, filename, filepath):
         if not filename or not filepath:
-            #print(f"[⚠️ Warning] Skipping log save due to missing filename or filepath.")
             return
-
+        import os
         os.makedirs(filepath, exist_ok=True)
-        full_path = os.path.join(filepath, filename + ".csv")
-        #print(f"✅ Saving log to: {full_path}")
+        full_path = os.path.join(filepath, f"{filename}.csv")
         self.df.to_csv(full_path, index=False)
