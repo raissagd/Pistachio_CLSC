@@ -28,8 +28,8 @@ class VariableNeighborhoodSearch(Algorithm):
         6:    until k = kmax
     """
 
-    def __init__(self, operators, max_eval, initialization, name="VNS", init_temp=100, cooling_rate=0.995):
-        self.operators = operators  # Operators for generating neighbors
+    def __init__(self, operator, max_eval, initialization, name="VNS", init_temp=100, cooling_rate=0.995):
+        self.operator = operator  # operator for generating neighbors
         self.max_eval = max_eval  # Maximum number of iterations
         self.n_eval = 1  # Number of evaluations
         self.initialization = initialization  # Initialization method
@@ -48,7 +48,7 @@ class VariableNeighborhoodSearch(Algorithm):
 
             for _ in range(number_of_neighbors):
                 # Generate a neighbor solution (apply an operator to the current solution)
-                neighbor = self.operators[operator_index].applyChange(solution)
+                neighbor = self.operator[operator_index].applyChange(solution)
                 neighbor.evaluate(data)  # Evaluate the neighbor solution
                 self.n_eval += 1
                 neighbors.append(neighbor)  # Store it
@@ -69,12 +69,12 @@ class VariableNeighborhoodSearch(Algorithm):
                     break
 
             if log is not None:
-                log.log(data.instance, self.name, self.operators[operator_index].name, self.n_eval, success, (initial_FX - solution.FX) / initial_FX * 100 if success else 0, solution.FX  ) # Log the neighborhood operation
+                log.log(data.instance, self.name, self.operator[operator_index].name, self.n_eval, success, (initial_FX - solution.FX) / initial_FX * 100 if success else 0, solution.FX  ) # Log the neighborhood operation
         
         return solution
 
     def perturbation(self, solution, data, operator_index):
-        operator = self.operators[operator_index] # Select the operator for perturbation
+        operator = self.operator[operator_index] # Select the operator for perturbation
         
         # Calculate number of perturbations based on problem size
         # Total variables = sum of all chromosome segments
@@ -143,8 +143,8 @@ class VariableNeighborhoodSearch(Algorithm):
             elif self.n_eval >= self.max_eval:
                 # If the maximum number of evaluations is reached,
                 break
-            elif operator_index == len(self.operators) - 1:
-                # If all operators have been tested,
+            elif operator_index == len(self.operator) - 1:
+                # If all operator have been tested,
                 break
             else:
                 # If the new solution is not better, try the next operator
@@ -163,9 +163,9 @@ class VariableNeighborhoodSearch(Algorithm):
                 break
 
             else:
-                # Tries next operator (or ends if all operators have been tested)
+                # Tries next operator (or ends if all operator have been tested)
                 operator_index += 1
-                if operator_index >= len(self.operators):
+                if operator_index >= len(self.operator):
                     operator_index = 0
 
             convergence.add(solution, self.n_eval)
@@ -194,8 +194,8 @@ class VariableNeighborhoodSearch2(Algorithm):
     4. SA para aceitar solução pior quando "pode ir mais longe"
     """
 
-    def __init__(self, operators, max_eval, initialization, name="VNS2", init_temp=100, cooling_rate=0.995):
-        self.operators = operators  # Operators for generating neighbors
+    def __init__(self, operator, max_eval, initialization, name="VNS2", init_temp=100, cooling_rate=0.995):
+        self.operator = operator  # operator for generating neighbors
         self.max_eval = max_eval  # Maximum number of iterations
         self.n_eval = 1  # Number of evaluations
         self.initialization = initialization  # Initialization method
@@ -204,72 +204,69 @@ class VariableNeighborhoodSearch2(Algorithm):
         self.T = init_temp
         self.cooling_rate = cooling_rate
 
-    def best_improvement(self, solution, data, operator_index, number_of_neighbors, log):
+    def best_improvement(self, solution, data, operator_index, 
+                         number_of_neighbors, log):
         """
         Busca local que aplica best improvement usando um operador específico
         """
-        failure_counter = 0
         initial_FX = solution.FX
         current_solution = copy.deepcopy(solution)
 
-        while True:
-            neighbors = []  # List to store the neighbor solutions
-            Fx_neighbors = []  # List to store the fitness values of the neighbor solutions
+        neighbors = []  # List to store the neighbor solutions
+        Fx_neighbors = []  # List to store the fitness values of the neighbor solutions
 
-            for _ in range(number_of_neighbors):
-                # Generate a neighbor solution (apply an operator to the current solution)
-                neighbor = self.operators[operator_index].applyChange(current_solution)
-                neighbor.evaluate(data)  # Evaluate the neighbor solution
-                self.n_eval += 1
-                neighbors.append(neighbor)  # Store it
-                Fx_neighbors.append(neighbor.FX)  # Store its fitness value
+        for _ in range(number_of_neighbors):
+            # Generate a neighbor solution (apply an operator to the current solution)
+            neighbor = self.operator[operator_index].applyChange(current_solution)
+            neighbor.evaluate(data)  # Evaluate the neighbor solution
+            self.n_eval += 1
+            neighbors.append(neighbor)  # Store it
+            Fx_neighbors.append(neighbor.FX)  # Store its fitness value
 
-            best_neighbor_index = np.argmin(Fx_neighbors)
-            best_neighbor = neighbors[best_neighbor_index] # Select the best neighbor    
+        best_neighbor_index = np.argmin(Fx_neighbors)
+        best_neighbor = neighbors[best_neighbor_index] # Select the best neighbor    
 
-            # Update the current solution if the best neighbor is better
-            if Fx_neighbors[best_neighbor_index] < current_solution.FX:
-                current_solution = best_neighbor
-                failure_counter = 0
-                success = 1
-            else:
-                failure_counter += 1
-                success = 0
-                if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
-                    break
+        # Update the current solution if the best neighbor is better
+        if Fx_neighbors[best_neighbor_index] < current_solution.FX:
+            success = 1
+        else:
+            success = 0
 
-            if log is not None:
-                log.log(data.instance, self.name, self.operators[operator_index].name, 
-                       self.n_eval, success, 
-                       (initial_FX - current_solution.FX) / initial_FX * 100 if success else 0, 
-                       current_solution.FX) # Log the neighborhood operation
+        if log is not None:
+            log.log(data.instance, self.name,
+                    self.operator[operator_index].name, 
+                    self.n_eval, success, 
+                    (initial_FX - best_neighbor.FX) / initial_FX * 100 if success else 0, 
+                    best_neighbor.FX) # Log the neighborhood operation
         
-        return current_solution
+        return best_neighbor
 
-    def intensive_local_search(self, base_solution, data, number_of_neighbors, log):
+    def local_search(self, base_solution, data, number_of_neighbors, log):
         """
         Aplica busca local com TODOS os operadores na mesma base e retorna o melhor resultado
         """
         best_result = copy.deepcopy(base_solution)
-        
-        for operator_index in range(len(self.operators)):
-            if self.n_eval >= self.max_eval:
-                break
-                
-            # Aplica busca local com o operador atual
-            local_result = self.best_improvement(base_solution, data, operator_index, number_of_neighbors, log)
-            
-            # Mantém o melhor resultado encontrado
-            if local_result.FX < best_result.FX:
-                best_result = copy.deepcopy(local_result)
+
+        operator_index = 0
+        while operator_index < len(self.operator) and self.n_eval < self.max_eval:
+
+            best_neighbor = self.best_improvement(best_result, data,
+                                                  operator_index,
+                                                  number_of_neighbors, log)
+
+            if best_neighbor.FX < best_result.FX:
+                best_result = copy.deepcopy(best_neighbor)
+                operator_index = 0  # Restart with the first operator if improvement found
+            else:
+                operator_index += 1
         
         return best_result
 
-    def perturbation(self, solution, data, operator_index):
+    def shake(self, solution, data, operator_index):
         """
         Perturbação da solução usando um operador específico
         """
-        operator = self.operators[operator_index] # Select the operator for perturbation
+        operator = self.operator[operator_index] # Select the operator for perturbation
         
         # Calculate number of perturbations based on problem size
         # Total variables = sum of all chromosome segments
@@ -296,85 +293,64 @@ class VariableNeighborhoodSearch2(Algorithm):
         Usado para aceitar solução perturbada quando pode "ir mais longe"
         """
         delta = worse_fx - better_fx
-        if delta <= 0:
-            # Se não é realmente pior, aceita
+        return random.random() < math.exp(-delta / self.T)
+
+    def neighborhood_change(self, new_fx, current_fx):
+        """
+        Muda para o próximo operador (ou reinicia se todos já foram testados)
+        """
+        if new_fx <= current_fx:
             return True
         else:
-            # Aceita solução pior com probabilidade exp(−Δ/T)
-            return random.random() < math.exp(-delta / self.T)
+            self.accept_worse_solution(current_fx, new_fx)
         
     def solve(self, data, log=None):
         convergence = super().solve(data)
         tic = time()
-        solution = Solution()  # Create a new solution
+        current_solution = Solution()  # Create a new solution
 
         if (self.initialization == 0):
-            solution.generateChromosomeDeterministic(data)
+            current_solution.generateChromosomeDeterministic(data)
         else:
-            solution.generateChromosomeStochastic(data)
+            current_solution.generateChromosomeStochastic(data)
 
-        solution.evaluate(data)
+        current_solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
-        convergence.add(solution, self.n_eval) # Add FX e numero de avaliações
+        convergence.add(current_solution, self.n_eval) # Add FX e numero de avaliações
 
-        best_overall = copy.deepcopy(solution)  # Keep track of the best overall solution
-        base_solution = copy.deepcopy(solution)  # Solução base atual
+        best_overall = copy.deepcopy(current_solution)  # Keep track of the best overall solution
 
-        print(f"Initial FX: {solution.FX}")
+        print(f"Initial FX: {current_solution.FX}")
         number_of_neighbors = 15
+        operator_index = 0
 
         # Loop principal do VNS2 Novo
         while self.n_eval < self.max_eval:
             
-            # FASE 1: Intensificação na base atual (sem perturbação)
-            print(f"FASE 1: Intensificação na base {base_solution.FX}")
-            minimo_local_1 = self.intensive_local_search(base_solution, data, number_of_neighbors, log)
-            print(f"Mínimo local 1 (sem perturbação): {minimo_local_1.FX}")
+            new_solution = self.local_search(current_solution, data, 
+                                             number_of_neighbors, log)
             
             if self.n_eval >= self.max_eval:
                 break
-            
-            # FASE 2: Perturbação do mínimo_local_1 + Intensificação
-            # Escolhe operador aleatório para perturbação
-            perturbation_operator = random.randint(0, len(self.operators) - 1)
-            perturbed_base = self.perturbation(minimo_local_1, data, perturbation_operator)
-            
-            print(f"FASE 2: Perturbação {minimo_local_1.FX} → {perturbed_base.FX}")
-            minimo_local_2 = self.intensive_local_search(perturbed_base, data, number_of_neighbors, log)
-            print(f"Mínimo local 2 (com perturbação): {minimo_local_2.FX}")
-            
-            if self.n_eval >= self.max_eval:
-                break
-            
-            # FASE 3: Decisão estratégica
-            if minimo_local_2.FX < minimo_local_1.FX:
-                # Melhorou com a perturbação
-                base_solution = copy.deepcopy(minimo_local_2)
-                print(f"DECISÃO: Aceita perturbada (melhorou): {minimo_local_2.FX}")
-                
-            elif self.accept_worse_solution(minimo_local_1.FX, minimo_local_2.FX):
-                # Aceita solução pior para "ir mais longe"  
-                base_solution = copy.deepcopy(minimo_local_2)
-                print(f"DECISÃO: Aceita perturbada via SA (pode ir mais longe): {minimo_local_1.FX} → {minimo_local_2.FX}")
-                
+
+            if new_solution.FX < best_overall.FX:
+                best_overall = copy.deepcopy(new_solution)
+
+            if self.neighborhood_change(new_solution.FX, current_solution.FX):
+                current_solution = new_solution
+                operator_index = 0
             else:
-                # Mantém a melhor solução (minimo_local_1)
-                base_solution = copy.deepcopy(minimo_local_1)
-                print(f"DECISÃO: Mantém minimo_local_1: {minimo_local_1.FX}")
-            
-            # Atualiza melhor solução global
-            if base_solution.FX < best_overall.FX:
-                best_overall = copy.deepcopy(base_solution)
-                print(f"NOVA MELHOR GLOBAL: {best_overall.FX}")
+                operator_index += 1
+                if operator_index >= len(self.operator):
+                    operator_index = 0
+
             
             # Atualiza temperatura
             self.T *= self.cooling_rate
             
             # Registra convergência
-            convergence.add(base_solution, self.n_eval)
+            convergence.add(best_overall, self.n_eval)
             
-            print(f"Fim do ciclo - Base atual: {base_solution.FX}, Avaliações: {self.n_eval}")
-            print("-" * 50)
 
         print(f"Final solution: {best_overall.FX}")
         print(f"Number of evaluations: {self.n_eval}")
@@ -597,8 +573,8 @@ class ExactAlgorithm(Algorithm):
 
 
 class IteratedLocalSearch(Algorithm):
-    def __init__(self, operators, max_iter, max_eval=100000):
-        self.operators = operators  # Operators for generating neighbors
+    def __init__(self, operator, max_iter=1000, max_eval=100000):
+        self.operator = operator  # operator for generating neighbors
         self.max_iter = max_iter  # Maximum number of iterations
         self.max_eval = max_eval  # Maximum number of evaluations
         self.n_eval = 0  # Number of evaluations
@@ -607,12 +583,13 @@ class IteratedLocalSearch(Algorithm):
 
         failure_counter = 0
         while True:
+
             neighbors = []
             Fx_neighbors = []
 
-            for n in range(len(self.operators)):
+            for n in range(len(self.operator)):
                 # Generate a neighbor solution (apply an operator to the current solution)
-                neighbor = self.operators[n].applyChange(solution)
+                neighbor = self.operator.applyChange(solution)
                 neighbor.evaluate(data)  # Evaluate the neighbor solution
                 self.n_eval += 1
                 neighbors.append(neighbor)  # Store the neighbor solution
@@ -634,8 +611,8 @@ class IteratedLocalSearch(Algorithm):
         return solution
 
     def perturbation(self, solution, data):
-        for n in range(len(self.operators)):
-            solution = self.operators[n].applyChange(solution)
+        for n in range(len(self.operator)):
+            solution = self.operator[n].applyChange(solution)
         solution.evaluate(data)
         self.n_eval += 1
         return solution
@@ -811,3 +788,24 @@ class GeneticAlgorithm(Algorithm):
         best_solution.execution_time = time()-tic
         best_solution.convergence = convergence
         return best_solution
+    
+if __name__ == "__main__":
+
+    from Problem import Problem
+    from Log import Neighborhood_op_log
+    from Neighborhood import Swap, Reversion, Insertion, Slide
+
+    # Example usage
+    problem = Problem()
+    problem.loadFile('./data/data_10.npz')
+
+    operator = [Swap(1), Reversion(1), Insertion(1), Slide(1)]
+    vns = VariableNeighborhoodSearch2(operator, max_eval=10000,
+                                      initialization=1, init_temp=100,
+                                      cooling_rate=0.995)
+    log = Neighborhood_op_log()
+    best_solution = vns.solve(problem, log)
+
+    print(f"Best solution FX: {best_solution.FX}")
+    print(f"Number of evaluations: {best_solution.n_eval}")
+    print(f"Execution time: {best_solution.execution_time} seconds")
