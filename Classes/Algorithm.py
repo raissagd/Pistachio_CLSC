@@ -35,8 +35,8 @@ class VariableNeighborhoodSearch(Algorithm):
         self.initialization = initialization  # Initialization method
         self.log = None # Log for storing neighborhood operations
         self.name = name # Name of the algorithm
-        self.T = init_temp;
-        self.cooling_rate = cooling_rate;
+        self.T = init_temp
+        self.cooling_rate = cooling_rate
 
     def best_improvement(self, solution, data, operator_index, number_of_neighbors, log):
         failure_counter = 0
@@ -75,13 +75,25 @@ class VariableNeighborhoodSearch(Algorithm):
 
     def perturbation(self, solution, data, operator_index):
         operator = self.operators[operator_index] # Select the operator for perturbation
+        
+        # Calculate number of perturbations based on problem size
+        # Total variables = sum of all chromosome segments
+        total_variables = (data.K + data.N1) + (data.S + data.N3) + (data.E + data.N2 + data.S) + \
+                         (data.J + data.K) + (data.J + data.E) + (data.I + data.J) + \
+                         (data.Q + data.M) + (data.E + data.Q)
+        
+        # Number of perturbations proportional to problem size (e.g., 5-10% of total variables)
+        num_perturbations = max(10, int(0.07 * total_variables))  # At least 10 perturbations
 
-        solution = operator.applyChange(solution) # Generate a perturbed solution
+        perturbed_solution = copy.deepcopy(solution)
+        
+        # Apply multiple perturbations with the same operator
+        for _ in range(num_perturbations):
+            perturbed_solution = operator.applyChange(perturbed_solution)
 
-        solution.evaluate(data)  # Evaluate the perturbed solution
-
+        perturbed_solution.evaluate(data)  # Evaluate the perturbed solution
         self.n_eval += 1
-        return solution
+        return perturbed_solution
     
     def accept(self, old_fx, new_fx):
         delta = new_fx - old_fx
@@ -258,7 +270,22 @@ class VariableNeighborhoodSearch2(Algorithm):
         Perturbação da solução usando um operador específico
         """
         operator = self.operators[operator_index] # Select the operator for perturbation
-        perturbed_solution = operator.applyChange(solution) # Generate a perturbed solution
+        
+        # Calculate number of perturbations based on problem size
+        # Total variables = sum of all chromosome segments
+        total_variables = (data.K + data.N1) + (data.S + data.N3) + (data.E + data.N2 + data.S) + \
+                         (data.J + data.K) + (data.J + data.E) + (data.I + data.J) + \
+                         (data.Q + data.M) + (data.E + data.Q)
+        
+        # Number of perturbations proportional to problem size (e.g., 5-10% of total variables)
+        num_perturbations = max(10, int(0.07 * total_variables))  # At least 10 perturbations
+
+        perturbed_solution = copy.deepcopy(solution)
+        
+        # Apply multiple perturbations with the same operator
+        for _ in range(num_perturbations):
+            perturbed_solution = operator.applyChange(perturbed_solution)
+        
         perturbed_solution.evaluate(data)  # Evaluate the perturbed solution
         self.n_eval += 1
         return perturbed_solution
@@ -360,8 +387,8 @@ class VariableNeighborhoodSearch2(Algorithm):
         return best_overall
 
 class ExactAlgorithm(Algorithm):
-    def __init__(self):
-        pass
+    def __init__(self, time_limit=None):
+        self.time_limit = time_limit
 
     def solve(self, data):
         # Criação do modelo
@@ -558,6 +585,9 @@ class ExactAlgorithm(Algorithm):
              >= data.Dc[m] for m in range(int(data.M))),
             name="Eq.(22)"
         )
+
+        if self.time_limit is not None:
+            modelo.setParam('TimeLimit', self.time_limit)
 
         # Resolvendo o modelo
         modelo.optimize()
