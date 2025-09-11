@@ -655,13 +655,14 @@ class IteratedLocalSearch(Algorithm):
         return current_solution
 
 class GeneticAlgorithm(Algorithm):
-    def __init__(self, population_size, crossover_rate, mutation_rate, max_eval, initialization):
+    def __init__(self, population_size, crossover_rate, mutation_rate, max_eval, initialization, crossover_type="hybrid"):
         self.population_size = population_size  # Size of the population
         self.crossover_rate = crossover_rate  # Crossover rate
         self.mutation_rate = mutation_rate  # Mutation rate
         self.initialization = initialization  # Initialization method for the population
         self.max_eval = max_eval  # Maximum number of evaluations
         self.n_eval = 0  # Number of evaluations
+        self.crossover_type = crossover_type  # Type of crossover: "segment", "intra_segment", or "hybrid"
 
     def initialize_population(self, data):
         # Initialize the population with random solutions
@@ -701,6 +702,51 @@ class GeneticAlgorithm(Algorithm):
                 setattr(child2, f"S{i}", getattr(parent1, f"S{i}").copy())
 
         return child1, child2
+
+    def crossover_intra_segment(self, parent1, parent2):
+        """
+        Perform intra-segment crossover: applies crossover within each segment
+        instead of swapping entire segments between parents.
+        """
+        child1, child2 = Solution(), Solution()
+
+        # Apply crossover within each segment S1 to S8
+        for i in range(1, 9):
+            segment1 = getattr(parent1, f"S{i}").copy()
+            segment2 = getattr(parent2, f"S{i}").copy()
+            
+            # Only perform crossover if segment has more than 1 element
+            if len(segment1) > 1:
+                # Single point crossover within the segment
+                crossover_point = np.random.randint(1, len(segment1))
+                
+                # Create children segments using list concatenation
+                child_segment1 = np.concatenate((segment1[:crossover_point], [x for x in segment2 if x not in list(segment1[:crossover_point])]))
+                child_segment2 = np.concatenate((segment2[:crossover_point], [x for x in segment1 if x not in list(segment2[:crossover_point])]))
+
+                # Assign the crossed segments to children
+                setattr(child1, f"S{i}", child_segment1)
+                setattr(child2, f"S{i}", child_segment2)
+            else:
+                # If segment has only 1 element, just copy from parents
+                setattr(child1, f"S{i}", segment1)
+                setattr(child2, f"S{i}", segment2)
+
+        return child1, child2
+
+    def crossover_hybrid(self, parent1, parent2, intra_segment_prob=0.5):
+        """
+        Hybrid crossover: randomly chooses between segment-level crossover 
+        and intra-segment crossover based on probability.
+        
+        Args:
+            parent1, parent2: Parent solutions
+            intra_segment_prob: Probability of using intra-segment crossover (default 0.5)
+        """
+        if np.random.rand() < intra_segment_prob:
+            return self.crossover_intra_segment(parent1, parent2)
+        else:
+            return self.crossover(parent1, parent2)
 
     def mutate(self, solution):
         # Perform mutation on a segment of the solution's chromosome
@@ -748,9 +794,14 @@ class GeneticAlgorithm(Algorithm):
                 # Select two parents from the current population randomly
                 parent1, parent2 = self.select_parents(population)
 
-                # Perform crossover based on the crossover rate
+                # Perform crossover based on the crossover rate and type
                 if np.random.rand() < self.crossover_rate:
-                    child1, child2 = self.crossover(parent1, parent2)
+                    if self.crossover_type == "intra_segment":
+                        child1, child2 = self.crossover_intra_segment(parent1, parent2)
+                    elif self.crossover_type == "hybrid":
+                        child1, child2 = self.crossover_hybrid(parent1, parent2)
+                    else:  # default "segment"
+                        child1, child2 = self.crossover(parent1, parent2)
                 else:
                     child1, child2 = parent1, parent2
 
@@ -781,8 +832,8 @@ class GeneticAlgorithm(Algorithm):
             else:
                 best_solution = min(new_population, key=lambda sol: sol.FX)
             convergence.add(best_solution, self.n_eval)
-            #print(f"Best FX = {best_solution.FX}")
-
+        
+        print(f"Best FX = {best_solution.FX}")
         best_solution.execution_time = time()-tic
         best_solution.convergence = convergence
         return best_solution
@@ -797,6 +848,13 @@ if __name__ == "__main__":
     problem = Problem()
     problem.loadFile('./data/data_10.npz')
 
+    
+    # Hybrid crossover
+    ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.8, 
+                                mutation_rate=0.1, max_eval=1000, 
+                                initialization=1, crossover_type="hybrid")
+
+    # Test VNS as well
     operator = [Swap(1), Reversion(1), Insertion(1), Slide(1)]
     vns = VariableNeighborhoodSearch2(operator, max_eval=10000,
                                       initialization=1, init_temp=100,
@@ -804,6 +862,10 @@ if __name__ == "__main__":
     log = Neighborhood_op_log()
     best_solution = vns.solve(problem, log)
 
-    print(f"Best solution FX: {best_solution.FX}")
-    print(f"Number of evaluations: {best_solution.n_eval}")
-    print(f"Execution time: {best_solution.execution_time} seconds")
+    print(f"VNS Best solution FX: {best_solution.FX}")
+    print(f"VNS Number of evaluations: {best_solution.n_eval}")
+    print(f"VNS Execution time: {best_solution.execution_time} seconds")
+    
+    print("\n=== GA with Hybrid Crossover ===")
+    best_ga_hybrid = ga_hybrid.solve(problem)
+    print(f"GA Hybrid - Best FX: {best_ga_hybrid.FX}")

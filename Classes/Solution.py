@@ -3,11 +3,13 @@ from scipy.sparse import csr_matrix
 
 class Solution:
     def __init__(self):
-        self.FX = None  # Objective function value
+        self.FX = float('inf')  # Objective function value (start with high value)
         self.S1, self.S2, self.S3, self.S4, self.S5, self.S6, self.S7, self.S8 = [None] * 8  # Chromosomes
         self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [None] * 15  # Decision variables
         self.convergence = None  # Convergence curve
         self.n_eval = 0
+        self.execution_time = 0.0  # Execution time
+        self.log = None  # Log for operations
 
     def calculate_priorities(self, transportation_matrix):
         """
