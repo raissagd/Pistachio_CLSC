@@ -1,5 +1,6 @@
 *.pyc
 /env
+/.env
 /.vscode
 test_solution.pkl
 /Classes/__pycache__
