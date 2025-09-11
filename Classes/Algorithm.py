@@ -73,8 +73,8 @@ class VariableNeighborhoodSearch(Algorithm):
         
         return solution
 
-    def perturbation(self, solution, data, operator_index):
-        operator = self.operator[operator_index] # Select the operator for perturbation
+    def shake(self, solution, data, operator_index):
+        operator = self.operator[operator_index] # Select the operator for shake
         
         # Calculate number of perturbations based on problem size
         # Total variables = sum of all chromosome segments
@@ -129,7 +129,7 @@ class VariableNeighborhoodSearch(Algorithm):
 
         # Neighborhood change
         while True:
-            perturbed_solution = self.perturbation(solution, data, operator_index)  # Shake the current solution
+            perturbed_solution = self.shake(solution, data, operator_index)  # Shake the current solution
 
             new_solution = self.best_improvement(perturbed_solution, data, operator_index, number_of_neighbors, log) # Local search on the perturbed solution
 
@@ -266,13 +266,11 @@ class VariableNeighborhoodSearch2(Algorithm):
         """
         Perturbação da solução usando um operador específico
         """
-        operator = self.operator[operator_index] # Select the operator for perturbation
+        operator = self.operator[operator_index] # Select the operator for shake
         
         # Calculate number of perturbations based on problem size
         # Total variables = sum of all chromosome segments
-        total_variables = (data.K + data.N1) + (data.S + data.N3) + (data.E + data.N2 + data.S) + \
-                         (data.J + data.K) + (data.J + data.E) + (data.I + data.J) + \
-                         (data.Q + data.M) + (data.E + data.Q)
+        total_variables = data.num_var_priority
         
         # Number of perturbations proportional to problem size (e.g., 5-10% of total variables)
         num_perturbations = max(10, int(0.07 * total_variables))  # At least 10 perturbations
@@ -571,15 +569,13 @@ class ExactAlgorithm(Algorithm):
         # Retornando o valor da função objetivo
         return modelo.objVal
 
-
 class IteratedLocalSearch(Algorithm):
-    def __init__(self, operator, max_iter=1000, max_eval=100000):
+    def __init__(self, operator, max_eval=100000):
         self.operator = operator  # operator for generating neighbors
-        self.max_iter = max_iter  # Maximum number of iterations
         self.max_eval = max_eval  # Maximum number of evaluations
         self.n_eval = 0  # Number of evaluations
 
-    def localSearch(self, solution, data):
+    def localSearch(self, solution, data, number_of_neighbors=15):
 
         failure_counter = 0
         while True:
@@ -587,7 +583,7 @@ class IteratedLocalSearch(Algorithm):
             neighbors = []
             Fx_neighbors = []
 
-            for n in range(len(self.operator)):
+            for n in range(number_of_neighbors):
                 # Generate a neighbor solution (apply an operator to the current solution)
                 neighbor = self.operator.applyChange(solution)
                 neighbor.evaluate(data)  # Evaluate the neighbor solution
@@ -610,9 +606,9 @@ class IteratedLocalSearch(Algorithm):
 
         return solution
 
-    def perturbation(self, solution, data):
-        for n in range(len(self.operator)):
-            solution = self.operator[n].applyChange(solution)
+    def shake(self, solution, data, num_shakes=10):
+        for _ in range(num_shakes):
+            solution = self.operator.applyChange(solution)
         solution.evaluate(data)
         self.n_eval += 1
         return solution
@@ -630,31 +626,33 @@ class IteratedLocalSearch(Algorithm):
             até condição de paragem ser verdadeira
         """
         convergence = super().solve(data)
-        solution = Solution()
-        solution.generateChromosome(data)
-        solution.evaluate(data)
+        current_solution = Solution()
+        current_solution.generateChromosomeStochastic(data)
+        current_solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
-        convergence.add(solution, self.n_eval)
-        #print(f"Initial FX: {solution.FX}")
+        convergence.add(current_solution, self.n_eval)
+
+        num_shakes = max(10, int(0.07 * data.num_var_priority))  # Number of shakes proportional to problem size
+
+        print(f"Initial FX: {current_solution.FX}")
 
         # Local search on the initial solution
-        solution = self.localSearch(solution, data)
+        current_solution = self.localSearch(current_solution, data)
 
         while self.n_eval < self.max_eval:
             # Perturbation of previous local search solution
-            perturbed_solution = self.perturbation(solution, data)
+            new_solution = self.shake(current_solution, data, num_shakes)
             # Local search on the perturbed solution
-            candidate = self.localSearch(perturbed_solution, data)
+            new_solution = self.localSearch(new_solution, data)
 
-            if candidate.FX < solution.FX:
-                solution = candidate
-            
-            convergence.add(solution, self.n_eval)
+            if new_solution.FX < current_solution.FX:
+                current_solution = new_solution
 
-        #print(f"Final solution: {solution.FX}")
-        solution.convergence = convergence
-        return solution
+            convergence.add(current_solution, self.n_eval)
 
+        print(f"Final solution: {current_solution.FX}")
+        current_solution.convergence = convergence
+        return current_solution
 
 class GeneticAlgorithm(Algorithm):
     def __init__(self, population_size, crossover_rate, mutation_rate, max_eval, initialization):
