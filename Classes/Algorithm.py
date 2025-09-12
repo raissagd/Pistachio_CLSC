@@ -748,15 +748,16 @@ class GeneticAlgorithm(Algorithm):
         else:
             return self.crossover(parent1, parent2)
 
-    def mutate(self, solution):
+    def mutate(self, solution, max_mutations=3):
         # Perform mutation on a segment of the solution's chromosome
-        segment = np.random.randint(1, 9)  # Select a random segment
-        chromosome = getattr(solution, f"S{segment}").copy()
-        # Select two random positions in the segment to swap
-        i, j = np.random.randint(0, len(chromosome), size=2)
-        chromosome[i], chromosome[j] = chromosome[j], chromosome[i]
-        # Update the solution's segment with the mutated chromosome
-        setattr(solution, f"S{segment}", chromosome)
+        for _ in range(max_mutations):
+            segment = np.random.randint(1, 9)  # Select a random segment
+            chromosome = getattr(solution, f"S{segment}").copy()
+            # Select two random positions in the segment to swap
+            i, j = np.random.randint(0, len(chromosome), size=2)
+            chromosome[i], chromosome[j] = chromosome[j], chromosome[i]
+            # Update the solution's segment with the mutated chromosome
+            setattr(solution, f"S{segment}", chromosome)
 
     def tournament_selection(self, population):
         # Perform binary tournament selection to retain only the best individuals
@@ -780,6 +781,8 @@ class GeneticAlgorithm(Algorithm):
         population = self.initialize_population(data)
         best_solution = min(population, key=lambda sol: sol.FX)
         convergence.add(best_solution, self.n_eval)
+
+        print(f"Initial best FX = {best_solution.FX}")
 
         while self.n_eval < self.max_eval:
             new_population = []
@@ -813,11 +816,8 @@ class GeneticAlgorithm(Algorithm):
 
                 # Evaluate the new solutions
                 child1.evaluate(data)
-                self.n_eval += 1
-                if self.n_eval >= self.max_eval:
-                    break
                 child2.evaluate(data)
-                self.n_eval += 1
+                self.n_eval += 2
                 if self.n_eval >= self.max_eval:
                     break
 
@@ -850,8 +850,8 @@ if __name__ == "__main__":
 
     
     # Hybrid crossover
-    ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.8, 
-                                mutation_rate=0.1, max_eval=1000, 
+    ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.9, 
+                                mutation_rate=0.1, max_eval=10000, 
                                 initialization=1, crossover_type="hybrid")
 
     # Test VNS as well
