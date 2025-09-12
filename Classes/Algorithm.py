@@ -842,20 +842,20 @@ if __name__ == "__main__":
 
     from Problem import Problem
     from Log import Neighborhood_op_log
-    from Neighborhood import Swap, Reversion, Insertion, Slide
+    from Neighborhood import Swap, Reversion, Insertion, Slide, InactiveActiveSwap 
 
     # Example usage
     problem = Problem()
     problem.loadFile('./data/data_10.npz')
 
-    
     # Hybrid crossover
     ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.9, 
                                 mutation_rate=0.1, max_eval=10000, 
                                 initialization=1, crossover_type="hybrid")
 
     # Test VNS as well
-    operator = [Swap(1), Reversion(1), Insertion(1), Slide(1)]
+    # operator = [Swap(1), Reversion(1), Insertion(1), Slide(1)]
+    operator = [InactiveActiveSwap(1)]
     vns = VariableNeighborhoodSearch2(operator, max_eval=10000,
                                       initialization=1, init_temp=100,
                                       cooling_rate=0.995)
@@ -865,7 +865,7 @@ if __name__ == "__main__":
     print(f"VNS Best solution FX: {best_solution.FX}")
     print(f"VNS Number of evaluations: {best_solution.n_eval}")
     print(f"VNS Execution time: {best_solution.execution_time} seconds")
-    
+
     print("\n=== GA with Hybrid Crossover ===")
     best_ga_hybrid = ga_hybrid.solve(problem)
     print(f"GA Hybrid - Best FX: {best_ga_hybrid.FX}")
