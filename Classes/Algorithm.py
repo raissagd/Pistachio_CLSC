@@ -364,11 +364,54 @@ class ExactAlgorithm(Algorithm):
     def __init__(self, time_limit=None):
         self.time_limit = time_limit
 
+    def extract_solution_from_model(self, modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V):
+        """
+        Extrai as variáveis de decisão do modelo Gurobi e cria um objeto Solution.
+        """
+        solution = Solution()
+        
+        # Extrair valores das variáveis de decisão do Gurobi
+        # Variáveis de fluxo
+        solution.X = np.array([[X[i, j].X for j in range(int(data.J))] for i in range(int(data.I))])
+        solution.Go = np.array([[Go[j, k].X for k in range(int(data.K))] for j in range(int(data.J))])
+        solution.Gr = np.array([[Gr[j, e].X for e in range(int(data.E))] for j in range(int(data.J))])
+        solution.Gw = np.array([[Gw[j, q].X for q in range(int(data.Q))] for j in range(int(data.J))])
+        solution.O = np.array([[O[e, n2].X for n2 in range(int(data.N2))] for e in range(int(data.E))])
+        solution.Oc = np.array([[Oc[e, s].X for s in range(int(data.S))] for e in range(int(data.E))])
+        solution.Ow = np.array([[Ow[e, q].X for q in range(int(data.Q))] for e in range(int(data.E))])
+        solution.L = np.array([[L[s, n3].X for n3 in range(int(data.N3))] for s in range(int(data.S))])
+        solution.P = np.array([[P[k, n1].X for n1 in range(int(data.N1))] for k in range(int(data.K))])
+        solution.D = np.array([[D[q, m].X for m in range(int(data.M))] for q in range(int(data.Q))])
+        
+        # Variáveis binárias (converter para inteiros)
+        solution.U = np.array([int(round(U[j].X)) for j in range(int(data.J))])
+        solution.Y = np.array([int(round(Y[q].X)) for q in range(int(data.Q))])
+        solution.W = np.array([int(round(W[k].X)) for k in range(int(data.K))])
+        solution.R = np.array([int(round(R[e].X)) for e in range(int(data.E))])
+        solution.V = np.array([int(round(V[s].X)) for s in range(int(data.S))])
+        
+        # Valor da função objetivo
+        solution.FX = modelo.objVal
+        
+        # Gerar cromossomos baseados na solução ótima (para compatibilidade)
+        solution.generateChromosomeDeterministic(data)
+        
+        # Converter para matrizes esparsas
+        solution.convert2sparse()
+        
+        return solution
+
     def solve(self, data):
+        # Configurar ambiente para suprimir mensagens de licença
+        env = grb.Env(empty=True)
+        env.setParam('OutputFlag', 1)
+        env.start()
+        
         # Criação do modelo
         modelo = grb.Model(
             """Otimização de rede de cadeia de abastecimento de pistache com "
-            "realimentação"""
+            "realimentação""",
+            # env=env
         )
 
         # Variáveis de decisão positivas: fluxos de produtos
@@ -563,11 +606,48 @@ class ExactAlgorithm(Algorithm):
         if self.time_limit is not None:
             modelo.setParam('TimeLimit', self.time_limit)
 
-        # Resolvendo o modelo
-        modelo.optimize()
+        # Resolvendo o modelo (OutputFlag já configurado no ambiente)
+        try:
+            tic = time()
+            modelo.optimize()
+        except:
+            time_limit = time() - tic
+            modelo.setParam('TimeLimit', .8*time_limit)
+            modelo.optimize()
 
-        # Retornando o valor da função objetivo
-        return modelo.objVal
+
+        # Verificar se uma solução ótima foi encontrada
+        if modelo.status == grb.GRB.OPTIMAL:
+            # Extrair solução do modelo usando método auxiliar
+            solution = self.extract_solution_from_model(modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V)
+            solution.n_eval = gurobi_stats['iterations'] + gurobi_stats['nodes']  # Aproximação
+            print(f"Solução ótima encontrada: FX = {solution.FX}")
+            
+        else:
+            # Se não encontrou solução ótima, criar solução vazia
+            solution = Solution()
+            solution.FX = float('inf')
+            
+            # Informar o status
+            print(f"Gurobi status: {modelo.status}")
+            if modelo.status == grb.GRB.INFEASIBLE:
+                print("Modelo infeasível")
+            elif modelo.status == grb.GRB.UNBOUNDED:
+                print("Modelo não limitado")
+            elif modelo.status == grb.GRB.TIME_LIMIT:
+                print("Limite de tempo atingido")
+                # Se chegou no limite de tempo, pode ter uma solução sub-ótima
+                if modelo.solCount > 0:
+                    solution = self.extract_solution_from_model(modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V)
+                    solution.n_eval = gurobi_stats['iterations'] + gurobi_stats['nodes']  # Aproximação
+                    print(f"Melhor solução encontrada no limite de tempo: FX = {solution.FX}")
+            else:
+                print(f"Outro status de terminação: {modelo.status}")
+
+        # Fechar ambiente
+        env.close()
+        
+        return solution
 
 class IteratedLocalSearch(Algorithm):
     def __init__(self, operator, max_eval=100000):
@@ -846,26 +926,33 @@ if __name__ == "__main__":
 
     # Example usage
     problem = Problem()
-    problem.loadFile('./data/data_10.npz')
+    problem.loadFile('./data/data_800.npz')
 
-    # Hybrid crossover
-    ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.9, 
-                                mutation_rate=0.1, max_eval=10000, 
-                                initialization=1, crossover_type="hybrid")
+    # # Hybrid crossover
+    # ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.9, 
+    #                             mutation_rate=0.1, max_eval=10000, 
+    #                             initialization=1, crossover_type="hybrid")
 
-    # Test VNS as well
-    # operator = [Swap(1), Reversion(1), Insertion(1), Slide(1)]
-    operator = [InactiveActiveSwap(1)]
-    vns = VariableNeighborhoodSearch2(operator, max_eval=10000,
-                                      initialization=1, init_temp=100,
-                                      cooling_rate=0.995)
-    log = Neighborhood_op_log()
-    best_solution = vns.solve(problem, log)
+    # # Test VNS with InactiveActiveSwap
+    # operator = [InactiveActiveSwap(1)]
+    # vns = VariableNeighborhoodSearch2(operator, max_eval=1000,  # Reduced for testing
+    #                                   initialization=1, init_temp=100,
+    #                                   cooling_rate=0.995)
+    # log = Neighborhood_op_log()
+    
+    # print("=== VNS with InactiveActiveSwap ===")
+    # best_solution_vns = vns.solve(problem, log)
+    # print(f"VNS Best solution FX: {best_solution_vns.FX}")
+    # print(f"VNS Number of evaluations: {best_solution_vns.n_eval}")
+    # print(f"VNS Execution time: {best_solution_vns.execution_time} seconds")
 
-    print(f"VNS Best solution FX: {best_solution.FX}")
-    print(f"VNS Number of evaluations: {best_solution.n_eval}")
-    print(f"VNS Execution time: {best_solution.execution_time} seconds")
-
-    print("\n=== GA with Hybrid Crossover ===")
-    best_ga_hybrid = ga_hybrid.solve(problem)
-    print(f"GA Hybrid - Best FX: {best_ga_hybrid.FX}")
+    # print("\n=== GA with Hybrid Crossover ===")
+    # best_ga_hybrid = ga_hybrid.solve(problem)
+    # print(f"GA Hybrid - Best FX: {best_ga_hybrid.FX}")
+    
+    # Test Exact Algorithm (comentado pois pode não ter Gurobi instalado)
+    print("\n=== Exact Algorithm (Gurobi) ===")
+    exact = ExactAlgorithm(time_limit=None)  # Sem limite de tempo
+    exact_solution = exact.solve(problem)
+    print(f"Exact Algorithm - Best FX: {exact_solution.FX}")
+        
