@@ -13,8 +13,8 @@ class Algorithm(ABC):
     def __init__(self):
         pass
 
-    def solve(self, data):
-        return Convergence()
+    def solve(self, data, quiet=False):
+        return Solution()
 
 
 class VariableNeighborhoodSearch(Algorithm):
@@ -107,11 +107,11 @@ class VariableNeighborhoodSearch(Algorithm):
             # accepts worse solutions with a probability of exp(−Δ/T)
             return random.random() < math.exp(-delta / self.T)
         
-    def solve(self, data, log=None):
-        convergence = super().solve(data)
+    def solve(self, data, quiet=False, log=None):
+        solution = super().solve(data)
+        convergence = Convergence()
         tic = time()
-        solution = Solution()  # Create a new solution
-
+        
         if (self.initialization == 0):
             solution.generateChromosomeDeterministic(data)
         else:
@@ -123,7 +123,9 @@ class VariableNeighborhoodSearch(Algorithm):
 
         best_overall = copy.deepcopy(solution)  # Keep track of the best overall solution
 
-        print(f"Initial FX: {solution.FX}")
+        if not quiet:
+            print(f"Initial FX: {solution.FX}")
+
         operator_index = 0
         number_of_neighbors = 15
 
@@ -168,10 +170,15 @@ class VariableNeighborhoodSearch(Algorithm):
                 if operator_index >= len(self.operator):
                     operator_index = 0
 
+            if not quiet:
+                print(f"Current FX: {solution.FX} | Best FX: {best_overall.FX}"
+                      f" | Evaluations: {self.n_eval}")
+
             convergence.add(solution, self.n_eval)
 
-        print(f"Final solution: {best_overall.FX}")
-        print(f"Number of evaluations: {self.n_eval}")
+        if not quiet:
+            print(f"Final solution: {best_overall.FX}")
+            print(f"Number of evaluations: {self.n_eval}")
         solution.execution_time = time()-tic
         solution.convergence = convergence
         
@@ -302,10 +309,10 @@ class VariableNeighborhoodSearch2(Algorithm):
         else:
             self.accept_worse_solution(current_fx, new_fx)
         
-    def solve(self, data, log=None):
-        convergence = super().solve(data)
+    def solve(self, data, quiet=False, log=None):
+        current_solution = super().solve(data)
         tic = time()
-        current_solution = Solution()  # Create a new solution
+        convergence = Convergence()  # Create a new convergence object
 
         if (self.initialization == 0):
             current_solution.generateChromosomeDeterministic(data)
@@ -318,7 +325,9 @@ class VariableNeighborhoodSearch2(Algorithm):
 
         best_overall = copy.deepcopy(current_solution)  # Keep track of the best overall solution
 
-        print(f"Initial FX: {current_solution.FX}")
+        if not quiet:
+            print(f"Initial FX: {current_solution.FX}")
+
         number_of_neighbors = 15
         operator_index = 0
 
@@ -342,6 +351,10 @@ class VariableNeighborhoodSearch2(Algorithm):
                 if operator_index >= len(self.operator):
                     operator_index = 0
 
+            if not quiet:
+                print(f"Current FX: {current_solution.FX} "
+                      f"| Best FX: {best_overall.FX}"
+                      f" | Evaluations: {self.n_eval}")
             
             # Atualiza temperatura
             self.T *= self.cooling_rate
@@ -349,9 +362,9 @@ class VariableNeighborhoodSearch2(Algorithm):
             # Registra convergência
             convergence.add(best_overall, self.n_eval)
             
-
-        print(f"Final solution: {best_overall.FX}")
-        print(f"Number of evaluations: {self.n_eval}")
+        if not quiet:
+            print(f"Final solution: {best_overall.FX}")
+            print(f"Number of evaluations: {self.n_eval}")
         
         best_overall.execution_time = time() - tic
         best_overall.convergence = convergence
@@ -364,7 +377,8 @@ class ExactAlgorithm(Algorithm):
     def __init__(self, time_limit=None):
         self.time_limit = time_limit
 
-    def extract_solution_from_model(self, modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V):
+    def extract_solution_from_model(self, modelo, data, X, Go, Gr, Gw, O, Oc, 
+                                    Ow, L, P, D, U, Y, W, R, V):
         """
         Extrai as variáveis de decisão do modelo Gurobi e cria um objeto Solution.
         """
@@ -401,11 +415,16 @@ class ExactAlgorithm(Algorithm):
         
         return solution
 
-    def solve(self, data):
+    def solve(self, data, quiet=False):
         # Configurar ambiente para suprimir mensagens de licença
-        env = grb.Env(empty=True)
-        env.setParam('OutputFlag', 0)
-        env.start()
+
+        if quiet:
+            env = grb.Env(empty=True)
+            env.setParam('OutputFlag', 0)
+            env.start()
+        else:
+            env = grb.Env()
+            env.start()
         
         # Criação do modelo
         modelo = grb.Model(
@@ -619,9 +638,12 @@ class ExactAlgorithm(Algorithm):
         # Verificar se uma solução ótima foi encontrada
         if modelo.status == grb.GRB.OPTIMAL:
             # Extrair solução do modelo usando método auxiliar
-            solution = self.extract_solution_from_model(modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V)
+            solution = self.extract_solution_from_model(modelo, data, X, Go, 
+                                                        Gr, Gw, O, Oc, Ow, L, 
+                                                        P, D, U, Y, W, R, V)
             solution.n_eval = modelo.IterCount + modelo.NodeCount  # Aproximação
-            print(f"Solução ótima encontrada: FX = {solution.FX}")
+            if not quiet:
+                print(f"Solução ótima encontrada: FX = {solution.FX}")
             
         else:
             # Se não encontrou solução ótima, criar solução vazia
@@ -629,20 +651,30 @@ class ExactAlgorithm(Algorithm):
             solution.FX = float('inf')
             
             # Informar o status
-            print(f"Gurobi status: {modelo.status}")
+            if not quiet:
+                print(f"Gurobi status: {modelo.status}")
             if modelo.status == grb.GRB.INFEASIBLE:
-                print("Modelo infeasível")
+                if not quiet:
+                    print("Modelo infeasível")
             elif modelo.status == grb.GRB.UNBOUNDED:
-                print("Modelo não limitado")
+                if not quiet:
+                    print("Modelo não limitado")
             elif modelo.status == grb.GRB.TIME_LIMIT:
-                print("Limite de tempo atingido")
+                if not quiet:
+                    print("Limite de tempo atingido")
                 # Se chegou no limite de tempo, pode ter uma solução sub-ótima
                 if modelo.solCount > 0:
-                    solution = self.extract_solution_from_model(modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V)
+                    solution = self.extract_solution_from_model(modelo, data, 
+                                                                X, Go, Gr, Gw, 
+                                                                O, Oc, Ow, L, 
+                                                                P, D, U, Y, W,
+                                                                R, V)
                     solution.n_eval = modelo.IterCount + modelo.NodeCount  # Aproximação
-                    print(f"Melhor solução encontrada no limite de tempo: FX = {solution.FX}")
+                    if not quiet:
+                        print(f"Melhor solução encontrada no limite de tempo: FX = {solution.FX}")
             else:
-                print(f"Outro status de terminação: {modelo.status}")
+                if not quiet:
+                    print(f"Outro status de terminação: {modelo.status}")
 
         # Fechar ambiente
         env.close()
@@ -693,7 +725,7 @@ class IteratedLocalSearch(Algorithm):
         self.n_eval += 1
         return solution
 
-    def solve(self, data):
+    def solve(self, data, quiet=False):
         """
         Algoritmo Pesquisa Local Iterativa
             s <- Gera()
@@ -705,16 +737,17 @@ class IteratedLocalSearch(Algorithm):
                 s2 <- Aceita (s2, s3, memória)
             até condição de paragem ser verdadeira
         """
-        convergence = super().solve(data)
-        current_solution = Solution()
+        current_solution = super().solve(data)
         current_solution.generateChromosomeStochastic(data)
         current_solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
+        convergence = Convergence()
         convergence.add(current_solution, self.n_eval)
 
         num_shakes = max(10, int(0.07 * data.num_var_priority))  # Number of shakes proportional to problem size
 
-        print(f"Initial FX: {current_solution.FX}")
+        if not quiet:
+            print(f"Initial FX: {current_solution.FX}")
 
         # Local search on the initial solution
         current_solution = self.localSearch(current_solution, data)
@@ -730,12 +763,18 @@ class IteratedLocalSearch(Algorithm):
 
             convergence.add(current_solution, self.n_eval)
 
-        print(f"Final solution: {current_solution.FX}")
+            if not quiet:
+                print(f"Current FX: {current_solution.FX} "
+                      f"| Evaluations: {self.n_eval}")
+
+        if not quiet:
+            print(f"Final solution: {current_solution.FX}")
         current_solution.convergence = convergence
         return current_solution
 
 class GeneticAlgorithm(Algorithm):
-    def __init__(self, population_size, crossover_rate, mutation_rate, max_eval, initialization, crossover_type="hybrid"):
+    def __init__(self, population_size, crossover_rate=0.9, mutation_rate=0.1,
+                 max_eval=100000, initialization=0, crossover_type="hybrid"):
         self.population_size = population_size  # Size of the population
         self.crossover_rate = crossover_rate  # Crossover rate
         self.mutation_rate = mutation_rate  # Mutation rate
@@ -850,8 +889,9 @@ class GeneticAlgorithm(Algorithm):
                 selected.append(population[pairs[i+1]])
         return selected
 
-    def solve(self, data, log=None):
-        convergence = super().solve(data)
+    def solve(self, data, log=None, quiet=False):
+        _ = super().solve(data)
+        convergence = Convergence()  # Create a new convergence object
         # Prevent early stopping in case of reusing the object
         self.n_eval = 0
 
@@ -862,7 +902,8 @@ class GeneticAlgorithm(Algorithm):
         best_solution = min(population, key=lambda sol: sol.FX)
         convergence.add(best_solution, self.n_eval)
 
-        print(f"Initial best FX = {best_solution.FX}")
+        if not quiet:
+            print(f"Initial best FX = {best_solution.FX}")
 
         while self.n_eval < self.max_eval:
             new_population = []
@@ -912,47 +953,43 @@ class GeneticAlgorithm(Algorithm):
             else:
                 best_solution = min(new_population, key=lambda sol: sol.FX)
             convergence.add(best_solution, self.n_eval)
+
+            if not quiet:
+                print(f"Current best FX = {best_solution.FX} "
+                      f"| Evaluations: {self.n_eval}")
         
-        print(f"Best FX = {best_solution.FX}")
+        if not quiet:
+            print(f"Best FX = {best_solution.FX}")
         best_solution.execution_time = time()-tic
         best_solution.convergence = convergence
         return best_solution
     
 if __name__ == "__main__":
 
-    from Problem import Problem
+    from Problem import loadInstance
     from Log import Neighborhood_op_log
     from Neighborhood import Swap, Reversion, Insertion, Slide, InactiveActiveSwap 
 
     # Example usage
-    problem = Problem()
-    problem.loadFile('./data/data_800.npz')
+    problem = loadInstance("data_10", quiet=True)
 
-    # # Hybrid crossover
-    # ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.9, 
-    #                             mutation_rate=0.1, max_eval=10000, 
-    #                             initialization=1, crossover_type="hybrid")
-
-    # # Test VNS with InactiveActiveSwap
-    # operator = [InactiveActiveSwap(1)]
-    # vns = VariableNeighborhoodSearch2(operator, max_eval=1000,  # Reduced for testing
-    #                                   initialization=1, init_temp=100,
-    #                                   cooling_rate=0.995)
-    # log = Neighborhood_op_log()
-    
-    # print("=== VNS with InactiveActiveSwap ===")
-    # best_solution_vns = vns.solve(problem, log)
-    # print(f"VNS Best solution FX: {best_solution_vns.FX}")
-    # print(f"VNS Number of evaluations: {best_solution_vns.n_eval}")
-    # print(f"VNS Execution time: {best_solution_vns.execution_time} seconds")
-
-    # print("\n=== GA with Hybrid Crossover ===")
-    # best_ga_hybrid = ga_hybrid.solve(problem)
-    # print(f"GA Hybrid - Best FX: {best_ga_hybrid.FX}")
-    
-    # Test Exact Algorithm (comentado pois pode não ter Gurobi instalado)
+    # Test Exact Algorithm
     print("\n=== Exact Algorithm (Gurobi) ===")
     exact = ExactAlgorithm(time_limit=None)  # Sem limite de tempo
     exact_solution = exact.solve(problem)
-    print(f"Exact Algorithm - Best FX: {exact_solution.FX}")
-        
+
+    # Test VNS with InactiveActiveSwap
+    operator = [InactiveActiveSwap(1)]
+    vns = VariableNeighborhoodSearch2(operator, max_eval=1000,  # Reduced for testing
+                                      initialization=1, init_temp=100,
+                                      cooling_rate=0.995)
+    log = Neighborhood_op_log()
+    print("=== VNS with InactiveActiveSwap ===")
+    best_solution_vns = vns.solve(problem, log=log)
+
+    # Hybrid crossover
+    ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.9, 
+                                mutation_rate=0.1, max_eval=1000, 
+                                initialization=1, crossover_type="hybrid")
+    print("\n=== GA with Hybrid Crossover ===")
+    best_ga_hybrid = ga_hybrid.solve(problem)        
