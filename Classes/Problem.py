@@ -125,6 +125,34 @@ class Problem:
 
         data.close()
 
+    @property
+    def num_var_model(self):
+        nvar = self.J + self.Q + self.K + self.E + self.S  # z1
+        nvar += (self.I * self.J      # z2
+                 + self.J * self.K
+                 + self.J * self.E
+                 + self.Q * self.M
+                 + self.K * self.N1
+                 + self.K * self.N1
+                 + self.E * self.N2
+                 + self.E * self.S
+                 + self.S * self.N3)
+        nvar += (self.J * self.Q + self.E * self.Q)  # z3
+        return nvar
+    
+    @property
+    def num_var_priority(self):
+        nvar = (self.K + self.N1
+                + self.S + self.N3
+                + self.E + self.N2 + self.S
+                + self.J + self.K
+                + self.J + self.E
+                + self.I + self.J
+                + self.Q + self.M
+                + self.E + self.Q)
+        return nvar
+
+
 
 files_url = {
     "data_10": "https://drive.google.com/file/d/1EZ-YgahfCJ_Yhtz3XjhLw_bbReoLqbCH/view?usp=sharing",

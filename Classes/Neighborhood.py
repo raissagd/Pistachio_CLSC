@@ -63,7 +63,8 @@ class Reversion(Neighborhood):
 
         for _ in range(self.N):
             chromosome_attr, chromosome = self.selectRandomChromosome(
-                solution_copy)
+                solution_copy
+            )
             i, j = self.selectRandomPair(chromosome)
             start = min(i, j)
             end = max(i, j) + 1
@@ -681,3 +682,44 @@ class SourceCostBoost(Neighborhood):
             setattr(sol, attr, chrom_new)
 
         return sol
+
+class InactiveActiveSwap(Neighborhood):
+    """
+    Swaps priorities between an active node and an inactive node.
+    The active node gets lower priority and the inactive node gets higher priority.
+    """
+    
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            # Select a random chromosome
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            
+            # Get the corresponding active nodes array
+            active_attr = chromosome_attr.replace('S', 'A')  # S1 -> A1, S2 -> A2, etc.
+            active_nodes = getattr(solution_copy, active_attr)
+            
+            # Skip if active_nodes is None (hasn't been computed yet)
+            if active_nodes is None:
+                continue
+                
+            # Find active and inactive nodes
+            active_indices = np.where(active_nodes == 1)[0]
+            inactive_indices = np.where(active_nodes == 0)[0]
+            
+            # Skip if there are no active or inactive nodes
+            if len(active_indices) == 0 or len(inactive_indices) == 0:
+                continue
+            
+            # Randomly select one active and one inactive node
+            i = np.random.choice(active_indices)  # Active node index
+            j = np.random.choice(inactive_indices)  # Inactive node index
+            
+            # Swap the priorities between active and inactive nodes
+            chromosome[i], chromosome[j] = chromosome[j], chromosome[i]
+            
+            # Update the solution with the modified chromosome
+            setattr(solution_copy, chromosome_attr, chromosome)
+
+        return solution_copy
