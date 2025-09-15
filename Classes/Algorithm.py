@@ -404,14 +404,14 @@ class ExactAlgorithm(Algorithm):
     def solve(self, data):
         # Configurar ambiente para suprimir mensagens de licença
         env = grb.Env(empty=True)
-        env.setParam('OutputFlag', 1)
+        env.setParam('OutputFlag', 0)
         env.start()
         
         # Criação do modelo
         modelo = grb.Model(
             """Otimização de rede de cadeia de abastecimento de pistache com "
             "realimentação""",
-            # env=env
+            env=env
         )
 
         # Variáveis de decisão positivas: fluxos de produtos
@@ -620,7 +620,7 @@ class ExactAlgorithm(Algorithm):
         if modelo.status == grb.GRB.OPTIMAL:
             # Extrair solução do modelo usando método auxiliar
             solution = self.extract_solution_from_model(modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V)
-            solution.n_eval = gurobi_stats['iterations'] + gurobi_stats['nodes']  # Aproximação
+            solution.n_eval = modelo.IterCount + modelo.NodeCount  # Aproximação
             print(f"Solução ótima encontrada: FX = {solution.FX}")
             
         else:
@@ -639,7 +639,7 @@ class ExactAlgorithm(Algorithm):
                 # Se chegou no limite de tempo, pode ter uma solução sub-ótima
                 if modelo.solCount > 0:
                     solution = self.extract_solution_from_model(modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V)
-                    solution.n_eval = gurobi_stats['iterations'] + gurobi_stats['nodes']  # Aproximação
+                    solution.n_eval = modelo.IterCount + modelo.NodeCount  # Aproximação
                     print(f"Melhor solução encontrada no limite de tempo: FX = {solution.FX}")
             else:
                 print(f"Outro status de terminação: {modelo.status}")
