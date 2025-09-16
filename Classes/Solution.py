@@ -227,13 +227,13 @@ class Solution:
         # Processing center -> pistachio factories + oil extraction centers
 
         # Step 1: Processing center -> pistachio factories
-        a4 = data.Cpu
+        a4 = data.Cpu * (1 - data.beta) * data.theta[0]
         b4 = np.sum(self.P, axis=1) / data.gammak
         _, self.Go, self.A4 = self.decodingStep(self.S4, a4, b4, data.CK + data.Cu1[:, None])
 
         # --------------------------------
         # Step 2: Processing center -> oil extraction center
-        a5 = data.Cpu
+        a5 = data.Cpu * (1 - data.beta) * data.theta[1]
         b5 = (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1)) / (1 - data.lamb)
         _, self.Gr, self.A5 = self.decodingStep(self.S5, a5, b5, data.CE + data.Cu2[:, None])
 
@@ -251,31 +251,45 @@ class Solution:
         # For each processing center
         for j in range(data.J):
 
+            if self.Gr[j, :].sum() == 0 and self.Go[j, :].sum() == 0:
+                continue
+
             # If the demand related to pistachio factories is higher
             if bX1[j] > bX2[j]:
 
                 # The final processing center demand is the demand related to pistachio factories
                 b[j] = bX1[j]
 
-                # Find which oil extraction center has the lowest cost
-                e = np.argmin(data.CE[j, :] + data.Cu2[j])
-
                 # Calculate how much raw kernel should leave the processing center
                 amount = b[j] * data.theta[1] * (1 - data.beta)
+
+                # Find which oil extraction center has the lowest cost
+                sorted_indices = np.argsort(data.CE[j, :] + data.Cu2[j])
+                for e in sorted_indices:
+                    if self.Gr[:, e].sum() + amount <= data.Cpr[e]:
+                        break
+                    # If all oil extraction centers have reached their capacity
+                    elif self.Gr[:, e].sum() + amount > data.Cpr[e] and e == sorted_indices[-1]:
+                        return float('inf')  # Infeasible solution
 
                 # Assign to that segment the amount of raw kernel needed to complete the final demand
                 self.Gr[j, e] = self.Gr[j, e] + amount - np.sum(self.Gr[j, :])
 
             # Otherwise
-            else:
+            elif bX1[j] < bX2[j]:
                 # The final processing center demand is the demand related to the oil extraction center
                 b[j] = bX2[j]
 
-                # Find which pistachio factory has the lowest cost
-                k = np.argmin(data.CK[j, :] + data.Cu1[j])
-
                 # Calculate how much open-mouth pistachio should leave the processing center
                 amount = b[j] * data.theta[0] * (1 - data.beta)
+
+                sorted_indices = np.argsort(data.CK[j, :] + data.Cu1[j])
+                for k in sorted_indices:
+                    if self.Go[:, k].sum() + amount <= data.Cpw[k]:
+                        break
+                    # If all pistachio factories have reached their capacity
+                    elif self.Go[:, k].sum() + amount > data.Cpw[k] and k == sorted_indices[-1]:
+                        return float('inf')  # Infeasible solution
 
                 # Assign to that segment the amount of open-mouth pistachio needed to complete the final demand
                 self.Go[j, k] = self.Go[j, k] + amount - np.sum(self.Go[j, :])
@@ -311,14 +325,26 @@ class Solution:
 
         # The minimum amount of waste needed by the composting centers
         b8 = np.sum(self.D, axis=1) / data.gammaq
+        b8[b8 > data.Cpy] = data.Cpy[b8 > data.Cpy]  # Demand cannot exceed capacity
+
+        # The amount of waste received in each composting center
+        Cpy = np.zeros(data.Q)
 
         # For each processing center
         for j in range(data.J):
             # Identify the composting center with the lowest cost
-            q = np.argmin(data.CJ[j, :])
+            # and that has not yet reached its capacity
+            sorted_indices = np.argsort(data.CJ[j, :])
+            for q in sorted_indices:
+                if Cpy[q] + a8[j] <= data.Cpy[q]:
+                    break
+                # If all composting centers have reached their capacity
+                elif Cpy[q] >= data.Cpy[q] and q == sorted_indices[-1]:
+                    return float('inf')  # Infeasible solution
 
             # Assign all the waste to that segment
             self.Gw[j, q] = a8[j]
+            Cpy[q] += a8[j]
 
         # For each composting center
         for q in range(data.Q):
@@ -338,7 +364,10 @@ class Solution:
             # Defining the capacity of each source
             a8 = np.sum(self.Gr, axis=0) * data.lamb
 
+            # If the total available from sources is less than the total demand from depots
             if np.sum(a8) < np.sum(b8):
+
+                # Scale down the demand to match the available supply
                 delta = np.sum(b8)/np.sum(a8)
                 b8 = b8 / delta
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
@@ -447,43 +476,43 @@ class Solution:
 
         failed_restrictions = []
         equations = [
-            (np.sum(self.X, axis=1), data.Cpa, "<=", "(1)"),
-            (np.sum(self.X, axis=0), data.Cpu, "<=", "(2)"),
-            (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0), data.Cpy, "<=", "(3)"),
-            (np.sum(self.Go, axis=0), data.Cpw, "<=", "(4)"),
-            (np.sum(self.Gr, axis=0), data.Cpr, "<=", "(5)"),
-            (np.sum(self.Oc, axis=0), data.Cpv, "<=", "(6)"),
-            (np.sum(self.Go, axis=1) + np.sum(self.Gr, axis=1) +
-             np.sum(self.Gw, axis=1), np.sum(self.X, axis=0), "<=", "(7)"),
-            (np.sum(self.Go, axis=1), (1-data.beta) *
-             data.theta[0]*np.sum(self.X, axis=0), "==", "(8)"),
-            (np.sum(self.Gr, axis=1), (1-data.beta) *
-             data.theta[1]*np.sum(self.X, axis=0), "==", "(9)"),
-            (np.sum(self.Gw, axis=1),
-             data.theta[2] * np.sum(self.X, axis=0), "==", "(10)"),
-            (np.sum(self.P, axis=1), data.gammak *
-             np.sum(self.Go, axis=0), "<=", "(12)"),
-            (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1),
-             (1-data.lamb) * np.sum(self.Gr, axis=0), "<=", "(13)"),
-            (np.sum(self.Ow, axis=1), data.lamb *
-             np.sum(self.Gr, axis=0), "<=", "(14)"),
-            (np.sum(self.L, axis=1), data.gammas *
-             np.sum(self.Oc, axis=0), "<=", "(15)"),
-            (np.sum(self.D, axis=1), data.gammaq *
-             (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0)), "<=", "(16)"),
-            (np.sum(self.P, axis=0), data.Dp, ">=", "(17)"),
-            (np.sum(self.O, axis=0), data.Du, ">=", "(18)"),
-            (np.sum(self.L, axis=0), data.Ds, ">=", "(19)"),
-            (np.sum(self.D, axis=0), data.Dc, "<=", "(20)")
+            (np.sum(self.X, axis=1).flatten(), data.Cpa.flatten(), "<=", "(1)"),
+            (np.sum(self.X, axis=0).flatten(), data.Cpu.flatten(), "<=", "(2)"),
+            ((np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0)).flatten(), data.Cpy.flatten(), "<=", "(3)"),
+            (np.sum(self.Go, axis=0).flatten(), data.Cpw.flatten(), "<=", "(4)"),
+            (np.sum(self.Gr, axis=0).flatten(), data.Cpr.flatten(), "<=", "(5)"),
+            (np.sum(self.Oc, axis=0).flatten(), data.Cpv.flatten(), "<=", "(6)"),
+            (np.sum(self.Go, axis=1).flatten() + np.sum(self.Gr, axis=1).flatten() +
+             np.sum(self.Gw, axis=1).flatten(), np.sum(self.X, axis=0).flatten(), "<=", "(7)"),
+            (np.sum(self.Go, axis=1).flatten(), (1-data.beta) *
+             data.theta[0]*np.sum(self.X, axis=0).flatten(), "==", "(8)"),
+            (np.sum(self.Gr, axis=1).flatten(), (1-data.beta) *
+             data.theta[1]*np.sum(self.X, axis=0).flatten(), "==", "(9)"),
+            (np.sum(self.Gw, axis=1).flatten(),
+             data.theta[2] * np.sum(self.X, axis=0).flatten(), "==", "(10)"),
+            (np.sum(self.P, axis=1).flatten(), data.gammak *
+             np.sum(self.Go, axis=0).flatten(), "<=", "(12)"),
+            (np.sum(self.O, axis=1).flatten() + np.sum(self.Oc, axis=1).flatten(),
+             (1-data.lamb) * np.sum(self.Gr, axis=0).flatten(), "<=", "(13)"),
+            (np.sum(self.Ow, axis=1).flatten(), data.lamb *
+             np.sum(self.Gr, axis=0).flatten(), "<=", "(14)"),
+            (np.sum(self.L, axis=1).flatten(), data.gammas *
+             np.sum(self.Oc, axis=0).flatten(), "<=", "(15)"),
+            (np.sum(self.D, axis=1).flatten(), data.gammaq *
+             (np.sum(self.Gw, axis=0).flatten() + np.sum(self.Ow, axis=0).flatten()), "<=", "(16)"),
+            (np.sum(self.P, axis=0).flatten(), data.Dp.flatten(), ">=", "(17)"),
+            (np.sum(self.O, axis=0).flatten(), data.Du.flatten(), ">=", "(18)"),
+            (np.sum(self.L, axis=0).flatten(), data.Ds.flatten(), ">=", "(19)"),
+            (np.sum(self.D, axis=0).flatten(), data.Dc.flatten(), "<=", "(20)")
         ]
 
         for lhs, rhs, comparison, label in equations:
             if comparison == "<=":
-                result = np.all(lhs <= rhs)
+                result = np.all(lhs - rhs <= 1e-10)
             elif comparison == "==":
-                result = np.all(lhs == rhs)
+                result = np.all(np.abs(lhs - rhs) < 1e-10)
             elif comparison == ">=":
-                result = np.all(lhs >= rhs)
+                result = np.all(lhs - rhs >= -1e-10)
             else:
                 raise ValueError("Invalid comparison operator")
 

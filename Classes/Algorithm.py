@@ -16,184 +16,10 @@ class Algorithm(ABC):
     def solve(self, data, quiet=False):
         return Solution()
 
-
 class VariableNeighborhoodSearch(Algorithm):
     """
-    Function VNS (x, kmax)
-        1:    k ← 1
-        2:    repeat
-        3:       x' ← Shake(x, k)                     // Perturbation of the solution
-        4:       x'' ← BestImprovement(x')           // Local search
-        5:       x ← NeighbourhoodChange(x, x'', k) // If x'' is better, change the neighborhood. Repeat the process
-        6:    until k = kmax
-    """
+    VNS - Variable Neighborhood Search
 
-    def __init__(self, operator, max_eval, initialization, name="VNS", init_temp=100, cooling_rate=0.995):
-        self.operator = operator  # operator for generating neighbors
-        self.max_eval = max_eval  # Maximum number of iterations
-        self.n_eval = 1  # Number of evaluations
-        self.initialization = initialization  # Initialization method
-        self.log = None # Log for storing neighborhood operations
-        self.name = name # Name of the algorithm
-        self.T = init_temp
-        self.cooling_rate = cooling_rate
-
-    def best_improvement(self, solution, data, operator_index, number_of_neighbors, log):
-        failure_counter = 0
-        initial_FX = solution.FX
-
-        while True:
-            neighbors = []  # List to store the neighbor solutions
-            Fx_neighbors = []  # List to store the fitness values of the neighbor solutions
-
-            for _ in range(number_of_neighbors):
-                # Generate a neighbor solution (apply an operator to the current solution)
-                neighbor = self.operator[operator_index].applyChange(solution)
-                neighbor.evaluate(data)  # Evaluate the neighbor solution
-                self.n_eval += 1
-                neighbors.append(neighbor)  # Store it
-                Fx_neighbors.append(neighbor.FX)  # Store its fitness value
-
-            best_neighbor_index = np.argmin(Fx_neighbors)
-            best_neighbor = neighbors[best_neighbor_index] # Select the best neighbor    
-
-            # Update the current solution if the best neighbor is better
-            if Fx_neighbors[best_neighbor_index] < solution.FX:
-                solution = best_neighbor
-                failure_counter = 0
-                success = 1
-            else:
-                failure_counter += 1
-                success = 0
-                if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
-                    break
-
-            if log is not None:
-                log.log(data.instance, self.name, self.operator[operator_index].name, self.n_eval, success, (initial_FX - solution.FX) / initial_FX * 100 if success else 0, solution.FX  ) # Log the neighborhood operation
-        
-        return solution
-
-    def shake(self, solution, data, operator_index):
-        operator = self.operator[operator_index] # Select the operator for shake
-        
-        # Calculate number of perturbations based on problem size
-        # Total variables = sum of all chromosome segments
-        total_variables = (data.K + data.N1) + (data.S + data.N3) + (data.E + data.N2 + data.S) + \
-                         (data.J + data.K) + (data.J + data.E) + (data.I + data.J) + \
-                         (data.Q + data.M) + (data.E + data.Q)
-        
-        # Number of perturbations proportional to problem size (e.g., 5-10% of total variables)
-        num_perturbations = max(10, int(0.07 * total_variables))  # At least 10 perturbations
-
-        perturbed_solution = copy.deepcopy(solution)
-        
-        # Apply multiple perturbations with the same operator
-        for _ in range(num_perturbations):
-            perturbed_solution = operator.applyChange(perturbed_solution)
-
-        perturbed_solution.evaluate(data)  # Evaluate the perturbed solution
-        self.n_eval += 1
-        return perturbed_solution
-    
-    def accept(self, old_fx, new_fx):
-        delta = new_fx - old_fx
-        if delta < 0:
-            # always accepts better solutions
-            return True
-        elif delta == 0:
-            # rejects equal solutions
-            return False
-        else:
-            # accepts worse solutions with a probability of exp(−Δ/T)
-            return random.random() < math.exp(-delta / self.T)
-        
-    def solve(self, data, quiet=False, log=None):
-        solution = super().solve(data)
-        convergence = Convergence()
-        tic = time()
-        
-        if (self.initialization == 0):
-            solution.generateChromosomeDeterministic(data)
-        else:
-            solution.generateChromosomeStochastic(data)
-
-        solution.evaluate(data)
-        self.n_eval = 1  # Prevent early stopping in case of reusing the object
-        convergence.add(solution, self.n_eval) # Add FX e numero de avaliações
-
-        best_overall = copy.deepcopy(solution)  # Keep track of the best overall solution
-
-        if not quiet:
-            print(f"Initial FX: {solution.FX}")
-
-        operator_index = 0
-        number_of_neighbors = 15
-
-        # Neighborhood change
-        while True:
-            perturbed_solution = self.shake(solution, data, operator_index)  # Shake the current solution
-
-            new_solution = self.best_improvement(perturbed_solution, data, operator_index, number_of_neighbors, log) # Local search on the perturbed solution
-
-            old_fx = solution.FX
-            new_fx = new_solution.FX
-
-            """ if new_solution.FX < solution.FX:
-                # If the new solution is better, update the current solution and repeat the process
-                solution = new_solution
-                operator_index = 0
-            elif self.n_eval >= self.max_eval:
-                # If the maximum number of evaluations is reached,
-                break
-            elif operator_index == len(self.operator) - 1:
-                # If all operator have been tested,
-                break
-            else:
-                # If the new solution is not better, try the next operator
-                operator_index += 1
-            convergence.add(solution, self.n_eval)  """
-
-            if self.accept(old_fx, new_fx):
-                solution = new_solution
-                if new_solution.FX < best_overall.FX:
-                    best_overall = copy.deepcopy(new_solution)
-                if new_fx < old_fx:
-                    operator_index = 0
-                self.T *= self.cooling_rate
-
-            elif self.n_eval >= self.max_eval:
-                break
-
-            else:
-                # Tries next operator (or ends if all operator have been tested)
-                operator_index += 1
-                if operator_index >= len(self.operator):
-                    operator_index = 0
-
-            if not quiet:
-                print(f"Current FX: {solution.FX} | Best FX: {best_overall.FX}"
-                      f" | Evaluations: {self.n_eval}")
-
-            convergence.add(solution, self.n_eval)
-
-        if not quiet:
-            print(f"Final solution: {best_overall.FX}")
-            print(f"Number of evaluations: {self.n_eval}")
-        solution.execution_time = time()-tic
-        solution.convergence = convergence
-        
-        solution.log = log
-        # log_data = self.log.get()
-        # log_data.to_csv(f'./tests/run_parallel/{data.instance}_{self.name}.csv', index=False)
-        
-        best_overall.n_eval = self.n_eval  
-        best_overall.log = log
-        return best_overall
-
-class VariableNeighborhoodSearch2(Algorithm):
-    """
-    VNS2 - Modified Variable Neighborhood Search
-    
     Nova abordagem baseada na orientação:
     1. FASE 1: Intensificação na base atual (sem perturbação) - testa todos operadores
     2. FASE 2: Perturbação + Intensificação - testa todos operadores na base perturbada  
@@ -374,8 +200,9 @@ class VariableNeighborhoodSearch2(Algorithm):
         return best_overall
 
 class ExactAlgorithm(Algorithm):
-    def __init__(self, time_limit=None):
+    def __init__(self, time_limit=None, use_initial_solution=True):
         self.time_limit = time_limit
+        self.use_initial_solution = use_initial_solution
 
     def extract_solution_from_model(self, modelo, data, X, Go, Gr, Gw, O, Oc, 
                                     Ow, L, P, D, U, Y, W, R, V):
@@ -406,14 +233,101 @@ class ExactAlgorithm(Algorithm):
         
         # Valor da função objetivo
         solution.FX = modelo.objVal
-        
-        # Gerar cromossomos baseados na solução ótima (para compatibilidade)
-        solution.generateChromosomeDeterministic(data)
-        
+              
         # Converter para matrizes esparsas
         solution.convert2sparse()
         
         return solution
+
+    def set_initial_solution(self, modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V, quiet=False):
+        """
+        Define uma solução inicial para o Gurobi baseada na geração estocástica de cromossomo.
+        """
+        # Criar uma solução inicial usando geração estocástica
+        initial_solution = Solution()
+        initial_solution.generateChromosomeStochastic(data)
+        initial_solution.evaluate(data)
+                
+        try:
+            # Definir valores iniciais para as variáveis contínuas de fluxo
+            for i in range(int(data.I)):
+                for j in range(int(data.J)):
+                    if hasattr(initial_solution, 'X') and initial_solution.X is not None:
+                        X[i, j].start = float(initial_solution.X[i, j])
+            
+            for j in range(int(data.J)):
+                for k in range(int(data.K)):
+                    if hasattr(initial_solution, 'Go') and initial_solution.Go is not None:
+                        Go[j, k].start = float(initial_solution.Go[j, k])
+            
+            for j in range(int(data.J)):
+                for e in range(int(data.E)):
+                    if hasattr(initial_solution, 'Gr') and initial_solution.Gr is not None:
+                        Gr[j, e].start = float(initial_solution.Gr[j, e])
+            
+            for j in range(int(data.J)):
+                for q in range(int(data.Q)):
+                    if hasattr(initial_solution, 'Gw') and initial_solution.Gw is not None:
+                        Gw[j, q].start = float(initial_solution.Gw[j, q])
+            
+            for e in range(int(data.E)):
+                for n2 in range(int(data.N2)):
+                    if hasattr(initial_solution, 'O') and initial_solution.O is not None:
+                        O[e, n2].start = float(initial_solution.O[e, n2])
+            
+            for e in range(int(data.E)):
+                for s in range(int(data.S)):
+                    if hasattr(initial_solution, 'Oc') and initial_solution.Oc is not None:
+                        Oc[e, s].start = float(initial_solution.Oc[e, s])
+            
+            for e in range(int(data.E)):
+                for q in range(int(data.Q)):
+                    if hasattr(initial_solution, 'Ow') and initial_solution.Ow is not None:
+                        Ow[e, q].start = float(initial_solution.Ow[e, q])
+            
+            for s in range(int(data.S)):
+                for n3 in range(int(data.N3)):
+                    if hasattr(initial_solution, 'L') and initial_solution.L is not None:
+                        L[s, n3].start = float(initial_solution.L[s, n3])
+            
+            for k in range(int(data.K)):
+                for n1 in range(int(data.N1)):
+                    if hasattr(initial_solution, 'P') and initial_solution.P is not None:
+                        P[k, n1].start = float(initial_solution.P[k, n1])
+            
+            for q in range(int(data.Q)):
+                for m in range(int(data.M)):
+                    if hasattr(initial_solution, 'D') and initial_solution.D is not None:
+                        D[q, m].start = float(initial_solution.D[q, m])
+            
+            # Definir valores iniciais para as variáveis binárias
+            for j in range(int(data.J)):
+                if hasattr(initial_solution, 'U') and initial_solution.U is not None:
+                    U[j].start = int(initial_solution.U[j])
+            
+            for q in range(int(data.Q)):
+                if hasattr(initial_solution, 'Y') and initial_solution.Y is not None:
+                    Y[q].start = int(initial_solution.Y[q])
+            
+            for k in range(int(data.K)):
+                if hasattr(initial_solution, 'W') and initial_solution.W is not None:
+                    W[k].start = int(initial_solution.W[k])
+            
+            for e in range(int(data.E)):
+                if hasattr(initial_solution, 'R') and initial_solution.R is not None:
+                    R[e].start = int(initial_solution.R[e])
+            
+            for s in range(int(data.S)):
+                if hasattr(initial_solution, 'V') and initial_solution.V is not None:
+                    V[s].start = int(initial_solution.V[s])
+                    
+        except Exception as e:
+            # Se houver algum erro ao definir a solução inicial, apenas continue sem ela
+            if not quiet:
+                print(f"Aviso: Não foi possível definir solução inicial: {e}")
+            pass
+        
+        return initial_solution.FX
 
     def solve(self, data, quiet=False):
         # Configurar ambiente para suprimir mensagens de licença
@@ -624,6 +538,14 @@ class ExactAlgorithm(Algorithm):
 
         if self.time_limit is not None:
             modelo.setParam('TimeLimit', self.time_limit)
+
+        # Definir solução inicial se habilitado
+        if self.use_initial_solution:
+            initial_fx = self.set_initial_solution(modelo, data, X, Go, Gr, Gw, 
+                                                   O, Oc, Ow, L, P, D, U, Y, W, 
+                                                   R, V, quiet)
+            if not quiet:
+                print(f"Solução inicial definida com FX = {initial_fx}")
 
         # Resolvendo o modelo (OutputFlag já configurado no ambiente)
         try:
@@ -977,10 +899,15 @@ if __name__ == "__main__":
     # Example usage
     problem = loadInstance("data_10", quiet=True)
 
-    # Test Exact Algorithm
-    print("\n=== Exact Algorithm (Gurobi) ===")
-    exact = ExactAlgorithm(time_limit=None)  # Sem limite de tempo
+    # Test Exact Algorithm without initial solution
+    print("\n=== Exact Algorithm (Gurobi) sem solução inicial ===")
+    exact = ExactAlgorithm(time_limit=None, use_initial_solution=False)
     exact_solution = exact.solve(problem)
+
+    # Test Exact Algorithm with initial solution
+    print("\n=== Exact Algorithm (Gurobi) com solução inicial ===")
+    exact_with_init = ExactAlgorithm(time_limit=None, use_initial_solution=True)
+    exact_solution_with_init = exact_with_init.solve(problem)
 
     # Test VNS with InactiveActiveSwap
     operator = [InactiveActiveSwap(1)]
