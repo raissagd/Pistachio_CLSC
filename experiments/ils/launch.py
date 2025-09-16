@@ -31,27 +31,35 @@ from Algorithm import IteratedLocalSearch
 from Neighborhood import Swap, Reversion, InactiveActiveSwap, SourceDepotSwap
 
 # Experiment parameters
+experiment_name = "ils"
 instance = 400
 results_path = f'./experiments/ils/results/'
+initialization_method = 0  # 0 for deterministic, 1 for stochastic
 
 # Load problem instance
 problem = loadInstance("data_" + str(instance), quiet=True)
+print(f"Number of variables: {problem.num_var_priority}")
 
 # Set maximum evaluations
 num_evals = problem.num_var_priority * 100
 
 # Configure ILS algorithms with different neighborhoods
-ils = [IteratedLocalSearch(Swap(1), max_eval=num_evals),
-       IteratedLocalSearch(Reversion(1), max_eval=num_evals),
-       IteratedLocalSearch(InactiveActiveSwap(1), max_eval=num_evals),
-       IteratedLocalSearch(SourceDepotSwap(1, problem), max_eval=num_evals)]
+ils = [IteratedLocalSearch(Swap(1), max_eval=num_evals, 
+                           initialization=initialization_method),
+       IteratedLocalSearch(Reversion(1), max_eval=num_evals, 
+                           initialization=initialization_method),
+       IteratedLocalSearch(InactiveActiveSwap(1), max_eval=num_evals, 
+                           initialization=initialization_method),
+       IteratedLocalSearch(SourceDepotSwap(1, problem), max_eval=num_evals, 
+                           initialization=initialization_method)]
 
 # Run experiments
 results = RunMultipleMethodsMultipleTimes().run(data=problem, methods=ils,
                                                 number_times=30, pre_save=True,
                                                 filename=results_path
-                                                + f"ils_{instance}")
+                                                + f"{experiment_name}_{instance}")
 
 # Save results
-PersistMultipleSolutions().save(solutions=results, filename=f"ils_{instance}", 
+PersistMultipleSolutions().save(solutions=results,
+                                filename=f"{experiment_name}_{instance}", 
                                 filepath=results_path, log=False)

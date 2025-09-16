@@ -682,10 +682,11 @@ class ExactAlgorithm(Algorithm):
         return solution
 
 class IteratedLocalSearch(Algorithm):
-    def __init__(self, operator, max_eval=100000):
+    def __init__(self, operator, max_eval=100000, initialization=1):
         self.operator = operator  # operator for generating neighbors
         self.max_eval = max_eval  # Maximum number of evaluations
         self.n_eval = 0  # Number of evaluations
+        self.initialization = initialization  # Initialization method
 
     def localSearch(self, solution, data, number_of_neighbors=15):
 
@@ -738,7 +739,10 @@ class IteratedLocalSearch(Algorithm):
             até condição de paragem ser verdadeira
         """
         current_solution = super().solve(data)
-        current_solution.generateChromosomeStochastic(data)
+        if (self.initialization == 0):
+            current_solution.generateChromosomeDeterministic(data)
+        else:
+            current_solution.generateChromosomeStochastic(data)
         current_solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
         convergence = Convergence()
