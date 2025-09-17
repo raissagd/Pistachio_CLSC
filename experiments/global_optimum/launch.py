@@ -28,6 +28,7 @@ from Algorithm import ExactAlgorithm
 
 # Define the list of problem instance sizes to solve
 instances = [400, 800, 1600] # [10, 30, 100, 200, 400, 800, 1600]
+time_limit = [1500, 1250, 1000]
 
 # Define the path to save the results
 results_path = f'./experiments/global_optimum/solutions/'
@@ -38,7 +39,8 @@ for instance in instances:
     problem = loadInstance("data_" + str(instance), quiet=True)
 
     # Initialize and run the exact algorithm with no time limit
-    algorithm = ExactAlgorithm(time_limit=3600*2, use_initial_solution=True)
+    algorithm = ExactAlgorithm(time_limit=time_limit[instances.index(instance)],
+                               use_initial_solution=True)
     solution = algorithm.solve(problem)
 
     # Save the solution to the specified results path
