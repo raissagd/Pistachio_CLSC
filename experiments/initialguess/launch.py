@@ -23,7 +23,7 @@ from Problem import loadInstance
 from Persistence import PersistMultipleSolutions
 from Execute import RunMultipleMethodsMultipleTimes
 from Algorithm import IteratedLocalSearch
-from Neighborhood import Swap
+from Neighborhood import InactiveActiveSwap
 
 # Experiment parameters
 experiment_name = "initialguess"
@@ -35,11 +35,19 @@ problem = loadInstance("data_" + str(instance), quiet=True)
 print(f"Number of variables: {problem.num_var_priority}")
 
 # Set maximum evaluations
-num_evals = problem.num_var_priority * 100
+num_evals = problem.num_var_priority * 10
+number_neighbors = 20
+noimprove_limit = 8
 
 # Configure ILS algorithms with different neighborhoods
-ils = [IteratedLocalSearch(Swap(1), max_eval=num_evals, initialization=0),
-       IteratedLocalSearch(Swap(1), max_eval=num_evals, initialization=1)]
+ils = [IteratedLocalSearch(InactiveActiveSwap(1), max_eval=num_evals,
+                           initialization=0,
+                           number_neighbors=number_neighbors,
+                           noimprovement_limit=noimprove_limit),
+       IteratedLocalSearch(InactiveActiveSwap(1), max_eval=num_evals,
+                           initialization=1,
+                           number_neighbors=number_neighbors, 
+                           noimprovement_limit=noimprove_limit)]
 
 # Run experiments
 results = RunMultipleMethodsMultipleTimes().run(data=problem, methods=ils,

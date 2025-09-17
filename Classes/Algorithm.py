@@ -604,16 +604,20 @@ class ExactAlgorithm(Algorithm):
         return solution
 
 class IteratedLocalSearch(Algorithm):
-    def __init__(self, operator, max_eval=100000, initialization=1):
+    def __init__(self, operator, max_eval=100000, initialization=1,
+                 number_neighbors=15, noimprovement_limit=5):
         self.operator = operator  # operator for generating neighbors
         self.max_eval = max_eval  # Maximum number of evaluations
         self.n_eval = 0  # Number of evaluations
         self.initialization = initialization  # Initialization method
+        self.number_neighbors = number_neighbors  # Number of neighbors to consider
+        self.noimprovement_limit = noimprovement_limit  # No improvement limit
 
-    def localSearch(self, solution, data, number_of_neighbors=15):
+    def localSearch(self, solution, data, number_of_neighbors=15,
+                    noimprovement_limit=5):
 
         failure_counter = 0
-        while True:
+        while self.n_eval < self.max_eval:
 
             neighbors = []
             Fx_neighbors = []
@@ -636,7 +640,7 @@ class IteratedLocalSearch(Algorithm):
                 failure_counter = 0
             else:
                 failure_counter += 1
-                if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
+                if failure_counter == noimprovement_limit:  # If consecutive failures occur, break the loop
                     break
 
         return solution
@@ -676,7 +680,9 @@ class IteratedLocalSearch(Algorithm):
             print(f"Initial FX: {current_solution.FX}")
 
         # Local search on the initial solution
-        current_solution = self.localSearch(current_solution, data)
+        current_solution = self.localSearch(current_solution, data,
+                                            self.number_neighbors,
+                                            self.noimprovement_limit)
 
         while self.n_eval < self.max_eval:
             # Perturbation of previous local search solution

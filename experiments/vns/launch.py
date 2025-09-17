@@ -54,7 +54,7 @@ problem = loadInstance("data_" + str(instance), quiet=True)
 print(f"Number of variables: {problem.num_var_priority}")
 
 # Set maximum evaluations
-num_evals = problem.num_var_priority * 100
+num_evals = problem.num_var_priority * 10
 
 operators_sets = [
     [Swap(1), Reversion(1), Insertion(1), Slide(1)],

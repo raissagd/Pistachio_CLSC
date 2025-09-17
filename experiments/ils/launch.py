@@ -35,23 +35,28 @@ experiment_name = "ils"
 instance = 400
 results_path = f'./experiments/ils/results/'
 initialization_method = 0  # 0 for deterministic, 1 for stochastic
+noimprove_limit = 10
 
 # Load problem instance
 problem = loadInstance("data_" + str(instance), quiet=True)
 print(f"Number of variables: {problem.num_var_priority}")
 
 # Set maximum evaluations
-num_evals = problem.num_var_priority * 100
+num_evals = problem.num_var_priority * 10
 
 # Configure ILS algorithms with different neighborhoods
 ils = [IteratedLocalSearch(Swap(1), max_eval=num_evals, 
-                           initialization=initialization_method),
+                           initialization=initialization_method,
+                           noimprovement_limit=noimprove_limit),
        IteratedLocalSearch(Reversion(1), max_eval=num_evals, 
-                           initialization=initialization_method),
+                           initialization=initialization_method,
+                           noimprovement_limit=noimprove_limit),
        IteratedLocalSearch(InactiveActiveSwap(1), max_eval=num_evals, 
-                           initialization=initialization_method),
+                           initialization=initialization_method,
+                           noimprovement_limit=noimprove_limit),
        IteratedLocalSearch(SourceDepotSwap(1, problem), max_eval=num_evals, 
-                           initialization=initialization_method)]
+                           initialization=initialization_method,
+                           noimprovement_limit=noimprove_limit)]
 
 # Run experiments
 results = RunMultipleMethodsMultipleTimes().run(data=problem, methods=ils,
