@@ -187,6 +187,9 @@ class VariableNeighborhoodSearch(Algorithm):
             
             # Registra convergência
             convergence.add(best_overall, self.n_eval)
+
+            current_solution = self.shake(current_solution, data,
+                                          operator_index)
             
         if not quiet:
             print(f"Final solution: {best_overall.FX}")
