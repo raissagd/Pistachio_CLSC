@@ -59,8 +59,8 @@ num_evals = problem.num_var_priority * 10
 operators_sets = [
     [Swap(1), Reversion(1), Insertion(1), Slide(1)],
     [ETN(1), RS(1), SPS(1), SRPS(1)],
-    [InactiveActiveSwap(1), SourceDepotSwap(1), FixedCostSwap(1),TransportCostSwap(1),  SourceCostBoost(1)],
-    [Swap(1), InactiveActiveSwap(1), TransportCostSwap(1),  SourceCostBoost(1)]
+    [InactiveActiveSwap(1), SourceDepotSwap(1, problem), FixedCostSwap(1, problem),TransportCostSwap(1, problem),  SourceCostBoost(1, problem)],
+    [Reversion(1), InactiveActiveSwap(1), TransportCostSwap(1, problem),  SourceCostBoost(1, problem)]
 ]
 
 # Configure VNS algorithms with different neighborhoods
