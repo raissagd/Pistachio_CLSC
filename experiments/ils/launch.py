@@ -12,7 +12,7 @@ The script performs the following operations:
 3. Runs each algorithm 30 times on the problem instance
 4. Saves the results to files in the specified results directory
 Variables:
-     instance (int): Problem instance number (400)
+     instance (int): Problem instance number (800)
      problem: Loaded problem instance object
      num_evals (int): Maximum number of evaluations per run (problem.num_var_priority * 100)
      results_path (str): Directory path for saving results
@@ -32,7 +32,7 @@ from Neighborhood import Swap, Reversion, InactiveActiveSwap, SourceDepotSwap
 
 # Experiment parameters
 experiment_name = "ils"
-instance = 400
+instance = 800
 results_path = f'./experiments/ils/results/'
 initialization_method = 0  # 0 for deterministic, 1 for stochastic
 noimprove_limit = 10

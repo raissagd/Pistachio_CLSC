@@ -55,7 +55,7 @@ from numpy import sqrt
 
 # Experiment parameters
 experiment_name = "ga"
-instance = 400
+instance = 800
 results_path = f'./experiments/ga/results/'
 initial_guess = 0 # 0: Deterministic, 1: Stochastic
 

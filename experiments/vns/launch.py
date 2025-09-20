@@ -45,7 +45,7 @@ from Neighborhood import *
 
 # Experiment parameters
 experiment_name = "vns"
-instance = 400
+instance = 800
 results_path = f'./experiments/vns/results/'
 initial_guess = 0 # 0: Deterministic, 1: Stochastic
 
