@@ -21,5 +21,4 @@ tests/GAxVNS/results/solutions_400_GA.pkl
 /sn-article-template/*.synctex.gz
 /sn-article-template/*.out
 /data/*.npz
-tests/run_parallel/initial_results/script_800_results.pkl
-tests/run_parallel/initial_results/script_1600_results.pkl
+*.pkl
