@@ -110,69 +110,7 @@ class Solution:
             c (matrix): transportation cost of one unit of product from
             source k to depot j.
         """
-        K, J = a.size, b.size  # K = number of sources, J = number of depots
-        a, b, v = a.copy(), b.copy(), v.copy()
-
-        # The amount of product shipped from source k to depot j
-        g = np.zeros((K, J))
-
-        # Check if the total available from sources is less than the total demand from depots
-        """ if np.sum(a) < np.sum(b):
-            raise ValueError("Total available from sources is less than total demand from depots. "
-                            "The flux cannot be satisfied.")
-        """
-
-        # Iteration counter
-        it = 0
-
-        # Array to track active nodes (sources and depots)
-        # 1 if active, 0 if not
-        active = np.zeros(K + J)
-
-        while True:
-            # Select a node
-            l = np.argmax(v)  # Select the node with the highest value
-
-            # Mark the selected node as active
-            active[l] = 1
-
-            if l < K:  # Select a source
-                k = l
-                possible_depots = np.nonzero(v[K:])[0]
-                j = possible_depots[np.argmin(c[k, possible_depots].flatten())]
-            else:  # Select a depot
-                j = l-K
-                possible_sources = np.nonzero(v[:K])[0]
-                k = possible_sources[np.argmin(c[possible_sources, j].flatten())]
-
-            # Assign available amount of units
-            g[k, j] = np.minimum(a[k], b[j])
-
-            if show:
-                print(
-                    f"it={it}, v={v}, a={a}, b={b}, k={k+1}, j={j+1}, g_kj={g[k, j]}")
-
-            # Update availabilities on source k and depot j
-            a[k] -= g[k, j]
-            b[j] -= g[k, j]
-
-            if a[k] == 0:
-                v[k] = 0
-            if b[j] == 0:
-                v[K + j] = 0
-
-            it += 1
-
-            if np.all(v[K:] == 0) or np.sum(a) == 0:
-                break
-
-        if show:
-            print(
-                f"it={it}, v={v}, a={a}, b={b}, k={k+1}, j={j+1}, g_kj={g[k, j]}")
-
-        # Calculate transportation cost
-        cost = np.sum(g*c)
-
+        cost, g, active = _decodingStep(v, a, b, c)
         return cost, g, active
 
     def decode(self, data):
@@ -196,7 +134,7 @@ class Solution:
         c1 = data.Cp + data.Cw[:, None]
 
         # Calculating cost and transportation matrix
-        totalcost, self.P, self.A1 = _decodingStep(self.S1, a1, b1, c1)
+        totalcost, self.P, self.A1 = self.decodingStep(self.S1, a1, b1, c1)
 
         # --------------------------------------------------------------------------------------------------------
         # Cosmetics factories -> cosmetics consumers
@@ -204,7 +142,7 @@ class Solution:
         b2 = data.Ds
         c2 = data.Cl + data.Cv[:, None]
         # L = how much cosmetic was sent to each consumer
-        cost2, self.L, self.A2 = _decodingStep(self.S2, a2, b2, c2)
+        cost2, self.L, self.A2 = self.decodingStep(self.S2, a2, b2, c2)
         totalcost += cost2
 
 
@@ -218,7 +156,7 @@ class Solution:
         c3 = np.hstack(
             (data.CN + data.Cr[:, None], data.CS + data.Cr[:, None]))
         # OOc is an array with the amount of product that should be sent to each of the oil consumers and to the cosmetics factory (hence it needs to be split in two arrays)
-        cost3, OOc, self.A3 = _decodingStep(self.S3, a3, b3, c3)
+        cost3, OOc, self.A3 = self.decodingStep(self.S3, a3, b3, c3)
         totalcost += cost3
 
         self.O = OOc[:, :data.N2]
@@ -230,13 +168,13 @@ class Solution:
         # Step 1: Processing center -> pistachio factories
         a4 = data.Cpu * (1 - data.beta) * data.theta[0]
         b4 = np.sum(self.P, axis=1) / data.gammak
-        _, self.Go, self.A4 = _decodingStep(self.S4, a4, b4, data.CK + data.Cu1[:, None])
+        _, self.Go, self.A4 = self.decodingStep(self.S4, a4, b4, data.CK + data.Cu1[:, None])
 
         # --------------------------------
         # Step 2: Processing center -> oil extraction center
         a5 = data.Cpu * (1 - data.beta) * data.theta[1]
         b5 = (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1)) / (1 - data.lamb)
-        _, self.Gr, self.A5 = _decodingStep(self.S5, a5, b5, data.CE + data.Cu2[:, None])
+        _, self.Gr, self.A5 = self.decodingStep(self.S5, a5, b5, data.CE + data.Cu2[:, None])
 
         # --------------------------------
         # Step 3: enforcing equality constraints
@@ -304,7 +242,7 @@ class Solution:
         a6 = data.Cpa
         b6 = np.sum(self.Go, axis=1) / (1 - data.beta) / data.theta[0]
         c6 = data.CX + data.CI[:, None]
-        cost6, self.X, self.A6 = _decodingStep(self.S6, a6, b6, c6)
+        cost6, self.X, self.A6 = self.decodingStep(self.S6, a6, b6, c6)
         totalcost += cost6
 
         # --------------------------------------------------------------------------------------------------------
@@ -312,7 +250,7 @@ class Solution:
         a7 = data.gammaq * data.Cpy
         b7 = data.Dc
         c7 = data.Cd + data.Cy[:, None]
-        cost7, self.D, self.A7 = _decodingStep(self.S7, a7, b7, c7)
+        cost7, self.D, self.A7 = self.decodingStep(self.S7, a7, b7, c7)
         totalcost += cost7
 
         # --------------------------------------------------------------------------------------------------------
@@ -372,7 +310,7 @@ class Solution:
                 delta = np.sum(b8)/np.sum(a8)
                 b8 = b8 / delta
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
-                _, self.Ow, self.A8 = _decodingStep(self.S8, a8, b8, data.CQ)
+                _, self.Ow, self.A8 = self.decodingStep(self.S8, a8, b8, data.CQ)
                 
                 # Composting centers -> composting consumers
                 # Recalcular S7 devido a mudanças em Ow
@@ -380,12 +318,12 @@ class Solution:
                 b7_new = data.Dc
                 c7_new = data.Cd + data.Cy[:, None]
                 totalcost -= cost7
-                cost7_new, self.D, self.A7 = _decodingStep(self.S7, a7_new, b7_new, c7_new)
+                cost7_new, self.D, self.A7 = self.decodingStep(self.S7, a7_new, b7_new, c7_new)
                 totalcost += cost7_new
             else:
                 # Calculating cost and transportation matrix
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
-                _, self.Ow, self.A8 = _decodingStep(self.S8, a8, b8, data.CQ)
+                _, self.Ow, self.A8 = self.decodingStep(self.S8, a8, b8, data.CQ)
 
         # Otherwise, it is not necessary to send any waste from the oil extraction center to the composting centers
         else:
@@ -603,11 +541,17 @@ def _decodingStep(v, a, b, c):
 if __name__ == "__main__":
     from Problem import loadInstance
     from time import time
-    problem = loadInstance("data_10", quiet=True)
+    problem = loadInstance("data_100", quiet=True)
     solution = Solution()
     solution.generateChromosomeDeterministic(problem)
-    tic = time()
-    f = solution.evaluate(problem)
-    toc = time()
+    totaltime = 0
+    for i in range(10):
+        tic = time()
+        f = solution.evaluate(problem)
+        toc = time()
+        if i == 0:
+            continue
+        totaltime += toc - tic
+    print(f"Total time: {totaltime} seconds")
     print(f"Objective function: {f}")
-    print(f"Evaluation time: {toc - tic} seconds")
+    
