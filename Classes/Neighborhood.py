@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
 import copy
+import scipy.sparse
 
 
 class Neighborhood(ABC):
@@ -10,6 +11,7 @@ class Neighborhood(ABC):
 
     def __init__(self, N):
         self.N = N  # Number of iterations
+        self.name = self.__class__.__name__  # Name of the class
 
     def selectRandomChromosome(self, solution):
         # List of chromosomes (S1, S2, ..., S8)
@@ -61,7 +63,8 @@ class Reversion(Neighborhood):
 
         for _ in range(self.N):
             chromosome_attr, chromosome = self.selectRandomChromosome(
-                solution_copy)
+                solution_copy
+            )
             i, j = self.selectRandomPair(chromosome)
             start = min(i, j)
             end = max(i, j) + 1
@@ -371,5 +374,352 @@ class ENS(Neighborhood):
                 chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
                 setattr(solution_copy, chromosome_attr,
                         np.array(chromosome_list))
+
+        return solution_copy
+
+class FixedCostSwap(Neighborhood):
+    """
+    Performs cost-aware swaps of facility activation states to reduce total fixed opening costs in a supply chain network.
+    """
+
+    def __init__(self, N, data):
+        super().__init__(N)
+        self.data = data  # Store data as an instance attribute
+
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            # Select a random chromosome
+            chromosome_attr, chromosome = self.selectRandomChromosome(
+                solution_copy)
+
+            # Chromosome 1: Pistachio Factories -> Pistachio Consumers (K + N1)
+            if chromosome_attr == 'S1':
+                opened = np.where(solution_copy.W == 1)[0]
+                closed = np.where(solution_copy.W == 0)[0]
+                cost_opened = self.data.Fw[opened]
+                cost_closed = self.data.Fw[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+            
+            # Chromosome 2: Cosmetics Factories -> Cosmetics Consumers (S + N3)
+            elif chromosome_attr == 'S2':
+                opened = np.where(solution_copy.V == 1)[0]
+                closed = np.where(solution_copy.V == 0)[0]
+                cost_opened = self.data.Fv[opened]
+                cost_closed = self.data.Fv[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+            
+            # Chromosome 3: Oil extraction centers -> oil consumers + cosmetics factories (E + N2 + S)
+            elif chromosome_attr == 'S3':
+                opened_e = np.where(solution_copy.R == 1)[0]
+                closed_e = np.where(solution_copy.R == 0)[0]
+                cost_opened = self.data.Fr[opened_e]
+                cost_closed = self.data.Fr[opened_e]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened_e[i]
+                j = closed_e[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+                
+            # Chromosome 4: Processing center -> pistachio factories (J + K)
+            elif chromosome_attr == 'S4':
+                opened = np.where(solution_copy.U == 1)[0]
+                closed = np.where(solution_copy.U == 0)[0]
+                cost_opened = self.data.Fu[opened]
+                cost_closed = self.data.Fu[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+                
+            # Chromosome 5: Processing center -> oil extraction center (J + E)
+            elif chromosome_attr == 'S5':
+                opened = np.where(solution_copy.U == 1)[0]
+                closed = np.where(solution_copy.U == 0)[0]
+                cost_opened = self.data.Fu[opened]
+                cost_closed = self.data.Fu[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+            
+            # Chromosome 6: Pistachio producers -> processing centers (I + J)
+            elif chromosome_attr == 'S6':
+                pass
+
+            # Chromosome 7: Composting centers -> composting consumers (Q + M)
+            elif chromosome_attr == 'S7':
+                opened = np.where(solution_copy.Y == 1)[0]
+                closed = np.where(solution_copy.Y == 0)[0]
+                cost_opened = self.data.Fy[opened]
+                cost_closed = self.data.Fy[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+
+            # Chromosome 8: Oil extraction centers -> composting centers (E + Q)
+            elif chromosome_attr == 'S8':
+                opened = np.where(solution_copy.R == 1)[0]
+                closed = np.where(solution_copy.R == 0)[0]
+                cost_opened = self.data.Fr[opened]
+                cost_closed = self.data.Fr[closed]
+                i = np.argmax(cost_opened)
+                j = np.argmin(cost_closed)
+                i = opened[i]
+                j = closed[j]
+                chromosome_list = list(chromosome)
+                # Swap the elements at indices i and j
+                chromosome_list[i], chromosome_list[j] = chromosome_list[j], chromosome_list[i]
+                setattr(solution_copy, chromosome_attr, np.array(chromosome_list))
+                
+                # continue
+                
+        return solution_copy
+
+class TransportCostSwap(Neighborhood):
+    """
+    Operador que identifica arestas inativas de alto potencial de economia
+    e promove tanto a fonte quanto o cliente envolvidos, com base em critérios heurísticos.
+    """
+    def __init__(self, N, data, top_k=10):
+        super().__init__(N)
+        self.data = data
+        self.top_k = top_k
+
+    def applyChange(self, solution):
+        sol = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            attr, chrom = self.selectRandomChromosome(sol)
+
+            # Seleção das matrizes de custo e fluxo
+            if attr == 'S1':
+                cost = self.data.Cp
+                flow = sol.P.toarray()
+            elif attr == 'S2':
+                cost = self.data.Cl
+                flow = sol.L.toarray()
+            elif attr == 'S3':
+                cost = np.hstack((self.data.CN, self.data.CS))
+                flow = np.hstack((sol.O.toarray(), sol.Oc.toarray()))
+            elif attr == 'S4':
+                cost = self.data.CK
+                flow = sol.Go.toarray()
+            elif attr == 'S5':
+                cost = self.data.CE
+                flow = sol.Gr.toarray()
+            elif attr == 'S6':
+                cost = self.data.CX
+                flow = sol.X.toarray()
+            elif attr == 'S7':
+                cost = self.data.Cd
+                flow = sol.D.toarray()
+            elif attr == 'S8':
+                cost = self.data.CQ
+                flow = sol.Ow.toarray()
+            else:
+                continue
+
+            K, J = cost.shape
+
+            ativa   = np.argwhere(flow > 0)
+            inativa = np.argwhere(flow == 0)
+
+            if inativa.size == 0:
+                continue
+
+            # Calcula os custos das arestas inativas
+            custos_in = np.array([cost[k, j] for (k, j) in inativa])
+            top_idxs  = np.argsort(custos_in)[:self.top_k]  # top-k arestas inativas mais baratas
+
+            melhores = []
+            for idx in top_idxs:
+                k, j = inativa[idx]
+
+                # Verifica se o cliente j já recebe de outra fonte
+                fontes_ativas_para_j = ativa[ativa[:, 1] == j]
+                if len(fontes_ativas_para_j) == 0:
+                    continue
+
+                # Custo atual médio que o cliente j está recebendo
+                custo_atual = np.mean([cost[ka, j] for (ka, _) in fontes_ativas_para_j])
+                custo_novo  = cost[k, j]
+
+                # Se a nova aresta é melhor, registra
+                if custo_novo < custo_atual:
+                    ganho_estimado = custo_atual - custo_novo
+                    melhores.append((ganho_estimado, k, j))
+
+            if not melhores:
+                continue
+
+            # Escolhe o melhor par (ganho mais alto)
+            _, k_chp, j_chp = max(melhores)
+
+            # Atualiza prioridade no cromossomo (cliente e fonte)
+            chrom_old = chrom.copy()
+            chrom_new = chrom_old.copy()
+
+            p_old_src = chrom_old[k_chp]
+            p_old_cli = chrom_old[K + j_chp]
+            p_max     = chrom_old.max()
+
+            # Ajusta prioridades: cliente e fonte vão para o topo
+            chrom_new[chrom_new > p_old_src] -= 1
+            chrom_new[chrom_new > p_old_cli] -= 1
+            chrom_new[k_chp]      = p_max
+            chrom_new[K + j_chp]  = p_max
+
+            setattr(sol, attr, chrom_new)
+
+        return sol
+    
+class SourceCostBoost(Neighborhood):
+    """
+    Operador que promove uma fonte inativa com maior potencial de economia,
+    baseado na média dos menores custos da linha de custo da matriz (estimativa local).
+    """
+    def __init__(self, N, data, top_k=5):
+        super().__init__(N)
+        self.data = data
+        self.top_k = top_k  # número de menores custos considerados por fonte
+
+    def applyChange(self, solution):
+        sol = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            attr, chrom = self.selectRandomChromosome(sol)
+
+            # Mapeamento das matrizes de custo e fluxos
+            if attr == 'S1':
+                cost = self.data.Cp
+                flow = sol.P.toarray()
+            elif attr == 'S2':
+                cost = self.data.Cl
+                flow = sol.L.toarray()
+            elif attr == 'S3':
+                cost = np.hstack((self.data.CN, self.data.CS))
+                flow = np.hstack((sol.O.toarray(), sol.Oc.toarray()))
+            elif attr == 'S4':
+                cost = self.data.CK
+                flow = sol.Go.toarray()
+            elif attr == 'S5':
+                cost = self.data.CE
+                flow = sol.Gr.toarray()
+            elif attr == 'S6':
+                cost = self.data.CX
+                flow = sol.X.toarray()
+            elif attr == 'S7':
+                cost = self.data.Cd
+                flow = sol.D.toarray()
+            elif attr == 'S8':
+                cost = self.data.CQ
+                flow = sol.Ow.toarray()
+            else:
+                continue
+
+            K, J = cost.shape
+
+            # Verifica fontes inativas (sem fluxo positivo)
+            flow_sum_by_source = flow.sum(axis=1)
+            fontes_inativas = np.where(flow_sum_by_source == 0)[0]
+
+            if len(fontes_inativas) == 0:
+                continue  # nada a boostar
+
+            # Avalia a atratividade de cada fonte inativa
+            atratividade = []
+            for k in fontes_inativas:
+                menores_custos = np.partition(cost[k], self.top_k)[:self.top_k]
+                score = menores_custos.mean()
+                atratividade.append((score, k))
+
+            # Escolhe a mais promissora (menor score)
+            _, k_melhor = min(atratividade)
+
+            # Atualiza prioridade da fonte escolhida
+            chrom_old = chrom.copy()
+            chrom_new = chrom_old.copy()
+
+            p_old = chrom_old[k_melhor]
+            p_max = chrom_old.max()
+
+            mask = chrom_new > p_old
+            chrom_new[mask] -= 1
+            chrom_new[k_melhor] = p_max
+
+            setattr(sol, attr, chrom_new)
+
+        return sol
+
+class InactiveActiveSwap(Neighborhood):
+    """
+    Swaps priorities between an active node and an inactive node.
+    The active node gets lower priority and the inactive node gets higher priority.
+    """
+    
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            # Select a random chromosome
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            
+            # Get the corresponding active nodes array
+            active_attr = chromosome_attr.replace('S', 'A')  # S1 -> A1, S2 -> A2, etc.
+            active_nodes = getattr(solution_copy, active_attr)
+            
+            # Skip if active_nodes is None (hasn't been computed yet)
+            if active_nodes is None:
+                continue
+                
+            # Find active and inactive nodes
+            active_indices = np.where(active_nodes == 1)[0]
+            inactive_indices = np.where(active_nodes == 0)[0]
+            
+            # Skip if there are no active or inactive nodes
+            if len(active_indices) == 0 or len(inactive_indices) == 0:
+                continue
+            
+            # Randomly select one active and one inactive node
+            i = np.random.choice(active_indices)  # Active node index
+            j = np.random.choice(inactive_indices)  # Inactive node index
+            
+            # Swap the priorities between active and inactive nodes
+            chromosome[i], chromosome[j] = chromosome[j], chromosome[i]
+            
+            # Update the solution with the modified chromosome
+            setattr(solution_copy, chromosome_attr, chromosome)
 
         return solution_copy

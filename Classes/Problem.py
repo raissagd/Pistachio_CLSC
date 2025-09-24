@@ -1,10 +1,12 @@
 import numpy as np
-
+import gdown
+import os
+import pickle
 
 class Problem:
 
-    def __init__(self):
-        pass
+    def __init__(self, name=None):
+        self.instance = name
 
     def generate(self, I, J, K, E, Q, S, N1, N2, N3, M):
         """
@@ -32,6 +34,8 @@ class Problem:
         self.N2 = N2
         self.N3 = N3
         self.M = M
+
+        self.instance = f"Problem_{I}"
 
         # Fixed costs
         self.Fu = np.random.uniform(low=20000, high=40000, size=self.J)
@@ -88,7 +92,7 @@ class Problem:
         Args:
         - filename: Name of the file to save.
         """
-        np.savez_compressed(filename, I=self.I, K=self.K, J=self.J, E=self.E,
+        np.savez_compressed(filename,  instance=self.instance, I=self.I, K=self.K, J=self.J, E=self.E,
                             Q=self.Q, S=self.S, N1=self.N1, N2=self.N2, N3=self.N3, M=self.M,
                             Fu=self.Fu, Fy=self.Fy, Fw=self.Fw, Fr=self.Fr, Fv=self.Fv, CI=self.CI, Cy=self.Cy, Cw=self.Cw, Cr=self.Cr,
                             Cv=self.Cv, Cu1=self.Cu1, Cu2=self.Cu2, CX=self.CX, CK=self.CK, CE=self.CE, CJ=self.CJ, CS=self.CS, CN=self.CN,
@@ -103,7 +107,11 @@ class Problem:
         Args:
         - filename: Name of the file to load.
         """
-        data = np.load(filename)
+        try:
+            data = np.load(filename)
+        except:
+            data = pickle.load(open(filename, 'rb'))
+        self.instance = str(data["instance"]) # Convert bytes to string
 
         # Assigning values to instance variables
         self.I, self.K, self.J, self.E, self.Q, self.S, self.N1, self.N2, self.N3, self.M = [
@@ -116,3 +124,90 @@ class Problem:
             data[variavel] for variavel in ["Cpa", "Cpu", "Cpy", "Cpw", "Cpr", "Cpv", "Dc", "Dp", "Du", "Ds"]]
 
         data.close()
+
+    @property
+    def num_var_model(self):
+        nvar = self.J + self.Q + self.K + self.E + self.S  # z1
+        nvar += (self.I * self.J      # z2
+                 + self.J * self.K
+                 + self.J * self.E
+                 + self.Q * self.M
+                 + self.K * self.N1
+                 + self.K * self.N1
+                 + self.E * self.N2
+                 + self.E * self.S
+                 + self.S * self.N3)
+        nvar += (self.J * self.Q + self.E * self.Q)  # z3
+        return nvar
+    
+    @property
+    def num_var_priority(self):
+        nvar = (self.K + self.N1
+                + self.S + self.N3
+                + self.E + self.N2 + self.S
+                + self.J + self.K
+                + self.J + self.E
+                + self.I + self.J
+                + self.Q + self.M
+                + self.E + self.Q)
+        return nvar
+
+
+
+files_url = {
+    "data_10": "https://drive.google.com/file/d/1EZ-YgahfCJ_Yhtz3XjhLw_bbReoLqbCH/view?usp=sharing",
+    "data_30": "https://drive.google.com/file/d/1TEPAXnAaq3EfhSdCyT42nvoM8Ql3c8Ny/view?usp=sharing",
+    "data_100": "https://drive.google.com/file/d/1-o5VSPMixUHCz-353CfL2Dzwp5IedsBg/view?usp=drive_link",
+    "data_200": "https://drive.google.com/file/d/1spE1v1jiuCQBVcl6Fj43do47jXK9u1Ja/view?usp=drive_link",
+    "data_400": "https://drive.google.com/file/d/1Tg-HBGgkqRru7Zu7AYy3lRtbDI3Hdo27/view?usp=drive_link",
+    "data_800": "https://drive.google.com/file/d/1uoUhUFDu7VRQosJ2FJ3rJrqdlmCxeo8I/view?usp=drive_link",
+    "data_1600": "https://drive.google.com/file/d/1uoUhUFDu7VRQosJ2FJ3rJrqdlmCxeo8I/view?usp=drive_link",
+}
+
+
+def loadInstance(instancename, quiet=False):
+    """
+    Load a problem instance from a Google Drive repository.
+
+    Downloads a problem instance file from a specified Google Drive 
+    folder, loads it into a Problem object, and cleans up the temporary 
+    file.
+
+    Args:
+        instancename (str): The name of the instance file to download 
+                            (without extension).
+        quiet (bool, optional): If True, suppresses download progress 
+                                output. Defaults to False.
+
+    Returns:
+        Problem: A Problem object loaded with the instance data.
+
+    Raises:
+        Exception: May raise exceptions related to network connectivity, 
+                   file download, or file loading operations.
+
+    Note:
+        This function requires an active internet connection to download 
+        from Google Drive. The downloaded file is automatically removed 
+        after loading.
+    """
+    # Google Drive folder URL containing the instances
+    url = files_url.get(instancename)
+    if url is None:
+        raise ValueError(f"Instance '{instancename}' not found in the "
+                         "repository.")
+    
+    # Download the file from Google Drive
+    gdown.download(url, instancename + '.npz', fuzzy=True, quiet=quiet)
+
+    # Load the problem instance
+    problem = Problem()
+    problem.loadFile(instancename + '.npz')
+
+    # Remove the temporary file
+    os.remove(instancename + '.npz')
+
+    return problem
+
+if __name__ == "__main__":
+    loadInstance("data_10", quiet=False)
