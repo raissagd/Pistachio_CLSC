@@ -5,24 +5,24 @@ import matplotlib as mpl
 
 experiments = {
     "ga": {
-        "url": "https://drive.google.com/drive/folders/1JtGIIawCR24ekgitUPFEXdAkMdrFn5Vf?usp=sharing",
-        "path": "./experiments/ga/results/"
+        "url": "https://drive.google.com/drive/folders/1W2dyeRBuXaMGftWrMvS2imQ70m0LgpjN?usp=sharing",
+        "path": "./experiments/ga/"
     },
     "global_optimum": {
-        "url": "https://drive.google.com/drive/folders/1ypQsgn7fXAmCcELoqufUKHu2dD4IRzVG?usp=sharing",
-        "path": "./experiments/global_optimum/solutions/"
+        "url": "https://drive.google.com/drive/folders/1aUhDU_FN7-71tPZ0CjSXinjT2e-zB0P_?usp=sharing",
+        "path": "./experiments/global_optimum/"
     },
     "ils": {
-        "url": "https://drive.google.com/drive/folders/1qrXqFoaGQlQ3zYSygXTky23fQuimwKIl?usp=sharing",
-        "path": "./experiments/ils/results/"
+        "url": "https://drive.google.com/drive/folders/1DX9kyKt300vvX1UuP5EJbHSFGid2UCyF?usp=sharing",
+        "path": "./experiments/ils/"
     },
     "initialguess": {
-        "url": "https://drive.google.com/drive/folders/1Vl7D3H1jiLlQWUePZHDoLcbzRPW-GTSr?usp=sharing",
-        "path": "./experiments/initialguess/results/"
+        "url": "https://drive.google.com/drive/folders/1LAROm94ymyugha8CBQBDdGCTg9ohCr5P?usp=sharing",
+        "path": "./experiments/initialguess/"
     },
     "vns": {
-        "url": "https://drive.google.com/drive/folders/1gxkWFLX_Gzwmg_cmp3isb56VZK5iPOyw?usp=sharing",
-        "path": "./experiments/vns/results/"
+        "url": "https://drive.google.com/drive/folders/14I21lkQkxph4iA75i8ZrsC6C3cgX-qZ-?usp=sharing",
+        "path": "./experiments/vns/"
     }
 }
 
