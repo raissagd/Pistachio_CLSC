@@ -723,3 +723,258 @@ class InactiveActiveSwap(Neighborhood):
             setattr(solution_copy, chromosome_attr, chromosome)
 
         return solution_copy
+
+class InactiveActiveReversion(Neighborhood):
+    """
+    Reverses a segment that includes both an active and inactive node,
+    effectively swapping their relative positions.
+    """
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            active_attr = chromosome_attr.replace('S', 'A')
+            active_nodes = getattr(solution_copy, active_attr)
+            
+            if active_nodes is None:
+                continue
+                
+            active_indices = np.where(active_nodes == 1)[0]
+            inactive_indices = np.where(active_nodes == 0)[0]
+            
+            if len(active_indices) == 0 or len(inactive_indices) == 0:
+                continue
+            
+            i = np.random.choice(active_indices)
+            j = np.random.choice(inactive_indices)
+            
+            # Garante que revertemos do menor para o maior índice
+            start = min(i, j)
+            end = max(i, j) + 1
+            chromosome[start:end] = chromosome[start:end][::-1]
+
+            setattr(solution_copy, chromosome_attr, chromosome)
+
+        return solution_copy
+
+
+class InactiveActiveInsertion(Neighborhood):
+    """
+    Extracts an inactive node and inserts it immediately after an active node,
+    giving it higher priority.
+    """
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            active_attr = chromosome_attr.replace('S', 'A')
+            active_nodes = getattr(solution_copy, active_attr)
+            
+            if active_nodes is None:
+                continue
+                
+            active_indices = np.where(active_nodes == 1)[0]
+            inactive_indices = np.where(active_nodes == 0)[0]
+            
+            if len(active_indices) == 0 or len(inactive_indices) == 0:
+                continue
+            
+            i = np.random.choice(active_indices)  # Ativo (posição alvo)
+            j = np.random.choice(inactive_indices)  # Inativo (será movido)
+            
+            # Extrai o valor do nó inativo
+            unit_to_insert = chromosome[j]
+            
+            if i < j:
+                # Move elementos para a direita
+                for k in range(j, i + 1, -1):
+                    chromosome[k] = chromosome[k - 1]
+                # Insere logo após i
+                chromosome[i + 1] = unit_to_insert
+            else:  # i > j
+                # Move elementos para a esquerda
+                for k in range(j, i):
+                    chromosome[k] = chromosome[k + 1]
+                # Insere logo após a nova posição de i
+                chromosome[i] = unit_to_insert
+
+            setattr(solution_copy, chromosome_attr, chromosome)
+
+        return solution_copy
+
+
+class InactiveActiveSlide(Neighborhood):
+    """
+    Slides an inactive node to the position of an active node,
+    effectively promoting the inactive node.
+    """
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            active_attr = chromosome_attr.replace('S', 'A')
+            active_nodes = getattr(solution_copy, active_attr)
+            
+            if active_nodes is None:
+                continue
+                
+            active_indices = np.where(active_nodes == 1)[0]
+            inactive_indices = np.where(active_nodes == 0)[0]
+            
+            if len(active_indices) == 0 or len(inactive_indices) == 0:
+                continue
+            
+            i = np.random.choice(inactive_indices)  # Inativo (será movido)
+            j = np.random.choice(active_indices)    # Ativo (posição alvo)
+            
+            unit_to_move = chromosome[i]
+            
+            if i < j:
+                # Desloca elementos para a esquerda
+                for k in range(i, j):
+                    chromosome[k] = chromosome[k + 1]
+                chromosome[j] = unit_to_move
+            else:  # i > j
+                # Desloca elementos para a direita
+                for k in range(i, j, -1):
+                    chromosome[k] = chromosome[k - 1]
+                chromosome[j] = unit_to_move
+
+            setattr(solution_copy, chromosome_attr, chromosome)
+
+        return solution_copy
+    
+class InactiveBoost(Neighborhood):
+    """
+    Pega um nó inativo e coloca diretamente no TOPO da prioridade.
+    """
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+        
+        for _ in range(self.N):
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            active_attr = chromosome_attr.replace('S', 'A')
+            active_nodes = getattr(solution_copy, active_attr)
+            
+            if active_nodes is None:
+                continue
+            
+            inactive_indices = np.where(active_nodes == 0)[0]
+            if len(inactive_indices) == 0:
+                continue
+            
+            # Pega um inativo aleatório
+            i = np.random.choice(inactive_indices)
+            
+            # Coloca no topo (maior prioridade)
+            max_priority = chromosome.max()
+            chromosome[chromosome > chromosome[i]] -= 1
+            chromosome[i] = max_priority + 1
+            
+            setattr(solution_copy, chromosome_attr, chromosome)
+        
+        return solution_copy
+    
+
+class InactiveActiveETN(Neighborhood):
+    """
+    Exchange with Nearest Active (IAETN):
+    Selects an inactive node and swaps it with its nearest active neighbor.
+    This is a more conservative, localized version of InactiveActiveSwap.
+    """
+    
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            active_attr = chromosome_attr.replace('S', 'A')
+            active_nodes = getattr(solution_copy, active_attr)
+            
+            if active_nodes is None:
+                continue
+                
+            active_indices = np.where(active_nodes == 1)[0]
+            inactive_indices = np.where(active_nodes == 0)[0]
+            
+            if len(active_indices) == 0 or len(inactive_indices) == 0:
+                continue
+            
+            # Seleciona um nó inativo aleatório
+            i = np.random.choice(inactive_indices)
+            
+            # Encontra o vizinho ativo mais próximo
+            distances_to_actives = np.abs(active_indices - i)
+            nearest_active_idx = active_indices[np.argmin(distances_to_actives)]
+            
+            # Troca o inativo com seu vizinho ativo mais próximo
+            chromosome[i], chromosome[nearest_active_idx] = \
+                chromosome[nearest_active_idx], chromosome[i]
+            
+            setattr(solution_copy, chromosome_attr, chromosome)
+
+        return solution_copy
+
+
+class MultiInactiveBoost(Neighborhood):
+    """
+    Multi-Inactive Boost:
+    Promotes multiple inactive nodes (2-5) simultaneously to high priority positions.
+    More disruptive than single InactiveBoost, useful for escaping local optima.
+    """
+    
+    def __init__(self, N, min_boost=2, max_boost=5):
+        super().__init__(N)
+        self.min_boost = min_boost  # Mínimo de inativos a promover
+        self.max_boost = max_boost  # Máximo de inativos a promover
+    
+    def applyChange(self, solution):
+        solution_copy = copy.deepcopy(solution)
+
+        for _ in range(self.N):
+            chromosome_attr, chromosome = self.selectRandomChromosome(solution_copy)
+            active_attr = chromosome_attr.replace('S', 'A')
+            active_nodes = getattr(solution_copy, active_attr)
+            
+            if active_nodes is None:
+                continue
+                
+            inactive_indices = np.where(active_nodes == 0)[0]
+            
+            if len(inactive_indices) == 0:
+                continue
+            
+            # Determina quantos inativos promover
+            num_to_boost = np.random.randint(
+                self.min_boost, 
+                min(self.max_boost, len(inactive_indices)) + 1
+            )
+            
+            # Seleciona aleatoriamente quais inativos promover
+            selected_inactives = np.random.choice(
+                inactive_indices, 
+                size=num_to_boost, 
+                replace=False
+            )
+            
+            # Promove todos os selecionados para o topo
+            # Mantém a ordem relativa entre eles
+            max_priority = chromosome.max()
+            
+            for idx, inactive_idx in enumerate(selected_inactives):
+                old_priority = chromosome[inactive_idx]
+                new_priority = max_priority + idx + 1
+                
+                # Ajusta as prioridades dos outros
+                mask = chromosome > old_priority
+                chromosome[mask] -= 1
+                
+                # Define a nova prioridade alta
+                chromosome[inactive_idx] = new_priority
+            
+            setattr(solution_copy, chromosome_attr, chromosome)
+
+        return solution_copy
