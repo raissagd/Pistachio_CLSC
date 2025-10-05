@@ -154,7 +154,7 @@ class VariableNeighborhoodSearch(Algorithm):
         if not quiet:
             print(f"Initial FX: {current_solution.FX}")
 
-        number_of_neighbors = 15
+        number_of_neighbors = 45
         operator_index = 0
 
         # Loop principal do VNS2 Novo
