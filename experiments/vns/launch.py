@@ -36,7 +36,7 @@ Usage:
 """
 
 import sys
-sys.path.insert(0, 'Classes/')
+sys.path.insert(0, '../../Classes/')
 from Problem import loadInstance
 from Persistence import PersistMultipleSolutions
 from Execute import RunMultipleMethodsMultipleTimes
@@ -44,9 +44,9 @@ from Algorithm import VariableNeighborhoodSearch
 from Neighborhood import *
 
 # Experiment parameters
-experiment_name = "vns"
+experiment_name = "vns_45_novos"
 instance = 800
-results_path = f'./experiments/vns/results/'
+results_path = f'./results/'
 initial_guess = 0 # 0: Deterministic, 1: Stochastic
 
 # Load problem instance
@@ -60,15 +60,14 @@ operators_sets = [
     [Swap(1), Reversion(1), Insertion(1), Slide(1)],
     [ETN(1), RS(1), SPS(1), SRPS(1)],
     [InactiveActiveSwap(1), SourceDepotSwap(1, problem), FixedCostSwap(1, problem),TransportCostSwap(1, problem),  SourceCostBoost(1, problem)],
-    [Reversion(1), InactiveActiveSwap(1), TransportCostSwap(1, problem),  SourceCostBoost(1, problem)]
+    [Reversion(1), InactiveActiveSwap(1), TransportCostSwap(1, problem),  SourceCostBoost(1, problem)],
+    [InactiveActiveSwap(1), InactiveActiveReversion(1), InactiveActiveSlide(1), InactiveActiveInsertion(1)],
+    [InactiveActiveSwap(N=1), InactiveActiveSlide(1), InactiveActiveETN(N=1), InactiveBoost(N=1)],
+    [InactiveActiveSwap(N=1), ActiveReversion(1), InactiveActiveETN(N=1), InactiveBoost(N=1)]
 ]
 
 # Configure VNS algorithms with different neighborhoods
-vns = [VariableNeighborhoodSearch(operators_sets[0], num_evals, initial_guess),
-       VariableNeighborhoodSearch(operators_sets[1], num_evals, initial_guess),
-       VariableNeighborhoodSearch(operators_sets[2], num_evals, initial_guess),
-       VariableNeighborhoodSearch(operators_sets[3], num_evals, initial_guess)
-]
+vns = [VariableNeighborhoodSearch(operators_sets[5], num_evals, initial_guess)]
 
 # Run experiments
 results = RunMultipleMethodsMultipleTimes().run(data=problem, methods=vns,
