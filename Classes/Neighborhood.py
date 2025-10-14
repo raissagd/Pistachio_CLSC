@@ -862,25 +862,46 @@ class ActiveInsertion(Neighborhood):
                 continue
            
             # Seleciona dois ativos diferentes
-            selected = np.random.choice(len(active_indices), 2, replace=False)
-            i = active_indices[selected[0]]  # Ativo (posição alvo)
-            j = active_indices[selected[1]]  # Ativo (será movido)
+            i, j = np.random.choice(len(active_indices), 2, replace=False)
+
+            # Garante que i < j
+            if i > j:
+                i, j = j, i
+            
+            # Extrai as prioridades dos ativos
+            priorities = chromosome[active_indices]
+
+            # Remove o elemento de j
+            unit_to_insert = priorities[j]
+
+            # Move elementos para a direita
+            for k in range(j, i+1, -1):
+                priorities[k] = priorities[k - 1]
+            
+            # Insere logo após i
+            priorities[i+1] = unit_to_insert
+
+            # Atualiza o cromossomo original
+            chromosome[active_indices] = priorities
+
+            # i = active_indices[selected[0]]  # Ativo (posição alvo)
+            # j = active_indices[selected[1]]  # Ativo (será movido)
            
-            # Extrai o valor do ativo a ser movido
-            unit_to_insert = chromosome[j]
+            # # Extrai o valor do ativo a ser movido
+            # unit_to_insert = chromosome[j]
            
-            if i < j:
-                # Move elementos para a direita
-                for k in range(j, i + 1, -1):
-                    chromosome[k] = chromosome[k - 1]
-                # Insere logo após i
-                chromosome[i + 1] = unit_to_insert
-            else:  # i > j
-                # Move elementos para a esquerda
-                for k in range(j, i):
-                    chromosome[k] = chromosome[k + 1]
-                # Insere logo após a nova posição de i
-                chromosome[i] = unit_to_insert
+            # if i < j:
+            #     # Move elementos para a direita
+            #     for k in range(j, i + 1, -1):
+            #         chromosome[k] = chromosome[k - 1]
+            #     # Insere logo após i
+            #     chromosome[i + 1] = unit_to_insert
+            # else:  # i > j
+            #     # Move elementos para a esquerda
+            #     for k in range(j, i):
+            #         chromosome[k] = chromosome[k + 1]
+            #     # Insere logo após a nova posição de i
+            #     chromosome[i] = unit_to_insert
             
             setattr(solution_copy, chromosome_attr, chromosome)
         
@@ -950,22 +971,27 @@ class ActiveSlide(Neighborhood):
                 continue
            
             # Seleciona dois ativos diferentes
-            selected = np.random.choice(len(active_indices), 2, replace=False)
-            i = active_indices[selected[0]]  # Ativo (será movido)
-            j = active_indices[selected[1]]  # Ativo (posição alvo)
-           
-            unit_to_move = chromosome[i]
-           
-            if i < j:
-                # Desloca elementos para a esquerda
-                for k in range(i, j):
-                    chromosome[k] = chromosome[k + 1]
-                chromosome[j] = unit_to_move
-            else:  # i > j
-                # Desloca elementos para a direita
-                for k in range(i, j, -1):
-                    chromosome[k] = chromosome[k - 1]
-                chromosome[j] = unit_to_move
+            i, j = np.random.choice(len(active_indices), 2, replace=False)
+
+            # Garante que i < j
+            if i > j:
+                i, j = j, i
+            
+            # Extrai as prioridades dos ativos
+            priorities = chromosome[active_indices]
+
+            # Remove o elemento de j
+            unit_to_insert = priorities[j]
+
+            # Move elementos para a direita
+            for k in range(j, i, -1):
+                priorities[k] = priorities[k - 1]
+            
+            # Insere logo após i
+            priorities[i] = unit_to_insert
+
+            # Atualiza o cromossomo original
+            chromosome[active_indices] = priorities
             
             setattr(solution_copy, chromosome_attr, chromosome)
         
