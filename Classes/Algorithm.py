@@ -817,11 +817,15 @@ class GeneticAlgorithm(Algorithm):
         # Perform binary tournament selection to retain only the best individuals
         selected = []
         pairs = np.random.permutation(len(population))
-        for i in range(0, len(pairs), 2):
+        # Process pairs, stopping before the last element if population is odd
+        for i in range(0, len(pairs) - 1, 2):
             if population[pairs[i]].FX < population[pairs[i+1]].FX:
                 selected.append(population[pairs[i]])
             else:
                 selected.append(population[pairs[i+1]])
+        # If population size is odd, automatically include the last individual
+        if len(pairs) % 2 == 1:
+            selected.append(population[pairs[-1]])
         return selected
 
     def solve(self, data, log=None, quiet=False):
@@ -898,38 +902,3 @@ class GeneticAlgorithm(Algorithm):
         best_solution.execution_time = time()-tic
         best_solution.convergence = convergence
         return best_solution
-    
-if __name__ == "__main__":
-
-    from Problem import loadInstance
-    from Log import Neighborhood_op_log
-    from Neighborhood import Swap, Reversion, Insertion, Slide, InactiveActiveSwap 
-
-    # Example usage
-    problem = loadInstance("data_10", quiet=True)
-
-    # Test Exact Algorithm without initial solution
-    print("\n=== Exact Algorithm (Gurobi) sem solução inicial ===")
-    exact = ExactAlgorithm(time_limit=None, use_initial_solution=False)
-    exact_solution = exact.solve(problem)
-
-    # Test Exact Algorithm with initial solution
-    print("\n=== Exact Algorithm (Gurobi) com solução inicial ===")
-    exact_with_init = ExactAlgorithm(time_limit=None, use_initial_solution=True)
-    exact_solution_with_init = exact_with_init.solve(problem)
-
-    # Test VNS with InactiveActiveSwap
-    operator = [InactiveActiveSwap(1)]
-    vns = VariableNeighborhoodSearch2(operator, max_eval=1000,  # Reduced for testing
-                                      initialization=1, init_temp=100,
-                                      cooling_rate=0.995)
-    log = Neighborhood_op_log()
-    print("=== VNS with InactiveActiveSwap ===")
-    best_solution_vns = vns.solve(problem, log=log)
-
-    # Hybrid crossover
-    ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.9, 
-                                mutation_rate=0.1, max_eval=1000, 
-                                initialization=1, crossover_type="hybrid")
-    print("\n=== GA with Hybrid Crossover ===")
-    best_ga_hybrid = ga_hybrid.solve(problem)        
