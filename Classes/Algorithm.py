@@ -13,168 +13,13 @@ class Algorithm(ABC):
     def __init__(self):
         pass
 
-    def solve(self, data):
-        return Convergence()
-
+    def solve(self, data, quiet=False):
+        return Solution()
 
 class VariableNeighborhoodSearch(Algorithm):
     """
-    Function VNS (x, kmax)
-        1:    k ← 1
-        2:    repeat
-        3:       x' ← Shake(x, k)                     // Perturbation of the solution
-        4:       x'' ← BestImprovement(x')           // Local search
-        5:       x ← NeighbourhoodChange(x, x'', k) // If x'' is better, change the neighborhood. Repeat the process
-        6:    until k = kmax
-    """
+    VNS - Variable Neighborhood Search
 
-    def __init__(self, operators, max_eval, initialization, name="VNS", init_temp=100, cooling_rate=0.995):
-        self.operators = operators  # Operators for generating neighbors
-        self.max_eval = max_eval  # Maximum number of iterations
-        self.n_eval = 1  # Number of evaluations
-        self.initialization = initialization  # Initialization method
-        self.log = None # Log for storing neighborhood operations
-        self.name = name # Name of the algorithm
-        self.T = init_temp;
-        self.cooling_rate = cooling_rate;
-
-    def best_improvement(self, solution, data, operator_index, number_of_neighbors, log):
-        failure_counter = 0
-        initial_FX = solution.FX
-
-        while True:
-            neighbors = []  # List to store the neighbor solutions
-            Fx_neighbors = []  # List to store the fitness values of the neighbor solutions
-
-            for _ in range(number_of_neighbors):
-                # Generate a neighbor solution (apply an operator to the current solution)
-                neighbor = self.operators[operator_index].applyChange(solution)
-                neighbor.evaluate(data)  # Evaluate the neighbor solution
-                self.n_eval += 1
-                neighbors.append(neighbor)  # Store it
-                Fx_neighbors.append(neighbor.FX)  # Store its fitness value
-
-            best_neighbor_index = np.argmin(Fx_neighbors)
-            best_neighbor = neighbors[best_neighbor_index] # Select the best neighbor    
-
-            # Update the current solution if the best neighbor is better
-            if Fx_neighbors[best_neighbor_index] < solution.FX:
-                solution = best_neighbor
-                failure_counter = 0
-                success = 1
-            else:
-                failure_counter += 1
-                success = 0
-                if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
-                    break
-
-            if log is not None:
-                log.log(data.instance, self.name, self.operators[operator_index].name, self.n_eval, success, (initial_FX - solution.FX) / initial_FX * 100 if success else 0, solution.FX  ) # Log the neighborhood operation
-        
-        return solution
-
-    def perturbation(self, solution, data, operator_index):
-        operator = self.operators[operator_index] # Select the operator for perturbation
-
-        solution = operator.applyChange(solution) # Generate a perturbed solution
-
-        solution.evaluate(data)  # Evaluate the perturbed solution
-
-        self.n_eval += 1
-        return solution
-    
-    def accept(self, old_fx, new_fx):
-        delta = new_fx - old_fx
-        if delta < 0:
-            # always accepts better solutions
-            return True
-        elif delta == 0:
-            # rejects equal solutions
-            return False
-        else:
-            # accepts worse solutions with a probability of exp(−Δ/T)
-            return random.random() < math.exp(-delta / self.T)
-        
-    def solve(self, data, log=None):
-        convergence = super().solve(data)
-        tic = time()
-        solution = Solution()  # Create a new solution
-
-        if (self.initialization == 0):
-            solution.generateChromosomeDeterministic(data)
-        else:
-            solution.generateChromosomeStochastic(data)
-
-        solution.evaluate(data)
-        self.n_eval = 1  # Prevent early stopping in case of reusing the object
-        convergence.add(solution, self.n_eval) # Add FX e numero de avaliações
-
-        best_overall = copy.deepcopy(solution)  # Keep track of the best overall solution
-
-        print(f"Initial FX: {solution.FX}")
-        operator_index = 0
-        number_of_neighbors = 15
-
-        # Neighborhood change
-        while True:
-            perturbed_solution = self.perturbation(solution, data, operator_index)  # Shake the current solution
-
-            new_solution = self.best_improvement(perturbed_solution, data, operator_index, number_of_neighbors, log) # Local search on the perturbed solution
-
-            old_fx = solution.FX
-            new_fx = new_solution.FX
-
-            """ if new_solution.FX < solution.FX:
-                # If the new solution is better, update the current solution and repeat the process
-                solution = new_solution
-                operator_index = 0
-            elif self.n_eval >= self.max_eval:
-                # If the maximum number of evaluations is reached,
-                break
-            elif operator_index == len(self.operators) - 1:
-                # If all operators have been tested,
-                break
-            else:
-                # If the new solution is not better, try the next operator
-                operator_index += 1
-            convergence.add(solution, self.n_eval)  """
-
-            if self.accept(old_fx, new_fx):
-                solution = new_solution
-                if new_solution.FX < best_overall.FX:
-                    best_overall = copy.deepcopy(new_solution)
-                if new_fx < old_fx:
-                    operator_index = 0
-                self.T *= self.cooling_rate
-
-            elif self.n_eval >= self.max_eval:
-                break
-
-            else:
-                # Tries next operator (or ends if all operators have been tested)
-                operator_index += 1
-                if operator_index >= len(self.operators):
-                    operator_index = 0
-
-            convergence.add(solution, self.n_eval)
-
-        print(f"Final solution: {best_overall.FX}")
-        print(f"Number of evaluations: {self.n_eval}")
-        solution.execution_time = time()-tic
-        solution.convergence = convergence
-        
-        solution.log = log
-        # log_data = self.log.get()
-        # log_data.to_csv(f'./tests/run_parallel/{data.instance}_{self.name}.csv', index=False)
-        
-        best_overall.n_eval = self.n_eval  
-        best_overall.log = log
-        return best_overall
-
-class VariableNeighborhoodSearch2(Algorithm):
-    """
-    VNS2 - Modified Variable Neighborhood Search
-    
     Nova abordagem baseada na orientação:
     1. FASE 1: Intensificação na base atual (sem perturbação) - testa todos operadores
     2. FASE 2: Perturbação + Intensificação - testa todos operadores na base perturbada  
@@ -182,8 +27,8 @@ class VariableNeighborhoodSearch2(Algorithm):
     4. SA para aceitar solução pior quando "pode ir mais longe"
     """
 
-    def __init__(self, operators, max_eval, initialization, name="VNS2", init_temp=100, cooling_rate=0.995):
-        self.operators = operators  # Operators for generating neighbors
+    def __init__(self, operator, max_eval, initialization, name="VNS2", init_temp=100, cooling_rate=0.995):
+        self.operator = operator  # operator for generating neighbors
         self.max_eval = max_eval  # Maximum number of iterations
         self.n_eval = 1  # Number of evaluations
         self.initialization = initialization  # Initialization method
@@ -192,73 +37,83 @@ class VariableNeighborhoodSearch2(Algorithm):
         self.T = init_temp
         self.cooling_rate = cooling_rate
 
-    def best_improvement(self, solution, data, operator_index, number_of_neighbors, log):
+    def best_improvement(self, solution, data, operator_index, 
+                         number_of_neighbors, log):
         """
         Busca local que aplica best improvement usando um operador específico
         """
-        failure_counter = 0
         initial_FX = solution.FX
         current_solution = copy.deepcopy(solution)
 
-        while True:
-            neighbors = []  # List to store the neighbor solutions
-            Fx_neighbors = []  # List to store the fitness values of the neighbor solutions
+        neighbors = []  # List to store the neighbor solutions
+        Fx_neighbors = []  # List to store the fitness values of the neighbor solutions
 
-            for _ in range(number_of_neighbors):
-                # Generate a neighbor solution (apply an operator to the current solution)
-                neighbor = self.operators[operator_index].applyChange(current_solution)
-                neighbor.evaluate(data)  # Evaluate the neighbor solution
-                self.n_eval += 1
-                neighbors.append(neighbor)  # Store it
-                Fx_neighbors.append(neighbor.FX)  # Store its fitness value
+        for _ in range(number_of_neighbors):
+            # Generate a neighbor solution (apply an operator to the current solution)
+            neighbor = self.operator[operator_index].applyChange(current_solution)
+            neighbor.evaluate(data)  # Evaluate the neighbor solution
+            self.n_eval += 1
+            neighbors.append(neighbor)  # Store it
+            Fx_neighbors.append(neighbor.FX)  # Store its fitness value
 
-            best_neighbor_index = np.argmin(Fx_neighbors)
-            best_neighbor = neighbors[best_neighbor_index] # Select the best neighbor    
+        best_neighbor_index = np.argmin(Fx_neighbors)
+        best_neighbor = neighbors[best_neighbor_index] # Select the best neighbor    
 
-            # Update the current solution if the best neighbor is better
-            if Fx_neighbors[best_neighbor_index] < current_solution.FX:
-                current_solution = best_neighbor
-                failure_counter = 0
-                success = 1
-            else:
-                failure_counter += 1
-                success = 0
-                if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
-                    break
+        # Update the current solution if the best neighbor is better
+        if Fx_neighbors[best_neighbor_index] < current_solution.FX:
+            success = 1
+        else:
+            success = 0
 
-            if log is not None:
-                log.log(data.instance, self.name, self.operators[operator_index].name, 
-                       self.n_eval, success, 
-                       (initial_FX - current_solution.FX) / initial_FX * 100 if success else 0, 
-                       current_solution.FX) # Log the neighborhood operation
+        if log is not None:
+            log.log(data.instance, self.name,
+                    self.operator[operator_index].name, 
+                    self.n_eval, success, 
+                    (initial_FX - best_neighbor.FX) / initial_FX * 100 if success else 0, 
+                    best_neighbor.FX) # Log the neighborhood operation
         
-        return current_solution
+        return best_neighbor
 
-    def intensive_local_search(self, base_solution, data, number_of_neighbors, log):
+    def local_search(self, base_solution, data, number_of_neighbors, log):
         """
         Aplica busca local com TODOS os operadores na mesma base e retorna o melhor resultado
         """
         best_result = copy.deepcopy(base_solution)
-        
-        for operator_index in range(len(self.operators)):
-            if self.n_eval >= self.max_eval:
-                break
-                
-            # Aplica busca local com o operador atual
-            local_result = self.best_improvement(base_solution, data, operator_index, number_of_neighbors, log)
-            
-            # Mantém o melhor resultado encontrado
-            if local_result.FX < best_result.FX:
-                best_result = copy.deepcopy(local_result)
+
+        operator_index = 0
+        while operator_index < len(self.operator) and self.n_eval < self.max_eval:
+
+            best_neighbor = self.best_improvement(best_result, data,
+                                                  operator_index,
+                                                  number_of_neighbors, log)
+
+            if best_neighbor.FX < best_result.FX:
+                best_result = copy.deepcopy(best_neighbor)
+                operator_index = 0  # Restart with the first operator if improvement found
+            else:
+                operator_index += 1
         
         return best_result
 
-    def perturbation(self, solution, data, operator_index):
+    def shake(self, solution, data, operator_index):
         """
         Perturbação da solução usando um operador específico
         """
-        operator = self.operators[operator_index] # Select the operator for perturbation
-        perturbed_solution = operator.applyChange(solution) # Generate a perturbed solution
+        operator = self.operator[operator_index] # Select the operator for shake
+        
+        # Calculate number of perturbations based on problem size
+        # Total variables = sum of all chromosome segments
+        total_variables = data.num_var_priority
+        
+        # Number of perturbations proportional to problem size (e.g., 5-10% of total variables)
+        num_perturbations = max(10, int(0.07 * total_variables))  # At least 10 perturbations
+
+        perturbed_solution = copy.deepcopy(solution)
+        
+        # Apply multiple perturbations with the same operator
+        for _ in range(num_perturbations):
+            perturbed_solution = operator.applyChange(perturbed_solution)
+        
         perturbed_solution.evaluate(data)  # Evaluate the perturbed solution
         self.n_eval += 1
         return perturbed_solution
@@ -269,88 +124,76 @@ class VariableNeighborhoodSearch2(Algorithm):
         Usado para aceitar solução perturbada quando pode "ir mais longe"
         """
         delta = worse_fx - better_fx
-        if delta <= 0:
-            # Se não é realmente pior, aceita
+        return random.random() < math.exp(-delta / self.T)
+
+    def neighborhood_change(self, new_fx, current_fx):
+        """
+        Muda para o próximo operador (ou reinicia se todos já foram testados)
+        """
+        if new_fx <= current_fx:
             return True
         else:
-            # Aceita solução pior com probabilidade exp(−Δ/T)
-            return random.random() < math.exp(-delta / self.T)
+            self.accept_worse_solution(current_fx, new_fx)
         
-    def solve(self, data, log=None):
-        convergence = super().solve(data)
+    def solve(self, data, quiet=False, log=None):
+        current_solution = super().solve(data)
         tic = time()
-        solution = Solution()  # Create a new solution
+        convergence = Convergence()  # Create a new convergence object
 
         if (self.initialization == 0):
-            solution.generateChromosomeDeterministic(data)
+            current_solution.generateChromosomeDeterministic(data)
         else:
-            solution.generateChromosomeStochastic(data)
+            current_solution.generateChromosomeStochastic(data)
 
-        solution.evaluate(data)
+        current_solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
-        convergence.add(solution, self.n_eval) # Add FX e numero de avaliações
+        convergence.add(current_solution, self.n_eval) # Add FX e numero de avaliações
 
-        best_overall = copy.deepcopy(solution)  # Keep track of the best overall solution
-        base_solution = copy.deepcopy(solution)  # Solução base atual
+        best_overall = copy.deepcopy(current_solution)  # Keep track of the best overall solution
 
-        print(f"Initial FX: {solution.FX}")
-        number_of_neighbors = 15
+        if not quiet:
+            print(f"Initial FX: {current_solution.FX}")
+
+        number_of_neighbors = 45
+        operator_index = 0
 
         # Loop principal do VNS2 Novo
         while self.n_eval < self.max_eval:
             
-            # FASE 1: Intensificação na base atual (sem perturbação)
-            print(f"FASE 1: Intensificação na base {base_solution.FX}")
-            minimo_local_1 = self.intensive_local_search(base_solution, data, number_of_neighbors, log)
-            print(f"Mínimo local 1 (sem perturbação): {minimo_local_1.FX}")
+            new_solution = self.local_search(current_solution, data, 
+                                             number_of_neighbors, log)
             
             if self.n_eval >= self.max_eval:
                 break
-            
-            # FASE 2: Perturbação do mínimo_local_1 + Intensificação
-            # Escolhe operador aleatório para perturbação
-            perturbation_operator = random.randint(0, len(self.operators) - 1)
-            perturbed_base = self.perturbation(minimo_local_1, data, perturbation_operator)
-            
-            print(f"FASE 2: Perturbação {minimo_local_1.FX} → {perturbed_base.FX}")
-            minimo_local_2 = self.intensive_local_search(perturbed_base, data, number_of_neighbors, log)
-            print(f"Mínimo local 2 (com perturbação): {minimo_local_2.FX}")
-            
-            if self.n_eval >= self.max_eval:
-                break
-            
-            # FASE 3: Decisão estratégica
-            if minimo_local_2.FX < minimo_local_1.FX:
-                # Melhorou com a perturbação
-                base_solution = copy.deepcopy(minimo_local_2)
-                print(f"DECISÃO: Aceita perturbada (melhorou): {minimo_local_2.FX}")
-                
-            elif self.accept_worse_solution(minimo_local_1.FX, minimo_local_2.FX):
-                # Aceita solução pior para "ir mais longe"  
-                base_solution = copy.deepcopy(minimo_local_2)
-                print(f"DECISÃO: Aceita perturbada via SA (pode ir mais longe): {minimo_local_1.FX} → {minimo_local_2.FX}")
-                
+
+            if new_solution.FX < best_overall.FX:
+                best_overall = copy.deepcopy(new_solution)
+
+            if self.neighborhood_change(new_solution.FX, current_solution.FX):
+                current_solution = new_solution
+                operator_index = 0
             else:
-                # Mantém a melhor solução (minimo_local_1)
-                base_solution = copy.deepcopy(minimo_local_1)
-                print(f"DECISÃO: Mantém minimo_local_1: {minimo_local_1.FX}")
-            
-            # Atualiza melhor solução global
-            if base_solution.FX < best_overall.FX:
-                best_overall = copy.deepcopy(base_solution)
-                print(f"NOVA MELHOR GLOBAL: {best_overall.FX}")
+                operator_index += 1
+                if operator_index >= len(self.operator):
+                    operator_index = 0
+
+            if not quiet:
+                print(f"Current FX: {current_solution.FX} "
+                      f"| Best FX: {best_overall.FX}"
+                      f" | Evaluations: {self.n_eval}")
             
             # Atualiza temperatura
             self.T *= self.cooling_rate
             
             # Registra convergência
-            convergence.add(base_solution, self.n_eval)
-            
-            print(f"Fim do ciclo - Base atual: {base_solution.FX}, Avaliações: {self.n_eval}")
-            print("-" * 50)
+            convergence.add(best_overall, self.n_eval)
 
-        print(f"Final solution: {best_overall.FX}")
-        print(f"Number of evaluations: {self.n_eval}")
+            current_solution = self.shake(current_solution, data,
+                                          operator_index)
+            
+        if not quiet:
+            print(f"Final solution: {best_overall.FX}")
+            print(f"Number of evaluations: {self.n_eval}")
         
         best_overall.execution_time = time() - tic
         best_overall.convergence = convergence
@@ -360,14 +203,151 @@ class VariableNeighborhoodSearch2(Algorithm):
         return best_overall
 
 class ExactAlgorithm(Algorithm):
-    def __init__(self):
-        pass
+    def __init__(self, time_limit=None, use_initial_solution=True):
+        self.time_limit = time_limit
+        self.use_initial_solution = use_initial_solution
 
-    def solve(self, data):
+    def extract_solution_from_model(self, modelo, data, X, Go, Gr, Gw, O, Oc, 
+                                    Ow, L, P, D, U, Y, W, R, V):
+        """
+        Extrai as variáveis de decisão do modelo Gurobi e cria um objeto Solution.
+        """
+        solution = Solution()
+        
+        # Extrair valores das variáveis de decisão do Gurobi
+        # Variáveis de fluxo
+        solution.X = np.array([[X[i, j].X for j in range(int(data.J))] for i in range(int(data.I))])
+        solution.Go = np.array([[Go[j, k].X for k in range(int(data.K))] for j in range(int(data.J))])
+        solution.Gr = np.array([[Gr[j, e].X for e in range(int(data.E))] for j in range(int(data.J))])
+        solution.Gw = np.array([[Gw[j, q].X for q in range(int(data.Q))] for j in range(int(data.J))])
+        solution.O = np.array([[O[e, n2].X for n2 in range(int(data.N2))] for e in range(int(data.E))])
+        solution.Oc = np.array([[Oc[e, s].X for s in range(int(data.S))] for e in range(int(data.E))])
+        solution.Ow = np.array([[Ow[e, q].X for q in range(int(data.Q))] for e in range(int(data.E))])
+        solution.L = np.array([[L[s, n3].X for n3 in range(int(data.N3))] for s in range(int(data.S))])
+        solution.P = np.array([[P[k, n1].X for n1 in range(int(data.N1))] for k in range(int(data.K))])
+        solution.D = np.array([[D[q, m].X for m in range(int(data.M))] for q in range(int(data.Q))])
+        
+        # Variáveis binárias (converter para inteiros)
+        solution.U = np.array([int(round(U[j].X)) for j in range(int(data.J))])
+        solution.Y = np.array([int(round(Y[q].X)) for q in range(int(data.Q))])
+        solution.W = np.array([int(round(W[k].X)) for k in range(int(data.K))])
+        solution.R = np.array([int(round(R[e].X)) for e in range(int(data.E))])
+        solution.V = np.array([int(round(V[s].X)) for s in range(int(data.S))])
+        
+        # Valor da função objetivo
+        solution.FX = modelo.objVal
+              
+        # Converter para matrizes esparsas
+        solution.convert2sparse()
+        
+        return solution
+
+    def set_initial_solution(self, modelo, data, X, Go, Gr, Gw, O, Oc, Ow, L, P, D, U, Y, W, R, V, quiet=False):
+        """
+        Define uma solução inicial para o Gurobi baseada na geração estocástica de cromossomo.
+        """
+        # Criar uma solução inicial usando geração estocástica
+        initial_solution = Solution()
+        initial_solution.generateChromosomeStochastic(data)
+        initial_solution.evaluate(data)
+                
+        try:
+            # Definir valores iniciais para as variáveis contínuas de fluxo
+            for i in range(int(data.I)):
+                for j in range(int(data.J)):
+                    if hasattr(initial_solution, 'X') and initial_solution.X is not None:
+                        X[i, j].start = float(initial_solution.X[i, j])
+            
+            for j in range(int(data.J)):
+                for k in range(int(data.K)):
+                    if hasattr(initial_solution, 'Go') and initial_solution.Go is not None:
+                        Go[j, k].start = float(initial_solution.Go[j, k])
+            
+            for j in range(int(data.J)):
+                for e in range(int(data.E)):
+                    if hasattr(initial_solution, 'Gr') and initial_solution.Gr is not None:
+                        Gr[j, e].start = float(initial_solution.Gr[j, e])
+            
+            for j in range(int(data.J)):
+                for q in range(int(data.Q)):
+                    if hasattr(initial_solution, 'Gw') and initial_solution.Gw is not None:
+                        Gw[j, q].start = float(initial_solution.Gw[j, q])
+            
+            for e in range(int(data.E)):
+                for n2 in range(int(data.N2)):
+                    if hasattr(initial_solution, 'O') and initial_solution.O is not None:
+                        O[e, n2].start = float(initial_solution.O[e, n2])
+            
+            for e in range(int(data.E)):
+                for s in range(int(data.S)):
+                    if hasattr(initial_solution, 'Oc') and initial_solution.Oc is not None:
+                        Oc[e, s].start = float(initial_solution.Oc[e, s])
+            
+            for e in range(int(data.E)):
+                for q in range(int(data.Q)):
+                    if hasattr(initial_solution, 'Ow') and initial_solution.Ow is not None:
+                        Ow[e, q].start = float(initial_solution.Ow[e, q])
+            
+            for s in range(int(data.S)):
+                for n3 in range(int(data.N3)):
+                    if hasattr(initial_solution, 'L') and initial_solution.L is not None:
+                        L[s, n3].start = float(initial_solution.L[s, n3])
+            
+            for k in range(int(data.K)):
+                for n1 in range(int(data.N1)):
+                    if hasattr(initial_solution, 'P') and initial_solution.P is not None:
+                        P[k, n1].start = float(initial_solution.P[k, n1])
+            
+            for q in range(int(data.Q)):
+                for m in range(int(data.M)):
+                    if hasattr(initial_solution, 'D') and initial_solution.D is not None:
+                        D[q, m].start = float(initial_solution.D[q, m])
+            
+            # Definir valores iniciais para as variáveis binárias
+            for j in range(int(data.J)):
+                if hasattr(initial_solution, 'U') and initial_solution.U is not None:
+                    U[j].start = int(initial_solution.U[j])
+            
+            for q in range(int(data.Q)):
+                if hasattr(initial_solution, 'Y') and initial_solution.Y is not None:
+                    Y[q].start = int(initial_solution.Y[q])
+            
+            for k in range(int(data.K)):
+                if hasattr(initial_solution, 'W') and initial_solution.W is not None:
+                    W[k].start = int(initial_solution.W[k])
+            
+            for e in range(int(data.E)):
+                if hasattr(initial_solution, 'R') and initial_solution.R is not None:
+                    R[e].start = int(initial_solution.R[e])
+            
+            for s in range(int(data.S)):
+                if hasattr(initial_solution, 'V') and initial_solution.V is not None:
+                    V[s].start = int(initial_solution.V[s])
+                    
+        except Exception as e:
+            # Se houver algum erro ao definir a solução inicial, apenas continue sem ela
+            if not quiet:
+                print(f"Aviso: Não foi possível definir solução inicial: {e}")
+            pass
+        
+        return initial_solution.FX
+
+    def solve(self, data, quiet=False):
+        # Configurar ambiente para suprimir mensagens de licença
+
+        if quiet:
+            env = grb.Env(empty=True)
+            env.setParam('OutputFlag', 0)
+            env.start()
+        else:
+            env = grb.Env()
+            env.start()
+        
         # Criação do modelo
         modelo = grb.Model(
             """Otimização de rede de cadeia de abastecimento de pistache com "
-            "realimentação"""
+            "realimentação""",
+            env=env
         )
 
         # Variáveis de decisão positivas: fluxos de produtos
@@ -559,30 +539,95 @@ class ExactAlgorithm(Algorithm):
             name="Eq.(22)"
         )
 
-        # Resolvendo o modelo
-        modelo.optimize()
+        if self.time_limit is not None:
+            modelo.setParam('TimeLimit', self.time_limit)
 
-        # Retornando o valor da função objetivo
-        return modelo.objVal
+        # Definir solução inicial se habilitado
+        if self.use_initial_solution:
+            initial_fx = self.set_initial_solution(modelo, data, X, Go, Gr, Gw, 
+                                                   O, Oc, Ow, L, P, D, U, Y, W, 
+                                                   R, V, quiet)
+            if not quiet:
+                print(f"Solução inicial definida com FX = {initial_fx}")
 
+        # Resolvendo o modelo (OutputFlag já configurado no ambiente)
+        try:
+            tic = time()
+            modelo.optimize()
+        except:
+            time_limit = time() - tic
+            modelo.setParam('TimeLimit', .8*time_limit)
+            modelo.optimize()
+
+
+        # Verificar se uma solução ótima foi encontrada
+        if modelo.status == grb.GRB.OPTIMAL:
+            # Extrair solução do modelo usando método auxiliar
+            solution = self.extract_solution_from_model(modelo, data, X, Go, 
+                                                        Gr, Gw, O, Oc, Ow, L, 
+                                                        P, D, U, Y, W, R, V)
+            solution.n_eval = modelo.IterCount + modelo.NodeCount  # Aproximação
+            if not quiet:
+                print(f"Solução ótima encontrada: FX = {solution.FX}")
+            
+        else:
+            # Se não encontrou solução ótima, criar solução vazia
+            solution = Solution()
+            solution.FX = float('inf')
+            
+            # Informar o status
+            if not quiet:
+                print(f"Gurobi status: {modelo.status}")
+            if modelo.status == grb.GRB.INFEASIBLE:
+                if not quiet:
+                    print("Modelo infeasível")
+            elif modelo.status == grb.GRB.UNBOUNDED:
+                if not quiet:
+                    print("Modelo não limitado")
+            elif modelo.status == grb.GRB.TIME_LIMIT:
+                if not quiet:
+                    print("Limite de tempo atingido")
+                # Se chegou no limite de tempo, pode ter uma solução sub-ótima
+                if modelo.solCount > 0:
+                    solution = self.extract_solution_from_model(modelo, data, 
+                                                                X, Go, Gr, Gw, 
+                                                                O, Oc, Ow, L, 
+                                                                P, D, U, Y, W,
+                                                                R, V)
+                    solution.n_eval = modelo.IterCount + modelo.NodeCount  # Aproximação
+                    if not quiet:
+                        print(f"Melhor solução encontrada no limite de tempo: FX = {solution.FX}")
+            else:
+                if not quiet:
+                    print(f"Outro status de terminação: {modelo.status}")
+
+        # Fechar ambiente
+        env.close()
+        
+        return solution
 
 class IteratedLocalSearch(Algorithm):
-    def __init__(self, operators, max_iter, max_eval=100000):
-        self.operators = operators  # Operators for generating neighbors
-        self.max_iter = max_iter  # Maximum number of iterations
+    def __init__(self, operator, max_eval=100000, initialization=1,
+                 number_neighbors=15, noimprovement_limit=5):
+        self.operator = operator  # operator for generating neighbors
         self.max_eval = max_eval  # Maximum number of evaluations
         self.n_eval = 0  # Number of evaluations
+        self.initialization = initialization  # Initialization method
+        self.number_neighbors = number_neighbors  # Number of neighbors to consider
+        self.noimprovement_limit = noimprovement_limit  # No improvement limit
 
-    def localSearch(self, solution, data):
+    def localSearch(self, solution, data, number_of_neighbors=15,
+                    noimprovement_limit=5):
 
         failure_counter = 0
-        while True:
+        while self.n_eval < self.max_eval:
+
             neighbors = []
             Fx_neighbors = []
 
-            for n in range(len(self.operators)):
+            for n in range(number_of_neighbors):
                 # Generate a neighbor solution (apply an operator to the current solution)
-                neighbor = self.operators[n].applyChange(solution)
+                neighbor = self.operator.applyChange(solution)
                 neighbor.evaluate(data)  # Evaluate the neighbor solution
                 self.n_eval += 1
                 neighbors.append(neighbor)  # Store the neighbor solution
@@ -598,19 +643,19 @@ class IteratedLocalSearch(Algorithm):
                 failure_counter = 0
             else:
                 failure_counter += 1
-                if failure_counter == 5:  # If 5 consecutive failures occur, break the loop
+                if failure_counter == noimprovement_limit:  # If consecutive failures occur, break the loop
                     break
 
         return solution
 
-    def perturbation(self, solution, data):
-        for n in range(len(self.operators)):
-            solution = self.operators[n].applyChange(solution)
+    def shake(self, solution, data, num_shakes=10):
+        for _ in range(num_shakes):
+            solution = self.operator.applyChange(solution)
         solution.evaluate(data)
         self.n_eval += 1
         return solution
 
-    def solve(self, data):
+    def solve(self, data, quiet=False):
         """
         Algoritmo Pesquisa Local Iterativa
             s <- Gera()
@@ -622,41 +667,56 @@ class IteratedLocalSearch(Algorithm):
                 s2 <- Aceita (s2, s3, memória)
             até condição de paragem ser verdadeira
         """
-        convergence = super().solve(data)
-        solution = Solution()
-        solution.generateChromosome(data)
-        solution.evaluate(data)
+        current_solution = super().solve(data)
+        if (self.initialization == 0):
+            current_solution.generateChromosomeDeterministic(data)
+        else:
+            current_solution.generateChromosomeStochastic(data)
+        current_solution.evaluate(data)
         self.n_eval = 1  # Prevent early stopping in case of reusing the object
-        convergence.add(solution, self.n_eval)
-        #print(f"Initial FX: {solution.FX}")
+        convergence = Convergence()
+        convergence.add(current_solution, self.n_eval)
+
+        num_shakes = max(10, int(0.07 * data.num_var_priority))  # Number of shakes proportional to problem size
+
+        if not quiet:
+            print(f"Initial FX: {current_solution.FX}")
 
         # Local search on the initial solution
-        solution = self.localSearch(solution, data)
+        current_solution = self.localSearch(current_solution, data,
+                                            self.number_neighbors,
+                                            self.noimprovement_limit)
 
         while self.n_eval < self.max_eval:
             # Perturbation of previous local search solution
-            perturbed_solution = self.perturbation(solution, data)
+            new_solution = self.shake(current_solution, data, num_shakes)
             # Local search on the perturbed solution
-            candidate = self.localSearch(perturbed_solution, data)
+            new_solution = self.localSearch(new_solution, data)
 
-            if candidate.FX < solution.FX:
-                solution = candidate
-            
-            convergence.add(solution, self.n_eval)
+            if new_solution.FX < current_solution.FX:
+                current_solution = new_solution
 
-        #print(f"Final solution: {solution.FX}")
-        solution.convergence = convergence
-        return solution
+            convergence.add(current_solution, self.n_eval)
 
+            if not quiet:
+                print(f"Current FX: {current_solution.FX} "
+                      f"| Evaluations: {self.n_eval}")
+
+        if not quiet:
+            print(f"Final solution: {current_solution.FX}")
+        current_solution.convergence = convergence
+        return current_solution
 
 class GeneticAlgorithm(Algorithm):
-    def __init__(self, population_size, crossover_rate, mutation_rate, max_eval, initialization):
+    def __init__(self, population_size, crossover_rate=0.9, mutation_rate=0.1,
+                 max_eval=100000, initialization=0, crossover_type="hybrid"):
         self.population_size = population_size  # Size of the population
         self.crossover_rate = crossover_rate  # Crossover rate
         self.mutation_rate = mutation_rate  # Mutation rate
         self.initialization = initialization  # Initialization method for the population
         self.max_eval = max_eval  # Maximum number of evaluations
         self.n_eval = 0  # Number of evaluations
+        self.crossover_type = crossover_type  # Type of crossover: "segment", "intra_segment", or "hybrid"
 
     def initialize_population(self, data):
         # Initialize the population with random solutions
@@ -697,15 +757,61 @@ class GeneticAlgorithm(Algorithm):
 
         return child1, child2
 
-    def mutate(self, solution):
+    def crossover_intra_segment(self, parent1, parent2):
+        """
+        Perform intra-segment crossover: applies crossover within each segment
+        instead of swapping entire segments between parents.
+        """
+        child1, child2 = Solution(), Solution()
+
+        # Apply crossover within each segment S1 to S8
+        for i in range(1, 9):
+            segment1 = getattr(parent1, f"S{i}").copy()
+            segment2 = getattr(parent2, f"S{i}").copy()
+            
+            # Only perform crossover if segment has more than 1 element
+            if len(segment1) > 1:
+                # Single point crossover within the segment
+                crossover_point = np.random.randint(1, len(segment1))
+                
+                # Create children segments using list concatenation
+                child_segment1 = np.concatenate((segment1[:crossover_point], [x for x in segment2 if x not in list(segment1[:crossover_point])]))
+                child_segment2 = np.concatenate((segment2[:crossover_point], [x for x in segment1 if x not in list(segment2[:crossover_point])]))
+
+                # Assign the crossed segments to children
+                setattr(child1, f"S{i}", child_segment1)
+                setattr(child2, f"S{i}", child_segment2)
+            else:
+                # If segment has only 1 element, just copy from parents
+                setattr(child1, f"S{i}", segment1)
+                setattr(child2, f"S{i}", segment2)
+
+        return child1, child2
+
+    def crossover_hybrid(self, parent1, parent2, intra_segment_prob=0.5):
+        """
+        Hybrid crossover: randomly chooses between segment-level crossover 
+        and intra-segment crossover based on probability.
+        
+        Args:
+            parent1, parent2: Parent solutions
+            intra_segment_prob: Probability of using intra-segment crossover (default 0.5)
+        """
+        if np.random.rand() < intra_segment_prob:
+            return self.crossover_intra_segment(parent1, parent2)
+        else:
+            return self.crossover(parent1, parent2)
+
+    def mutate(self, solution, max_mutations=3):
         # Perform mutation on a segment of the solution's chromosome
-        segment = np.random.randint(1, 9)  # Select a random segment
-        chromosome = getattr(solution, f"S{segment}").copy()
-        # Select two random positions in the segment to swap
-        i, j = np.random.randint(0, len(chromosome), size=2)
-        chromosome[i], chromosome[j] = chromosome[j], chromosome[i]
-        # Update the solution's segment with the mutated chromosome
-        setattr(solution, f"S{segment}", chromosome)
+        for _ in range(max_mutations):
+            segment = np.random.randint(1, 9)  # Select a random segment
+            chromosome = getattr(solution, f"S{segment}").copy()
+            # Select two random positions in the segment to swap
+            i, j = np.random.randint(0, len(chromosome), size=2)
+            chromosome[i], chromosome[j] = chromosome[j], chromosome[i]
+            # Update the solution's segment with the mutated chromosome
+            setattr(solution, f"S{segment}", chromosome)
 
     def tournament_selection(self, population):
         # Perform binary tournament selection to retain only the best individuals
@@ -718,8 +824,9 @@ class GeneticAlgorithm(Algorithm):
                 selected.append(population[pairs[i+1]])
         return selected
 
-    def solve(self, data, log=None):
-        convergence = super().solve(data)
+    def solve(self, data, log=None, quiet=False):
+        _ = super().solve(data)
+        convergence = Convergence()  # Create a new convergence object
         # Prevent early stopping in case of reusing the object
         self.n_eval = 0
 
@@ -729,6 +836,9 @@ class GeneticAlgorithm(Algorithm):
         population = self.initialize_population(data)
         best_solution = min(population, key=lambda sol: sol.FX)
         convergence.add(best_solution, self.n_eval)
+
+        if not quiet:
+            print(f"Initial best FX = {best_solution.FX}")
 
         while self.n_eval < self.max_eval:
             new_population = []
@@ -743,9 +853,14 @@ class GeneticAlgorithm(Algorithm):
                 # Select two parents from the current population randomly
                 parent1, parent2 = self.select_parents(population)
 
-                # Perform crossover based on the crossover rate
+                # Perform crossover based on the crossover rate and type
                 if np.random.rand() < self.crossover_rate:
-                    child1, child2 = self.crossover(parent1, parent2)
+                    if self.crossover_type == "intra_segment":
+                        child1, child2 = self.crossover_intra_segment(parent1, parent2)
+                    elif self.crossover_type == "hybrid":
+                        child1, child2 = self.crossover_hybrid(parent1, parent2)
+                    else:  # default "segment"
+                        child1, child2 = self.crossover(parent1, parent2)
                 else:
                     child1, child2 = parent1, parent2
 
@@ -757,11 +872,8 @@ class GeneticAlgorithm(Algorithm):
 
                 # Evaluate the new solutions
                 child1.evaluate(data)
-                self.n_eval += 1
-                if self.n_eval >= self.max_eval:
-                    break
                 child2.evaluate(data)
-                self.n_eval += 1
+                self.n_eval += 2
                 if self.n_eval >= self.max_eval:
                     break
 
@@ -776,8 +888,48 @@ class GeneticAlgorithm(Algorithm):
             else:
                 best_solution = min(new_population, key=lambda sol: sol.FX)
             convergence.add(best_solution, self.n_eval)
-            #print(f"Best FX = {best_solution.FX}")
 
+            if not quiet:
+                print(f"Current best FX = {best_solution.FX} "
+                      f"| Evaluations: {self.n_eval}")
+        
+        if not quiet:
+            print(f"Best FX = {best_solution.FX}")
         best_solution.execution_time = time()-tic
         best_solution.convergence = convergence
         return best_solution
+    
+if __name__ == "__main__":
+
+    from Problem import loadInstance
+    from Log import Neighborhood_op_log
+    from Neighborhood import Swap, Reversion, Insertion, Slide, InactiveActiveSwap 
+
+    # Example usage
+    problem = loadInstance("data_10", quiet=True)
+
+    # Test Exact Algorithm without initial solution
+    print("\n=== Exact Algorithm (Gurobi) sem solução inicial ===")
+    exact = ExactAlgorithm(time_limit=None, use_initial_solution=False)
+    exact_solution = exact.solve(problem)
+
+    # Test Exact Algorithm with initial solution
+    print("\n=== Exact Algorithm (Gurobi) com solução inicial ===")
+    exact_with_init = ExactAlgorithm(time_limit=None, use_initial_solution=True)
+    exact_solution_with_init = exact_with_init.solve(problem)
+
+    # Test VNS with InactiveActiveSwap
+    operator = [InactiveActiveSwap(1)]
+    vns = VariableNeighborhoodSearch2(operator, max_eval=1000,  # Reduced for testing
+                                      initialization=1, init_temp=100,
+                                      cooling_rate=0.995)
+    log = Neighborhood_op_log()
+    print("=== VNS with InactiveActiveSwap ===")
+    best_solution_vns = vns.solve(problem, log=log)
+
+    # Hybrid crossover
+    ga_hybrid = GeneticAlgorithm(population_size=20, crossover_rate=0.9, 
+                                mutation_rate=0.1, max_eval=1000, 
+                                initialization=1, crossover_type="hybrid")
+    print("\n=== GA with Hybrid Crossover ===")
+    best_ga_hybrid = ga_hybrid.solve(problem)        

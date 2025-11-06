@@ -1,13 +1,17 @@
 import numpy as np
 from scipy.sparse import csr_matrix
+from numba import jit
 
 class Solution:
     def __init__(self):
-        self.FX = None  # Objective function value
+        self.FX = float('inf')  # Objective function value (start with high value)
         self.S1, self.S2, self.S3, self.S4, self.S5, self.S6, self.S7, self.S8 = [None] * 8  # Chromosomes
+        self.A1, self.A2, self.A3, self.A4, self.A5, self.A6, self.A7, self.A8 = [None] * 8  # Active nodes
         self.X, self.Go, self.Gr, self.Gw, self.O, self.Oc, self.Ow, self.L, self.P, self.D, self.U, self.Y, self.W, self.R, self.V = [None] * 15  # Decision variables
         self.convergence = None  # Convergence curve
         self.n_eval = 0
+        self.execution_time = 0.0  # Execution time
+        self.log = None  # Log for operations
 
     def calculate_priorities(self, transportation_matrix):
         """
@@ -106,63 +110,8 @@ class Solution:
             c (matrix): transportation cost of one unit of product from
             source k to depot j.
         """
-        K, J = a.size, b.size  # K = number of sources, J = number of depots
-        a, b, v = a.copy(), b.copy(), v.copy()
-
-        # The amount of product shipped from source k to depot j
-        g = np.zeros((K, J))
-
-        # Check if the total available from sources is less than the total demand from depots
-        """ if np.sum(a) < np.sum(b):
-            raise ValueError("Total available from sources is less than total demand from depots. "
-                            "The flux cannot be satisfied.")
-        """
-
-        # Iteration counter
-        it = 0
-
-        while True:
-            # Select a node
-            l = np.argmax(v)  # Select the node with the highest value
-
-            if l < K:  # Select a source
-                k = l
-                possible_depots = np.nonzero(v[K:])[0]
-                j = possible_depots[np.argmin(c[k, possible_depots].flatten())]
-            else:  # Select a depot
-                j = l-K
-                possible_sources = np.nonzero(v[:K])[0]
-                k = possible_sources[np.argmin(c[possible_sources, j].flatten())]
-
-            # Assign available amount of units
-            g[k, j] = np.minimum(a[k], b[j])
-
-            if show:
-                print(
-                    f"it={it}, v={v}, a={a}, b={b}, k={k+1}, j={j+1}, g_kj={g[k, j]}")
-
-            # Update availabilities on source k and depot j
-            a[k] -= g[k, j]
-            b[j] -= g[k, j]
-
-            if a[k] == 0:
-                v[k] = 0
-            if b[j] == 0:
-                v[K + j] = 0
-
-            it += 1
-
-            if np.all(v[K:] == 0) or np.sum(a) == 0:
-                break
-
-        if show:
-            print(
-                f"it={it}, v={v}, a={a}, b={b}, k={k+1}, j={j+1}, g_kj={g[k, j]}")
-
-        # Calculate transportation cost
-        cost = np.sum(g*c)
-
-        return cost, g
+        cost, g, active = _decodingStep(v, a, b, c)
+        return cost, g, active
 
     def decode(self, data):
         """
@@ -185,7 +134,7 @@ class Solution:
         c1 = data.Cp + data.Cw[:, None]
 
         # Calculating cost and transportation matrix
-        totalcost, self.P = self.decodingStep(self.S1, a1, b1, c1)
+        totalcost, self.P, self.A1 = self.decodingStep(self.S1, a1, b1, c1)
 
         # --------------------------------------------------------------------------------------------------------
         # Cosmetics factories -> cosmetics consumers
@@ -193,8 +142,9 @@ class Solution:
         b2 = data.Ds
         c2 = data.Cl + data.Cv[:, None]
         # L = how much cosmetic was sent to each consumer
-        cost2, self.L  = self.decodingStep(self.S2, a2, b2, c2)
+        cost2, self.L, self.A2 = self.decodingStep(self.S2, a2, b2, c2)
         totalcost += cost2
+
 
         # --------------------------------------------------------------------------------------------------------
         # Oil extraction centers -> oil consumers + cosmetics factories
@@ -206,7 +156,7 @@ class Solution:
         c3 = np.hstack(
             (data.CN + data.Cr[:, None], data.CS + data.Cr[:, None]))
         # OOc is an array with the amount of product that should be sent to each of the oil consumers and to the cosmetics factory (hence it needs to be split in two arrays)
-        cost3, OOc = self.decodingStep(self.S3, a3, b3, c3)
+        cost3, OOc, self.A3 = self.decodingStep(self.S3, a3, b3, c3)
         totalcost += cost3
 
         self.O = OOc[:, :data.N2]
@@ -216,15 +166,15 @@ class Solution:
         # Processing center -> pistachio factories + oil extraction centers
 
         # Step 1: Processing center -> pistachio factories
-        a4 = data.Cpu
+        a4 = data.Cpu * (1 - data.beta) * data.theta[0]
         b4 = np.sum(self.P, axis=1) / data.gammak
-        _, self.Go = self.decodingStep(self.S4, a4, b4, data.CK + data.Cu1[:, None])
+        _, self.Go, self.A4 = self.decodingStep(self.S4, a4, b4, data.CK + data.Cu1[:, None])
 
         # --------------------------------
         # Step 2: Processing center -> oil extraction center
-        a5 = data.Cpu
+        a5 = data.Cpu * (1 - data.beta) * data.theta[1]
         b5 = (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1)) / (1 - data.lamb)
-        _, self.Gr = self.decodingStep(self.S5, a5, b5, data.CE + data.Cu2[:, None])
+        _, self.Gr, self.A5 = self.decodingStep(self.S5, a5, b5, data.CE + data.Cu2[:, None])
 
         # --------------------------------
         # Step 3: enforcing equality constraints
@@ -240,31 +190,45 @@ class Solution:
         # For each processing center
         for j in range(data.J):
 
+            if self.Gr[j, :].sum() == 0 and self.Go[j, :].sum() == 0:
+                continue
+
             # If the demand related to pistachio factories is higher
             if bX1[j] > bX2[j]:
 
                 # The final processing center demand is the demand related to pistachio factories
                 b[j] = bX1[j]
 
-                # Find which oil extraction center has the lowest cost
-                e = np.argmin(data.CE[j, :] + data.Cu2[j])
-
                 # Calculate how much raw kernel should leave the processing center
                 amount = b[j] * data.theta[1] * (1 - data.beta)
+
+                # Find which oil extraction center has the lowest cost
+                sorted_indices = np.argsort(data.CE[j, :] + data.Cu2[j])
+                for e in sorted_indices:
+                    if self.Gr[:, e].sum() + amount <= data.Cpr[e]:
+                        break
+                    # If all oil extraction centers have reached their capacity
+                    elif self.Gr[:, e].sum() + amount > data.Cpr[e] and e == sorted_indices[-1]:
+                        return float('inf')  # Infeasible solution
 
                 # Assign to that segment the amount of raw kernel needed to complete the final demand
                 self.Gr[j, e] = self.Gr[j, e] + amount - np.sum(self.Gr[j, :])
 
             # Otherwise
-            else:
+            elif bX1[j] < bX2[j]:
                 # The final processing center demand is the demand related to the oil extraction center
                 b[j] = bX2[j]
 
-                # Find which pistachio factory has the lowest cost
-                k = np.argmin(data.CK[j, :] + data.Cu1[j])
-
                 # Calculate how much open-mouth pistachio should leave the processing center
                 amount = b[j] * data.theta[0] * (1 - data.beta)
+
+                sorted_indices = np.argsort(data.CK[j, :] + data.Cu1[j])
+                for k in sorted_indices:
+                    if self.Go[:, k].sum() + amount <= data.Cpw[k]:
+                        break
+                    # If all pistachio factories have reached their capacity
+                    elif self.Go[:, k].sum() + amount > data.Cpw[k] and k == sorted_indices[-1]:
+                        return float('inf')  # Infeasible solution
 
                 # Assign to that segment the amount of open-mouth pistachio needed to complete the final demand
                 self.Go[j, k] = self.Go[j, k] + amount - np.sum(self.Go[j, :])
@@ -278,7 +242,7 @@ class Solution:
         a6 = data.Cpa
         b6 = np.sum(self.Go, axis=1) / (1 - data.beta) / data.theta[0]
         c6 = data.CX + data.CI[:, None]
-        cost6, self.X = self.decodingStep(self.S6, a6, b6, c6)
+        cost6, self.X, self.A6 = self.decodingStep(self.S6, a6, b6, c6)
         totalcost += cost6
 
         # --------------------------------------------------------------------------------------------------------
@@ -286,7 +250,7 @@ class Solution:
         a7 = data.gammaq * data.Cpy
         b7 = data.Dc
         c7 = data.Cd + data.Cy[:, None]
-        cost7, self.D = self.decodingStep(self.S7, a7, b7, c7)
+        cost7, self.D, self.A7 = self.decodingStep(self.S7, a7, b7, c7)
         totalcost += cost7
 
         # --------------------------------------------------------------------------------------------------------
@@ -300,14 +264,26 @@ class Solution:
 
         # The minimum amount of waste needed by the composting centers
         b8 = np.sum(self.D, axis=1) / data.gammaq
+        b8[b8 > data.Cpy] = data.Cpy[b8 > data.Cpy]  # Demand cannot exceed capacity
+
+        # The amount of waste received in each composting center
+        Cpy = np.zeros(data.Q)
 
         # For each processing center
         for j in range(data.J):
             # Identify the composting center with the lowest cost
-            q = np.argmin(data.CJ[j, :])
+            # and that has not yet reached its capacity
+            sorted_indices = np.argsort(data.CJ[j, :])
+            for q in sorted_indices:
+                if Cpy[q] + a8[j] <= data.Cpy[q]:
+                    break
+                # If all composting centers have reached their capacity
+                elif Cpy[q] >= data.Cpy[q] and q == sorted_indices[-1]:
+                    return float('inf')  # Infeasible solution
 
             # Assign all the waste to that segment
             self.Gw[j, q] = a8[j]
+            Cpy[q] += a8[j]
 
         # For each composting center
         for q in range(data.Q):
@@ -327,11 +303,14 @@ class Solution:
             # Defining the capacity of each source
             a8 = np.sum(self.Gr, axis=0) * data.lamb
 
+            # If the total available from sources is less than the total demand from depots
             if np.sum(a8) < np.sum(b8):
+
+                # Scale down the demand to match the available supply
                 delta = np.sum(b8)/np.sum(a8)
                 b8 = b8 / delta
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
-                _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
+                _, self.Ow, self.A8 = self.decodingStep(self.S8, a8, b8, data.CQ)
                 
                 # Composting centers -> composting consumers
                 # Recalcular S7 devido a mudanças em Ow
@@ -339,12 +318,12 @@ class Solution:
                 b7_new = data.Dc
                 c7_new = data.Cd + data.Cy[:, None]
                 totalcost -= cost7
-                cost7_new, self.D = self.decodingStep(self.S7, a7_new, b7_new, c7_new)
+                cost7_new, self.D, self.A7 = self.decodingStep(self.S7, a7_new, b7_new, c7_new)
                 totalcost += cost7_new
             else:
                 # Calculating cost and transportation matrix
                 # print(f"S8 = {self.S8}, a8={a8}, b8={b8}, data.CQ={data.CQ}")
-                _, self.Ow = self.decodingStep(self.S8, a8, b8, data.CQ)
+                _, self.Ow, self.A8 = self.decodingStep(self.S8, a8, b8, data.CQ)
 
         # Otherwise, it is not necessary to send any waste from the oil extraction center to the composting centers
         else:
@@ -436,43 +415,43 @@ class Solution:
 
         failed_restrictions = []
         equations = [
-            (np.sum(self.X, axis=1), data.Cpa, "<=", "(1)"),
-            (np.sum(self.X, axis=0), data.Cpu, "<=", "(2)"),
-            (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0), data.Cpy, "<=", "(3)"),
-            (np.sum(self.Go, axis=0), data.Cpw, "<=", "(4)"),
-            (np.sum(self.Gr, axis=0), data.Cpr, "<=", "(5)"),
-            (np.sum(self.Oc, axis=0), data.Cpv, "<=", "(6)"),
-            (np.sum(self.Go, axis=1) + np.sum(self.Gr, axis=1) +
-             np.sum(self.Gw, axis=1), np.sum(self.X, axis=0), "<=", "(7)"),
-            (np.sum(self.Go, axis=1), (1-data.beta) *
-             data.theta[0]*np.sum(self.X, axis=0), "==", "(8)"),
-            (np.sum(self.Gr, axis=1), (1-data.beta) *
-             data.theta[1]*np.sum(self.X, axis=0), "==", "(9)"),
-            (np.sum(self.Gw, axis=1),
-             data.theta[2] * np.sum(self.X, axis=0), "==", "(10)"),
-            (np.sum(self.P, axis=1), data.gammak *
-             np.sum(self.Go, axis=0), "<=", "(12)"),
-            (np.sum(self.O, axis=1) + np.sum(self.Oc, axis=1),
-             (1-data.lamb) * np.sum(self.Gr, axis=0), "<=", "(13)"),
-            (np.sum(self.Ow, axis=1), data.lamb *
-             np.sum(self.Gr, axis=0), "<=", "(14)"),
-            (np.sum(self.L, axis=1), data.gammas *
-             np.sum(self.Oc, axis=0), "<=", "(15)"),
-            (np.sum(self.D, axis=1), data.gammaq *
-             (np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0)), "<=", "(16)"),
-            (np.sum(self.P, axis=0), data.Dp, ">=", "(17)"),
-            (np.sum(self.O, axis=0), data.Du, ">=", "(18)"),
-            (np.sum(self.L, axis=0), data.Ds, ">=", "(19)"),
-            (np.sum(self.D, axis=0), data.Dc, "<=", "(20)")
+            (np.sum(self.X, axis=1).flatten(), data.Cpa.flatten(), "<=", "(1)"),
+            (np.sum(self.X, axis=0).flatten(), data.Cpu.flatten(), "<=", "(2)"),
+            ((np.sum(self.Gw, axis=0) + np.sum(self.Ow, axis=0)).flatten(), data.Cpy.flatten(), "<=", "(3)"),
+            (np.sum(self.Go, axis=0).flatten(), data.Cpw.flatten(), "<=", "(4)"),
+            (np.sum(self.Gr, axis=0).flatten(), data.Cpr.flatten(), "<=", "(5)"),
+            (np.sum(self.Oc, axis=0).flatten(), data.Cpv.flatten(), "<=", "(6)"),
+            (np.sum(self.Go, axis=1).flatten() + np.sum(self.Gr, axis=1).flatten() +
+             np.sum(self.Gw, axis=1).flatten(), np.sum(self.X, axis=0).flatten(), "<=", "(7)"),
+            (np.sum(self.Go, axis=1).flatten(), (1-data.beta) *
+             data.theta[0]*np.sum(self.X, axis=0).flatten(), "==", "(8)"),
+            (np.sum(self.Gr, axis=1).flatten(), (1-data.beta) *
+             data.theta[1]*np.sum(self.X, axis=0).flatten(), "==", "(9)"),
+            (np.sum(self.Gw, axis=1).flatten(),
+             data.theta[2] * np.sum(self.X, axis=0).flatten(), "==", "(10)"),
+            (np.sum(self.P, axis=1).flatten(), data.gammak *
+             np.sum(self.Go, axis=0).flatten(), "<=", "(12)"),
+            (np.sum(self.O, axis=1).flatten() + np.sum(self.Oc, axis=1).flatten(),
+             (1-data.lamb) * np.sum(self.Gr, axis=0).flatten(), "<=", "(13)"),
+            (np.sum(self.Ow, axis=1).flatten(), data.lamb *
+             np.sum(self.Gr, axis=0).flatten(), "<=", "(14)"),
+            (np.sum(self.L, axis=1).flatten(), data.gammas *
+             np.sum(self.Oc, axis=0).flatten(), "<=", "(15)"),
+            (np.sum(self.D, axis=1).flatten(), data.gammaq *
+             (np.sum(self.Gw, axis=0).flatten() + np.sum(self.Ow, axis=0).flatten()), "<=", "(16)"),
+            (np.sum(self.P, axis=0).flatten(), data.Dp.flatten(), ">=", "(17)"),
+            (np.sum(self.O, axis=0).flatten(), data.Du.flatten(), ">=", "(18)"),
+            (np.sum(self.L, axis=0).flatten(), data.Ds.flatten(), ">=", "(19)"),
+            (np.sum(self.D, axis=0).flatten(), data.Dc.flatten(), "<=", "(20)")
         ]
 
         for lhs, rhs, comparison, label in equations:
             if comparison == "<=":
-                result = np.all(lhs <= rhs)
+                result = np.all(lhs - rhs <= 1e-10)
             elif comparison == "==":
-                result = np.all(lhs == rhs)
+                result = np.all(np.abs(lhs - rhs) < 1e-10)
             elif comparison == ">=":
-                result = np.all(lhs >= rhs)
+                result = np.all(lhs - rhs >= -1e-10)
             else:
                 raise ValueError("Invalid comparison operator")
 
@@ -495,3 +474,84 @@ class Solution:
         if isinstance(other, self.__class__):
             return self.__dict__ == other.__dict__
         return False
+    
+@jit(nopython=True, cache=True)
+def _decodingStep(v, a, b, c):
+    """
+    Step of the decoding process.
+
+    Args:
+        v (array): Chromosome (K+J)
+        a (array): Capacity of source k
+        b (array): Demand on depot j
+        c (matrix): transportation cost of one unit of product from
+        source k to depot j.
+    """
+    K, J = a.size, b.size  # K = number of sources, J = number of depots
+    a, b, v = a.copy(), b.copy(), v.copy()
+
+    # The amount of product shipped from source k to depot j
+    g = np.zeros((K, J))
+
+    # Iteration counter
+    it = 0
+
+    # Array to track active nodes (sources and depots)
+    # 1 if active, 0 if not
+    active = np.zeros(K + J)
+
+    while True:
+        # Select a node
+        l = np.argmax(v)  # Select the node with the highest value
+
+        # Mark the selected node as active
+        active[l] = 1
+
+        if l < K:  # Select a source
+            k = l
+            possible_depots = np.nonzero(v[K:])[0]
+            j = possible_depots[np.argmin(c[k, possible_depots].flatten())]
+        else:  # Select a depot
+            j = l-K
+            possible_sources = np.nonzero(v[:K])[0]
+            k = possible_sources[np.argmin(c[possible_sources, j].flatten())]
+
+        # Assign available amount of units
+        g[k, j] = np.minimum(a[k], b[j])
+
+        # Update availabilities on source k and depot j
+        a[k] -= g[k, j]
+        b[j] -= g[k, j]
+
+        if a[k] == 0:
+            v[k] = 0
+        if b[j] == 0:
+            v[K + j] = 0
+
+        it += 1
+
+        if np.all(v[K:] == 0) or np.sum(a) == 0:
+            break
+
+    # Calculate transportation cost
+    cost = np.sum(g*c)
+
+    return cost, g, active
+
+if __name__ == "__main__":
+    from Problem import loadInstance
+    from time import time
+    problem = loadInstance("data_100", quiet=True)
+    solution = Solution()
+    solution.generateChromosomeDeterministic(problem)
+    totaltime = 0
+    for i in range(10):
+        tic = time()
+        f = solution.evaluate(problem)
+        toc = time()
+        if i == 0:
+            continue
+        totaltime += toc - tic
+    print(f"Total time: {totaltime} seconds")
+    print(f"Objective function: {f}")
+    
