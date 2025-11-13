@@ -44,9 +44,9 @@ from Algorithm import VariableNeighborhoodSearch
 from Neighborhood import *
 
 # Experiment parameters
-experiment_name = "vns_45_novos"
-instance = 800
-results_path = f'./results/'
+experiment_name = "vns"
+instance = 100
+results_path = f'./new_results/'
 initial_guess = 0 # 0: Deterministic, 1: Stochastic
 
 # Load problem instance
@@ -57,17 +57,15 @@ print(f"Number of variables: {problem.num_var_priority}")
 num_evals = problem.num_var_priority * 10
 
 operators_sets = [
-    [Swap(1), Reversion(1), Insertion(1), Slide(1)],
-    [ETN(1), RS(1), SPS(1), SRPS(1)],
-    [InactiveActiveSwap(1), SourceDepotSwap(1, problem), FixedCostSwap(1, problem),TransportCostSwap(1, problem),  SourceCostBoost(1, problem)],
-    [Reversion(1), InactiveActiveSwap(1), TransportCostSwap(1, problem),  SourceCostBoost(1, problem)],
-    [InactiveActiveSwap(1), InactiveActiveReversion(1), InactiveActiveSlide(1), InactiveActiveInsertion(1)],
-    [InactiveActiveSwap(N=1), InactiveActiveSlide(1), InactiveActiveETN(N=1), InactiveBoost(N=1)],
-    [InactiveActiveSwap(N=1), ActiveReversion(1), InactiveActiveETN(N=1), InactiveBoost(N=1)]
+    [InactiveActiveSwap(N=1), ActiveReversion(1), InactiveActiveETN(N=1), InactiveBoost(N=1)],
+    [InactiveActiveSwap(N=1), ActiveReversion(1), InactiveBoost(N=1), PriorityReconstruction(problem)],
+    [InactiveActiveSwap(N=1),  PriorityReconstruction(problem)], ActiveReversion(1), InactiveBoost(N=1),
 ]
 
 # Configure VNS algorithms with different neighborhoods
-vns = [VariableNeighborhoodSearch(operators_sets[5], num_evals, initial_guess)]
+vns = [VariableNeighborhoodSearch(operators_sets[0], num_evals, initial_guess), 
+       VariableNeighborhoodSearch(operators_sets[1], num_evals, initial_guess)
+      ]
 
 # Run experiments
 results = RunMultipleMethodsMultipleTimes().run(data=problem, methods=vns,

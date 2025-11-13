@@ -1067,3 +1067,17 @@ class InactiveActiveETN(Neighborhood):
             setattr(solution_copy, chromosome_attr, chromosome)
 
         return solution_copy
+    
+class PriorityReconstruction(Neighborhood):
+    """
+    Operador de perturbação que reconstrói todos os cromossomos a partir da solução de fluxo (matrizes).
+    """
+    def __init__(self, data, N=1, name="PriorityReconstruction"):
+        super().__init__(N)
+        self.data = data 
+        self.name = name
+
+    def applyChange(self, solution):
+        solution.encode(self.data)
+        
+        return solution
