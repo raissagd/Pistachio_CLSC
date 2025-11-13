@@ -355,19 +355,172 @@ class Solution:
         self.V = v.astype(int)
 
         return totalcost
-
-    def encode(self, a, b, c, g):
+    
+    def encode_step(self, g, c, a, b):
         """
-        Procedure of encoding a transportation tree.
+        Codifica uma árvore de transporte (g) em um cromossomo (v).
+        
         Args:
-            a(array): capacity of source k
-            b(array): demand on depot j
-            c(matrix): transportation cost of one unit of product from source k to depot j
-            g(matrix): amount of shipment from source k to depot j
+            g: Matriz de fluxos (K x J)
+            c: Matriz de custos (K x J)
+            a: Capacidades das fontes (K)
+            b: Demandas dos depósitos (J)
+        
         Returns:
-            V(array): chromosome
+            v: Cromossomo de prioridades (K+J)
         """
-        pass
+        K, J = g.shape
+        num_nodes = K + J
+        v = np.zeros(num_nodes, dtype=int)
+        p = num_nodes
+        
+        # Cópias que serão modificadas durante o processo
+        a_copy = a.copy()
+        b_copy = b.copy()
+        g_copy = g.copy()
+        
+        while p > 0:
+            leaf_nodes = [] # (índice_do_nó, custo_da_aresta, k, j)
+            
+            # Checa fontes (k)
+            for k in range(K):
+                # Se não tem prioridade E tem exatamente 1 aresta saindo
+                if v[k] == 0 and np.count_nonzero(g_copy[k, :]) == 1:
+                    # Encontra qual é essa única aresta
+                    j_arc = np.where(g_copy[k, :] > 0)[0][0]
+                    leaf_nodes.append((k, c[k, j_arc], k, j_arc))
+
+            # Checa depósitos (j)
+            for j in range(J):
+                # Se não tem prioridade E tem exatamente 1 aresta entrando
+                if v[K + j] == 0 and np.count_nonzero(g_copy[:, j]) == 1:
+                    # Encontra qual é essa única aresta
+                    k_arc = np.where(g_copy[:, j] > 0)[0][0]
+                    leaf_nodes.append((K + j, c[k_arc, j], k_arc, j))
+            
+            if not leaf_nodes:
+                # Preenche o resto (nós inativos)
+                remaining_nodes = np.where(v == 0)[0]
+                if remaining_nodes.size > 0:
+                    remaining_priorities = np.arange(1, remaining_nodes.size + 1)
+                    v[remaining_nodes] = remaining_priorities
+                break 
+
+            # Seleciona o nó folha com o MENOR CUSTO de aresta
+            best_leaf = min(leaf_nodes, key=lambda x: x[1])
+            
+            node_index = best_leaf[0]
+            k_star = best_leaf[2]
+            j_star = best_leaf[3]
+            
+            # Atribui a prioridade 'p' atual a esse nó
+            v[node_index] = p
+            p -= 1 
+            
+            # "Remove" o nó e a aresta
+            flow = g_copy[k_star, j_star]
+            
+            # Zera a capacidade/demanda do nó que foi escolhido
+            if node_index < K:
+                a_copy[k_star] = 0 
+            else:
+                b_copy[j_star] = 0 
+                
+            # Remove o fluxo da aresta
+            g_copy[k_star, j_star] = 0 
+
+        return v
+
+    def encode(self, data):
+        """
+        Codifica a solução atual (matrizes de fluxo) em cromossomos.
+        
+        Args:
+            data: Objeto com os dados do problema
+            
+        Returns:
+            None (atualiza os cromossomos S1-S8 da própria solução)
+        """
+        # Converter de sparse para dense se necessário
+        def to_dense(matrix):
+            if matrix is None:
+                return None
+            return matrix.toarray() if hasattr(matrix, 'toarray') else matrix
+        
+        # S1: Pistachio factories -> pistachio consumers
+        if self.P is not None:
+            g1 = to_dense(self.P)
+            a1 = data.gammak * data.Cpw
+            b1 = data.Dp
+            c1 = data.Cp + data.Cw[:, None]
+            self.S1 = self.encode_step(g1, c1, a1, b1)
+        
+        # S2: Cosmetics factories -> cosmetics consumers
+        if self.L is not None:
+            g2 = to_dense(self.L)
+            a2 = data.gammas * data.Cpv
+            b2 = data.Ds
+            c2 = data.Cl + data.Cv[:, None]
+            self.S2 = self.encode_step(g2, c2, a2, b2)
+        
+        # S3: Oil extraction centers -> oil consumers + cosmetics factories
+        if self.O is not None and self.Oc is not None:
+            O = to_dense(self.O)
+            Oc = to_dense(self.Oc)
+            g3 = np.hstack((O, Oc))
+            a3 = (1 - data.lamb) * data.Cpr
+            L_dense = to_dense(self.L)
+            b3 = np.hstack((data.Du, np.sum(L_dense, axis=1) / data.gammas))
+            c3 = np.hstack((data.CN + data.Cr[:, None], data.CS + data.Cr[:, None]))
+            self.S3 = self.encode_step(g3, c3, a3, b3)
+        
+        # S4: Processing center -> pistachio factories
+        if self.Go is not None:
+            g4 = to_dense(self.Go)
+            a4 = data.Cpu * (1 - data.beta) * data.theta[0]
+            P_dense = to_dense(self.P)
+            b4 = np.sum(P_dense, axis=1) / data.gammak
+            c4 = data.CK + data.Cu1[:, None]
+            self.S4 = self.encode_step(g4, c4, a4, b4)
+        
+        # S5: Processing center -> oil extraction center
+        if self.Gr is not None:
+            g5 = to_dense(self.Gr)
+            a5 = data.Cpu * (1 - data.beta) * data.theta[1]
+            O_dense = to_dense(self.O)
+            Oc_dense = to_dense(self.Oc)
+            b5 = (np.sum(O_dense, axis=1) + np.sum(Oc_dense, axis=1)) / (1 - data.lamb)
+            c5 = data.CE + data.Cu2[:, None]
+            self.S5 = self.encode_step(g5, c5, a5, b5)
+        
+        # S6: Pistachio producers -> processing centers
+        if self.X is not None:
+            g6 = to_dense(self.X)
+            a6 = data.Cpa
+            Go_dense = to_dense(self.Go)
+            b6 = np.sum(Go_dense, axis=1) / (1 - data.beta) / data.theta[0]
+            c6 = data.CX + data.CI[:, None]
+            self.S6 = self.encode_step(g6, c6, a6, b6)
+        
+        # S7: Composting centers -> composting consumers
+        if self.D is not None:
+            g7 = to_dense(self.D)
+            a7 = data.gammaq * data.Cpy
+            b7 = data.Dc
+            c7 = data.Cd + data.Cy[:, None]
+            self.S7 = self.encode_step(g7, c7, a7, b7)
+        
+        # S8: Oil extraction centers -> composting centers
+        if self.Ow is not None:
+            g8 = to_dense(self.Ow)
+            Gr_dense = to_dense(self.Gr)
+            a8 = np.sum(Gr_dense, axis=0) * data.lamb
+            D_dense = to_dense(self.D)
+            Gw_dense = to_dense(self.Gw)
+            b8_temp = np.sum(D_dense, axis=1) / data.gammaq - np.sum(Gw_dense, axis=0)
+            b8 = np.maximum(b8_temp, 0)  # Apenas demandas positivas
+            c8 = data.CQ
+            self.S8 = self.encode_step(g8, c8, a8, b8)
 
     def convert2sparse(self):
         """
