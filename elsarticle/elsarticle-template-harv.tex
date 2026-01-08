@@ -1,286 +1,236 @@
-%% 
-%% Copyright 2007-2025 Elsevier Ltd
-%% 
-%% This file is part of the 'Elsarticle Bundle'.
-%% ---------------------------------------------
-%% 
-%% It may be distributed under the conditions of the LaTeX Project Public
-%% License, either version 1.3 of this license or (at your option) any
-%% later version.  The latest version of this license is in
-%%    http://www.latex-project.org/lppl.txt
-%% and version 1.3 or later is part of all distributions of LaTeX
-%% version 1999/12/01 or later.
-%% 
-%% The list of all files belonging to the 'Elsarticle Bundle' is
-%% given in the file `manifest.txt'.
-%% 
-%% Template article for Elsevier's document class `elsarticle'
-%% with harvard style bibliographic references
-
 \documentclass[preprint,12pt,authoryear]{elsarticle}
 
-%% Use the option review to obtain double line spacing
-%% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
-
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
-%% for a journal layout:
-%% \documentclass[final,1p,times,authoryear]{elsarticle}
-%% \documentclass[final,1p,times,twocolumn,authoryear]{elsarticle}
-%% \documentclass[final,3p,times,authoryear]{elsarticle}
-%% \documentclass[final,3p,times,twocolumn,authoryear]{elsarticle}
-%% \documentclass[final,5p,times,authoryear]{elsarticle}
-%% \documentclass[final,5p,times,twocolumn,authoryear]{elsarticle}
-
-%% For including figures, graphicx.sty has been loaded in
-%% elsarticle.cls. If you prefer to use the old commands
-%% please give \usepackage{epsfig}
-
-%% The amssymb package provides various useful mathematical symbols
+%% Essential Packages
 \usepackage{amssymb}
-%% The amsmath package provides various useful equation environments.
 \usepackage{amsmath}
-%% The amsthm package provides extended theorem environments
-%% \usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc} % Required for accents (ç, ã, é)
+\usepackage{booktabs}
+\usepackage{lipsum}
+\usepackage{url}
 
-%% The lineno packages adds line numbers. Start line numbering with
-%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
-%% for the whole article with \linenumbers.
-%% \usepackage{lineno}
-
-\journal{Nuclear Physics B}
+\journal{Expert Systems with Applications} 
 
 \begin{document}
 
 \begin{frontmatter}
 
-%% Title, authors and addresses
+%% Title
+\title{Enhancing Metaheuristics for Pistachio Supply Chain Optimization}
+%title{"A Tailored Variable Neighborhood Search for Large-Scale Pistachio Supply Chain Design"}
 
-%% use the tnoteref command within \title for footnotes;
-%% use the tnotetext command for theassociated footnote;
-%% use the fnref command within \author or \affiliation for footnotes;
-%% use the fntext command for theassociated footnote;
-%% use the corref command within \author for corresponding author footnotes;
-%% use the cortext command for theassociated footnote;
-%% use the ead command for the email address,
-%% and the form \ead[url] for the home page:
-%% \title{Title\tnoteref{label1}}
-%% \tnotetext[label1]{}
-%% \author{Name\corref{cor1}\fnref{label2}}
-%% \ead{email address}
-%% \ead[url]{home page}
-%% \fntext[label2]{}
-%% \cortext[cor1]{}
-%% \affiliation{organization={},
-%%            addressline={}, 
-%%            city={},
-%%            postcode={}, 
-%%            state={},
-%%            country={}}
-%% \fntext[label3]{}
+%% Authors
+%% We map authors to affiliations using labels [aff1, aff2]
 
-\title{} %% Article title
+\author[aff1]{Raissa Gonçalves Diniz}
+\ead{raissagd@ufmg.br}
 
-%% use optional labels to link authors explicitly to addresses:
-%% \author[label1,label2]{}
-%% \affiliation[label1]{organization={},
-%%             addressline={},
-%%             city={},
-%%             postcode={},
-%%             state={},
-%%             country={}}
-%%
-%% \affiliation[label2]{organization={},
-%%             addressline={},
-%%             city={},
-%%             postcode={},
-%%             state={},
-%%             country={}}
+\author[aff1,aff2]{André Costa Batista}
+\ead{andre-costa@ufmg.br}
 
-\author{} %% Author name
+%% Affiliations
 
-%% Author affiliation
-\affiliation{organization={},%Department and Organization
-            addressline={}, 
-            city={},
-            postcode={}, 
-            state={},
-            country={}}
+%% Affiliation 1
+\affiliation[aff1]{organization={Operations Research and Complex Systems Laboratory, Universidade Federal de Minas Gerais},
+            country={Brazil}}
+
+%% Affiliation 2
+\affiliation[aff2]{organization={Department of Electrical Engineering, Universidade Federal de Minas Gerais},
+            addressline={Av. Antônio Carlos 6627},
+            city={Belo Horizonte},
+            postcode={31270-010},
+            state={Minas Gerais},
+            country={Brazil}}
 
 %% Abstract
 \begin{abstract}
-%% Text of abstract
-Abstract text.
+Efficient supply chain management is critical for high-value agricultural products. While mixed-integer linear programming models for the pistachio industry exist, 
+the literature lacks efficient heuristic approaches with clear resolution methodologies. This paper addresses this issue by presenting an enhanced Variable Neighborhood Search (VNS) 
+approach. Unlike prior studies that used real-valued encoding with unspecified decoding steps, we propose a transparent integer encoding scheme and a rigorous decoding algorithm. 
+Furthermore, we develop domain-specific neighborhood structures that significantly improve search convergence compared to classical operators. We benchmark our method against Genetic 
+Algorithms (GA), Iterated Local Search (ILS), and an exact solver. The experiments reveal that while the exact method provide optimal solutions for small instances, the proposed VNS is 
+robust and superior in finding high-quality solutions for large-scale datasets, outperforming other metaheuristics in both stability and objective function values.
 \end{abstract}
-
-%%Graphical abstract
-\begin{graphicalabstract}
-%\includegraphics{grabs}
-\end{graphicalabstract}
-
-%%Research highlights
-\begin{highlights}
-\item Research highlight 1
-\item Research highlight 2
-\end{highlights}
 
 %% Keywords
 \begin{keyword}
-%% keywords here, in the form: keyword \sep keyword
-
-%% PACS codes here, in the form: \PACS code \sep code
-
-%% MSC codes here, in the form: \MSC code \sep code
-%% or \MSC[2008] code \sep code (2000 is the default)
-
+Supply Chain Optimization \sep Metaheuristics \sep Variable Neighborhood Search \sep Sustainable Logistics
 \end{keyword}
 
 \end{frontmatter}
 
-%% Add \usepackage{lineno} before \begin{document} and uncomment 
-%% following line to enable line numbers
-%% \linenumbers
+%% Main Text
 
-%% main text
-%%
+% ----------------------------------------------------------------------------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
 
-%% Use \section commands to start a section
-\section{Example Section}
-\label{sec1}
-%% Labels are used to cross-reference an item using \ref command.
+The growing role of agriculture in the economic development of many countries highlights the importance of integrating this sector with 
+other industries to stimulate overall economic growth. Agriculture not only supports food security but also acts as a major contributor 
+to exports, generating significant income and strengthening other sectors. Among various agricultural products, pistachios stand out due to 
+their high economic and nutritional value. Major producers such as the US, Turkey, and Iran dominate global pistachio production, 
+remaining the leading producers worldwide in 2022 and 2023 (\cite{statista2023}). As a result, the strategic importance of pistachios in international trade continues to grow.
 
-Section text. See Subsection \ref{subsec1}.
+With the increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper supply chain 
+management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth flow of goods from production 
+to consumers. A key challenge in pistachio production is the management of its by-products, such as hulls and shells, which, while free of heavy 
+metals or pathogens, can degrade soil quality and contribute to environmental pollution if not properly handled (\cite{doula2014, bartzas2017}). 
+Furthermore, improper disposal of these materials may lead to the growth of molds that increase the risk of aflatoxin contamination, posing serious 
+health risks such as liver cancer (\cite{hokmabadi2018,dronavalli2019}). Therefore, eco-friendly practices for reusing agricultural waste are 
+essential to mitigate both environmental and health hazards.
 
-%% Use \subsection commands to start a subsection.
-\subsection{Example Subsection}
-\label{subsec1}
+Moreover, inefficiencies in supply chain networks for food and agricultural products, including pistachios, can have significant 
+implications for product quality and trade (\cite{casper2018}). Addressing these environmental and logistical concerns is crucial to sustaining both 
+the economic and ecological viability of the pistachio industry.  In the broader context of sustainable supply chains, several studies have focused on 
+optimizing resource use and minimizing waste through recovery and recycling practices. For example, sustainable supply chain models designed for 
+agriculture and other industries have shown significant environmental benefits by reducing waste and reusing by-products for processes like 
+biogas and compost production (\cite{cheraghalipour2022}). Such approaches have been successfully applied in sectors such as manufacturing 
+and waste recovery, where efficient resource management and cost reduction have been key drivers (\cite{devika2014, zohal2016}). 
+These strategies underline the importance of sustainability in modern supply chains and the potential for agricultural industries to implement similar measures.
 
-Subsection text.
+In related research, Rajabi-Kafshgar et al. (\cite{rajabi2023}) focused on optimizing the pistachio supply chain using various algorithms, primarily population-based 
+approaches such as Genetic Algorithms (GA) (\cite{fathollahi2018, xie2022}), among others. However, a significant limitation in their work is the lack of methodological transparency. 
+Specifically, the authors employed a real-valued encoding scheme without detailing the decoding procedure required to transform these values into a feasible transport tree. 
+This omission hinders reproducibility and obscures the mechanism by which constraints are handled. Furthermore, the literature has increasingly questioned the effectiveness 
+of "metaphor-based" metaheuristics, suggesting that established methods often perform equally well or better without the complexity of novel analogies (\cite{campelo2023, aranha2022}).
 
-%% Use \subsubsection, \paragraph, \subparagraph commands to 
-%% start 3rd, 4th and 5th level sections.
-%% Refer following link for more details.
-%% https://en.wikibooks.org/wiki/LaTeX/Document_Structure#Sectioning_commands
+Addressing these gaps, this research focuses on designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm (\cite{gendreau2010}). 
+While we adopt the same mixed-integer linear programming (MILP) model formulation from (\cite{rajabi2023}), we propose a robust overhaul of the resolution methodology. We introduce a transparent 
+integer-based priority encoding and provide a step-by-step description of the decoding algorithm, ensuring reproducibility. Furthermore, we develop problem-specific neighborhood 
+operators designed to exploit the specific structure of the chain. These specialized operators are contrasted with classical moves to demonstrate their efficacy in exploring the 
+solution space.
 
-\subsubsection{Mathematics}
-%% Inline mathematics is tagged between $ symbols.
-This is an example for the symbol $\alpha$ tagged as inline mathematics.
+To validate the proposed approach, we conduct a comprehensive comparative analysis against a Genetic Algorithm (GA), an Iterated Local Search (ILS), and an exact Branch-and-Cut method 
+(using the Gurobi solver). Our findings demonstrate that the proposed VNS with specialized operators consistently outperforms the other metaheuristics in terms of solution quality. 
+On top of that, we show that for large-scale instances, where exact methods become infeasible due to memory limitations and excessive runtime, the proposed heuristic offers a vital trade-off, 
+providing high-quality feasible solutions efficiently.
 
-%% Displayed equations can be tagged using various environments. 
-%% Single line equations can be tagged using the equation environment.
-\begin{equation}
-f(x) = (x+a)(x+b)
-\end{equation}
+The remainder of this paper is organized as follows. Section~\ref{sec:problem-definition} presents the problem definition and the mathematical formulation. Section~\ref{sec:methodology} 
+details the heuristic approach, introducing the integer encoding, the specific decoding steps, and the novel domain-specific neighborhood structures. Section~\ref{sec:experiments} 
+reports the computational experiments, offering a statistical comparison between VNS, GA, ILS, and the exact solver across varying instance sizes. Finally, Section~\ref{sec:conclusion} 
+summarizes the key findings and suggests future research directions.
 
-%% Unnumbered equations are tagged using starred versions of the environment.
-%% amsmath package needs to be loaded for the starred version of equation environment.
-\begin{equation*}
-f(x) = (x+a)(x+b)
-\end{equation*}
+% ----------------------------------------------------------------------------------------------------------------------
+\section{Problem Definition}
+\label{sec:problem-definition}
 
-%% align or eqnarray environments can be used for multi line equations.
-%% & is used to mark alignment points in equations.
-%% \\ is used to end a row in a multiline equation.
-\begin{align}
- f(x) &= (x+a)(x+b) \\
-      &= x^2 + (a+b)x + ab
-\end{align}
+The logistics network proposed by \cite{rajabi2023}, illustrated in Figure~\ref{fig:supplychain}, describes the flow of products and by-products along the pistachio supply chain. The process begins with the farmers ($i$), who send the harvested pistachios to the processing centers ($j$). At these centers, the pistachios are transformed into three main components: open-shell pistachios, raw kernels, and organic waste.
 
-\begin{eqnarray}
- f(x) &=& (x+a)(x+b) \nonumber\\ %% If equation numbering is not needed for a row use \nonumber.
-      &=& x^2 + (a+b)x + ab
-\end{eqnarray}
+Each of these components follows specific flows. Open-shell pistachios are forwarded to pistachio factories ($k$), which process and distribute them to final customers ($n1$). Raw kernels are sent to oil extraction centers ($e$), responsible for producing pistachio oil, which is directed to both final customers ($n2$) and cosmetic factories ($s$). These, in turn, process the oil into cosmetic products that are supplied to their respective consumers ($n3$). Organic waste generated in the initial processing is sent to composting centers ($q$), where it is transformed into compost, subsequently distributed to composting customers ($m$).
 
-%% Unnumbered versions of align and eqnarray
-\begin{align*}
- f(x) &= (x+a)(x+b) \\
-      &= x^2 + (a+b)x + ab
-\end{align*}
+Although, in practical terms, the produced compost could be reused by the original farmers, establishing a closed-loop system, the adopted mathematical model does not explicitly represent this feedback. Instead, compost customers are not directly associated with the inital producers, characterizing an implicit feedback cycle. This approach, already adopted in previous works (\hspace{-0.03em}\cite{pishvaee2010,ahmadi2019,banasik2016}), preserves the structural simplicity of the model. However, the inclusion of rigorous modeling of this return loop represents a promising direction for future investigations, especially in the context of sustainable supply chains.
 
-\begin{eqnarray*}
- f(x)&=& (x+a)(x+b) \\
-     &=& x^2 + (a+b)x + ab
-\end{eqnarray*}
-
-%% Refer following link for more details.
-%% https://en.wikibooks.org/wiki/LaTeX/Mathematics
-%% https://en.wikibooks.org/wiki/LaTeX/Advanced_Mathematics
-
-%% Use a table environment to create tables.
-%% Refer following link for more details.
-%% https://en.wikibooks.org/wiki/LaTeX/Tables
-\begin{table}[t]%% placement specifier
-%% Use tabular environment to tag the tabular data.
-%% https://en.wikibooks.org/wiki/LaTeX/Tables#The_tabular_environment
-\centering%% For centre alignment of tabular.
-\begin{tabular}{l c r}%% Table column specifiers
-%% Tabular cells are separated by &
-  1 & 2 & 3 \\ %% A tabular row ends with \\
-  4 & 5 & 6 \\
-  7 & 8 & 9 \\
-\end{tabular}
-%% Use \caption command for table caption and label.
-\caption{Table Caption}\label{fig1}
-\end{table}
-
-
-%% Use figure environment to create figures
-%% Refer following link for more details.
-%% https://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions
-\begin{figure}[t]%% placement specifier
-%% Use \includegraphics command to insert graphic files. Place graphics files in 
-%% working directory.
-\centering%% For centre alignment of image.
-\includegraphics{example-image-a}
-%% Use \caption command for figure caption and label.
-\caption{Figure Caption}\label{fig1}
-%% https://en.wikibooks.org/wiki/LaTeX/Importing_Graphics#Importing_external_graphics
+\begin{figure}
+  \begin{center}
+      \includegraphics[width=9cm]{./imgs/supplychain.png}
+      \caption{Structure of the proposed pistachio supply chain.}
+      \label{fig:supplychain}
+  \end{center}
 \end{figure}
 
+The mixed linear problem aims to minimize total costs \eqref{eq:custo}, including opening, production, and transportation costs, subject to the following capacity and demand constraints, tolerating no shortages (see more details on variables in Table 5 of \cite{rajabi2023}):
 
-%% The Appendices part is started with the command \appendix;
-%% appendix sections are then done as normal sections
-\appendix
-\section{Example Appendix Section}
-\label{app1}
+\begin{align}
+    \min &\ z_1 + z_2 + z_3 \label{eq:custo}\\
+    \text{s.t.:} \quad & \sum\limits_{j=1}^J X_{ij} \le Cpa_i, \quad \forall i \in I \label{eq:restricao1}\\
+    & \sum\limits_{i=1}^I X_{ij} \le Cpu_j\times U_j, \quad \forall j \in J \label{eq:restricao2}\\
+    & \sum\limits_{e=1}^E Ow_{eq} + \sum\limits_{j=1}^J Gw_{jq} \le Cpy_q \times Y_q, \quad \forall q \in Q \label{eq:restricao3} \\
+    & \sum\limits_{j=1}^J Go_{jk} \le Cpw_k\times W_k, \quad \forall k \in K \label{eq:restricao4}\\
+    & \sum\limits_{j=1}^J Gr_{je} \le Cpr_e\times R_e, \quad \forall e \in E \label{eq:restricao5}\\
+    & \sum\limits_{e=1}^E O_{en_2} \le Cpv_s\times V_s, \quad \forall s \in S \label{eq:restricao6}\\
+    & \sum\limits_{k=1}^K Go_{jk} + \sum\limits_{e=1} Gr_{je} + \sum\limits_{q=1}^Q Gw_{jq} \le \sum\limits_{i=1} X_{ij}, \quad \forall j \in J \label{eq:restricao7} \\
+    & \sum\limits_{k=1}^K Go_{jk} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_1, \quad \forall j\in J \label{eq:restricao8} \\
+    & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9}
+\end{align}
 
-Appendix text.
+\begin{align}
+    & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10} \\
+    & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
+    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12} \\
+    & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} \\
+    & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14} \\
+    & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15} \\
+    & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q, \quad \forall q \in Q \label{eq:restricao16} \\
+    & \sum\limits_{k=1}^K P_{kn_1} \ge Dp_{n_1}, \quad \forall n_1 \in N_1 \label{eq:restricao17}\\
+    & \sum\limits_{e=1}^E O_{en_2} \ge Du_{n_2}, \quad \forall n_2 \in N_2 \label{eq:restricao18}\\
+    & \sum\limits_{s=1}^S L_{sn_3} \ge Ds_{n_3}, \quad \forall n_3 \in N_3 \label{eq:restricao19}\\
+    & \sum\limits_{q=1}^Q D_{qm} \le Dc_{m}, \quad \forall m \in M \label{eq:restricao20}
+\end{align}
 
-%% For citations use: 
-%%       \citet{<label>} ==> Lamport (1994)
-%%       \citep{<label>} ==> (Lamport, 1994)
-%%
-Example citation, See \citet{lamport94}.
+    
+\begin{itemize}
+\item The objective function \eqref{eq:custo} minimizes the total costs of the supply chain, including opening, transportation, and production costs. The costs are divided into three components: 
+$z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, and $z_3$ \eqref{eq:custo3}, which represent facility opening costs, transportation costs, and production costs, respectively, as shown in the following equations:
+\end{itemize}
 
-%% If you have bib database file and want bibtex to generate the
-%% bibitems, please use
-%%
-%%  \bibliographystyle{elsarticle-harv} 
-%%  \bibliography{<your bibdatabase>}
+\begin{align}
+  z_1 &= \sum_{j=1}^J Fu_j \cdot U_j 
+      + \sum_{q=1}^Q Fy_q \cdot Y_q 
+      + \sum_{k=1}^{K} Fw_k \cdot W_k \notag \\
+      &\quad + \sum_{e=1}^{E} Fr_e \cdot R_e
+      + \sum_{s=1}^S Fv_s \cdot V_s
+      \label{eq:custo1}
+\end{align}
 
-%% else use the following coding to input the bibitems directly in the
-%% TeX file.
+\begin{align}
+  z_2 &= \sum_{i=1}^I\sum_{j=1}^J CI_i \cdot X_{ij} 
+      + \sum_{j=1}^J\sum_{k=1}^K Cu_{1j} \cdot Go_{jk} \notag \\
+      &\quad + \sum_{j=1}^J\sum_{e=1}^E Cu_{2j} \cdot Gr_{je} 
+      + \sum_{q=1}^Q\sum_{m=1}^M Cy_q \cdot D_{qm} \notag \\
+      &\quad + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cw_k \cdot P_{kn_1} \notag \\
+      &\quad + \sum_{e=1}^E Cr_e \cdot \left( \sum_{n_2=1}^{N_2} O_{en_2} 
+      + \sum_{s=1}^S Oc_{es} \right) \notag \\
+      &\quad + \sum_{s=1}^S\sum_{n_3=1}^{N_3} Cv_s \cdot L_{sn_3}
+      \label{eq:custo2}
+\end{align}
 
-%% Refer following link for more details about bibliography and citations.
-%% https://en.wikibooks.org/wiki/LaTeX/Bibliography_Management
+\begin{align}
+  z_3 &= \sum_{i=1}^I\sum_{j=1}^J CX_{ij} \cdot X_{ij} 
+      + \sum_{j=1}^J\sum_{k=1}^K CK_{jk} \cdot Go_{jk} \notag \\
+      &\quad + \sum_{j=1}^J\sum_{q=1}^Q CJ_{jq} \cdot Gw_{jq}
+      + \sum_{e=1}^E\sum_{s=1}^S CS_{es} \cdot Oc_{es} \notag \\
+      &\quad + \sum_{e=1}^E\sum_{n_2=1}^{N_2} CN_{en_2} \cdot Oc_{en_2}
+      + \sum_{e=1}^E\sum_{q=1}^Q CQ_{eq} \cdot Ow_{eq} \notag \\
+      &\quad + \sum_{s=1}^S\sum_{n_3=1}^{N_3} Cl_{sn_3} \cdot L_{sn_3}
+      + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cp_{kn_1} \cdot P_{kn_1} \notag \\
+      &\quad + \sum_{q=1}^Q\sum_{m=1}^M Cd_{qm} \cdot D_{qm}
+      \label{eq:custo3}
+\end{align}
 
-\begin{thebibliography}{00}
+\begin{itemize}
+  \item The variables $R_j$, $Y_q$, $W_k$, $Z_e$, and $V_s$ are binary and determine whether certain elements of the model are active. For example, $R_j = 1$ indicates that facility $j$ is operational, and $R_j = 0$ otherwise. The other variables in the model are continuous and non-negative, representing real values greater than or equal to zero. These variables model flows, quantities, and other measurable factors within the system.
+  
+  \item Constraints \eqref{eq:restricao1}-\eqref{eq:restricao6} address the capacity and demand limitations of each facility in the supply chain. In particular, constraint \eqref{eq:restricao1} limits the quantity of products transported from farmers to distribution centers. Constraints \eqref{eq:restricao2}-\eqref{eq:restricao6} ensure that the quantities sent to processing centers, composting centers, pistachio factories, oil extraction centers, and cosmetic factories do not exceed the capacities of these facilities.
+  
+  \item The quantity of products shipped from any facility must not exceed the orders received by that facility. Consequently, constraint \eqref{eq:restricao7} establishes that the quantity of products shipped from a processing center must be less than or equal to the quantity received by other facilities. Constraints \eqref{eq:restricao8}-\eqref{eq:restricao11} define the quantities of open-shell pistachios, raw kernels, and waste generated during the hulling process at each processing center. Similarly, constraints \eqref{eq:restricao12}-\eqref{eq:restricao16} govern the flows within pistachio factories, oil extraction centers, cosmetic factories, and composting centers.
+  
+  \item Finally, to ensure that customer demand is met, constraints \eqref{eq:restricao17}-\eqref{eq:restricao20} ensure that the quantities of products delivered to pistachio, pistachio oil, cosmetics, and compost customers satisfy or exceed their respective demands.
+\end{itemize}
 
-%% For authoryear reference style
-%% \bibitem[Author(year)]{label}
-%% Text of bibliographic item
+% ----------------------------------------------------------------------------------------------------------------------
+\section{Methodology}
+\label{sec:methodology}
+To solve the problem described in Section \ref{sec:problem-definition}, we propose a metaheuristic algorithm.
 
-\bibitem[Lamport(1994)]{lamport94}
-  Leslie Lamport,
-  \textit{\LaTeX: a document preparation system},
-  Addison Wesley, Massachusetts,
-  2nd edition,
-  1994.
+\subsection{Initial Solution}
+\lipsum[6]
 
-\end{thebibliography}
+\subsection{Neighborhood Structures}
+\lipsum[7]
+
+% ----------------------------------------------------------------------------------------------------------------------
+\section{Computational Experiments}
+\label{sec:experiments}
+\lipsum[9]
+
+% ----------------------------------------------------------------------------------------------------------------------
+\section{Conclusion}
+\label{sec:conclusion}
+\lipsum[10]
+
+% ----------------------------------------------------------------------------------------------------------------------
+%% Bibliography
+\bibliographystyle{elsarticle-harv}
+\bibliography{references}
+
 \end{document}
-
-\endinput
-%%
-%% End of file `elsarticle-template-harv.tex'.
-
-
