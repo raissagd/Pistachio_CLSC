@@ -30,6 +30,25 @@ Example:
         filepath='/path/to/save/')
 """
 import pickle
+import sys
+
+# Create module aliases to handle pickle files created with different import paths
+# This allows pickle to find modules saved as 'Solution' when they're now 'Classes.Solution'
+try:
+    from Classes import Solution, Problem, Convergence, Log
+    sys.modules['Solution'] = Solution
+    sys.modules['Problem'] = Problem
+    sys.modules['Convergence'] = Convergence
+    sys.modules['Log'] = Log
+except ImportError:
+    try:
+        import Solution, Problem, Convergence, Log
+        sys.modules['Solution'] = Solution
+        sys.modules['Problem'] = Problem
+        sys.modules['Convergence'] = Convergence
+        sys.modules['Log'] = Log
+    except ImportError:
+        pass
 
 class PersistSingleSolution:
     """
