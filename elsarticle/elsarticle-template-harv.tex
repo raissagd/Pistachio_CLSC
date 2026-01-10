@@ -4,8 +4,10 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{subcaption} % Required for subfigure environment
 \usepackage[utf8]{inputenc} % Required for accents (ç, ã, é)
 \usepackage{booktabs}
+\usepackage{multirow} % Required for multirow cells in tables
 \usepackage{lipsum}
 \usepackage{url}
 \usepackage{algorithm}
@@ -19,7 +21,8 @@
 \begin{frontmatter}
 
 %% Title
-\title{Enhancing Metaheuristics for Pistachio Supply Chain Optimization}
+\title{A Priority-Based Variable Neighborhood Search with Problem-Specific Operators for Sustainable Pistachio Supply Chain Design}
+%\title{Enhancing Metaheuristics for Pistachio Supply Chain Optimization}
 %title{"A Tailored Variable Neighborhood Search for Large-Scale Pistachio Supply Chain Design"}
 
 %% Authors
@@ -48,11 +51,11 @@
 %% Abstract
 \begin{abstract}
 Efficient supply chain management is critical for high-value agricultural products. While mixed-integer linear programming models for the pistachio industry exist, 
-the literature lacks efficient heuristic approaches with clear resolution methodologies. This paper addresses this issue by presenting an enhanced Variable Neighborhood Search (VNS) 
-approach. Unlike prior studies that used real-valued encoding with unspecified decoding steps, we propose a transparent integer encoding scheme and a rigorous decoding algorithm. 
-Furthermore, we develop domain-specific neighborhood structures that significantly improve search convergence compared to classical operators. We benchmark our method against Genetic 
-Algorithms (GA), Iterated Local Search (ILS), and an exact solver. The experiments reveal that while the exact method provide optimal solutions for small instances, the proposed VNS is 
-robust and superior in finding high-quality solutions for large-scale datasets, outperforming other metaheuristics in both stability and objective function values.
+the literature lacks efficient heuristic approaches with clear resolution methodologies. This paper presents an enhanced Variable Neighborhood Search (VNS) approach for pistachio 
+supply chain optimization. We propose an integer-based priority encoding with a formally defined decoding algorithm. Unlike prior studies using real-valued encodings, our representation 
+establishes a one-to-one genotype-phenotype mapping that eliminates redundancy. We develop domain-specific neighborhood structures that exploit the problem's constraint structure, 
+improving search convergence compared to classical operators. Benchmarking against Genetic Algorithms (GA), Iterated Local Search (ILS), and an exact solver reveals that the proposed VNS 
+outperforms other metaheuristics for medium and large-scale instances, achieving near-optimal solutions where exact methods become computationally intractable.
 \end{abstract}
 
 %% Keywords
@@ -74,7 +77,7 @@ to exports, generating significant income and strengthening other sectors. Among
 their high economic and nutritional value. Major producers such as the US, Turkey, and Iran dominate global pistachio production, 
 remaining the leading producers worldwide in 2022 and 2023 (\cite{statista2023}). As a result, the strategic importance of pistachios in international trade continues to grow.
 
-With the increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper supply chain 
+With this increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper supply chain 
 management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth flow of goods from production 
 to consumers. A key challenge in pistachio production is the management of its by-products, such as hulls and shells, which, while free of heavy 
 metals or pathogens, can degrade soil quality and contribute to environmental pollution if not properly handled (\cite{doula2014, bartzas2017}). 
@@ -92,11 +95,12 @@ and waste recovery, where efficient resource management and cost reduction have 
 These strategies underline the importance of sustainability in modern supply chains and the potential for agricultural industries to implement similar measures.
 
 In related research, \cite{rajabi2023} focused on optimizing the pistachio supply chain using various algorithms, primarily population-based 
-approaches such as the Genetic Algorithm (GA) (\cite{fathollahi2018, xie2022}), among others. However, a significant limitation in their work is the lack of methodological transparency. 
+approaches, such as the Genetic Algorithm (GA) (\cite{fathollahi2018, xie2022}), among others. However, a significant limitation in their work is the lack of methodological transparency. 
 Specifically, the authors employed a real-valued encoding scheme without detailing the decoding procedure required to transform these values into a feasible transport tree. 
-This omission hinders reproducibility and obscures the mechanism by which constraints are handled. Furthermore, the literature has increasingly questioned the effectiveness 
-of "metaphor-based" metaheuristics (such as the Imperialist Competitive Algorithm and the Social Engineering Optimizer, used by the authors), suggesting that established methods 
-often perform equally well or better without the complexity of novel analogies (\cite{campelo2023, aranha2022}).
+This omission hinders reproducibility and obscures the mechanism by which constraints are handled. Furthermore, recent works have raised serious concerns about so‑called 
+metaphor‑based metaheuristics, arguing that many of these algorithms offer little genuine algorithmic novelty beyond a change of terminology and that their performance 
+is often comparable to, or worse than, that of well‑established methods (\cite{campelo2023, aranha2022}). In this context, algorithms such as the Imperialist Competitive Algorithm and the Social 
+Engineering Optimizer exemplify a broader trend where new metaphors are introduced without clear benefits over classical metaheuristics, despite adding conceptual complexity.
 
 Addressing these gaps, this research focuses on designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm (\cite{gendreau2010}). 
 While we adopt the same mixed-integer linear programming (MILP) model formulation from \cite{rajabi2023}, we propose a robust overhaul of the resolution methodology. We introduce a transparent 
@@ -107,7 +111,7 @@ solution space.
 To validate the proposed approach, we conduct a comprehensive comparative analysis against a Genetic Algorithm (GA), an Iterated Local Search (ILS), and an exact Branch-and-Cut method 
 (using the Gurobi solver). Our findings demonstrate that the proposed VNS with specialized operators consistently outperforms the other metaheuristics in terms of solution quality. 
 On top of that, we show that for large-scale instances, where exact methods become infeasible due to memory limitations and excessive runtime, the proposed heuristic offers a vital trade-off, 
-providing high-quality (and sometimes, even better) feasible solutions efficiently.
+providing high-quality feasible solutions efficiently.
 
 The remainder of this paper is organized as follows. Section~\ref{sec:problem-definition} presents the problem definition and the mathematical formulation. Section~\ref{sec:methodology} 
 details the heuristic approach, introducing the integer encoding, the specific decoding steps, and the novel domain-specific neighborhood structures. Section~\ref{sec:experiments} 
@@ -127,7 +131,7 @@ Raw kernels are sent to oil extraction centers ($e$), responsible for producing 
 These, in turn, process the oil into cosmetic products that are supplied to their respective consumers ($n_3$). Organic waste generated in the initial processing is sent to 
 composting centers ($q$), where it is transformed into compost, subsequently distributed to composting customers ($m$).
 
-Although, in practical terms, the produced compost could be reused by the original farmers, establishing a closed-loop system, the adopted mathematical model does not explicitly 
+Although in practical terms, the produced compost could be reused by the original farmers, establishing a closed-loop system, the adopted mathematical model does not explicitly 
 represent this feedback. Instead, compost customers are not directly associated with the inital producers, characterizing an implicit feedback cycle. This approach, already 
 adopted in previous works (\hspace{-0.03em}\cite{pishvaee2010,ahmadi2019,banasik2016}), preserves the structural simplicity of the model. However, the inclusion of rigorous 
 modeling of this return loop represents a promising direction for future investigations, especially in the context of sustainable supply chains.
@@ -232,10 +236,8 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, and $z_3$ \eqref{eq:custo3}, w
 \section{Methodology}
 \label{sec:methodology}
 
-This section outlines the heuristic methodology employed to solve the optimization problem. The proposed approach integrates a Variable Neighborhood Search (VNS) 
-algorithm with a robust priority-based encoding scheme. Our method introduces a transparent integer-based representation and a backward decoding strategy to ensure 
-feasibility across the whole chain. Furthermore, to enhance the search capability, we develop and apply problem-specific neighborhood structures designed to exploit the specific 
-constraints of the pistachio supply chain.
+This section details the proposed Variable Neighborhood Search (VNS) algorithm with priority-based encoding. We present the integer-based chromosome representation, 
+the backward decoding strategy that ensures feasibility, and problem-specific neighborhood structures designed to exploit the pistachio supply chain's structural properties.
 
 % ----------------------------------------------------------
 \subsection{Solution Representation}
@@ -273,7 +275,7 @@ permutation of integers representing the transport priorities for a specific par
 \subsection{Decoding Procedure}
 \label{subsec:decoding}
 
-The decoding process acts as a heuristic builder that transforms the priority chromosome into a feasible transportation tree. As shown in Fig. \ref{fig:decode_flux}, the decoding 
+The decoding process serves as a constructive heuristic that transforms the priority chromosome into a feasible transportation tree. As shown in Fig. \ref{fig:decode_flux}, the decoding 
 process begins with the flow of final products (pistachios, oil, cosmetics) from factories to consumers. This ensures that all constraints are met: consumer demand is satisfied first, 
 propagating the requirements upstream to factories and processing centers, ensuring that facility capacities are respected at every stage.
 
@@ -284,12 +286,16 @@ propagating the requirements upstream to factories and processing centers, ensur
   \label{fig:decode_flux}
 \end{figure}
 
-Algorithm \ref{algoDecode1} details the first phase of this process. The procedure utilizes a helper function, \textit{decodingStep}, which implements the classic priority-based 
-transportation logic: it allocates flow from sources to destinations based on the priority order defined in the chromosome segment ($S_k$), always selecting the lowest-cost available route.
+Algorithm \ref{algoDecode1} details the first phase of this process, utilizing the helper function \textit{decodingStep} (Algorithm \ref{algoDecodingStep}) to allocate flows. 
 
-The critical logic occurs in Steps 5 and 6 (lines 14-17). Here, the algorithm must reconcile the diverging flows from Processing Centers. Since Processing Centers produce multiple 
-outputs (Kernels for Oil vs. Open-shell for Factories) in fixed proportions, satisfying the demand of one downstream entity often creates a surplus of the other. Our decoding logic 
-identifies the bottleneck demand and routes any inevitable surplus to the destination with the lowest transportation cost, minimizing the penalty for over-supply.
+The critical logic occurs in Steps 5 and 6. Here, the algorithm reconciles diverging flows from Processing Centers, which produce multiple 
+outputs (Kernels for Oil vs. Open-shell for Factories) in fixed proportions. Satisfying one downstream demand often creates surplus of the other output. The decoding 
+identifies the bottleneck demand and routes surplus to the lowest-cost destination, minimizing over-supply penalties.
+
+Each segment of the chromosome ($S_1$ through $S_8$) is decoded using the priority-based procedure described by \citet{gen2006}, which allocates transportation flows 
+by iterating through facilities in descending priority order. At each step, the algorithm assigns available capacity from sources to destinations with remaining demand, 
+selecting the minimum-cost arc. This greedy strategy ensures feasible solutions while respecting all capacity and demand constraints. The complete decoding procedure 
+is detailed in Table 2 of \citet{gen2006}.
 
 \begin{algorithm}
   \caption{Chromosome decoding for the supply chain (Part 1)}
@@ -411,8 +417,11 @@ the VND phase is accepted as the current solution if it improves the objective f
 where $\Delta$ is the deterioration in solution quality and $T$ is the current temperature. This allows the search to traverse valleys in the fitness landscape.
 
 Finally, the shaking phase applies a perturbation to the current solution to escape the basin of attraction of the local optimum. The magnitude of this perturbation is adaptive, 
-defined in our implementation as $7\%$ of the total decision variables in the chromosome. This ensures that the diversification strength scales appropriately with the problem size. 
-The specific operator used for shaking changes cyclically, reseting to the first operator upon a successful acceptance and moves to the next operator if the candidate solution is rejected.
+defined in our implementation as 7\% of the total decision variables in the chromosome. This value was determined through preliminary experiments testing perturbation strengths 
+ranging from 3\% to 15\% on representative instances. Strengths below 5\% resulted in insufficient diversification, causing the algorithm to revisit previously explored regions, 
+while values above 10\% caused excessive disruption, degrading solution quality. The 7\% value provided the best balance between escaping local optima and maintaining solution 
+structure, with a minimum threshold of 10 perturbations to ensure meaningful changes even in small instances. The specific operator used for shaking changes cyclically, 
+resetting to the first operator upon a successful acceptance and moving to the next operator if the candidate solution is rejected.
 
 \begin{algorithm}
     \caption{Hybrid VNS with SA Acceptance}
@@ -453,6 +462,10 @@ The specific operator used for shaking changes cyclically, reseting to the first
     \end{algorithmic}
 \end{algorithm}
 
+The VND phase applies the four operators in the following fixed sequence: (1) Active Reversion, (2) Inactive-Active Swap, (3) Inactive Boost, and (4) Inactive-Active Exchange two Neighbors (IA-ETN). 
+This ordering was designed to alternate between intensification (Active Reversion) and diversification (the remaining three operators), ensuring thorough exploration of the search space before 
+accepting a local optimum.
+
 % ----------------------------------------------------------
 \subsection{Neighborhood Structures}
 \label{subsec:neighborhoods}
@@ -490,13 +503,283 @@ the active and inactive sets:
 % ----------------------------------------------------------------------------------------------------------------------
 \section{Computational Experiments}
 \label{sec:experiments}
-\lipsum[9]
+
+This section evaluates the performance of the proposed VNS approach. The experiments are divided into two phases: first, we validate the effectiveness of the proposed neighborhood 
+structures against standard operators. Second, we benchmark the optimized VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver Gurobi.
+
+% ------------------------------------------------------------
+
+\subsection{Experimental Setup}
+\label{subsec:setup}
+
+The algorithms were implemented in Python and executed on a workstation with an Intel Xeon E3-1240 V2 processor (8 cores) and 32 GB of RAM running Ubuntu 24.04 LTS. The exact method 
+was solved using Gurobi Optimizer v11.0.
+
+The test instances were generated following the methodology proposed by \cite{rajabi2023}. Each instance is characterized by equal-sized entities across all echelons 
+(i.e., $I = J = K = E = S = Q = N_1 = N_2 = N_3 = M$), with instance sizes of 10, 30, 100, 200, 400, 800, and 1600. This results in chromosome lengths ranging from 1,700 to 27,200 
+variables in the priority-based encoding.
+
+All problem parameters (facility costs, production costs, transportation costs, capacities, demands, and conversion rates) were randomly generated using uniform distributions 
+with ranges identical to those specified in Table 7 of \cite{rajabi2023}. Complete parameter specifications and the generated instances are publicly available 
+in the project repository to ensure full reproducibility.
+
+% ------------------------------------------------------------
+
+\subsubsection{Algorithm Configurations}
+To ensure a fair comparison across all metaheuristics, each algorithm was allocated an identical computational budget: $N_{max} = 10n$, where $n$ represents the total number of 
+decision variables in the priority-based encoding. This budget scales linearly with problem size, ensuring equitable evaluation across all instances.
+
+The specific parameter settings for each algorithm are as follows:
+
+\begin{itemize}
+    \item \textbf{Genetic Algorithm (GA):} The GA uses a population size of $P = \lfloor\sqrt{n}\rfloor$, where $n$ is the total number of decision variables in the priority encoding, 
+    motivated by population-sizing theory suggesting that required population grows roughly with the square root of problem size. Crossover and mutation probabilities (0.9 and 0.1, respectively) 
+    and binary tournament selection follow widely used GA settings and operators in the literature (\cite{hussain2022genetic}).
+    
+    \item \textbf{Iterated Local Search (ILS):} The ILS alternates between local search and perturbation phases. The perturbation strength scales with instance size, and the algorithm 
+    restarts when no improvement is observed after 10 consecutive non-improving iterations (\cite{tinos2024iterated}). Local search employs the problem-specific "Inactive–Active Swap" operator.
+
+    \item \textbf{Variable Neighborhood Search (VNS):} The proposed VNS uses initial temperature $T_0 = 100$, cooling rate $\alpha = 0.995$, and perturbation strength of 7\% of the 
+    chromosome length. The VND phase cycles sequentially through four problem-specific operators: (1) Active Reversion, (2) Inactive-Active Swap, (3) Inactive Boost, and (4) IA-ETN. 
+    Upon finding an improvement with any operator, the VND restarts from the first operator.
+    
+    \item \textbf{Exact Solver (Gurobi):} The solver was configured with a time limit of 3,600 seconds (1 hour). For instances where the optimal solution could not be found within 
+    the time limit, the best feasible solution found ($\text{Incumbent}$) was recorded.
+\end{itemize}
+
+All metaheuristics (VNS, GA, ILS) were executed 30 times for each instance to ensure statistical robustness.
+
+% ------------------------------------------------------------
+
+\subsection{Assessment of Neighborhood Structures}
+\label{subsec:operators_analysis}
+
+To validate the contribution of the novel problem-specific neighborhood structures, we conducted a comparative study against a baseline "Standard VNS". The Standard VNS employs only the 
+classical permutation operators found in the literature: \textit{Swap}, \textit{Reversion}, \textit{Insertion}, and \textit{Slide} (\cite{gendreau2010}).
+
+\subsubsection{Statistical Analysis}
+We performed a statistical validation of the results across all instance sizes. First, the Shapiro-Wilk test was applied to check for normality in the distribution of objective 
+function values. Based on the results, we selected the appropriate significance test: the t-test for normally distributed samples and the Mann-Whitney U test for non-parametric cases. 
+The hypothesis tested was that the Proposed VNS provides a smaller (better) objective function value than the Standard VNS ($H_1: \mu_{Novel} < \mu_{Basic}$).
+
+Table \ref{tab:stats_vns} details the p-values obtained. For small instances (10 and 30), the p-values ($> 0.05$) indicate that the Proposed VNS is not statistically superior. In fact, 
+the Standard VNS performs marginally better in these simple landscapes. However, for all instances of size 100 and above, the p-values are effectively zero ($p < 0.0001$), confirming that 
+the Proposed VNS is statistically superior with high confidence.
+
+\begin{table}[h]
+    \centering
+    \caption{Statistical tests comparing Proposed VNS vs. Standard VNS. (S-W = Shapiro-Wilk p-value).}
+    \label{tab:stats_vns}
+    \begin{tabular}{rccccc}
+        \toprule
+        Instance & S-W (Novel) & S-W (Basic) & Test Used & p-value & Result \\
+        \midrule
+        10 & 0.0000 & 0.0008 & Mann-Whitney & 1.0000 & Basic Better \\
+        30 & 0.0626 & 0.0493 & Mann-Whitney & 0.9811 & Basic Better \\
+        100 & 0.5115 & 0.5658 & t-test & 0.0000 & Novel Superior \\
+        200 & 0.0434 & 0.5143 & Mann-Whitney & 0.0000 & Novel Superior \\
+        400 & 0.2958 & 0.6396 & t-test & 0.0000 & Novel Superior \\
+        800 & 0.7107 & 0.1993 & t-test & 0.0000 & Novel Superior \\
+        1600 & 0.3556 & 0.3454 & t-test & 0.0000 & Novel Superior \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsubsection{Performance Magnitude}
+Table \ref{tab:performance_vns} quantifies the difference in solution quality. While standard operators are sufficient for small problems, their performance degrades as the search space expands. 
+The proposed operators demonstrate a clear scalability advantage, with the performance gap widening in favor of the Proposed VNS as the instance size increases, reaching nearly 5\% improvement 
+in the largest instances.
+
+\begin{table}[h]
+    \centering
+    \caption{Average Objective Function comparison. Gap positive indicates Proposed VNS is better.}
+    \label{tab:performance_vns}
+    \begin{tabular}{rccc}
+        \toprule
+        Instance & Avg. Obj (Novel) & Avg. Obj (Basic) & Gap (\%) \\
+        \midrule
+        10 & $7.62 \times 10^6$ & $7.38 \times 10^6$ & -3.05\% \\
+        30 & $2.05 \times 10^7$ & $2.04 \times 10^7$ & -0.44\% \\
+        100 & $7.29 \times 10^7$ & $7.34 \times 10^7$ & +0.71\% \\
+        200 & $1.42 \times 10^8$ & $1.44 \times 10^8$ & +1.45\% \\
+        400 & $2.80 \times 10^8$ & $2.87 \times 10^8$ & +2.52\% \\
+        800 & $5.68 \times 10^8$ & $5.94 \times 10^8$ & +4.58\% \\
+        1600 & $5.67 \times 10^8$ & $5.95 \times 10^8$ & +4.83\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Figure \ref{fig:vns_boxplots} illustrates these distributions visually. The boxplots confirm that for $N \ge 100$, the Proposed VNS not only achieves better median values but also exhibits 
+lower variance, indicating greater robustness.
+
+\begin{figure*}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_10.png}
+        \caption{Instance 10}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_30.png}
+        \caption{Instance 30}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_100.png}
+        \caption{Instance 100}
+    \end{subfigure}
+    
+    \vspace{1em}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_200.png}
+        \caption{Instance 200}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_400.png}
+        \caption{Instance 400}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_800.png}
+        \caption{Instance 800}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_1600.png}
+        \caption{Instance 1600}
+    \end{subfigure}
+    
+    \caption{Distribution of objective function values for Proposed VNS (Novel) vs. Standard VNS (Basic) across all instance sizes. The novel approach demonstrates superior scalability.}
+    \label{fig:vns_boxplots}
+\end{figure*}
+
+% ------------------------------------------------------------
+\subsection{Comparative Analysis}
+\label{subsec:main_comparison}
+
+In this section, we provide a comprehensive benchmark of the proposed VNS against the Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver (Gurobi). 
+Fig. \ref{fig:comparison_boxplots} presents the boxplots for all methods across the tested instances. The red dashed line represents the optimal solution (or best lower bound) found by Gurobi.
+
+\subsubsection{Performance Comparison}
+Table \ref{tab:descriptive_stats} summarizes the average objective function values and the relative gap to the optimal solution for each method.
+
+For the smallest instance (10), the ILS achieves the best average performance, surpassing the VNS by 2.21\%. This is expected, as simple local search strategies often converge 
+faster in very small search spaces where deep exploration is unnecessary. For Instance 30, the performance of VNS and ILS is statistically indistinguishable.
+
+However, a clear trend emerges from Instance 100 onwards. The VNS consistently outperforms both ILS and GA, with the performance gap widening as the problem complexity increases. 
+For the largest instances (800 and 1600), the VNS maintains a gap to the optimum of approximately 3.5\%, whereas the ILS gap grows to 4.7\% and the GA gap exceeds 10\%. 
+This demonstrates the superior scalability of the proposed approach.
+
+For the two largest instances (800 and 1600), Gurobi reached the one-hour time limit without proving optimality, returning the same best incumbent solution value of $5.49 \times 10^8$ for both. 
+These values represent upper bounds rather than proven optimal solutions.
+
+\begin{table*}[ht]
+    \centering
+    \caption{Descriptive Statistics: Average Objective Function values and Gap to Reference Solution (\%). Note: For instances 800 and 1600, Gurobi reached the time limit without proving optimality. 
+    Gaps are calculated relative to the best incumbent solution rather than a proven optimum.}
+    \label{tab:descriptive_stats}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{rcccccccc}
+        \toprule
+        & \textbf{Reference} & \multicolumn{3}{c}{\textbf{Average Objective Function}} & \multicolumn{3}{c}{\textbf{Gap to Reference (\%)}} \\
+        \cmidrule(lr){3-5} \cmidrule(lr){6-8}
+        Inst. & Gurobi (Opt/Bound) & Proposed VNS & ILS & GA & VNS & ILS & GA \\
+        \midrule
+        10 & $7.32 \times 10^6$ & $7.62 \times 10^6$ & $\mathbf{7.46 \times 10^6}$ & $7.82 \times 10^6$ & 4.17\% & \textbf{1.92\%} & 6.89\% \\
+        30 & $2.00 \times 10^7$ & $\mathbf{2.05 \times 10^7}$ & $\mathbf{2.05 \times 10^7}$ & $2.11 \times 10^7$ & \textbf{2.65\%} & 2.76\% & 5.39\% \\
+        100 & $7.06 \times 10^7$ & $\mathbf{7.29 \times 10^7}$ & $7.34 \times 10^7$ & $7.67 \times 10^7$ & \textbf{3.28\%} & 3.97\% & 8.59\% \\
+        200 & $1.38 \times 10^8$ & $\mathbf{1.42 \times 10^8}$ & $1.44 \times 10^8$ & $1.49 \times 10^8$ & \textbf{3.40\%} & 4.48\% & 8.48\% \\
+        400 & $2.71 \times 10^8$ & $\mathbf{2.80 \times 10^8}$ & $2.83 \times 10^8$ & $2.96 \times 10^8$ & \textbf{3.27\%} & 4.42\% & 9.02\% \\
+        800 & $5.49 \times 10^8$ & $\mathbf{5.68 \times 10^8}$ & $5.75 \times 10^8$ & $6.01 \times 10^8$ & \textbf{3.54\%} & 4.72\% & 9.53\% \\
+        1600 & $5.49 \times 10^8$ & $\mathbf{5.68 \times 10^8}$ & $5.74 \times 10^8$ & $6.04 \times 10^8$ & \textbf{3.50\%} & 4.65\% & 10.13\% \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table*}
+
+\subsubsection{Statistical Validation}
+To rigorously validate the performance differences, we applied the same statistical methodology described in Section~\ref{subsec:operators_analysis}. 
+Table \ref{tab:detailed_stats} presents the normality checks ($p_{SW}$) and hypothesis testing results for all pairwise comparisons between VNS and its competitors.
+
+The hypothesis tested was $H_1: \mu_{VNS} < \mu_{Competitor}$ (one-tailed). As shown in the table, the data distribution characteristics vary with instance size, 
+requiring different statistical treatments (parametric t-test when normality holds, non-parametric Mann-Whitney U test otherwise).
+
+\begin{table*}[ht]
+    \centering
+    \caption{Detailed Statistical Analysis: Normality Checks and Hypothesis Testing ($\alpha=0.05$).}
+    \label{tab:detailed_stats}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{rcccccccc}
+            \toprule
+            & \multicolumn{3}{c}{\textbf{Normality Check ($p_{SW}$)}} & \multicolumn{5}{c}{\textbf{Hypothesis Testing ($H_1: VNS < Competitor$)}} \\
+            \cmidrule(lr){2-4} \cmidrule(lr){5-9}
+            Inst. & VNS & ILS & GA & Comparison & Normality? & Test Used & p-value & \textbf{Conclusion} \\
+            \midrule
+            \multirow{2}{*}{10} & \multirow{2}{*}{0.0000} & \multirow{2}{*}{0.541} & \multirow{2}{*}{0.000} 
+            & VNS vs ILS & No & Mann-Whitney & 0.9984 & ILS Superior \\
+            & & & & VNS vs GA & No & Mann-Whitney & 0.0000 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{30} & \multirow{2}{*}{0.063} & \multirow{2}{*}{0.664} & \multirow{2}{*}{0.462} 
+            & VNS vs ILS & Yes & t-test & 0.2944 & No Sig. Diff. \\
+            & & & & VNS vs GA & Yes & t-test & 0.0000 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{100} & \multirow{2}{*}{0.512} & \multirow{2}{*}{0.616} & \multirow{2}{*}{0.0000} 
+            & VNS vs ILS & Yes & t-test & 0.0000 & VNS Superior \\
+            & & & & VNS vs GA & No & Mann-Whitney & 0.0000 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{200} & \multirow{2}{*}{0.043} & \multirow{2}{*}{0.877} & \multirow{2}{*}{0.067} 
+            & VNS vs ILS & No & Mann-Whitney & 0.0000 & VNS Superior \\
+            & & & & VNS vs GA & No & Mann-Whitney & 0.0000 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{400} & \multirow{2}{*}{0.296} & \multirow{2}{*}{0.295} & \multirow{2}{*}{0.625} 
+            & VNS vs ILS & Yes & t-test & 0.0000 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 0.0000 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{800} & \multirow{2}{*}{0.711} & \multirow{2}{*}{0.882} & \multirow{2}{*}{0.439} 
+            & VNS vs ILS & Yes & t-test & 0.0000 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 0.0000 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{1600} & \multirow{2}{*}{0.356} & \multirow{2}{*}{0.191} & \multirow{2}{*}{0.127} 
+            & VNS vs ILS & Yes & t-test & 0.0000 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 0.0000 & VNS Superior \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table*}
+
+The analysis confirms two distinct performance regimes. In small instances (10-30), the simple ILS is highly efficient, and VNS provides no statistical advantage (p-value $> 0.05$). 
+However, a transition occurs at Instance 100. From this point onward, the VNS is statistically superior to both ILS and GA ($p < 0.001$). Notably, in Instance 200, 
+the VNS distribution deviated from normality ($p=0.043$), requiring the non-parametric Mann-Whitney test, which still confirmed the result with high confidence.
 
 % ----------------------------------------------------------------------------------------------------------------------
 \section{Conclusion}
 \label{sec:conclusion}
-\lipsum[10]
 
+This study presented an optimization framework for the pistachio supply chain network, addressing forward products and reverse logistics of by-products. 
+We introduced an integer-based priority encoding with a formally specified backward decoding algorithm, addressing methodological gaps in prior work.
+
+To solve the resulting Mixed-Integer Linear Programming (MILP) problem, we proposed a hybrid Variable Neighborhood Search (VNS) algorithm. A key contribution of this work was 
+the development of problem-specific neighborhood operators. Our experimental analysis confirmed that these structure-aware operators, which exploit the distinction 
+between active and inactive nodes, significantly outperform standard permutation moves.
+
+Comprehensive computational experiments benchmarked the proposed VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver Gurobi. 
+The results reveal a clear performance stratification across instance sizes. For small instances ($N \le 30$), simple local search methods such as ILS are sufficient and highly efficient, 
+often outperforming more sophisticated approaches. However, as problem complexity increases to medium-sized instances ($N \approx 100$), the proposed VNS becomes statistically superior 
+to both GA and ILS, demonstrating its enhanced search capability. This advantage becomes even more pronounced in large-scale instances ($N \ge 800$), where exact methods become computationally 
+intractable due to memory and time constraints. In these challenging scenarios, the proposed VNS demonstrates remarkable scalability, consistently identifying high-quality 
+feasible solutions that significantly outperform the evolutionary approach, establishing VNS as a promising approach for practical, large-scale supply chain optimization.
+
+Regarding future research, two primary directions emerge. First, further variations of the problem model should be explored, such as incorporating explicit closed-loop feedback loops or 
+stochastic parameters to better reflect agricultural uncertainties. Second, and critically, there is a need to investigate new encoding methodologies specifically designed to enable 
+matheuristics. While priority-based encoding is effective for pure metaheuristics, developing representations that align more closely with mathematical programming structures could 
+unlock powerful hybrid decomposition strategies. Bridging the gap between heuristic flexibility and the precision of exact solvers remains a vital frontier 
+for solving such complex, large-scale supply chain problems.
+
+The source code used in this study are openly available at: \url{https://github.com/raissagd/Pistachio_CLSC}.
 % ----------------------------------------------------------------------------------------------------------------------
 %% Bibliography
 \bibliographystyle{elsarticle-harv}
