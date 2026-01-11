@@ -95,12 +95,13 @@ and waste recovery, where efficient resource management and cost reduction have 
 These strategies underline the importance of sustainability in modern supply chains and the potential for agricultural industries to implement similar measures.
 
 In related research, \cite{rajabi2023} focused on optimizing the pistachio supply chain using various algorithms, primarily population-based 
-approaches, such as the Genetic Algorithm (GA) (\cite{fathollahi2018, xie2022}), among others. However, a significant limitation in their work is the lack of methodological transparency. 
+approaches, such as the Genetic Algorithm (GA) (\cite{fathollahi2018, xie2022}), along with several metaphor-based metaheuristics including the Imperialist Competitive 
+Algorithm and Social Engineering Optimizer. However, one aspect that could be improved in their methodology is the level of detail provided for reproducibility. 
 Specifically, the authors employed a real-valued encoding scheme without detailing the decoding procedure required to transform these values into a feasible transport tree. 
-This omission hinders reproducibility and obscures the mechanism by which constraints are handled. Furthermore, recent works have raised serious concerns about so‑called 
-metaphor‑based metaheuristics, arguing that many of these algorithms offer little genuine algorithmic novelty beyond a change of terminology and that their performance 
-is often comparable to, or worse than, that of well‑established methods (\cite{campelo2023, aranha2022}). In this context, algorithms such as the Imperialist Competitive Algorithm and the Social 
-Engineering Optimizer exemplify a broader trend where new metaphors are introduced without clear benefits over classical metaheuristics, despite adding conceptual complexity.
+This omission hinders reproducibility and obscures the mechanism by which constraints are handled. Additionally, recent critical analyses (\cite{campelo2023, aranha2022}) 
+have demonstrated that many metaphor-based metaheuristics offer limited algorithmic innovation beyond terminological variations, often performing comparably to (or worse than) classical, 
+well-established methods. Given these findings, this work adopts a more transparent approach by employing the Variable Neighborhood Search (VNS), a well-understood classical metaheuristic 
+with clear operational principles, extensive theoretical foundation, and proven effectiveness across diverse optimization problems.
 
 Addressing these gaps, this research focuses on designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm (\cite{gendreau2010}). 
 While we adopt the same mixed-integer linear programming (MILP) model formulation from \cite{rajabi2023}, we propose a robust overhaul of the resolution methodology. We introduce a transparent 
@@ -286,16 +287,27 @@ propagating the requirements upstream to factories and processing centers, ensur
   \label{fig:decode_flux}
 \end{figure}
 
-Algorithm \ref{algoDecode1} details the first phase of this process, utilizing the helper function \textit{decodingStep} (Algorithm \ref{algoDecodingStep}) to allocate flows. 
+As illustrated in Figure \ref{fig:decode_flux}, the decoding process initiates with the flow of derived pistachio products from factories to consumers, ensuring all 
+constraints are satisfied. Oil and cosmetic product flows follow similar principles. Processing centers regulate pistachio allocation, accounting for production losses 
+and ensuring viable distribution. Harvested pistachios are allocated proportionally between factories and oil extraction centers, prioritizing demand satisfaction and 
+minimizing transportation costs. Flows between producers and processing centers cannot exceed production capacity, guaranteeing system feasibility. Waste 
+flows are managed similarly, respecting processing and composting capacity limits while minimizing costs.
 
-The critical logic occurs in Steps 5 and 6. Here, the algorithm reconciles diverging flows from Processing Centers, which produce multiple 
-outputs (Kernels for Oil vs. Open-shell for Factories) in fixed proportions. Satisfying one downstream demand often creates surplus of the other output. The decoding 
-identifies the bottleneck demand and routes surplus to the lowest-cost destination, minimizing over-supply penalties.
+To decode each logistic flow in the supply chain, we employ the \texttt{decodingStep} function, which implements the priority-based transportation algorithm described 
+by \citet{gen2006}. This function acts iteratively, allocating product units from source to destination based on a chromosome vector that defines the priority order 
+among logistic nodes, always respecting source capacities, destination demands, and unit transportation costs. The \texttt{decodingStep} function corresponds directly 
+to the priority-based procedure detailed in Table 2 of \citet{gen2006}.
 
-Each segment of the chromosome ($S_1$ through $S_8$) is decoded using the priority-based procedure described by \citet{gen2006}, which allocates transportation flows 
-by iterating through facilities in descending priority order. At each step, the algorithm assigns available capacity from sources to destinations with remaining demand, 
-selecting the minimum-cost arc. This greedy strategy ensures feasible solutions while respecting all capacity and demand constraints. The complete decoding procedure 
-is detailed in Table 2 of \citet{gen2006}.
+Algorithms \ref{algoDecode1} and \ref{algoDecode2} detail the complete decoding process in two phases (separated due to page constraints). Algorithm \ref{algoDecode1} 
+initiates the process by decoding the main flows between factories, extraction centers, consumers, and processing centers using chromosome segments $S_1$ through $S_5$. 
+The critical logic occurs in Steps 5 and 6, where the algorithm reconciles diverging flows from Processing Centers, which produce multiple outputs (Kernels for Oil vs. 
+Open-shell for Factories) in fixed proportions. Satisfying one downstream demand often creates surplus of the other output. The decoding identifies the bottleneck demand 
+and routes surplus to the lowest-cost destination, minimizing over-supply penalties.
+
+Algorithm \ref{algoDecode2} performs additional adjustments to ensure consistency between inputs and outputs at intermediate centers, decodes transport from producers 
+to processing centers (segment $S_6$), allocates waste generated in the processes to composting centers (segments $S_7$ and $S_8$), and determines which facilities 
+should be opened based on the obtained flows. At the end of the process, a complete set of continuous and binary decision variables is obtained, representing a feasible 
+and coherent solution to the proposed optimization problem.
 
 \begin{algorithm}
   \caption{Chromosome decoding for the supply chain (Part 1)}
@@ -350,19 +362,11 @@ is detailed in Table 2 of \citet{gen2006}.
   \end{algorithmic}
 \end{algorithm}
 
-Once the intermediate flows are established, the algorithm proceeds to the upstream and waste management stages, as detailed in Algorithm \ref{algoDecode2}.
-
-First, the exact demand for raw pistachios at the Processing Centers is calculated based on the outputs determined in Phase 1 (lines 2-5). Segment $S_6$ is then used to fulfill 
-this demand from Farmers. If the aggregate capacity of farmers is insufficient, the solution is marked as infeasible.
-
-Finally, waste management is handled in Steps 9 and 10. The waste generated at Processing and Oil Extraction centers is "pushed" to Composting Centers. Segment $S_8$ 
-determines the priority of these flows, directing waste to the Composting Center with available capacity and the lowest associated cost.
-
 \begin{algorithm}
-  \caption{Chromosome decoding for the supply chain (Part 2)}
+  \caption{Chromosome decoding (Part 2): Upstream flows and waste management}
   \label{algoDecode2}
   \begin{algorithmic}[1]
-  \Procedure{Decode}{continuation}
+  \Procedure{Decode}{continuation from Algorithm \ref{algoDecode1}}
   \State \textbf{// Step 7: Adjust demands at Processing Centers}
   \For{each processing center $j$}
       \State Calculate required outputs based on pistachio and oil flows
@@ -422,8 +426,8 @@ Finally, the shaking phase applies a perturbation to the current solution to esc
 defined in our implementation as 7\% of the total decision variables in the chromosome. This value was determined through preliminary experiments testing perturbation strengths 
 ranging from 3\% to 15\% on representative instances. Strengths below 5\% resulted in insufficient diversification, causing the algorithm to revisit previously explored regions, 
 while values above 10\% caused excessive disruption, degrading solution quality. The 7\% value provided the best balance between escaping local optima and maintaining solution 
-structure, with a minimum threshold of 10 perturbations to ensure meaningful changes even in small instances. The specific operator used for shaking changes cyclically, 
-resetting to the first operator upon a successful acceptance and moving to the next operator if the candidate solution is rejected.
+structure. The specific operator used for shaking changes cyclically, resetting to the first operator upon a successful acceptance and 
+moving to the next operator if the candidate solution is rejected.
 
 \begin{algorithm}
     \caption{Hybrid VNS with SA Acceptance}
@@ -465,12 +469,15 @@ resetting to the first operator upon a successful acceptance and moving to the n
 \end{algorithm}
 
 The VND phase applies the four operators in the following fixed sequence: (1) Active Reversion, (2) Inactive-Active Swap, (3) Inactive Boost, and (4) Inactive-Active Exchange two Neighbors (IA-ETN). 
-This specific ordering follows a strategic progression from conservative to aggressive exploration. First, Active Reversion fine-tunes the existing solution topology by reordering active nodes—this 
-intensification step exploits the current structure before considering more disruptive changes. Second, Inactive-Active Swap introduces global diversification by randomly exchanging nodes between 
+This specific ordering follows a strategic progression from conservative to aggressive exploration. First, Active Reversion fine-tunes the existing solution topology by reordering active nodes, 
+exploring the current structure before considering more disruptive changes. Second, Inactive-Active Swap introduces global diversification by randomly exchanging nodes between 
 active and inactive sets, testing whether alternative facility configurations might be superior. Third, Inactive Boost applies the most aggressive perturbation, forcing a previously unused node 
 to maximum priority—this operator is crucial for escaping situations where good facilities are trapped at low priorities. Finally, IA-ETN provides localized diversification by testing the boundary 
 between active and inactive sets, swapping neighboring nodes to explore incremental topology changes. This gradual escalation from refinement to disruption ensures that the algorithm exhausts 
 local improvements before resorting to more radical modifications, maximizing the effectiveness of the VND phase.
+
+These operators are applied to the priority-based chromosome during the VND phase, with each move triggering a complete re-decoding using the procedure described in 
+Algorithms \ref{algoDecode1} and \ref{algoDecode2}.
 
 % ----------------------------------------------------------
 \subsection{Neighborhood Structures}
@@ -494,7 +501,7 @@ the active and inactive sets:
     node ($j \in \mathcal{I}$) at random and exchanges their priorities. This forces a currently used route to be downgraded and a previously unused 
     route to be upgraded, effectively testing global topology changes by bringing new nodes into the solution.
 
-    \item \textbf{Inactive Boost:} This novel problem-specific operator addresses the "starvation" issue common in capacity-constrained problems. 
+    \item \textbf{Inactive Boost:} This operator addresses the "starvation" issue common in capacity-constrained problems. 
     A low-cost supplier might be ignored simply because it sits too low in the priority list to be considered before demands are met. This operator 
     selects a random inactive node and assigns it the highest possible priority value in the chromosome. This forces the greedy decoder to 
     maximize flow from this specific node before considering any others, potentially revealing a completely different and superior tree structure.
@@ -511,7 +518,7 @@ the active and inactive sets:
 \label{sec:experiments}
 
 This section evaluates the performance of the proposed VNS approach. The experiments are divided into two phases: first, we validate the effectiveness of the proposed neighborhood 
-structures against standard operators. Second, we benchmark the optimized VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver Gurobi.
+structures against standard operators. Second, we benchmark the optimized VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver.
 
 % ------------------------------------------------------------
 
@@ -564,7 +571,7 @@ To validate the contribution of the novel problem-specific neighborhood structur
 classical permutation operators found in the literature: \textit{Swap}, \textit{Reversion}, \textit{Insertion}, and \textit{Slide} (\cite{gendreau2010}).
 
 \subsubsection{Statistical Analysis}
-We performed a statistical validation of the results across all instance sizes. First, the Shapiro-Wilk test was applied to check for normality in the distribution of objective 
+We performed a statistical validation of the results across all instance sizes. First, the Shapiro-Wilk test was applied with significance level $\alpha = 0.05$ to check for normality in the distribution of objective 
 function values. Based on the results, we selected the appropriate significance test: the t-test for normally distributed samples and the Mann-Whitney U test for non-parametric cases. 
 The hypothesis tested was that the Proposed VNS provides a smaller (better) objective function value than the Standard VNS ($H_1: \mu_{Novel} < \mu_{Basic}$).
 
@@ -659,7 +666,7 @@ lower variance, indicating greater robustness.
         \caption{Instance 1600}
     \end{subfigure}
     
-    \caption{Distribution of objective function values for Proposed VNS (Novel) vs. Standard VNS (Basic) across all instance sizes. The novel approach demonstrates superior scalability.}
+    \caption{Distribution of objective function values for Proposed VNS (Novel, left boxplot) vs. Standard VNS (Basic, right boxplot) across all instance sizes. The red dashed line represents the optimal solution found by branch-and-bound (Gurobi). The novel approach demonstrates superior scalability.}
     \label{fig:vns_boxplots}
 \end{figure*}
 
@@ -753,7 +760,7 @@ These values represent upper bounds rather than proven optimal solutions.
 \end{table*}
 
 \subsubsection{Statistical Validation}
-To rigorously validate the performance differences, we applied the same statistical methodology described in Section~\ref{subsec:operators_analysis}. 
+To rigorously validate the performance differences, we applied the same statistical methodology described in Section~\ref{subsec:operators_analysis} with $\alpha = 0.05$ for all tests. 
 Table \ref{tab:detailed_stats} presents the normality checks ($p_{SW}$) and hypothesis testing results for all pairwise comparisons between VNS and its competitors.
 
 The hypothesis tested was $H_1: \mu_{VNS} < \mu_{Competitor}$ (one-tailed). As shown in the table, the data distribution characteristics vary with instance size, 
@@ -806,6 +813,19 @@ The analysis confirms two distinct performance regimes. In small instances (10-3
 However, a transition occurs at Instance 100. From this point onward, the VNS is statistically superior to both ILS and GA ($p < 0.001$). Notably, in Instance 200, 
 the VNS distribution deviated from normality ($p=0.043$), requiring the non-parametric Mann-Whitney test, which still confirmed the result with high confidence.
 
+\subsubsection{Performance Regime Analysis}
+The observed performance stratification reveals important insights about algorithm selection based on problem scale. For small instances (10-30 nodes), the solution space 
+is relatively compact, and simple greedy descent strategies employed by ILS converge rapidly to near-optimal solutions. In these cases, the overhead of VNS's multi-neighborhood 
+framework and SA acceptance mechanism provides no advantage, since the problem is simple enough that basic local search suffices. The VND cycling through multiple operators and the 
+probabilistic acceptance of worse solutions become unnecessary computational expenses when the local optimum basin is shallow and easily escapable.
+
+However, as instance size grows beyond 100 nodes, the combinatorial explosion creates a rugged fitness landscape with numerous deep local optima separated by large barriers. 
+Here, the VNS's sophisticated diversification mechanisms (strategic neighborhood sequencing, SA-based hill climbing, and adaptive perturbation) become essential. The problem-specific 
+operators exploit structural properties of the supply chain that are invisible to classical operators, enabling the algorithm to navigate 
+the active/inactive node boundary more effectively. The ILS, constrained to a single neighborhood operator, lacks this structural awareness and becomes trapped in inferior local optima. 
+Similarly, the GA's population-based search suffers from the curse of dimensionality: as chromosome length grows from 1,700 to 27,200 variables, maintaining population diversity while 
+guiding convergence becomes increasingly difficult, resulting in premature convergence to suboptimal regions.
+
 % ----------------------------------------------------------------------------------------------------------------------
 \section{Conclusion}
 \label{sec:conclusion}
@@ -815,7 +835,7 @@ We introduced an integer-based priority encoding with a formally specified backw
 
 To solve the resulting Mixed-Integer Linear Programming (MILP) problem, we proposed a hybrid Variable Neighborhood Search (VNS) algorithm. A key contribution of this work was 
 the development of problem-specific neighborhood operators. Our experimental analysis confirmed that these structure-aware operators, which exploit the distinction 
-between active and inactive nodes, significantly outperform standard permutation moves.
+between active and inactive nodes, can outperform standard permutation moves.
 
 Comprehensive computational experiments benchmarked the proposed VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver Gurobi. 
 The results reveal a clear performance stratification across instance sizes. For small instances ($N \le 30$), simple local search methods such as ILS are sufficient and highly efficient, 
@@ -824,11 +844,15 @@ to both GA and ILS, demonstrating its enhanced search capability. This advantage
 intractable due to memory and time constraints. In these challenging scenarios, the proposed VNS demonstrates remarkable scalability, consistently identifying high-quality 
 feasible solutions that significantly outperform the evolutionary approach, establishing VNS as a promising approach for practical, large-scale supply chain optimization.
 
-Regarding future research, two primary directions emerge. First, further variations of the problem model should be explored, such as incorporating explicit closed-loop feedback loops or 
-stochastic parameters to better reflect agricultural uncertainties. Second, and critically, there is a need to investigate new encoding methodologies specifically designed to enable 
-matheuristics. While priority-based encoding is effective for pure metaheuristics, developing representations that align more closely with mathematical programming structures could 
-unlock powerful hybrid decomposition strategies. Bridging the gap between heuristic flexibility and the precision of exact solvers remains a vital frontier 
-for solving such complex, large-scale supply chain problems.
+Regarding future research, two primary directions emerge. First, further variations of the problem model should be explored, such as incorporating explicit closed-loop feedback loops. 
+Second, and critically, there is a need to investigate new encoding methodologies specifically designed to enable 
+matheuristics—hybrid approaches combining metaheuristics with exact solvers. The priority-based encoding used in this work is highly effective for pure metaheuristics, as it enables 
+efficient local search through the solution space. However, integrating exact methods (such as branch-and-bound) into the VNS framework would require a reverse transformation: 
+converting the decoded transportation tree back into the original MILP variable space. This reverse mapping is extremely challenging because the decoding process involves complex, non-linear 
+decisions (such as the proportional allocation rules in Processing Centers and the greedy priority-based flow assignments) that cannot be trivially inverted. Developing alternative encoding 
+schemes that preserve a bidirectional mapping between heuristic representations and mathematical programming formulations could unlock powerful hybrid decomposition strategies, enabling 
+the VNS to identify promising regions while exact solvers refine solutions with provable bounds. Bridging this gap between heuristic flexibility and exact solver precision remains a vital 
+frontier for solving such complex, large-scale supply chain problems.
 
 The source code used in this study are openly available at: \url{https://github.com/raissagd/Pistachio_CLSC}.
 % ----------------------------------------------------------------------------------------------------------------------
