@@ -558,7 +558,8 @@ The specific parameter settings for each algorithm are as follows:
     chromosome length, a value empirically determined as described in Section~\ref{subsec:vns}. The VND phase cycles sequentially through four problem-specific operators: (1) Active Reversion, 
     (2) Inactive-Active Swap, (3) Inactive Boost, and (4) IA-ETN. Upon finding an improvement with any operator, the VND restarts from the first operator.
     
-    \item \textbf{Exact Solver (Gurobi):} The solver was configured with a time limit of 3,600 seconds (1 hour). For instances where the optimal solution could not be found within 
+    \item \textbf{Exact Solver (Gurobi):} For the three largest instances (400, 800, and 1600), the solver was configured with a time limit of 3,600 seconds (1 hour). 
+    For smaller instances, no time limit was imposed, allowing the solver to run until proven optimality. For instances where the optimal solution could not be found within 
     the time limit, the best feasible solution found ($\text{Incumbent}$) was recorded.
 \end{itemize}
 
@@ -577,9 +578,9 @@ We performed a statistical validation of the results across all instance sizes. 
 function values. Based on the results, we selected the appropriate significance test: the t-test for normally distributed samples and the Mann-Whitney U test for non-parametric cases. 
 The hypothesis tested was that the Proposed VNS provides a smaller (better) objective function value than the Standard VNS ($H_1: \mu_{Novel} < \mu_{Basic}$).
 
-Table \ref{tab:stats_vns} details the p-values obtained. For small instances (10 and 30), the p-values ($> 0.05$) indicate that the Proposed VNS is not statistically superior. In fact, 
-the Standard VNS performs marginally better in these simple landscapes. However, for all instances of size 100 and above, the p-values are effectively zero ($p < 0.0001$), confirming that 
-the Proposed VNS is statistically superior with high confidence.
+Table \ref{tab:stats_vns} details the p-values obtained. For small instances (10 and 30), the p-values ($> 0.05$) indicate that there is no statistically significant difference 
+between the Proposed VNS and the Standard VNS. The null hypothesis ($H_0: \mu_{Novel} = \mu_{Basic}$) cannot be rejected, meaning both approaches perform comparably in these simple landscapes. 
+However, for all instances of size 100 and above, the p-values are effectively zero ($p < 0.0001$), confirming that the Proposed VNS is statistically superior with high confidence.
 
 \begin{table}[h]
     \centering
@@ -589,8 +590,8 @@ the Proposed VNS is statistically superior with high confidence.
         \toprule
         Instance & S-W (Novel) & S-W (Basic) & Test Used & p-value & Result \\
         \midrule
-        10 & 0.0000 & 0.0008 & Mann-Whitney & 1.0000 & Basic Better \\
-        30 & 0.0626 & 0.0493 & Mann-Whitney & 0.9811 & Basic Better \\
+        10 & 0.0000 & 0.0008 & Mann-Whitney & 1.0000 & No Sig. Diff. \\
+        30 & 0.0626 & 0.0493 & Mann-Whitney & 0.9811 & No Sig. Diff. \\
         100 & 0.5115 & 0.5658 & t-test & 0.0000 & Novel Superior \\
         200 & 0.0434 & 0.5143 & Mann-Whitney & 0.0000 & Novel Superior \\
         400 & 0.2958 & 0.6396 & t-test & 0.0000 & Novel Superior \\
@@ -734,13 +735,16 @@ However, a clear trend emerges from Instance 100 onwards. The VNS consistently o
 For the largest instances (800 and 1600), the VNS maintains a gap to the optimum of approximately 3.5\%, whereas the ILS gap grows to 4.7\% and the GA gap exceeds 10\%. 
 This demonstrates the superior scalability of the proposed approach.
 
-For the two largest instances (800 and 1600), Gurobi reached the one-hour time limit without proving optimality, returning the same best incumbent solution value of $5.49 \times 10^8$ for both. 
-These values represent upper bounds rather than proven optimal solutions.
+For the three largest instances (400, 800, and 1600), Gurobi was subject to a one-hour time limit. While Instance 400 reached proven optimality within this limit, 
+Instances 800 and 1600 exhausted the time budget without proving optimality, returning the same best incumbent solution value of $5.49 \times 10^8$ for both. 
+These values represent upper bounds rather than proven optimal solutions. For smaller instances (10, 30, 100, and 200), Gurobi ran without time constraints and 
+successfully proved optimality.
 
 \begin{table*}[ht]
     \centering
-    \caption{Descriptive Statistics: Average Objective Function values and Gap to Reference Solution (\%). Note: For instances 800 and 1600, Gurobi reached the time limit without proving optimality. 
-    Gaps are calculated relative to the best incumbent solution rather than a proven optimum.}
+    \caption{Descriptive Statistics: Average Objective Function values and Gap to Reference Solution (\%). Note: Instances 10-200 were solved to proven optimality by Gurobi without time constraints. 
+    Instance 400 reached proven optimality within the 1-hour time limit. For instances 800 and 1600, Gurobi reached the time limit without proving optimality; 
+    gaps are calculated relative to the best incumbent solution rather than a proven optimum.}
     \label{tab:descriptive_stats}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{rcccccccc}
