@@ -21,9 +21,7 @@
 \begin{frontmatter}
 
 %% Title
-\title{A Priority-Based Variable Neighborhood Search with Problem-Specific Operators for Sustainable Pistachio Supply Chain Design}
-%\title{Enhancing Metaheuristics for Pistachio Supply Chain Optimization}
-%title{"A Tailored Variable Neighborhood Search for Large-Scale Pistachio Supply Chain Design"}
+\title{Enhancing Metaheuristics for Pistachio Supply Chain Optimization: A Priority-Based Variable Neighborhood Search with Problem-Specific Operators}
 
 %% Authors
 %% We map authors to affiliations using labels [aff1, aff2]
@@ -75,35 +73,35 @@ The growing role of agriculture in the economic development of many countries hi
 other industries to stimulate overall economic growth. Agriculture not only supports food security but also acts as a major contributor 
 to exports, generating significant income and strengthening other sectors. Among various agricultural products, pistachios stand out due to 
 their high economic and nutritional value. Major producers such as the US, Turkey, and Iran dominate global pistachio production, 
-remaining the leading producers worldwide in 2022 and 2023 (\cite{statista2023}). As a result, the strategic importance of pistachios in international trade continues to grow.
+remaining the leading producers worldwide in 2022 and 2023 \citep{statista2023}. As a result, the strategic importance of pistachios in international trade continues to grow.
 
 With this increasing global demand for pistachios, the need for efficient supply chain networks becomes more critical. Proper supply chain 
 management is vital for maintaining product quality, minimizing environmental impacts, and ensuring the smooth flow of goods from production 
 to consumers. A key challenge in pistachio production is the management of its by-products, such as hulls and shells, which, while free of heavy 
-metals or pathogens, can degrade soil quality and contribute to environmental pollution if not properly handled (\cite{doula2014, bartzas2017}). 
+metals or pathogens, can degrade soil quality and contribute to environmental pollution if not properly handled \citep{doula2014, bartzas2017}. 
 Furthermore, improper disposal of these materials may lead to the growth of molds that increase the risk of aflatoxin contamination, posing serious 
-health risks such as liver cancer (\cite{hokmabadi2018,dronavalli2019}). Therefore, eco-friendly practices for reusing agricultural waste are 
+health risks such as liver cancer \citep{hokmabadi2018,dronavalli2019}. Therefore, eco-friendly practices for reusing agricultural waste are 
 essential to mitigate both environmental and health hazards.
 
 Moreover, inefficiencies in supply chain networks for food and agricultural products, including pistachios, can have significant 
-implications for product quality and trade (\cite{casper2018}). Addressing these environmental and logistical concerns is crucial to sustaining both 
+implications for product quality and trade \citep{casper2018}. Addressing these environmental and logistical concerns is crucial to sustaining both 
 the economic and ecological viability of the pistachio industry.  In the broader context of sustainable supply chains, several studies have focused on 
 optimizing resource use and minimizing waste through recovery and recycling practices. For example, sustainable supply chain models designed for 
 agriculture and other industries have shown significant environmental benefits by reducing waste and reusing by-products for processes like 
-biogas and compost production (\cite{cheraghalipour2022}). Such approaches have been successfully applied in sectors such as manufacturing 
-and waste recovery, where efficient resource management and cost reduction have been key drivers (\cite{devika2014, zohal2016}). 
+biogas and compost production \citep{cheraghalipour2022}. Such approaches have been successfully applied in sectors such as manufacturing 
+and waste recovery, where efficient resource management and cost reduction have been key drivers \citep{devika2014, zohal2016}. 
 These strategies underline the importance of sustainability in modern supply chains and the potential for agricultural industries to implement similar measures.
 
 In related research, \cite{rajabi2023} focused on optimizing the pistachio supply chain using various algorithms, primarily population-based 
-approaches, such as the Genetic Algorithm (GA) (\cite{fathollahi2018, xie2022}), along with several metaphor-based metaheuristics including the Imperialist Competitive 
+approaches, such as the Genetic Algorithm (GA) \citep{fathollahi2018, xie2022}, along with several metaphor-based metaheuristics including the Imperialist Competitive 
 Algorithm and Social Engineering Optimizer. However, one aspect that could be improved in their methodology is the level of detail provided for reproducibility. 
 Specifically, the authors employed a real-valued encoding scheme without detailing the decoding procedure required to transform these values into a feasible transport tree. 
-This omission hinders reproducibility and obscures the mechanism by which constraints are handled. Additionally, recent critical analyses (\cite{campelo2023, aranha2022}) 
+This omission hinders reproducibility and obscures the mechanism by which constraints are handled. Additionally, recent critical analyses \citep{campelo2023, aranha2022}
 have demonstrated that many metaphor-based metaheuristics offer limited algorithmic innovation beyond terminological variations, often performing comparably to (or worse than) classical, 
 well-established methods. Given these findings, this work adopts a more transparent approach by employing the Variable Neighborhood Search (VNS), a well-understood classical metaheuristic 
 with clear operational principles, extensive theoretical foundation, and proven effectiveness across diverse optimization problems.
 
-Addressing these gaps, this research focuses on designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm (\cite{gendreau2010}). 
+Addressing these gaps, this research focuses on designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm \citep{gendreau2010}. 
 While we adopt the same mixed-integer linear programming (MILP) model formulation from \cite{rajabi2023}, we propose a robust overhaul of the resolution methodology. We introduce a transparent 
 integer-based priority encoding and provide a step-by-step description of the decoding algorithm, ensuring reproducibility. Furthermore, we develop problem-specific neighborhood 
 operators designed to exploit the particular structure of the chain. These specialized operators are contrasted with classical moves to demonstrate their efficacy in exploring the 
@@ -134,7 +132,7 @@ composting centers ($q$), where it is transformed into compost, subsequently dis
 
 Although in practical terms, the produced compost could be reused by the original farmers, establishing a closed-loop system, the adopted mathematical model does not explicitly 
 represent this feedback. Instead, compost customers are not directly associated with the inital producers, characterizing an implicit feedback cycle. This approach, already 
-adopted in previous works (\hspace{-0.03em}\cite{pishvaee2010,ahmadi2019,banasik2016}), preserves the structural simplicity of the model. However, the inclusion of rigorous 
+adopted in previous works \citep{pishvaee2010,ahmadi2019,banasik2016}, preserves the structural simplicity of the model. However, the inclusion of rigorous 
 modeling of this return loop represents a promising direction for future investigations, especially in the context of sustainable supply chains.
 
 \begin{figure}
@@ -158,14 +156,14 @@ tolerating no shortages (see more details on the variables in Table 5 of \cite{r
     & \sum\limits_{e=1}^E O_{en_2} \le Cpv_s\times V_s, \quad \forall s \in S \label{eq:restricao6}\\
     & \sum\limits_{k=1}^K Go_{jk} + \sum\limits_{e=1} Gr_{je} + \sum\limits_{q=1}^Q Gw_{jq} \le \sum\limits_{i=1} X_{ij}, \quad \forall j \in J \label{eq:restricao7} \\
     & \sum\limits_{k=1}^K Go_{jk} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_1, \quad \forall j\in J \label{eq:restricao8} \\
-    & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9}
+    & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9} \\
+    & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10} \\
+    & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
+    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12}
 \end{align}
 
 \begin{align}
-    & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10} \\
-    & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
-    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12} \\
-    & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} \\
+        & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} \\
     & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14} \\
     & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15} \\
     & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q, \quad \forall q \in Q \label{eq:restricao16} \\
@@ -244,12 +242,12 @@ the backward decoding strategy that ensures feasibility, and problem-specific ne
 \subsection{Solution Representation}
 \label{subsec:solution_rep}
 
-Representing a solution for a complex network design problem is non-trivial. Following the principles established by \cite{gen2006} and \cite{rajabi2023}, 
+Representing a solution for a complex network design problem is non-trivial. Following the principles established by \citep{gen2006} and \cite{rajabi2023}, 
 we employ a priority-based encoding method. In this scheme, the chromosome does not directly encode the flow quantities ($X_{ij}$), but rather the \textit{priority} 
 of serving specific transportation arcs.
 
 \subsubsection{Integer Permutation vs. Real-Valued Encoding}
-In this work, it is used an integer permutation encoding rather than the random key ($0-1$ real value) encoding used in previous studies (\cite{rajabi2023, fathollahi2018}).
+In this work, it is used an integer permutation encoding rather than the random key ($0-1$ real value) encoding used in previous studies \citep{rajabi2023, fathollahi2018}.
 
 In the real-valued approach, genes are assigned random numbers $r \in [0, 1]$, and priorities are derived from sorting these values. This representation suffers from a "many-to-one" 
 mapping redundancy: infinite combinations of real numbers can result in the exact same priority order. For example, the vectors $v_1 = [0.1, 0.2, 0.5]$ and $v_2 = [0.8, 0.85, 0.9]$ 
@@ -408,7 +406,7 @@ and coherent solution to the proposed optimization problem.
 \subsection{The VNS Algorithm}
 \label{subsec:vns}
 
-The proposed algorithm is a hybrid metaheuristic that enhances the standard Variable Neighborhood Search (VNS) (\cite{hansen2010}) by integrating Variable Neighborhood Descent (VND) 
+The proposed algorithm is a hybrid metaheuristic that enhances the standard Variable Neighborhood Search (VNS) \citep{hansen2010} by integrating Variable Neighborhood Descent (VND) 
 for intensification and a Simulated Annealing (SA) acceptance criterion. This hybridization addresses the limitations of pure descent methods in the highly constrained landscape of the 
 pistachio supply chain. The procedure is outlined in Algorithm \ref{algoVNS}.
 
@@ -485,7 +483,7 @@ Algorithms \ref{algoDecode1} and \ref{algoDecode2}.
 
 A critical inefficiency in applying standard permutation operators to priority-based encoding is their "blindness" to the phenotypic state. 
 In the greedy decoding process (Algorithm \ref{algoDecode1}), typically only a subset of high-priority nodes is required to satisfy all demands. 
-We term these \textbf{Active Nodes} ($\mathcal{A}$), while the remaining unused nodes are \textbf{Inactive} ($\mathcal{I}$). Standard operators 
+We term these Active Nodes ($\mathcal{A}$), while the remaining unused nodes are Inactive ($\mathcal{I}$). Standard operators 
 often swap two Inactive nodes, changing the genotype but resulting in the exact same transportation tree and objective value.
 
 To overcome this redundancy, our implementation explicitly tracks the set of active nodes returned by the decoder and employs four structure-aware 
@@ -550,13 +548,13 @@ The specific parameter settings for each algorithm are as follows:
     that randomly alternates between two strategies with equal probability: (i) segment-level crossover, which exchanges entire chromosome segments ($S_1$ through $S_8$) between parents, and 
     (ii) intra-segment crossover, which applies Partially Mapped Crossover (PMX) within each individual segment to preserve permutation validity while promoting diversity. This hybrid approach 
     balances global exploration (segment exchange) with local refinement (intra-segment recombination). Mutation probability is set to 0.1, and binary tournament selection is used for parent 
-    selection, following widely established GA practices (\cite{hussain2022genetic}).
+    selection, following widely established GA practices \citep{hussain2022genetic}.
     
     \item \textbf{Iterated Local Search (ILS):} The ILS alternates between local search and perturbation phases. The perturbation strength scales with instance size, and the algorithm 
-    restarts when no improvement is observed after 10 consecutive non-improving iterations (\cite{tinos2024iterated}). Local search employs the problem-specific "Inactive–Active Swap" operator.
+    restarts when no improvement is observed after 10 consecutive non-improving iterations \citep{tinos2024iterated}. Local search employs the problem-specific "Inactive–Active Swap" operator.
 
     \item \textbf{Variable Neighborhood Search (VNS):} The proposed VNS uses initial temperature $T_0 = 100$ and cooling rate $\alpha = 0.995$, which are standard parameters widely 
-    adopted in Simulated Annealing literature (\cite{kirkpatrick1983optimization}), providing effective balance between exploration and exploitation. The perturbation strength is set to 7\% of the 
+    adopted in Simulated Annealing literature \citep{kirkpatrick1983optimization}, providing effective balance between exploration and exploitation. The perturbation strength is set to 7\% of the 
     chromosome length, a value empirically determined as described in Section~\ref{subsec:vns}. The VND phase cycles sequentially through four problem-specific operators: (1) Active Reversion, 
     (2) Inactive-Active Swap, (3) Inactive Boost, and (4) IA-ETN. Upon finding an improvement with any operator, the VND restarts from the first operator.
     
@@ -572,7 +570,7 @@ All metaheuristics (VNS, GA, ILS) were executed 30 times for each instance to en
 \label{subsec:operators_analysis}
 
 To validate the contribution of the novel problem-specific neighborhood structures, we conducted a comparative study against a baseline "Standard VNS". The Standard VNS employs only the 
-classical permutation operators found in the literature: \textit{Swap}, \textit{Reversion}, \textit{Insertion}, and \textit{Slide} (\cite{gendreau2010}).
+classical permutation operators found in the literature: \textit{Swap}, \textit{Reversion}, \textit{Insertion}, and \textit{Slide} \citep{gendreau2010}.
 
 \subsubsection{Statistical Analysis}
 We performed a statistical validation of the results across all instance sizes. First, the Shapiro-Wilk test was applied with significance level $\alpha = 0.05$ to check for normality in the distribution of objective 
