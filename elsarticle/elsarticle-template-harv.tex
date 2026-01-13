@@ -590,13 +590,13 @@ However, for all instances of size 100 and above, the p-values are effectively z
         \toprule
         Instance & S-W (Novel) & S-W (Basic) & Test Used & p-value & Result \\
         \midrule
-        10 & 0.0000 & 0.0008 & Mann-Whitney & 1.0000 & No Sig. Diff. \\
+        10 & $1.695 \times 10^{-11}$ & 0.0008 & Mann-Whitney & 1.0000 & No Sig. Diff. \\
         30 & 0.0626 & 0.0493 & Mann-Whitney & 0.9811 & No Sig. Diff. \\
-        100 & 0.5115 & 0.5658 & t-test & 0.0000 & Novel Superior \\
-        200 & 0.0434 & 0.5143 & Mann-Whitney & 0.0000 & Novel Superior \\
-        400 & 0.2958 & 0.6396 & t-test & 0.0000 & Novel Superior \\
-        800 & 0.7107 & 0.1993 & t-test & 0.0000 & Novel Superior \\
-        1600 & 0.3556 & 0.3454 & t-test & 0.0000 & Novel Superior \\
+        100 & 0.5115 & 0.5658 & t-test & $3.638 \times 10^{-6}$ & Novel Superior \\
+        200 & 0.0434 & 0.5143 & Mann-Whitney & $2.252 \times 10^{-11}$ & Novel Superior \\
+        400 & 0.2958 & 0.6396 & t-test & $2.292 \times 10^{-32}$ & Novel Superior \\
+        800 & 0.7107 & 0.1993 & t-test & $2.763 \times 10^{-27}$ & Novel Superior \\
+        1600 & 0.3556 & 0.3454 & t-test & $5.894 \times 10^{-31}$ & Novel Superior \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -631,46 +631,109 @@ lower variance, indicating greater robustness.
 \begin{figure*}[htbp]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_10.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/boxplots_10.png}
         \caption{Instance 10}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_30.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/boxplots_30.png}
         \caption{Instance 30}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_100.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/boxplots_100.png}
         \caption{Instance 100}
     \end{subfigure}
     
     \vspace{1em}
     
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_200.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/boxplots_200.png}
         \caption{Instance 200}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_400.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/boxplots_400.png}
         \caption{Instance 400}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_800.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/boxplots_800.png}
         \caption{Instance 800}
     \end{subfigure}
 
     \vspace{1em}
 
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/vns_1600.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/boxplots_1600.png}
         \caption{Instance 1600}
     \end{subfigure}
     
     \caption{Distribution of objective function values for Proposed VNS (Novel, left boxplot) vs. Standard VNS (Basic, right boxplot) across all instance sizes. The red dashed line represents the optimal solution found by branch-and-bound (Gurobi). The novel approach demonstrates superior scalability.}
     \label{fig:vns_boxplots}
+\end{figure*}
+
+\subsubsection{Convergence Behavior Analysis}
+Figure \ref{fig:vns_convergence} provides temporal insights into the search dynamics by showing the distribution of best-so-far objective values at different execution stages 
+(12.5\%, 25\%, 37.5\%, etc.). The plots reveal a fundamental behavioral difference between the two VNS variants.
+
+The Standard VNS (labeled "2", orange line) exhibits a "cliff-like" convergence profile. It descends rapidly in the first 12.5\% of execution, then immediately plateaus 
+with extremely tight distributions (small boxes). While this indicates high repeatability across runs, it signals premature convergence: the algorithm becomes trapped 
+in the first local optimum encountered and lacks sufficient diversification mechanisms to escape, effectively stagnating for the remaining 85\% of the computational budget.
+
+In contrast, the Proposed VNS (labeled "1", blue boxes) displays substantially wider interquartile ranges during the initial 25\% of execution, particularly visible 
+in instances $N \ge 200$. This variance is not a weakness but validates the effectiveness of the proposed diversification operators. 
+By forcing transitions between active and inactive facility configurations, these operators enable the algorithm to traverse multiple basins of attraction, temporarily 
+increasing solution variance while systematically filtering inferior local optima. Critically, as execution progresses beyond 50\%, the distributions tighten considerably, 
+demonstrating that the algorithm successfully identifies and converges toward high-quality regions of the solution space. The final distributions (at 100\% execution) show 
+medians consistently 4-5\% lower than the Standard VNS. Thus, the initial exploration phase, though appearing less stable, constitutes a strategic investment that yields 
+superior solution quality in the long run.
+
+\begin{figure*}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/convergence_10.png}
+        \caption{Instance 10}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/convergence_30.png}
+        \caption{Instance 30}
+    \end{subfigure}
+    
+    \vspace{1em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/convergence_100.png}
+        \caption{Instance 100}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/convergence_200.png}
+        \caption{Instance 200}
+    \end{subfigure}
+    
+    \vspace{1em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/convergence_400.png}
+        \caption{Instance 400}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/convergence_800.png}
+        \caption{Instance 800}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{./imgs/VNSxVNSBASIC/convergence_1600.png}
+        \caption{Instance 1600}
+    \end{subfigure}
+    
+    \caption{Convergence curves comparing Proposed VNS (left/blue) vs. Standard VNS (right/orange) across all instance sizes. The x-axis represents the number of objective function evaluations, while the y-axis shows the best solution found up to that point. The Proposed VNS demonstrates faster convergence and better final solutions, particularly for larger instances.}
+    \label{fig:vns_convergence}
 \end{figure*}
 
 % ------------------------------------------------------------
@@ -683,41 +746,41 @@ Fig. \ref{fig:comparison_boxplots} presents the boxplots for all methods across 
 \begin{figure*}[htbp]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/instance_10.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/boxplots_10.png}
         \caption{Instance 10}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/instance_30.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/boxplots_30.png}
         \caption{Instance 30}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/instance_100.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/boxplots_100.png}
         \caption{Instance 100}
     \end{subfigure}
     
     \vspace{1em}
     
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/instance_200.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/boxplots_200.png}
         \caption{Instance 200}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/instance_400.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/boxplots_400.png}
         \caption{Instance 400}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/instance_800.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/boxplots_800.png}
         \caption{Instance 800}
     \end{subfigure}
 
     \vspace{1em}
 
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/instance_1600.png}
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/boxplots_1600.png}
         \caption{Instance 1600}
     \end{subfigure}
     
@@ -783,41 +846,41 @@ requiring different statistical treatments (parametric t-test when normality hol
             \cmidrule(lr){2-4} \cmidrule(lr){5-9}
             Inst. & VNS & ILS & GA & Comparison & Normality? & Test Used & p-value & \textbf{Conclusion} \\
             \midrule
-            \multirow{2}{*}{10} & \multirow{2}{*}{0.0000} & \multirow{2}{*}{0.541} & \multirow{2}{*}{0.000} 
-            & VNS vs ILS & No & Mann-Whitney & 0.9984 & ILS Superior \\
-            & & & & VNS vs GA & No & Mann-Whitney & 0.0000 & VNS Superior \\
+            \multirow{2}{*}{10} & \multirow{2}{*}{1.70e-11} & \multirow{2}{*}{5.41e-01} & \multirow{2}{*}{3.74e-07} 
+            & VNS vs ILS & No & Mann-Whitney & 9.98e-01 & No Sig. Diff. \\
+            & & & & VNS vs GA & No & Mann-Whitney & 1.09e-07 & VNS Superior \\
             \midrule
-            \multirow{2}{*}{30} & \multirow{2}{*}{0.063} & \multirow{2}{*}{0.664} & \multirow{2}{*}{0.462} 
-            & VNS vs ILS & Yes & t-test & 0.2944 & No Sig. Diff. \\
-            & & & & VNS vs GA & Yes & t-test & 0.0000 & VNS Superior \\
+            \multirow{2}{*}{30} & \multirow{2}{*}{6.26e-02} & \multirow{2}{*}{6.64e-01} & \multirow{2}{*}{4.62e-01} 
+            & VNS vs ILS & Yes & t-test & 2.94e-01 & No Sig. Diff. \\
+            & & & & VNS vs GA & Yes & t-test & 1.83e-12 & VNS Superior \\
             \midrule
-            \multirow{2}{*}{100} & \multirow{2}{*}{0.512} & \multirow{2}{*}{0.616} & \multirow{2}{*}{0.0000} 
-            & VNS vs ILS & Yes & t-test & 0.0000 & VNS Superior \\
-            & & & & VNS vs GA & No & Mann-Whitney & 0.0000 & VNS Superior \\
+            \multirow{2}{*}{100} & \multirow{2}{*}{5.12e-01} & \multirow{2}{*}{6.16e-01} & \multirow{2}{*}{3.46e-05} 
+            & VNS vs ILS & Yes & t-test & 7.94e-06 & VNS Superior \\
+            & & & & VNS vs GA & No & Mann-Whitney & 1.51e-11 & VNS Superior \\
             \midrule
-            \multirow{2}{*}{200} & \multirow{2}{*}{0.043} & \multirow{2}{*}{0.877} & \multirow{2}{*}{0.067} 
-            & VNS vs ILS & No & Mann-Whitney & 0.0000 & VNS Superior \\
-            & & & & VNS vs GA & No & Mann-Whitney & 0.0000 & VNS Superior \\
+            \multirow{2}{*}{200} & \multirow{2}{*}{4.34e-02} & \multirow{2}{*}{8.77e-01} & \multirow{2}{*}{6.67e-02} 
+            & VNS vs ILS & No & Mann-Whitney & 3.06e-10 & VNS Superior \\
+            & & & & VNS vs GA & No & Mann-Whitney & 1.51e-11 & VNS Superior \\
             \midrule
-            \multirow{2}{*}{400} & \multirow{2}{*}{0.296} & \multirow{2}{*}{0.295} & \multirow{2}{*}{0.625} 
-            & VNS vs ILS & Yes & t-test & 0.0000 & VNS Superior \\
-            & & & & VNS vs GA & Yes & t-test & 0.0000 & VNS Superior \\
+            \multirow{2}{*}{400} & \multirow{2}{*}{2.96e-01} & \multirow{2}{*}{2.95e-01} & \multirow{2}{*}{6.25e-01} 
+            & VNS vs ILS & Yes & t-test & 1.15e-20 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 1.03e-20 & VNS Superior \\
             \midrule
-            \multirow{2}{*}{800} & \multirow{2}{*}{0.711} & \multirow{2}{*}{0.882} & \multirow{2}{*}{0.439} 
-            & VNS vs ILS & Yes & t-test & 0.0000 & VNS Superior \\
-            & & & & VNS vs GA & Yes & t-test & 0.0000 & VNS Superior \\
+            \multirow{2}{*}{800} & \multirow{2}{*}{7.11e-01} & \multirow{2}{*}{8.82e-01} & \multirow{2}{*}{4.39e-01} 
+            & VNS vs ILS & Yes & t-test & 4.78e-20 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 1.71e-24 & VNS Superior \\
             \midrule
-            \multirow{2}{*}{1600} & \multirow{2}{*}{0.356} & \multirow{2}{*}{0.191} & \multirow{2}{*}{0.127} 
-            & VNS vs ILS & Yes & t-test & 0.0000 & VNS Superior \\
-            & & & & VNS vs GA & Yes & t-test & 0.0000 & VNS Superior \\
+            \multirow{2}{*}{1600} & \multirow{2}{*}{3.56e-01} & \multirow{2}{*}{1.91e-01} & \multirow{2}{*}{1.27e-01} 
+            & VNS vs ILS & Yes & t-test & 1.38e-17 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 5.97e-23 & VNS Superior \\
             \bottomrule
         \end{tabular}
     }
 \end{table*}
 
 The analysis confirms two distinct performance regimes. In small instances (10-30), the simple ILS is highly efficient, and VNS provides no statistical advantage (p-value $> 0.05$). 
-However, a transition occurs at Instance 100. From this point onward, the VNS is statistically superior to both ILS and GA ($p < 0.001$). Notably, in Instance 200, 
-the VNS distribution deviated from normality ($p=0.043$), requiring the non-parametric Mann-Whitney test, which still confirmed the result with high confidence.
+However, a transition occurs at Instance 100. From this point onward, the VNS is statistically superior to both ILS and GA ($p < 10^{-5}$). Notably, in Instance 200, 
+the VNS distribution deviated from normality ($p=4.34 \times 10^{-2}$), requiring the non-parametric Mann-Whitney test, which still confirmed the result with high confidence.
 
 \subsubsection{Performance Regime Analysis}
 The observed performance stratification reveals important insights about algorithm selection based on problem scale. For small instances (10-30 nodes), the solution space 
@@ -831,6 +894,80 @@ operators exploit structural properties of the supply chain that are invisible t
 the active/inactive node boundary more effectively. The ILS, constrained to a single neighborhood operator, lacks this structural awareness and becomes trapped in inferior local optima. 
 Similarly, the GA's population-based search suffers from the curse of dimensionality: as chromosome length grows from 1,700 to 27,200 variables, maintaining population diversity while 
 guiding convergence becomes increasingly difficult, resulting in premature convergence to suboptimal regions.
+
+\subsubsection{Convergence Analysis}
+Figure \ref{fig:convergence_plots} illustrates the evolutionary boxplots for all three methods. The ILS (left column) demonstrates a consistent behavior with relatively low 
+variance (small box sizes) throughout the execution. However, despite this stability, it fails to reach the deeper regions found by the VNS, stopping at higher objective function values.
+
+The GA (right column) struggles with the scale of the problem. In larger instances (800 and 1600), its convergence curve is still strictly descending at the end of the 
+computational budget, indicating that it requires significantly more evaluations to compete with the trajectory-based methods.
+
+The Proposed VNS (middle column) offers the best trade-off. In the largest instances, it starts with a broader search distribution (driven 
+by the Simulated Annealing acceptance criteria and the specific neighborhood operators) allowing it to filter through various basins of attraction. Crucially, while the ILS 
+stabilizes early at a sub-optimal level, the VNS sustains a steep descent trajectory for longer, ultimately securing the lowest objective function values with high 
+reliability across all 30 runs.
+
+\begin{figure*}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/convergence_10.png}
+        \caption{Instance 10}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/convergence_30.png}
+        \caption{Instance 30}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/convergence_100.png}
+        \caption{Instance 100}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/convergence_200.png}
+        \caption{Instance 200}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/convergence_400.png}
+        \caption{Instance 400}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/convergence_800.png}
+        \caption{Instance 800}
+    \end{subfigure}
+
+    \vspace{0.5em}
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./imgs/VNSxGAxILS/convergence_1600.png}
+        \caption{Instance 1600}
+    \end{subfigure}
+    
+    \caption{Convergence profiles of VNS, ILS, and GA across all instance sizes. Boxplots show the distribution of objective values at different 
+    execution stages (as percentage of total evaluations), with median lines connecting the boxes. The VNS demonstrates sustained improvement 
+    throughout execution, while GA plateaus earlier in large instances.}
+    \label{fig:convergence_plots}
+\end{figure*}
 
 % ----------------------------------------------------------------------------------------------------------------------
 \section{Conclusion}

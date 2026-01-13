@@ -27,12 +27,12 @@ experiments = {
 }
 
 # Configurando globalmente
-plt.rcParams['font.size'] = 16  # Tamanho base
-plt.rcParams['axes.labelsize'] = 16  # Labels dos eixos
+plt.rcParams['font.size'] = 18  # Tamanho base
+plt.rcParams['axes.labelsize'] = 18  # Labels dos eixos
 plt.rcParams['axes.titlesize'] = 18  # Títulos
-plt.rcParams['legend.fontsize'] = 16  # Legenda
+plt.rcParams['legend.fontsize'] = 18  # Legenda
 plt.rcParams['xtick.labelsize'] = 16  # Números eixo x
-plt.rcParams['ytick.labelsize'] = 16  # Números eixo y
+plt.rcParams['ytick.labelsize'] = 18  # Números eixo y
 
 def loadResults(experiment_name, quiet=False):
     """
