@@ -26,6 +26,14 @@ experiments = {
     }
 }
 
+# Configurando globalmente
+plt.rcParams['font.size'] = 16  # Tamanho base
+plt.rcParams['axes.labelsize'] = 16  # Labels dos eixos
+plt.rcParams['axes.titlesize'] = 18  # Títulos
+plt.rcParams['legend.fontsize'] = 16  # Legenda
+plt.rcParams['xtick.labelsize'] = 16  # Números eixo x
+plt.rcParams['ytick.labelsize'] = 16  # Números eixo y
+
 def loadResults(experiment_name, quiet=False):
     """
     Load results from a Google Drive folder for a specified experiment.
