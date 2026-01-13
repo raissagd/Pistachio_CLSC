@@ -144,7 +144,10 @@ modeling of this return loop represents a promising direction for future investi
 \end{figure}
 
 The mixed linear problem aims to minimize total costs \eqref{eq:custo}, including opening, production, and transportation costs, subject to the following capacity and demand constraints, 
-tolerating no shortages (see more details on the variables in Table 5 of \cite{rajabi2023}):
+tolerating no shortages. Key model parameters include: $\beta$ (weight loss percentage during drying operations at processing centers); $\theta_1$, $\theta_2$, and $\theta_3$ 
+(waste percentages of open-shell pistachios, raw kernels, and organic waste, respectively, where $\theta_1 + \theta_2 + \theta_3 = 1$); $\gamma_k$, $\gamma_s$, and $\gamma_q$ 
+(production rates for pistachio factories, cosmetic factories, and composting centers, respectively); and $\lambda$ (waste percentage during oil extraction). 
+A complete description of all parameters and decision variables is provided in Table 5 of \cite{rajabi2023}.
 
 \begin{align}
     \min &\ z_1 + z_2 + z_3 \label{eq:custo}\\
@@ -154,25 +157,24 @@ tolerating no shortages (see more details on the variables in Table 5 of \cite{r
     & \sum\limits_{j=1}^J Go_{jk} \le Cpw_k\times W_k, \quad \forall k \in K \label{eq:restricao4}\\
     & \sum\limits_{j=1}^J Gr_{je} \le Cpr_e\times R_e, \quad \forall e \in E \label{eq:restricao5}\\
     & \sum\limits_{e=1}^E O_{en_2} \le Cpv_s\times V_s, \quad \forall s \in S \label{eq:restricao6}\\
-    & \sum\limits_{k=1}^K Go_{jk} + \sum\limits_{e=1} Gr_{je} + \sum\limits_{q=1}^Q Gw_{jq} \le \sum\limits_{i=1} X_{ij}, \quad \forall j \in J \label{eq:restricao7} \\
+    & \sum\limits_{k=1}^K Go_{jk} + \sum\limits_{e=1}^E Gr_{je} + \sum\limits_{q=1}^Q Gw_{jq} \le \sum\limits_{i=1}^I X_{ij}, \quad \forall j \in J \label{eq:restricao7} \\
     & \sum\limits_{k=1}^K Go_{jk} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_1, \quad \forall j\in J \label{eq:restricao8} \\
-    & \sum\limits_{e=1}^K Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9} \\
+    & \sum\limits_{e=1}^E Gr_{je} = (1-\beta) \sum\limits_{i=1}^I X_{ij}\theta_2, \quad \forall j\in J \label{eq:restricao9} \\
     & \sum\limits_{q=1}^Q Gw_{jq} = \sum\limits_{i=1}^I X_{ij}\theta_3, \quad \forall j\in J \label{eq:restricao10} \\
     & \theta_1 + \theta_2 + \theta_3 = 1 \label{eq:restricao11} \\
-    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma k, \quad \forall k \in K \label{eq:restricao12}
+    & \sum\limits_{n_1=1}^{N_1} P_{kn_1} \le \sum\limits_{j=1}^J Go_{jk} \times \gamma_k, \quad \forall k \in K \label{eq:restricao12}
 \end{align}
 
 \begin{align}
-        & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1} Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} \\
+        & \sum\limits_{n_2=1}^{N_2} O_{en_2} + \sum\limits_{s=1}^S Oc_{es} \le \sum\limits_{j=1}^J Gr_{je}\times(1-\lambda), \quad \forall e\in E \label{eq:restricao13} \\
     & \sum\limits_{q=1}^{Q} Ow_{eq} \le \sum\limits_{j=1}^J Gr_{je} \times \lambda, \quad \forall e \in E \label{eq:restricao14} \\
-    & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma s, \quad \forall s \in S \label{eq:restricao15} \\
-    & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma q, \quad \forall q \in Q \label{eq:restricao16} \\
+    & \sum\limits_{n_3=1}^{N_3} L_{sn_1} \le \sum\limits_{e=1}^E Oc_{es} \times \gamma_s, \quad \forall s \in S \label{eq:restricao15} \\
+    & \sum\limits_{m=1}^M D_{qm} \le \left(\sum\limits_{j=1}^J Gw_{jq} + \sum\limits_{e=1}^E Ow_{eq} \right) \times \gamma_q, \quad \forall q \in Q \label{eq:restricao16} \\
     & \sum\limits_{k=1}^K P_{kn_1} \ge Dp_{n_1}, \quad \forall n_1 \in N_1 \label{eq:restricao17}\\
     & \sum\limits_{e=1}^E O_{en_2} \ge Du_{n_2}, \quad \forall n_2 \in N_2 \label{eq:restricao18}\\
     & \sum\limits_{s=1}^S L_{sn_3} \ge Ds_{n_3}, \quad \forall n_3 \in N_3 \label{eq:restricao19}\\
     & \sum\limits_{q=1}^Q D_{qm} \le Dc_{m}, \quad \forall m \in M \label{eq:restricao20}
 \end{align}
-
     
 \begin{itemize}
 \item The objective function \eqref{eq:custo} minimizes the total costs of the supply chain, including opening, transportation, and production costs. The costs are divided into three components: 
@@ -180,36 +182,36 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, and $z_3$ \eqref{eq:custo3}, w
 \end{itemize}
 
 \begin{align}
-  z_1 &= \sum_{j=1}^J Fu_j \cdot U_j 
-      + \sum_{q=1}^Q Fy_q \cdot Y_q 
-      + \sum_{k=1}^{K} Fw_k \cdot W_k \notag \\
-      &\quad + \sum_{e=1}^{E} Fr_e \cdot R_e
-      + \sum_{s=1}^S Fv_s \cdot V_s
+  z_1 &= \sum_{j=1}^J Fu_j \times U_j 
+      + \sum_{q=1}^Q Fy_q \times Y_q 
+      + \sum_{k=1}^{K} Fw_k \times W_k \notag \\
+      &\quad + \sum_{e=1}^{E} Fr_e \times R_e
+      + \sum_{s=1}^S Fv_s \times V_s
       \label{eq:custo1}
 \end{align}
 
 \begin{align}
-  z_2 &= \sum_{i=1}^I\sum_{j=1}^J CI_i \cdot X_{ij} 
-      + \sum_{j=1}^J\sum_{k=1}^K Cu_{1j} \cdot Go_{jk} \notag \\
-      &\quad + \sum_{j=1}^J\sum_{e=1}^E Cu_{2j} \cdot Gr_{je} 
-      + \sum_{q=1}^Q\sum_{m=1}^M Cy_q \cdot D_{qm} \notag \\
-      &\quad + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cw_k \cdot P_{kn_1} \notag \\
-      &\quad + \sum_{e=1}^E Cr_e \cdot \left( \sum_{n_2=1}^{N_2} O_{en_2} 
+  z_2 &= \sum_{i=1}^I\sum_{j=1}^J CI_i \times X_{ij} 
+      + \sum_{j=1}^J\sum_{k=1}^K Cu_{1j} \times Go_{jk} \notag \\
+      &\quad + \sum_{j=1}^J\sum_{e=1}^E Cu_{2j} \times Gr_{je} 
+      + \sum_{q=1}^Q\sum_{m=1}^M Cy_q \times D_{qm} \notag \\
+      &\quad + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cw_k \times P_{kn_1} \notag \\
+      &\quad + \sum_{e=1}^E Cr_e \times \left( \sum_{n_2=1}^{N_2} O_{en_2} 
       + \sum_{s=1}^S Oc_{es} \right) \notag \\
-      &\quad + \sum_{s=1}^S\sum_{n_3=1}^{N_3} Cv_s \cdot L_{sn_3}
+      &\quad + \sum_{s=1}^S\sum_{n_3=1}^{N_3} Cv_s \times L_{sn_3}
       \label{eq:custo2}
 \end{align}
 
 \begin{align}
-  z_3 &= \sum_{i=1}^I\sum_{j=1}^J CX_{ij} \cdot X_{ij} 
-      + \sum_{j=1}^J\sum_{k=1}^K CK_{jk} \cdot Go_{jk} \notag \\
-      &\quad + \sum_{j=1}^J\sum_{q=1}^Q CJ_{jq} \cdot Gw_{jq}
-      + \sum_{e=1}^E\sum_{s=1}^S CS_{es} \cdot Oc_{es} \notag \\
-      &\quad + \sum_{e=1}^E\sum_{n_2=1}^{N_2} CN_{en_2} \cdot Oc_{en_2}
-      + \sum_{e=1}^E\sum_{q=1}^Q CQ_{eq} \cdot Ow_{eq} \notag \\
-      &\quad + \sum_{s=1}^S\sum_{n_3=1}^{N_3} Cl_{sn_3} \cdot L_{sn_3}
-      + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cp_{kn_1} \cdot P_{kn_1} \notag \\
-      &\quad + \sum_{q=1}^Q\sum_{m=1}^M Cd_{qm} \cdot D_{qm}
+  z_3 &= \sum_{i=1}^I\sum_{j=1}^J CX_{ij} \times X_{ij} 
+      + \sum_{j=1}^J\sum_{k=1}^K CK_{jk} \times Go_{jk} \notag \\
+      &\quad + \sum_{j=1}^J\sum_{q=1}^Q CJ_{jq} \times Gw_{jq}
+      + \sum_{e=1}^E\sum_{s=1}^S CS_{es} \times Oc_{es} \notag \\
+      &\quad + \sum_{e=1}^E\sum_{n_2=1}^{N_2} CN_{en_2} \times Oc_{en_2}
+      + \sum_{e=1}^E\sum_{q=1}^Q CQ_{eq} \times Ow_{eq} \notag \\
+      &\quad + \sum_{s=1}^S\sum_{n_3=1}^{N_3} Cl_{sn_3} \times L_{sn_3}
+      + \sum_{k=1}^K\sum_{n_1=1}^{N_1} Cp_{kn_1} \times P_{kn_1} \notag \\
+      &\quad + \sum_{q=1}^Q\sum_{m=1}^M Cd_{qm} \times D_{qm}
       \label{eq:custo3}
 \end{align}
 
@@ -300,7 +302,11 @@ Algorithms \ref{algoDecode1} and \ref{algoDecode2} detail the complete decoding 
 initiates the process by decoding the main flows between factories, extraction centers, consumers, and processing centers using chromosome segments $S_1$ through $S_5$. 
 The critical logic occurs in Steps 5 and 6, where the algorithm reconciles diverging flows from Processing Centers, which produce multiple outputs (Kernels for Oil vs. 
 Open-shell for Factories) in fixed proportions. Satisfying one downstream demand often creates surplus of the other output. The decoding identifies the bottleneck demand 
-and routes surplus to the lowest-cost destination, minimizing over-supply penalties.
+and routes surplus to the lowest-cost destination, minimizing over-supply penalties. Critically, this reconciliation mechanism explicitly enforces the joint production 
+equality constraints \eqref{eq:restricao8} and \eqref{eq:restricao9}. After initial flows are allocated, the algorithm computes the implied input requirement from each 
+Processing Center under both scenarios (if $G_o$ dictates capacity vs. if $G_r$ dictates capacity), selects the binding constraint, and augments the non-binding output 
+flow to maintain the exact proportions $(1-\beta)\theta_1$ and $(1-\beta)\theta_2$. This adjustment step transforms inequality-based greedy allocation into an equality-satisfying 
+solution, ensuring that the mass balance at Processing Centers rigorously conforms to the fixed conversion ratios defined by the waste percentages.
 
 Algorithm \ref{algoDecode2} performs additional adjustments to ensure consistency between inputs and outputs at intermediate centers, decodes transport from producers 
 to processing centers (segment $S_6$), allocates waste generated in the processes to composting centers (segments $S_7$ and $S_8$), and determines which facilities 
