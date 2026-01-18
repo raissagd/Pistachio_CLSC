@@ -21,7 +21,7 @@
 \begin{frontmatter}
 
 %% Title
-\title{Enhancing Metaheuristics for Pistachio Supply Chain Optimization: A Priority-Based Variable Neighborhood Search with Problem-Specific Operators}
+\title{Enhancing Metaheuristics for Pistachio Supply Chain Optimization: A Variable Neighborhood Search Algorithm with Problem-Specific Operators}
 
 %% Authors
 %% We map authors to affiliations using labels [aff1, aff2]
@@ -50,10 +50,10 @@
 \begin{abstract}
 Efficient supply chain management is critical for high-value agricultural products. While mixed-integer linear programming models for the pistachio industry exist, 
 the literature lacks efficient heuristic approaches with clear resolution methodologies. This paper presents an enhanced Variable Neighborhood Search (VNS) approach for pistachio 
-supply chain optimization. We propose an integer-based priority encoding with a formally defined decoding algorithm. Unlike prior studies using real-valued encodings, our representation 
-establishes a one-to-one genotype-phenotype mapping that eliminates redundancy. We develop domain-specific neighborhood structures that exploit the problem's constraint structure, 
-improving search convergence compared to classical operators. Benchmarking against Genetic Algorithms (GA), Iterated Local Search (ILS), and an exact solver reveals that the proposed VNS 
-outperforms other metaheuristics for medium and large-scale instances, achieving near-optimal solutions where exact methods become computationally intractable.
+supply chain optimization. We propose an integer-based priority encoding with a formally defined decoding algorithm. We develop domain-specific neighborhood structures that exploit 
+the problem's constraint structure, improving search convergence compared to classical operators. Benchmarking against Genetic Algorithms (GA), 
+Iterated Local Search (ILS), and an exact solver reveals that the proposed VNS outperforms other metaheuristics for medium and large-scale instances, 
+achieving near-optimal solutions where exact methods become computationally intractable.
 \end{abstract}
 
 %% Keywords
@@ -131,7 +131,7 @@ These, in turn, process the oil into cosmetic products that are supplied to thei
 composting centers ($q$), where it is transformed into compost, subsequently distributed to composting customers ($m$).
 
 Although in practical terms, the produced compost could be reused by the original farmers, establishing a closed-loop system, the adopted mathematical model does not explicitly 
-represent this feedback. Instead, compost customers are not directly associated with the inital producers, characterizing an implicit feedback cycle. This approach, already 
+represent this feedback. Instead, compost customers are not directly associated with the initial producers, characterizing an implicit feedback cycle. This approach, already 
 adopted in previous works \citep{pishvaee2010,ahmadi2019,banasik2016}, preserves the structural simplicity of the model. However, the inclusion of rigorous 
 modeling of this return loop represents a promising direction for future investigations, especially in the context of sustainable supply chains.
 
@@ -993,13 +993,14 @@ to both GA and ILS, demonstrating its enhanced search capability. This advantage
 intractable due to memory and time constraints. In these challenging scenarios, the proposed VNS demonstrates remarkable scalability, consistently identifying high-quality 
 feasible solutions that significantly outperform the evolutionary approach, establishing VNS as a promising approach for practical, large-scale supply chain optimization.
 
-From a practical standpoint, the proposed methodology offers significant value for supply chain managers in the pistachio industry. For small to medium-scale operations 
-(up to 100 facilities per echelon), commercial solvers like Gurobi can still provide optimal solutions within reasonable timeframes, making them the recommended choice when available. 
-However, for large-scale international supply chains or multi-regional networks (hundreds to thousands of facilities), the proposed VNS provides a crucial alternative, delivering 
-near-optimal solutions in computational times compatible with operational planning cycles. The algorithm's deterministic nature and transparent decoding process facilitate integration 
-with existing enterprise resource planning systems, while the solution quality (within 3.5\% of optimality for large instances) provides sufficient accuracy for strategic 
-decision-making regarding facility location, capacity allocation, and waste management infrastructure. Implementation requires only standard computational resources, with execution 
-times scaling linearly with problem size, making the approach accessible to organizations without specialized high-performance computing infrastructure.
+From a practical standpoint, our results suggest a tiered decision framework for supply chain managers in the pistachio industry based on network complexity. 
+Networks with fewer than 100 facilities per echelon should employ commercial solvers (Gurobi, CPLEX) to guarantee optimality within reasonable computational timeframes. 
+Medium-scale networks (100--400 facilities) benefit most from the proposed VNS, which provides near-optimal solutions (approximately 3.3\% gap) in minutes rather than hours, 
+offering a compelling balance between solution quality and computational efficiency. Large-scale international supply chains (exceeding 800 facilities) require metaheuristic 
+approaches, as exact methods become computationally prohibitive due to memory constraints and exponential runtime growth. The transparency of our integer-based encoding and 
+decoding algorithm facilitates integration with enterprise resource planning systems, enabling seamless deployment in existing operational infrastructures. Moreover, the solution 
+quality achieved by the proposed VNS remains within acceptable bounds for strategic planning decisions, such as facility location, capacity allocation, and waste management 
+infrastructure design. Implementation requires only standard computational resources, making the approach accessible to organizations without specialized high-performance computing capabilities.
 
 Regarding future research, two primary directions emerge. First, further variations of the problem model should be explored, such as incorporating explicit closed-loop feedback loops. 
 Second, and critically, there is a need to investigate new encoding methodologies specifically designed to enable 
