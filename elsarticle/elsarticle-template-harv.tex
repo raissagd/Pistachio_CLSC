@@ -598,19 +598,20 @@ However, for all instances of size 100 and above, the p-values are effectively z
 
 \begin{table}[h]
     \centering
+    \small
     \caption{Statistical tests comparing Proposed VNS vs. Standard VNS. (S-W = Shapiro-Wilk p-value).}
     \label{tab:stats_vns}
-    \begin{tabular}{rccccc}
+    \begin{tabular}{rccclc}
         \toprule
-        Instance & S-W (Novel) & S-W (Basic) & Test Used & p-value & Result \\
+        Inst. & S-W (Novel) & S-W (Basic) & Test & p-value & Result \\
         \midrule
-        10 & $1.695 \times 10^{-11}$ & 0.0008 & Mann-Whitney & 1.0000 & No Sig. Diff. \\
-        30 & 0.0626 & 0.0493 & Mann-Whitney & 0.9811 & No Sig. Diff. \\
-        100 & 0.5115 & 0.5658 & t-test & $3.638 \times 10^{-6}$ & Novel Superior \\
-        200 & 0.0434 & 0.5143 & Mann-Whitney & $2.252 \times 10^{-11}$ & Novel Superior \\
-        400 & 0.2958 & 0.6396 & t-test & $2.292 \times 10^{-32}$ & Novel Superior \\
-        800 & 0.7107 & 0.1993 & t-test & $2.763 \times 10^{-27}$ & Novel Superior \\
-        1600 & 0.3556 & 0.3454 & t-test & $5.894 \times 10^{-31}$ & Novel Superior \\
+        10 & $1.70 \times 10^{-11}$ & 0.0008 & Mann-W. & 1.0000 & No Sig. Diff. \\
+        30 & 0.0626 & 0.0493 & Mann-W. & 0.9811 & No Sig. Diff. \\
+        100 & 0.5115 & 0.5658 & t-test & $3.64 \times 10^{-6}$ & Novel Superior \\
+        200 & 0.0434 & 0.5143 & Mann-W. & $2.25 \times 10^{-11}$ & Novel Superior \\
+        400 & 0.2958 & 0.6396 & t-test & $2.29 \times 10^{-32}$ & Novel Superior \\
+        800 & 0.7107 & 0.1993 & t-test & $2.76 \times 10^{-27}$ & Novel Superior \\
+        1600 & 0.3556 & 0.3454 & t-test & $5.89 \times 10^{-31}$ & Novel Superior \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -991,10 +992,6 @@ This study presented a comprehensive optimization framework for the pistachio su
 Our primary contributions are twofold: (1) we introduced an integer-based priority encoding with a formally specified backward decoding algorithm, addressing critical methodological 
 gaps in prior work and ensuring full reproducibility; and (2) we developed four novel problem-specific neighborhood operators that exploit the active/inactive node structure inherent 
 to capacity-constrained supply chains, demonstrating statistically significant improvements over standard permutation operators in a comprehensive computational study.
-
-To solve the resulting Mixed-Integer Linear Programming (MILP) problem, we proposed a hybrid Variable Neighborhood Search (VNS) algorithm. A key contribution of this work was 
-the development of problem-specific neighborhood operators. Our experimental analysis confirmed that these structure-aware operators, which exploit the distinction 
-between active and inactive nodes, can outperform standard permutation moves.
 
 Comprehensive computational experiments benchmarked the proposed VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver Gurobi. 
 The results reveal a clear performance stratification across instance sizes. For small instances ($N \le 30$), simple local search methods such as ILS are sufficient and highly efficient, 
