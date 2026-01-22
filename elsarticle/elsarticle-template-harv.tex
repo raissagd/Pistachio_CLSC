@@ -48,12 +48,12 @@
 
 %% Abstract
 \begin{abstract}
-Efficient supply chain management is critical for high-value agricultural products. While mixed-integer linear programming models for the pistachio industry exist, 
-the literature lacks efficient heuristic approaches with clear resolution methodologies. This paper presents an enhanced Variable Neighborhood Search (VNS) approach for pistachio 
-supply chain optimization. We propose an integer-based priority encoding with a formally defined decoding algorithm. We develop domain-specific neighborhood structures that exploit 
-the problem's constraint structure, improving search convergence compared to classical operators. Benchmarking against Genetic Algorithms (GA), 
-Iterated Local Search (ILS), and an exact solver reveals that the proposed VNS outperforms other metaheuristics for medium and large-scale instances, 
-achieving near-optimal solutions where exact methods become computationally intractable.
+Efficient supply chain management is critical for high-value agricultural products like pistachios. However, while mixed-integer linear programming models exist for this domain, 
+the literature lacks efficient heuristic approaches with well-defined solution methodologies. To address this gap, we present an enhanced Variable Neighborhood Search (VNS) approach for pistachio 
+supply chain optimization. Our method introduces an integer-based priority encoding scheme coupled with a formally defined decoding algorithm that ensures solution feasibility. 
+Building on this representation, we developed domain-specific neighborhood structures that exploit the problem's constraint structure to improve search convergence beyond classical operators. 
+Through comprehensive benchmarking against Genetic Algorithms (GA), Iterated Local Search (ILS), and an exact solver, we demonstrate that the proposed VNS 
+outperforms other metaheuristics on medium and large-scale instances, achieving near-optimal solutions in scenarios where exact methods become computationally intractable.
 \end{abstract}
 
 %% Keywords
@@ -130,10 +130,10 @@ Raw kernels are sent to oil extraction centers ($e$), responsible for producing 
 These, in turn, process the oil into cosmetic products that are supplied to their respective consumers ($n_3$). Organic waste generated in the initial processing is sent to 
 composting centers ($q$), where it is transformed into compost, subsequently distributed to composting customers ($m$).
 
-Although in practical terms, the produced compost could be reused by the original farmers, establishing a closed-loop system, the adopted mathematical model does not explicitly 
-represent this feedback. Instead, compost customers are not directly associated with the initial producers, characterizing an implicit feedback cycle. This approach, already 
-adopted in previous works \citep{pishvaee2010,ahmadi2019,banasik2016}, preserves the structural simplicity of the model. However, the inclusion of rigorous 
-modeling of this return loop represents a promising direction for future investigations, especially in the context of sustainable supply chains.
+Although in practical terms, the produced compost could be reused by the original farmers, establishing a truly closed-loop system, the adopted mathematical model does not explicitly 
+represent this feedback. Compost customers ($m$) are modeled as distinct entities from the initial farmers ($i$), thus the feedback cycle is not enforced through model constraints. This simplification, already 
+adopted in previous works \citep{pishvaee2010,ahmadi2019,banasik2016}, preserves the structural simplicity of the model and computational tractability. However, explicitly 
+modeling this return loop with mass balance constraints represents a promising direction for future investigations, especially in the context of sustainable supply chains.
 
 \begin{figure}
   \begin{center}
@@ -216,8 +216,9 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, and $z_3$ \eqref{eq:custo3}, w
 \end{align}
 
 \begin{itemize}
-  \item The variables $R_j$, $Y_q$, $W_k$, $Z_e$, and $V_s$ are binary and determine whether certain elements of the model are active. For example, $R_j = 1$ indicates that facility $j$ is 
-  operational, and $R_j = 0$ otherwise. The other variables in the model are continuous and non-negative, representing real values greater than or equal to zero. These variables model flows, 
+  \item The variables $U_j$, $Y_q$, $W_k$, $R_e$, and $V_s$ are binary and determine whether certain elements of the model are active. For example, $U_j = 1$ indicates that processing center $j$ is 
+  operational, and $U_j = 0$ otherwise. Similarly, $W_k$, $R_e$, $V_s$, and $Y_q$ indicate whether pistachio factories, oil extraction centers, cosmetic factories, and composting centers are active, 
+  respectively. The other variables in the model are continuous and non-negative, representing real values greater than or equal to zero. These variables model flows, 
   quantities, and other measurable factors within the system.
   
   \item Constraints \eqref{eq:restricao1}-\eqref{eq:restricao6} address the capacity and demand limitations of each facility in the supply chain. In particular, constraint \eqref{eq:restricao1} 
@@ -232,6 +233,9 @@ $z_1$ \eqref{eq:custo1}, $z_2$ \eqref{eq:custo2}, and $z_3$ \eqref{eq:custo3}, w
   \item Finally, to ensure that customer demand is met, constraints \eqref{eq:restricao17}-\eqref{eq:restricao20} ensure that the quantities of products delivered to pistachio, pistachio oil, 
   cosmetics, and compost customers satisfy or exceed their respective demands.
 \end{itemize}
+
+Having defined the mathematical formulation of the pistachio supply chain optimization problem, we now present our solution methodology based on Variable Neighborhood Search with 
+problem-specific operators designed to exploit the structure of this complex multi-echelon network.
 
 % ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Methodology}
@@ -249,7 +253,7 @@ we employ a priority-based encoding method. In this scheme, the chromosome does 
 of serving specific transportation arcs.
 
 \subsubsection{Integer Permutation vs. Real-Valued Encoding}
-In this work, it is used an integer permutation encoding rather than the random key ($0-1$ real value) encoding used in previous studies \citep{rajabi2023, fathollahi2018}.
+In this work, we use an integer permutation encoding rather than the random key ($0-1$ real value) encoding used in previous studies \citep{rajabi2023, fathollahi2018}.
 
 In the real-valued approach, genes are assigned random numbers $r \in [0, 1]$, and priorities are derived from sorting these values. This representation suffers from a "many-to-one" 
 mapping redundancy: infinite combinations of real numbers can result in the exact same priority order. For example, the vectors $v_1 = [0.1, 0.2, 0.5]$ and $v_2 = [0.8, 0.85, 0.9]$ 
@@ -277,8 +281,10 @@ permutation of integers representing the transport priorities for a specific par
 \label{subsec:decoding}
 
 The decoding process serves as a constructive heuristic that transforms the priority chromosome into a feasible transportation tree. As shown in Fig. \ref{fig:decode_flux}, the decoding 
-process begins with the flow of final products (pistachios, oil, cosmetics) from factories to consumers. This ensures that all constraints are met: consumer demand is satisfied first, 
-propagating the requirements upstream to factories and processing centers, ensuring that facility capacities are respected at every stage.
+process begins with the flow of final products (pistachios, oil, cosmetics) from factories to consumers, working backward through the supply chain. This backward approach is preferred 
+over forward decoding because it naturally respects demand constraints: consumer demand is satisfied first, propagating the requirements upstream to factories and processing centers. 
+This strategy guarantees feasibility by ensuring that facility capacities are respected at every stage while preventing overproduction, a critical consideration in perishable 
+agricultural supply chains.
 
 \begin{figure}[h!]
   \centering
@@ -533,8 +539,9 @@ The algorithms were implemented in Python and executed on a workstation with an 
 was solved using Gurobi Optimizer v11.0.
 
 The test instances were generated following the methodology proposed by \cite{rajabi2023}. Each instance is characterized by equal-sized entities across all echelons 
-(i.e., $I = J = K = E = S = Q = N_1 = N_2 = N_3 = M$), with instance sizes of 10, 30, 100, 200, 400, 800, and 1600. This results in chromosome lengths ranging from 1,700 to 27,200 
-variables in the priority-based encoding.
+(i.e., $I = J = K = E = S = Q = N_1 = N_2 = N_3 = M$), with instance sizes of 10, 30, 100, 200, 400, 800, and 1600. Since the chromosome consists of eight segments encoding 
+all possible source-destination pairs ($I \times J$, $J \times K$, $J \times E$, $K \times N_1$, $E \times N_2$, $E \times S$, $S \times N_3$, and $Q \times M$), 
+this results in chromosome lengths ranging from 1,700 (for $N=10$) to 27,200 (for $N=1600$) variables in the priority-based encoding.
 
 All problem parameters (facility costs, production costs, transportation costs, capacities, demands, and conversion rates) were randomly generated using uniform distributions 
 with ranges identical to those specified in Table 7 of \cite{rajabi2023}. Complete parameter specifications and the generated instances are publicly available 
@@ -580,9 +587,10 @@ To validate the contribution of the novel problem-specific neighborhood structur
 classical permutation operators found in the literature: \textit{Swap}, \textit{Reversion}, \textit{Insertion}, and \textit{Slide} \citep{gendreau2010}.
 
 \subsubsection{Statistical Analysis}
-We performed a statistical validation of the results across all instance sizes. First, the Shapiro-Wilk test was applied with significance level $\alpha = 0.05$ to check for normality in the distribution of objective 
-function values. Based on the results, we selected the appropriate significance test: the t-test for normally distributed samples and the Mann-Whitney U test for non-parametric cases. 
-The hypothesis tested was that the Proposed VNS provides a smaller (better) objective function value than the Standard VNS ($H_1: \mu_{Novel} < \mu_{Basic}$).
+We performed a rigorous statistical validation of the results across all instance sizes. Since parametric tests (such as the t-test) assume normally distributed data, 
+we first applied the Shapiro-Wilk test with significance level $\alpha = 0.05$ to check this assumption. When both samples passed the normality test ($p > 0.05$), 
+we used the parametric t-test, which offers higher statistical power. When either sample failed the normality test ($p \le 0.05$), we used the non-parametric Mann-Whitney 
+U test, which makes no distributional assumptions. The hypothesis tested was that the Proposed VNS provides a smaller (better) objective function value than the Standard VNS ($H_1: \mu_{Novel} < \mu_{Basic}$).
 
 Table \ref{tab:stats_vns} details the p-values obtained. For small instances (10 and 30), the p-values ($> 0.05$) indicate that there is no statistically significant difference 
 between the Proposed VNS and the Standard VNS. The null hypothesis ($H_0: \mu_{Novel} = \mu_{Basic}$) cannot be rejected, meaning both approaches perform comparably in these simple landscapes. 
@@ -804,10 +812,10 @@ However, a clear trend emerges from Instance 100 onwards. The VNS consistently o
 For the largest instances (800 and 1600), the VNS maintains a gap to the optimum of approximately 3.5\%, whereas the ILS gap grows to 4.7\% and the GA gap exceeds 10\%. 
 This demonstrates the superior scalability of the proposed approach.
 
-For the three largest instances (400, 800, and 1600), Gurobi was subject to a one-hour time limit. While Instance 400 reached proven optimality within this limit, 
-Instances 800 and 1600 exhausted the time budget without proving optimality, returning the same best incumbent solution value of $5.49 \times 10^8$ for both. 
-These values represent upper bounds rather than proven optimal solutions. For smaller instances (10, 30, 100, and 200), Gurobi ran without time constraints and 
-successfully proved optimality.
+For the three largest instances (400, 800, and 1600), Gurobi was subject to a one-hour time limit to prevent excessive computational costs. Instance 400 reached proven optimality 
+within this limit. However, Instances 800 and 1600 exhausted the time budget without proving optimality, returning the same best incumbent solution value of $5.49 \times 10^8$ for both. 
+These values represent the best feasible solutions found (upper bounds) rather than proven optimal solutions, as the optimality gap had not closed. For smaller instances (10, 30, 100, and 200), 
+Gurobi ran without time constraints and successfully proved optimality.
 
 \begin{table*}[ht]
     \centering
@@ -979,8 +987,10 @@ reliability across all 30 runs.
 \section{Conclusion}
 \label{sec:conclusion}
 
-This study presented an optimization framework for the pistachio supply chain network, addressing forward products and reverse logistics of by-products. 
-We introduced an integer-based priority encoding with a formally specified backward decoding algorithm, addressing methodological gaps in prior work.
+This study presented a comprehensive optimization framework for the pistachio supply chain network, addressing both forward product flows and reverse logistics of by-products. 
+Our primary contributions are twofold: (1) we introduced an integer-based priority encoding with a formally specified backward decoding algorithm, addressing critical methodological 
+gaps in prior work and ensuring full reproducibility; and (2) we developed four novel problem-specific neighborhood operators that exploit the active/inactive node structure inherent 
+to capacity-constrained supply chains, demonstrating statistically significant improvements over standard permutation operators in a comprehensive computational study.
 
 To solve the resulting Mixed-Integer Linear Programming (MILP) problem, we proposed a hybrid Variable Neighborhood Search (VNS) algorithm. A key contribution of this work was 
 the development of problem-specific neighborhood operators. Our experimental analysis confirmed that these structure-aware operators, which exploit the distinction 
