@@ -241,8 +241,10 @@ problem-specific operators designed to exploit the structure of this complex mul
 \section{Methodology}
 \label{sec:methodology}
 
-This section details the proposed Variable Neighborhood Search (VNS) algorithm with priority-based encoding. We present the integer-based chromosome representation, 
-the backward decoding strategy that ensures feasibility, and problem-specific neighborhood structures designed to exploit the pistachio supply chain's structural properties.
+This section details the proposed Variable Neighborhood Search (VNS) algorithm with priority-based encoding. Section~\ref{subsec:solution_rep} presents the integer-based
+chromosome representation and Section~\ref{subsec:decoding} the backward decoding strategy that maps it onto a feasible transportation tree. Section~\ref{subsec:neighborhoods}
+then defines the problem-specific neighborhood structures designed to exploit the pistachio supply chain's structural properties, and Section~\ref{subsec:vns} describes how the
+search procedure combines them.
 
 % ----------------------------------------------------------
 \subsection{Solution Representation}
@@ -415,6 +417,39 @@ and coherent solution to the proposed optimization problem.
 \end{algorithm}
 
 % ----------------------------------------------------------
+\subsection{Neighborhood Structures}
+\label{subsec:neighborhoods}
+
+A critical inefficiency in applying standard permutation operators to priority-based encoding is their "blindness" to the phenotypic state. 
+In the greedy decoding process (Algorithm \ref{algoDecode1}), typically only a subset of high-priority nodes is required to satisfy all demands. 
+We term these Active Nodes ($\mathcal{A}$), while the remaining unused nodes are Inactive ($\mathcal{I}$). Standard operators 
+often swap two Inactive nodes, changing the genotype but resulting in the exact same transportation tree and objective value.
+
+To overcome this redundancy, our implementation explicitly tracks the set of active nodes returned by the decoder and employs four structure-aware 
+operators. These operators are designed to either intensify the search within the current topology or diversify it by forcing interactions between 
+the active and inactive sets:
+
+\begin{itemize}
+    \item \textbf{Active Reversion:} This operator functions as an intensification mechanism. It selects a segment of the chromosome containing multiple 
+    nodes from set $\mathcal{A}$ and reverses their priority values. By reordering only the suppliers that are already in use, this move fine-tunes 
+    the flow distribution to find lower-cost allocations without necessarily opening new routes or altering the network structure.
+
+    \item \textbf{Inactive-Active Swap:} This is a global diversification operator. It selects one active node ($i \in \mathcal{A}$) and one inactive 
+    node ($j \in \mathcal{I}$) at random and exchanges their priorities. This forces a currently used route to be downgraded and a previously unused 
+    route to be upgraded, effectively testing global topology changes by bringing new nodes into the solution.
+
+    \item \textbf{Inactive Boost:} This operator addresses the "starvation" issue common in capacity-constrained problems. 
+    A low-cost supplier might be ignored simply because it sits too low in the priority list to be considered before demands are met. This operator 
+    selects a random inactive node and assigns it the highest possible priority value in the chromosome. This forces the greedy decoder to 
+    maximize flow from this specific node before considering any others, potentially revealing a completely different and superior tree structure.
+
+    \item \textbf{Inactive-Active Exchange two Neighbors (IA-ETN):} This operator provides a "localized" diversification. Instead of a random global 
+    swap, it selects an inactive node and swaps it with its nearest active neighbor in terms of chromosome index distance. Unlike the global 
+    swap, which can be highly disruptive, this operator explores the "boundary" of the solution, testing if a route that is "almost" good enough 
+    (close to the active set) should replace a marginally active route.
+\end{itemize}
+
+% ----------------------------------------------------------
 \subsection{The VNS Algorithm}
 \label{subsec:vns}
 
@@ -478,8 +513,8 @@ moving to the next operator if the candidate solution is rejected.
     \end{algorithmic}
 \end{algorithm}
 
-The VND phase applies the four operators in the following fixed sequence: (1) Active Reversion, (2) Inactive-Active Swap, (3) Inactive Boost, and (4) Inactive-Active Exchange two Neighbors (IA-ETN). 
-This specific ordering follows a strategic progression from conservative to aggressive exploration. First, Active Reversion fine-tunes the existing solution topology by reordering active nodes, 
+The VND phase applies the four operators defined in Section~\ref{subsec:neighborhoods} in the following fixed sequence: (1) Active Reversion, (2) Inactive-Active Swap, (3) Inactive Boost,
+and (4) Inactive-Active Exchange two Neighbors (IA-ETN). This specific ordering follows a strategic progression from conservative to aggressive exploration. First, Active Reversion fine-tunes the existing solution topology by reordering active nodes, 
 exploring the current structure before considering more disruptive changes. Second, Inactive-Active Swap introduces global diversification by randomly exchanging nodes between 
 active and inactive sets, testing whether alternative facility configurations might be superior. Third, Inactive Boost applies the most aggressive perturbation, forcing a previously unused node 
 to maximum priority—this operator is crucial for escaping situations where good facilities are trapped at low priorities. Finally, IA-ETN provides localized diversification by testing the boundary 
@@ -488,39 +523,6 @@ local improvements before resorting to more radical modifications, maximizing th
 
 These operators are applied to the priority-based chromosome during the VND phase, with each move triggering a complete re-decoding using the procedure described in 
 Algorithms \ref{algoDecode1} and \ref{algoDecode2}.
-
-% ----------------------------------------------------------
-\subsection{Neighborhood Structures}
-\label{subsec:neighborhoods}
-
-A critical inefficiency in applying standard permutation operators to priority-based encoding is their "blindness" to the phenotypic state. 
-In the greedy decoding process (Algorithm \ref{algoDecode1}), typically only a subset of high-priority nodes is required to satisfy all demands. 
-We term these Active Nodes ($\mathcal{A}$), while the remaining unused nodes are Inactive ($\mathcal{I}$). Standard operators 
-often swap two Inactive nodes, changing the genotype but resulting in the exact same transportation tree and objective value.
-
-To overcome this redundancy, our implementation explicitly tracks the set of active nodes returned by the decoder and employs four structure-aware 
-operators. These operators are designed to either intensify the search within the current topology or diversify it by forcing interactions between 
-the active and inactive sets:
-
-\begin{itemize}
-    \item \textbf{Active Reversion:} This operator functions as an intensification mechanism. It selects a segment of the chromosome containing multiple 
-    nodes from set $\mathcal{A}$ and reverses their priority values. By reordering only the suppliers that are already in use, this move fine-tunes 
-    the flow distribution to find lower-cost allocations without necessarily opening new routes or altering the network structure.
-
-    \item \textbf{Inactive-Active Swap:} This is a global diversification operator. It selects one active node ($i \in \mathcal{A}$) and one inactive 
-    node ($j \in \mathcal{I}$) at random and exchanges their priorities. This forces a currently used route to be downgraded and a previously unused 
-    route to be upgraded, effectively testing global topology changes by bringing new nodes into the solution.
-
-    \item \textbf{Inactive Boost:} This operator addresses the "starvation" issue common in capacity-constrained problems. 
-    A low-cost supplier might be ignored simply because it sits too low in the priority list to be considered before demands are met. This operator 
-    selects a random inactive node and assigns it the highest possible priority value in the chromosome. This forces the greedy decoder to 
-    maximize flow from this specific node before considering any others, potentially revealing a completely different and superior tree structure.
-
-    \item \textbf{Inactive-Active Exchange two Neighbors (IA-ETN):} This operator provides a "localized" diversification. Instead of a random global 
-    swap, it selects an inactive node and swaps it with its nearest active neighbor in terms of chromosome index distance. Unlike the global 
-    swap, which can be highly disruptive, this operator explores the "boundary" of the solution, testing if a route that is "almost" good enough 
-    (close to the active set) should replace a marginally active route.
-\end{itemize}
 
 
 % ----------------------------------------------------------------------------------------------------------------------
