@@ -827,28 +827,73 @@ in the project repository to ensure full reproducibility.
 \subsubsection{Shared Components}
 \label{subsubsec:shared}
 
-% =====================================================================================================================
-% TODO(revision): Addresses Reviewer~1 comment~2, Reviewer~2 comment~6, and Reviewer~4 comment~6. All three question
-% whether the comparison is fair. It is, and the implementation already guarantees it -- the manuscript simply never
-% says so. This subsection must state explicitly, and ideally as a table of shared vs. algorithm-specific components,
-% that VNS, GA and ILS all share:
-%   - the same integer priority encoding (the same Solution class)
-%   - the same decoding procedure (Algorithms 1-2), hence the same genotype-to-phenotype map
-%   - the same objective evaluation function
-%   - the same constraint handling: feasibility by construction in the decoder, with no penalty term and no repair
-%   - the same deterministic initial solution
-%   - the same stopping criterion and the same evaluation-counting semantics (one count per decode)
-%   - the same instances and the same number of independent runs
-% Reviewer~2 comment~6 in particular assumes the GA is terminated by generations. It is not: it uses the same
-% evaluation counter and the same budget as the trajectory-based methods. This should be stated as a correction.
-% =====================================================================================================================
+% Addresses Reviewer~1 comment~2, Reviewer~2 comment~6 and Reviewer~4 comment~6, all of which question whether the
+% comparison is fair. The implementation already shares these components; the manuscript simply never said so.
+A comparison between metaheuristics is only interpretable if the methods differ in their search strategy and not in
+the machinery around it. The three metaheuristics compared here are implemented on a common substrate and differ
+\emph{only} in how they traverse the search space. Table~\ref{tab:shared_components} lists what is shared and what
+is specific.
 
-\textbf{[TO BE WRITTEN]} \textit{Table of shared versus algorithm-specific components, establishing that the three metaheuristics differ only in their search strategy.}
+\begin{table}[htbp]
+    \centering
+    \small
+    \caption{Components shared by the compared metaheuristics. The three methods differ only in the last four rows.}
+    \label{tab:shared_components}
+    \begin{tabular}{p{0.30\textwidth} p{0.60\textwidth}}
+        \toprule
+        \textbf{Component} & \textbf{Treatment} \\
+        \midrule
+        \multicolumn{2}{l}{\textit{Shared by VNS, GA and ILS}} \\
+        \midrule
+        Solution representation & Integer priority permutation over eight segments, Section~\ref{subsec:solution_rep} \\
+        Decoding procedure      & Identical backward decoder, Algorithms~\ref{algoDecode1}--\ref{algoDecode2} \\
+        Objective evaluation    & Identical function; one evaluation is one complete decoding \\
+        Constraint handling     & Feasibility by construction; infeasible chromosomes rejected via $+\infty$, with no penalty term and no repair operator, Section~\ref{subsubsec:feasibility} \\
+        Initial solution        & Same deterministic cost-based construction, from the same starting point \\
+        Computational budget    & $N_{max} = 10n$ objective evaluations, identical for all methods \\
+        Evaluation accounting   & One increment of the counter per decoding, in every method \\
+        Instances and replications & Same instances, 30 independent runs per instance \\
+        \midrule
+        \multicolumn{2}{l}{\textit{Specific to each method}} \\
+        \midrule
+        Variation operators     & VNS and ILS: neighborhood moves; GA: crossover and mutation \\
+        Search trajectory       & VNS: VND over four neighborhoods; ILS: single neighborhood; GA: population \\
+        Acceptance criterion    & VNS and ILS: acceptance of the incumbent; GA: survivor selection \\
+        Diversification         & VNS and ILS: perturbation; GA: recombination and mutation \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Two consequences follow. First, any difference in the reported results is attributable to the search strategy
+rather than to incidental implementation choices, since encoding, decoding, evaluation and constraint handling are
+literally the same code path in all three methods. Second, the stopping criterion is directly comparable across
+methods, a point that warrants emphasis because population-based and trajectory-based algorithms are often compared
+under criteria that are not commensurable. The genetic algorithm used here is \emph{not} terminated after a fixed
+number of generations. It increments the same evaluation counter as the trajectory-based methods, once per
+decoding, and halts on the same budget $N_{max}$; the number of generations it completes is an outcome of that
+budget and of its population size, not a parameter.
 
 To ensure a fair comparison across all metaheuristics, each algorithm was allocated an identical computational budget: $N_{max} = 10n$, where $n$ represents the total number of
 decision variables in the priority-based encoding. This budget scales linearly with problem size, ensuring equitable evaluation across all instances.
 
 All metaheuristics (VNS, GA, ILS) were executed 30 times for each instance to ensure statistical robustness.
+
+% =====================================================================================================================
+% TODO(revision): the shared deterministic initialisation interacts badly with the population-based method and this
+% must be resolved before the experiments are re-run.
+%
+% generateChromosomeDeterministic is a greedy cost-based construction: it returns the same chromosome every time it
+% is called on a given instance. For the trajectory-based methods this is exactly what is wanted -- a common,
+% reproducible starting point. For the GA it means the entire initial population consists of P identical
+% individuals. Crossover between identical parents produces identical children, so for the first generations the
+% only source of diversity is mutation, applied with probability 0.1. The GA is therefore handicapped at
+% initialisation, and its 9-10% gaps may be an artefact of that rather than a property of the algorithm.
+%
+% This is precisely the objection of Reviewer~4 comment~6 and Reviewer~1 comment~2, and a reviewer who inspects the
+% repository will find it. The standard remedy is to seed one individual with the deterministic construction and
+% draw the remaining P-1 stochastically, which preserves the shared starting point while restoring diversity.
+% Re-run the GA under that scheme and report it here.
+% =====================================================================================================================
 
 \subsubsection{Algorithm-Specific Parameters}
 \label{subsubsec:params}
@@ -864,11 +909,16 @@ The specific parameter settings for each algorithm are as follows:
     motivated by population-sizing theory suggesting that required population grows roughly with the square root of problem size. The algorithm employs a hybrid crossover operator (probability 0.9)
     that randomly alternates between two strategies with equal probability: (i) segment-level crossover, which exchanges entire chromosome segments ($S_1$ through $S_8$) between parents, and
     (ii) intra-segment crossover, which applies Partially Mapped Crossover (PMX) within each individual segment to preserve permutation validity while promoting diversity. This hybrid approach
-    balances global exploration (segment exchange) with local refinement (intra-segment recombination). Mutation probability is set to 0.1, and binary tournament selection is used for parent
-    selection, following widely established GA practices \citep{hussain2022genetic}.
+    balances global exploration (segment exchange) with local refinement (intra-segment recombination). Mutation is applied to each child with probability 0.1 and consists of up to three
+    random transpositions within a randomly chosen segment. Parents are drawn uniformly at random from the current population; selection pressure is applied at the survivor stage, where
+    the $P$ offspring and the $P$ incumbents are pooled and reduced back to $P$ by binary tournament, following widely established GA practices \citep{hussain2022genetic}. Because the
+    winner of every tournament is the fitter of the pair, the incumbent best always survives, so the scheme is implicitly elitist.
 
-    \item \textbf{Iterated Local Search (ILS):} The ILS alternates between local search and perturbation phases. The perturbation strength scales with instance size, and the algorithm
-    restarts when no improvement is observed after 10 consecutive non-improving iterations \citep{tinos2024iterated}. Local search employs the problem-specific "Inactive–Active Swap" operator.
+    \item \textbf{Iterated Local Search (ILS):} The ILS alternates between a descent phase and a perturbation phase, as detailed in Algorithm~\ref{algoILS}. The descent phase is the
+    sampled best-improvement procedure described in Section~\ref{subsec:vns}, restricted to a single neighborhood: it draws candidates from the problem-specific Inactive-Active Swap
+    operator, adopts the best whenever it improves on the incumbent, and terminates after 10 consecutive non-improving rounds \citep{tinos2024iterated}. The perturbation applies the same
+    operator repeatedly, with a strength of 7\% of the chromosome length, matching the shaking strength of the proposed VNS. A perturbed solution is retained only if it improves on the
+    incumbent, so the ILS accepts strictly improving moves at the outer level.
 
     \item \textbf{Variable Neighborhood Search (VNS):} The proposed VNS uses initial temperature $T_0 = 100$ and cooling rate $\alpha = 0.995$, which are standard parameters widely
     adopted in Simulated Annealing literature \citep{kirkpatrick1983optimization}, providing effective balance between exploration and exploitation. The perturbation strength is set to 7\% of the
@@ -879,6 +929,40 @@ The specific parameter settings for each algorithm are as follows:
     For smaller instances, no time limit was imposed, allowing the solver to run until proven optimality. For instances where the optimal solution could not be found within
     the time limit, the best feasible solution found ($\text{Incumbent}$) was recorded.
 \end{itemize}
+
+% Reviewer~1, comment~2 and Reviewer~4, comment~6 ask for the competitors to be described at the same level of
+% detail as the proposed method. The ILS is the strongest competitor on the small instances, so it is given
+% explicitly.
+\begin{algorithm}
+    \caption{Iterated Local Search baseline}
+    \label{algoILS}
+    \begin{algorithmic}[1]
+    \Require Initial solution $x$, operator $\mathcal{N}_{\text{IAS}}$, max evaluations $N_{max}$, sample size $\eta$, patience $\rho$
+    \State \textbf{Output:} Best solution found $x^{*}$
+    \State $x^{*} \leftarrow \text{Descent}(x)$; \quad $n_{eval} \leftarrow 1$
+    \While{$n_{eval} < N_{max}$}
+        \State $x' \leftarrow \text{Perturb}(x^{*}, \mathcal{N}_{\text{IAS}})$ \Comment{$7\%$ of the chromosome length}
+        \State $x' \leftarrow \text{Descent}(x')$
+        \If{$f(x') < f(x^{*})$}
+            \State $x^{*} \leftarrow x'$
+        \EndIf
+    \EndWhile
+    \Statex
+    \Function{Descent}{$x$}
+        \State $\textit{failures} \leftarrow 0$
+        \While{$\textit{failures} < \rho$ \textbf{and} $n_{eval} < N_{max}$}
+            \State draw $\eta$ candidates from $\mathcal{N}_{\text{IAS}}(x)$ and evaluate them
+            \State $y \leftarrow$ best candidate drawn
+            \If{$f(y) < f(x)$}
+                \State $x \leftarrow y$; \quad $\textit{failures} \leftarrow 0$
+            \Else
+                \State $\textit{failures} \leftarrow \textit{failures} + 1$
+            \EndIf
+        \EndWhile
+        \State \textbf{return} $x$
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 % ------------------------------------------------------------
 
