@@ -112,10 +112,57 @@ To validate the proposed approach, we conduct a comprehensive comparative analys
 On top of that, we show that for large-scale instances, where exact methods become infeasible due to memory limitations and excessive runtime, the proposed heuristic offers a vital trade-off, 
 providing high-quality feasible solutions efficiently.
 
-The remainder of this paper is organized as follows. Section~\ref{sec:problem-definition} presents the problem definition and the mathematical formulation. Section~\ref{sec:methodology} 
-details the heuristic approach, introducing the integer encoding, the specific decoding steps, and the novel domain-specific neighborhood structures. Section~\ref{sec:experiments} 
-reports the computational experiments, offering a statistical comparison between VNS, GA, ILS, and the exact solver across varying instance sizes. Finally, Section~\ref{sec:conclusion} 
+The remainder of this paper is organized as follows. Section~\ref{sec:related-work} positions the present study within the literature on agri-food network design,
+priority-based encodings, and structure-aware neighborhoods. Section~\ref{sec:problem-definition} presents the problem definition and the mathematical formulation. Section~\ref{sec:methodology}
+details the heuristic approach, introducing the integer encoding, the specific decoding steps, and the domain-specific neighborhood structures. Section~\ref{sec:experiments}
+reports the computational experiments, offering a statistical comparison between VNS, GA, ILS, and the exact solver across varying instance sizes. Finally, Section~\ref{sec:conclusion}
 summarizes the key findings and suggests future research directions.
+
+% ----------------------------------------------------------------------------------------------------------------------
+% =====================================================================================================================
+% TODO(revision): Section to be written. Addresses Reviewer #2 comment 2 (positioning in the literature) and provides
+% the evidence base for the responses to Reviewer #2 comment 1 and Reviewer #4 comment 1 (limited methodological
+% novelty). Each subsection below states the argument it must establish.
+% =====================================================================================================================
+\section{Related Work}
+\label{sec:related-work}
+
+\textbf{[TO BE WRITTEN]} \textit{Preamble stating the three bodies of literature this work draws on and the specific gap it addresses.}
+
+% ----------------------------------------------------------
+\subsection{Agri-food Supply Chain Network Design}
+\label{subsec:rw_agrifood}
+
+\textbf{[TO BE WRITTEN]} \textit{Must establish what distinguishes the pistachio setting from generic multi-echelon network design. The key structural
+differentiator is the joint production at processing centers: a single input stream splits into open-shell pistachios and raw kernels in fixed conversion
+proportions, so satisfying one downstream demand mechanically creates surplus of the other output. This is what the reconciliation step of the decoder
+(Algorithms \ref{algoDecode1}--\ref{algoDecode2}) exists to handle, and it is currently underexploited as a contribution. Also covers by-product valorization
+and the aflatoxin/waste-handling motivation.}
+
+% ----------------------------------------------------------
+\subsection{Priority-Based Encodings for Network Design}
+\label{subsec:rw_encoding}
+
+\textbf{[TO BE WRITTEN]} \textit{Must trace the lineage of the representation and state plainly that it is adopted, not invented: Gen and Cheng, \citet{gen2006},
+random-key representations, and their use in multi-echelon logistics. Must then justify the specific design choice made here (integer permutation over random
+keys) on genotype-to-phenotype grounds, and note that the encoding is linear in the number of facilities, since one priority is assigned per node rather than
+per arc. Addresses Reviewer~1 comment 1 and Reviewer~2 comment 3.}
+
+% ----------------------------------------------------------
+\subsection{Structure-Aware Neighborhoods in Metaheuristics}
+\label{subsec:rw_neighborhoods}
+
+\textbf{[TO BE WRITTEN]} \textit{Must survey phenotype-aware, solution-dependent, and facility-activation neighborhoods, and establish explicitly how the four
+operators proposed here differ from that prior art. Reviewer~4 comment 1 states that this distinction is not adequately established, so the subsection must
+end with a direct comparison rather than a list.}
+
+% ----------------------------------------------------------
+\subsection{Variable Neighborhood Search and Hybrid Variants}
+\label{subsec:rw_vns}
+
+\textbf{[TO BE WRITTEN]} \textit{Must acknowledge that VNS/VND combinations with probabilistic acceptance are established, and reposition the contribution
+accordingly: the claim is not a new hybrid template but the neighborhood structures and their empirical validation. Addresses Reviewer~2 comment 1 and
+Reviewer~4 comment 1.}
 
 % ----------------------------------------------------------------------------------------------------------------------
 \section{Problem Definition}
