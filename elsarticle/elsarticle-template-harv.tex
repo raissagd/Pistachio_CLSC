@@ -50,8 +50,9 @@
 \begin{abstract}
 Efficient supply chain management is critical for high-value agricultural products like pistachios. However, while mixed-integer linear programming models exist for this domain, 
 the literature lacks efficient heuristic approaches with well-defined solution methodologies. To address this gap, we present an enhanced Variable Neighborhood Search (VNS) approach for pistachio 
-supply chain optimization. Our method introduces an integer-based priority encoding scheme coupled with a formally defined decoding algorithm that ensures solution feasibility. 
-Building on this representation, we developed domain-specific neighborhood structures that exploit the problem's constraint structure to improve search convergence beyond classical operators. 
+supply chain optimization. We adopt the priority-based representation established in the network design literature, instantiated as an integer permutation, and contribute the
+complete specification of the decoding algorithm that maps it onto a feasible transportation tree, a step left implicit in prior work on this problem. Building on this representation,
+we develop domain-specific neighborhood structures that exploit the active/inactive facility distinction induced by the decoder to improve search convergence beyond classical operators.
 Through comprehensive benchmarking against Genetic Algorithms (GA), Iterated Local Search (ILS), and an exact solver, we demonstrate that the proposed VNS 
 outperforms other metaheuristics on medium and large-scale instances, and remains within a small margin of the best bound available from the exact solver in scenarios where the latter becomes computationally intractable.
 \end{abstract}
@@ -111,10 +112,18 @@ well-established methods. Given these findings, this work adopts a more transpar
 with clear operational principles, extensive theoretical foundation, and proven effectiveness across diverse optimization problems.
 
 Addressing these gaps, this research focuses on designing an optimal supply chain network for pistachios by leveraging the Variable Neighborhood Search (VNS) algorithm \citep{gendreau2010}. 
-While we adopt the same mixed-integer linear programming (MILP) model formulation from \cite{rajabi2023}, we propose a robust overhaul of the resolution methodology. We introduce a transparent 
-integer-based priority encoding and provide a step-by-step description of the decoding algorithm, ensuring reproducibility. Furthermore, we develop problem-specific neighborhood 
-operators designed to exploit the particular structure of the chain. These specialized operators are contrasted with classical moves to demonstrate their efficacy in exploring the 
-solution space.
+While we adopt the same mixed-integer linear programming (MILP) model formulation from \cite{rajabi2023}, we propose a robust overhaul of the resolution methodology. Adopting the same
+model is deliberate: it makes the comparison against prior work direct, and isolates the resolution methodology as the object of study.
+
+% Reviewer~1 comment~1 and Reviewer~2 comment~3: the encoding is positioned as an adopted design choice, not as a
+% contribution. The contributions are reordered so that the decoding specification and the operators come first.
+The contributions of this work are therefore threefold. First, we provide a complete, step-by-step specification of the decoding algorithm that maps a priority chromosome onto a
+feasible transportation tree for this network, including the reconciliation of the jointly produced outputs at processing centres. The representation itself is not new: priority-based
+encodings are well established in network design \citep{gen2006, altiparmak2006}, and we adopt one rather than propose one. What prior work on this problem leaves unspecified is the
+decoding procedure, without which the results cannot be reproduced and the constraint-handling mechanism cannot be inspected. Second, we develop four problem-specific neighborhood
+operators that exploit the distinction, induced by the decoder, between facilities that carry flow and those that do not; these are contrasted with classical permutation moves to
+demonstrate their efficacy in exploring the solution space. Third, we report a systematic benchmark against a Genetic Algorithm, an Iterated Local Search and an exact solver across
+seven instance scales, under a computational budget and a set of shared components that make the comparison directly interpretable.
 
 To validate the proposed approach, we conduct a comprehensive comparative analysis against a Genetic Algorithm (GA), an Iterated Local Search (ILS), and an exact Branch-and-Cut method 
 (using the Gurobi solver). Our findings demonstrate that the proposed VNS with specialized operators consistently outperforms the other metaheuristics in terms of solution quality. 
@@ -306,9 +315,17 @@ search procedure combines them.
 \subsection{Solution Representation}
 \label{subsec:solution_rep}
 
-Representing a solution for a complex network design problem is non-trivial. Following the principles established by \citep{gen2006} and \cite{rajabi2023}, 
-we employ a priority-based encoding method. In this scheme, the chromosome does not directly encode the flow quantities ($X_{ij}$), but rather the \textit{priority} 
-of serving specific transportation arcs.
+Representing a solution for a complex network design problem is non-trivial. Following the principles established by \citet{gen2006} and \cite{rajabi2023},
+we employ a priority-based encoding method. In this scheme, the chromosome does not directly encode the flow quantities ($X_{ij}$), but rather the \textit{priority}
+with which each node is considered when flows are assigned.
+
+% Reviewer~1, comment~1 and Reviewer~2, comment~3: explicit statement that the representation is adopted rather
+% than proposed, so that the contribution is not misread as the encoding itself.
+It should be stated plainly that this representation is not a contribution of the present work. Priority-based encodings are well established in network design and have been applied
+extensively to transportation and multi-echelon logistics problems \citep{gen2006, altiparmak2006}. What we contribute is not the representation but, first, the complete specification
+of the decoding procedure that turns it into a feasible solution for this particular network (Section~\ref{subsec:decoding}) and, second, the neighborhood structures that exploit the
+structure the decoder induces (Section~\ref{subsec:neighborhoods}). The two design decisions we do make explicit here, and justify below, are the use of an integer permutation in place
+of a real-valued random key, and the partition of the chromosome into one segment per transportation stage.
 
 \subsubsection{Integer Permutation vs. Real-Valued Encoding}
 In this work, we use an integer permutation encoding rather than the random key ($0-1$ real value) encoding used in previous studies \citep{rajabi2023, fathollahi2018}.
@@ -318,14 +335,36 @@ mapping redundancy: infinite combinations of real numbers can result in the exac
 both map to the same permutation indices $(1, 2, 3)$. This redundancy creates "flat" regions in the search landscape where small perturbations (mutations) in the genotype produce no 
 change in the phenotype (the solution structure).
 
-In contrast, we employ sequential integers from $1$ to $Z$, where $Z$ is the total number of candidate source-depot pairs in a specific chain segment. This ordinal representation 
-ensures a one-to-one mapping between the genotype and the solution structure. This property is crucial for the VNS algorithm, as it ensures that every neighborhood 
-move results in a distinct solution configuration, effectively eliminating redundant search steps.
+In contrast, we employ sequential integers from $1$ to $Z$, where $Z$ is the number of \emph{nodes} involved in a given chain segment, that is, the number of sources plus the number
+of destinations of that transportation stage. This ordinal representation ensures a one-to-one mapping between the genotype and the priority ordering. This property is crucial for the
+VNS algorithm, as it ensures that every neighborhood move yields a distinct priority ordering, eliminating the redundant search steps that a random-key encoding admits.
 
 % ----------------------------------------------------------
 \subsubsection{Chromosome Structure}
-The solution is represented by a composite chromosome divided into eight distinct segments ($S_1$ to $S_8$), as illustrated in Fig. \ref{fig:cromossomo}. Each segment contains a 
+\label{subsubsec:chromosome}
+The solution is represented by a composite chromosome divided into eight distinct segments ($S_1$ to $S_8$), as illustrated in Fig. \ref{fig:cromossomo}. Each segment contains a
 permutation of integers representing the transport priorities for a specific part of the supply chain.
+
+% =====================================================================================================================
+% Reviewer~4, comment~3 states that the chromosome length should be quadratic in N. It is not, and the source of the
+% misreading was the previous wording, which described the segments as encoding source-destination *pairs*. In a
+% priority-based encoding one priority is assigned per node, not per arc, so a segment covering a stage with |A|
+% sources and |B| destinations has length |A| + |B|, and the total is linear in the number of facilities. The
+% paragraph below states this explicitly and presents the linearity as the scalability property it is.
+% =====================================================================================================================
+Each segment corresponds to one transportation stage and assigns one priority value \emph{per node} of that stage, rather than one value per arc. A segment covering a stage with a set
+of sources $\mathcal{A}$ and a set of destinations $\mathcal{B}$ therefore has length $|\mathcal{A}| + |\mathcal{B}|$, and holds a permutation of $1, \dots, |\mathcal{A}| + |\mathcal{B}|$.
+The arcs themselves are never enumerated in the genotype: which arcs carry flow, and how much, is determined by the decoder of Section~\ref{subsec:decoding}, which repeatedly selects the
+highest-priority node still available and assigns to it the largest admissible flow. Writing $L$ for the total chromosome length over the eight stages,
+%
+\begin{equation}
+\label{eq:chromo_length}
+L = \underbrace{(K + N_1)}_{S_1} + \underbrace{(S + N_3)}_{S_2} + \underbrace{(E + N_2 + S)}_{S_3} + \underbrace{(J + K)}_{S_4} + \underbrace{(J + E)}_{S_5} + \underbrace{(I + J)}_{S_6} + \underbrace{(Q + M)}_{S_7} + \underbrace{(E + Q)}_{S_8},
+\end{equation}
+%
+so that $L$ grows linearly with the number of facilities per echelon. This is a deliberate and consequential property of the representation: an arc-indexed encoding of the same network
+would grow quadratically, which is precisely what makes such encodings impractical at the scales considered in Section~\ref{sec:experiments}. The cost of this compactness is that the
+genotype does not determine the solution on its own, which is why the decoding procedure must be specified in full rather than left implicit.
 
 \begin{figure}[htbp]
     \centering
@@ -607,19 +646,19 @@ was solved using Gurobi Optimizer v11.0.
 \label{subsec:instances}
 
 % =====================================================================================================================
-% TODO(revision): this subsection must be rewritten once the instances are regenerated. Three separate issues:
-%   (a) Reviewer~4, comment~3: the sentence below describing the segments as "source-destination pairs" is incorrect
-%       and implies a chromosome quadratic in N. The encoding assigns one priority per node, not per arc, so each
-%       segment has length (sources + destinations) and the total is linear in N. The figure "1,700 for N=10" is also
-%       wrong and must be corrected. The linearity should be presented as a scalability advantage.
+% TODO(revision): item (a) below is DONE -- the chromosome length description is corrected here and derived in
+% Section \ref{subsubsec:chromosome}. Two issues remain, both requiring the instances to be regenerated:
 %   (b) Reviewer~2, comment~7: a single instance per size is not enough to assess robustness. Report the number of
 %       independent instances generated per size and aggregate results over them.
 %   (c) Reviewer~2, comment~8: the instances must be published in the GitHub repository, not on external storage.
+%       NOTE: before publishing, the N=1600 instance must be regenerated. The loader currently resolves it to the
+%       same file as N=800, which is why both sizes report identical objective values in every results table.
 % =====================================================================================================================
 The test instances were generated following the methodology proposed by \cite{rajabi2023}. Each instance is characterized by equal-sized entities across all echelons
-(i.e., $I = J = K = E = S = Q = N_1 = N_2 = N_3 = M$), with instance sizes of 10, 30, 100, 200, 400, 800, and 1600. Since the chromosome consists of eight segments encoding
-all possible source-destination pairs ($I \times J$, $J \times K$, $J \times E$, $K \times N_1$, $E \times N_2$, $E \times S$, $S \times N_3$, and $Q \times M$),
-this results in chromosome lengths ranging from 1,700 (for $N=10$) to 27,200 (for $N=1600$) variables in the priority-based encoding.
+(i.e., $I = J = K = E = S = Q = N_1 = N_2 = N_3 = M = N$), with instance sizes of $N \in \{10, 30, 100, 200, 400, 800, 1600\}$. Under this convention, the chromosome length of
+Equation~\eqref{eq:chromo_length} reduces to $L = 17N$, so the priority vectors range from $170$ decision variables for $N = 10$ to $27{,}200$ for $N = 1600$. We stress that this
+growth is linear rather than quadratic, because priorities are attached to nodes rather than to arcs; the number of \emph{arcs} in the underlying network does grow quadratically,
+but those arcs are induced by the decoder rather than enumerated in the genotype.
 
 All problem parameters (facility costs, production costs, transportation costs, capacities, demands, and conversion rates) were randomly generated using uniform distributions
 with ranges identical to those specified in Table 7 of \cite{rajabi2023}. Complete parameter specifications and the generated instances are publicly available
@@ -857,7 +896,7 @@ However, as instance size grows beyond 100 nodes, the combinatorial explosion cr
 Here, the VNS's sophisticated diversification mechanisms (strategic neighborhood sequencing, SA-based hill climbing, and adaptive perturbation) become essential. The problem-specific 
 operators exploit structural properties of the supply chain that are invisible to classical operators, enabling the algorithm to navigate 
 the active/inactive node boundary more effectively. The ILS, constrained to a single neighborhood operator, lacks this structural awareness and becomes trapped in inferior local optima. 
-Similarly, the GA's population-based search suffers from the curse of dimensionality: as chromosome length grows from 1,700 to 27,200 variables, maintaining population diversity while 
+Similarly, the GA's population-based search suffers from the curse of dimensionality: as chromosome length grows from $170$ to $27{,}200$ variables, maintaining population diversity while
 guiding convergence becomes increasingly difficult, resulting in premature convergence to suboptimal regions.
 
 \subsubsection{Convergence Analysis}
@@ -1160,9 +1199,12 @@ infrastructure design. Implementation requires only standard computational resou
 \label{sec:conclusion}
 
 This study presented a comprehensive optimization framework for the pistachio supply chain network, addressing both forward product flows and the recovery of by-products. 
-Our primary contributions are twofold: (1) we introduced an integer-based priority encoding with a formally specified backward decoding algorithm, addressing critical methodological 
-gaps in prior work and ensuring full reproducibility; and (2) we developed four problem-specific neighborhood operators that exploit the active/inactive node structure inherent 
-to capacity-constrained supply chains, demonstrating statistically significant improvements over standard permutation operators in a comprehensive computational study.
+Our contributions are threefold. First, we specified in full the backward decoding algorithm that maps a priority chromosome onto a feasible transportation tree for this network,
+including the reconciliation of the jointly produced outputs at processing centres; the priority-based representation itself is adopted from the network design literature rather than
+proposed here, but its decoding, which is what prior work on this problem left implicit, is what determines both reproducibility and the constraint-handling mechanism. Second, we
+developed four problem-specific neighborhood operators that exploit the active/inactive node structure inherent to capacity-constrained supply chains, demonstrating statistically
+significant improvements over standard permutation operators. Third, we reported a systematic benchmark across seven instance scales under a shared set of algorithmic components,
+which makes the observed differences attributable to the search strategy rather than to incidental implementation choices.
 
 Comprehensive computational experiments benchmarked the proposed VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver Gurobi. 
 The results reveal a clear performance stratification across instance sizes. For small instances ($N \le 30$), simple local search methods such as ILS are sufficient and highly efficient, 
