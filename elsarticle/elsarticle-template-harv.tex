@@ -53,12 +53,15 @@ the literature lacks efficient heuristic approaches with well-defined solution m
 supply chain optimization. Our method introduces an integer-based priority encoding scheme coupled with a formally defined decoding algorithm that ensures solution feasibility. 
 Building on this representation, we developed domain-specific neighborhood structures that exploit the problem's constraint structure to improve search convergence beyond classical operators. 
 Through comprehensive benchmarking against Genetic Algorithms (GA), Iterated Local Search (ILS), and an exact solver, we demonstrate that the proposed VNS 
-outperforms other metaheuristics on medium and large-scale instances, achieving near-optimal solutions in scenarios where exact methods become computationally intractable.
+outperforms other metaheuristics on medium and large-scale instances, and remains within a small margin of the best bound available from the exact solver in scenarios where the latter becomes computationally intractable.
 \end{abstract}
 
 %% Keywords
 \begin{keyword}
-Supply Chain Optimization \sep Metaheuristics \sep Variable Neighborhood Search \sep Sustainable Logistics
+% Reviewer~4, comment~8: "Sustainable Logistics" was removed. The objective function minimises facility, production
+% and transportation costs only; no environmental or social indicator is optimised, so the keyword overstated the
+% scope of the model. By-product recovery is what the model actually represents.
+Supply Chain Network Design \sep Metaheuristics \sep Variable Neighborhood Search \sep Priority-Based Encoding \sep By-Product Recovery
 \end{keyword}
 
 \end{frontmatter}
@@ -91,6 +94,12 @@ agriculture and other industries have shown significant environmental benefits b
 biogas and compost production \citep{cheraghalipour2022}. Such approaches have been successfully applied in sectors such as manufacturing 
 and waste recovery, where efficient resource management and cost reduction have been key drivers \citep{devika2014, zohal2016}. 
 These strategies underline the importance of sustainability in modern supply chains and the potential for agricultural industries to implement similar measures.
+% Reviewer~4, comment~8: explicit scoping of the sustainability claim. The model routes by-products to composting
+% centres but optimises cost alone; it quantifies no emissions, landfill avoidance or resource-recovery indicator.
+It should be stated at the outset, however, that sustainability enters the model studied here only structurally, through the routing of by-products to composting
+centres, and not as an optimisation criterion. The objective function minimises facility, production and transportation costs alone; no environmental or social
+indicator is quantified or optimised. Extending the formulation with explicit sustainability objectives is a natural continuation of this work, but it is outside
+the scope of the present study, whose contribution is algorithmic.
 
 In related research, \cite{rajabi2023} focused on optimizing the pistachio supply chain using various algorithms, primarily population-based 
 approaches, such as the Genetic Algorithm (GA) \citep{fathollahi2018, xie2022}, along with several metaphor-based metaheuristics including the Imperialist Competitive 
@@ -355,13 +364,13 @@ to the priority-based procedure detailed in Table 2 of \citet{gen2006}.
 
 Algorithms \ref{algoDecode1} and \ref{algoDecode2} detail the complete decoding process in two phases (separated due to page constraints). Algorithm \ref{algoDecode1} 
 initiates the process by decoding the main flows between factories, extraction centers, consumers, and processing centers using chromosome segments $S_1$ through $S_5$. 
-The critical logic occurs in Steps 5 and 6, where the algorithm reconciles diverging flows from Processing Centers, which produce multiple outputs (Kernels for Oil vs. 
+The critical logic occurs in Steps 5 and 6, where the algorithm reconciles diverging flows from processing centers, which produce multiple outputs (Kernels for Oil vs. 
 Open-shell for Factories) in fixed proportions. Satisfying one downstream demand often creates surplus of the other output. The decoding identifies the bottleneck demand 
 and routes surplus to the lowest-cost destination, minimizing over-supply penalties. Critically, this reconciliation mechanism explicitly enforces the joint production 
 equality constraints \eqref{eq:restricao8} and \eqref{eq:restricao9}. After initial flows are allocated, the algorithm computes the implied input requirement from each 
-Processing Center under both scenarios (if $G_o$ dictates capacity vs. if $G_r$ dictates capacity), selects the binding constraint, and augments the non-binding output 
+processing center under both scenarios (if $G_o$ dictates capacity vs. if $G_r$ dictates capacity), selects the binding constraint, and augments the non-binding output 
 flow to maintain the exact proportions $(1-\beta)\theta_1$ and $(1-\beta)\theta_2$. This adjustment step transforms inequality-based greedy allocation into an equality-satisfying 
-solution, ensuring that the mass balance at Processing Centers rigorously conforms to the fixed conversion ratios defined by the waste percentages.
+solution, ensuring that the mass balance at processing centers rigorously conforms to the fixed conversion ratios defined by the waste percentages.
 
 Algorithm \ref{algoDecode2} performs additional adjustments to ensure consistency between inputs and outputs at intermediate centers, decodes transport from producers 
 to processing centers (segment $S_6$), allocates waste generated in the processes to composting centers (segments $S_7$ and $S_8$), and determines which facilities 
@@ -930,7 +939,7 @@ reliability across all 30 runs.
 \subsection{Assessment of Neighborhood Structures}
 \label{subsec:operators_analysis}
 
-To validate the contribution of the novel problem-specific neighborhood structures, we conducted a comparative study against a baseline "Standard VNS". The Standard VNS employs only the 
+To validate the contribution of the problem-specific neighborhood structures, we conducted a comparative study against a baseline "Standard VNS". The Standard VNS employs only the 
 classical permutation operators found in the literature: \textit{Swap}, \textit{Reversion}, \textit{Insertion}, and \textit{Slide} \citep{gendreau2010}.
 
 \subsubsection{Statistical Analysis}
@@ -938,7 +947,7 @@ Following the procedure defined in Section~\ref{subsec:stats_method}, the hypoth
 function value than the Standard VNS ($H_1: \mu_{Proposed} < \mu_{Standard}$).
 
 Table \ref{tab:stats_vns} details the p-values obtained. For small instances (10 and 30), the p-values ($> 0.05$) indicate that there is no statistically significant difference 
-between the Proposed VNS and the Standard VNS. The null hypothesis ($H_0: \mu_{Novel} = \mu_{Basic}$) cannot be rejected, meaning both approaches perform comparably in these simple landscapes. 
+between the Proposed VNS and the Standard VNS. The null hypothesis ($H_0: \mu_{Proposed} = \mu_{Standard}$) cannot be rejected, meaning both approaches perform comparably in these simple landscapes. 
 However, for all instances of size 100 and above, the p-values are effectively zero ($p < 0.0001$), confirming that the Proposed VNS is statistically superior with high confidence.
 
 \begin{table}[h]
@@ -948,15 +957,15 @@ However, for all instances of size 100 and above, the p-values are effectively z
     \label{tab:stats_vns}
     \begin{tabular}{rccclc}
         \toprule
-        Inst. & S-W (Novel) & S-W (Basic) & Test & p-value & Result \\
+        Inst. & S-W (Proposed) & S-W (Standard) & Test & p-value & Result \\
         \midrule
         10 & $1.70 \times 10^{-11}$ & 0.0008 & Mann-W. & 1.0000 & No Sig. Diff. \\
         30 & 0.0626 & 0.0493 & Mann-W. & 0.9811 & No Sig. Diff. \\
-        100 & 0.5115 & 0.5658 & t-test & $3.64 \times 10^{-6}$ & Novel Superior \\
-        200 & 0.0434 & 0.5143 & Mann-W. & $2.25 \times 10^{-11}$ & Novel Superior \\
-        400 & 0.2958 & 0.6396 & t-test & $2.29 \times 10^{-32}$ & Novel Superior \\
-        800 & 0.7107 & 0.1993 & t-test & $2.76 \times 10^{-27}$ & Novel Superior \\
-        1600 & 0.3556 & 0.3454 & t-test & $5.89 \times 10^{-31}$ & Novel Superior \\
+        100 & 0.5115 & 0.5658 & t-test & $3.64 \times 10^{-6}$ & Proposed Superior \\
+        200 & 0.0434 & 0.5143 & Mann-W. & $2.25 \times 10^{-11}$ & Proposed Superior \\
+        400 & 0.2958 & 0.6396 & t-test & $2.29 \times 10^{-32}$ & Proposed Superior \\
+        800 & 0.7107 & 0.1993 & t-test & $2.76 \times 10^{-27}$ & Proposed Superior \\
+        1600 & 0.3556 & 0.3454 & t-test & $5.89 \times 10^{-31}$ & Proposed Superior \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -972,7 +981,7 @@ in the largest instances.
     \label{tab:performance_vns}
     \begin{tabular}{rccc}
         \toprule
-        Instance & Avg. Obj (Novel) & Avg. Obj (Basic) & Gap (\%) \\
+        Instance & Avg. Obj (Proposed) & Avg. Obj (Standard) & Gap (\%) \\
         \midrule
         10 & $7.62 \times 10^6$ & $7.38 \times 10^6$ & -3.05\% \\
         30 & $2.05 \times 10^7$ & $2.04 \times 10^7$ & -0.44\% \\
@@ -1029,7 +1038,7 @@ lower variance, indicating greater robustness.
         \caption{Instance 1600}
     \end{subfigure}
     
-    \caption{Distribution of objective function values for Proposed VNS (Novel, left boxplot) vs. Standard VNS (Basic, right boxplot) across all instance sizes. The red dashed line represents the optimal solution found by branch-and-bound (Gurobi). The novel approach demonstrates superior scalability.}
+    \caption{Distribution of objective function values for Proposed VNS (left boxplot) vs. Standard VNS (right boxplot) across all instance sizes. The red dashed line represents the optimal solution found by branch-and-bound (Gurobi). The proposed operators demonstrate superior scalability.}
     \label{fig:vns_boxplots}
 \end{figure*}
 
@@ -1139,7 +1148,7 @@ superior solution quality in the long run.
 % comparison is against a best incumbent, not against an optimum.
 From a practical standpoint, our results suggest a tiered decision framework for supply chain managers in the pistachio industry based on network complexity. 
 Networks with fewer than 100 facilities per echelon should employ commercial solvers (Gurobi, CPLEX) to guarantee optimality within reasonable computational timeframes. 
-Medium-scale networks (100--400 facilities) benefit most from the proposed VNS, which provides near-optimal solutions (approximately 3.3\% gap) in minutes rather than hours, 
+Medium-scale networks (100--400 facilities) benefit most from the proposed VNS, which stays within approximately 3.3\% of the best solution available from the exact solver in minutes rather than hours, 
 offering a compelling balance between solution quality and computational efficiency. Large-scale international supply chains (exceeding 800 facilities) require metaheuristic 
 approaches, as exact methods become computationally prohibitive due to memory constraints and exponential runtime growth. The transparency of our integer-based encoding and 
 decoding algorithm facilitates integration with enterprise resource planning systems, enabling seamless deployment in existing operational infrastructures. Moreover, the solution 
@@ -1150,9 +1159,9 @@ infrastructure design. Implementation requires only standard computational resou
 \section{Conclusion}
 \label{sec:conclusion}
 
-This study presented a comprehensive optimization framework for the pistachio supply chain network, addressing both forward product flows and reverse logistics of by-products. 
+This study presented a comprehensive optimization framework for the pistachio supply chain network, addressing both forward product flows and the recovery of by-products. 
 Our primary contributions are twofold: (1) we introduced an integer-based priority encoding with a formally specified backward decoding algorithm, addressing critical methodological 
-gaps in prior work and ensuring full reproducibility; and (2) we developed four novel problem-specific neighborhood operators that exploit the active/inactive node structure inherent 
+gaps in prior work and ensuring full reproducibility; and (2) we developed four problem-specific neighborhood operators that exploit the active/inactive node structure inherent 
 to capacity-constrained supply chains, demonstrating statistically significant improvements over standard permutation operators in a comprehensive computational study.
 
 Comprehensive computational experiments benchmarked the proposed VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver Gurobi. 
@@ -1167,7 +1176,7 @@ Second, and critically, there is a need to investigate new encoding methodologie
 matheuristics—hybrid approaches combining metaheuristics with exact solvers. The priority-based encoding used in this work is highly effective for pure metaheuristics, as it enables 
 efficient local search through the solution space. However, integrating exact methods (such as branch-and-bound) into the VNS framework would require a reverse transformation: 
 converting the decoded transportation tree back into the original MILP variable space. This reverse mapping is extremely challenging because the decoding process involves complex, non-linear 
-decisions (such as the proportional allocation rules in Processing Centers and the greedy priority-based flow assignments) that cannot be trivially inverted. Developing alternative encoding 
+decisions (such as the proportional allocation rules in processing centers and the greedy priority-based flow assignments) that cannot be trivially inverted. Developing alternative encoding 
 schemes that preserve a bidirectional mapping between heuristic representations and mathematical programming formulations could unlock powerful hybrid decomposition strategies, enabling 
 the VNS to identify promising regions while exact solvers refine solutions with provable bounds. Bridging this gap between heuristic flexibility and exact solver precision remains a vital 
 frontier for solving such complex, large-scale supply chain problems.
