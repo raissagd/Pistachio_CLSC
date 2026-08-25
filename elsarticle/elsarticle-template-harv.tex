@@ -515,34 +515,112 @@ and coherent solution to the proposed optimization problem.
 \subsection{Neighborhood Structures}
 \label{subsec:neighborhoods}
 
-A critical inefficiency in applying standard permutation operators to priority-based encoding is their "blindness" to the phenotypic state. 
-In the greedy decoding process (Algorithm \ref{algoDecode1}), typically only a subset of high-priority nodes is required to satisfy all demands. 
-We term these Active Nodes ($\mathcal{A}$), while the remaining unused nodes are Inactive ($\mathcal{I}$). Standard operators 
+A critical inefficiency in applying standard permutation operators to priority-based encoding is their "blindness" to the phenotypic state.
+In the greedy decoding process (Algorithm \ref{algoDecode1}), typically only a subset of high-priority nodes is required to satisfy all demands.
+We term these Active Nodes ($\mathcal{A}$), while the remaining unused nodes are Inactive ($\mathcal{I}$). Standard operators
 often swap two Inactive nodes, changing the genotype but resulting in the exact same transportation tree and objective value.
 
-To overcome this redundancy, our implementation explicitly tracks the set of active nodes returned by the decoder and employs four structure-aware 
-operators. These operators are designed to either intensify the search within the current topology or diversify it by forcing interactions between 
-the active and inactive sets:
+To overcome this redundancy, our implementation explicitly tracks the set of active nodes returned by the decoder and employs four structure-aware
+operators. These operators are designed to either intensify the search within the current topology or diversify it by forcing interactions between
+the active and inactive sets.
 
-\begin{itemize}
-    \item \textbf{Active Reversion:} This operator functions as an intensification mechanism. It selects a segment of the chromosome containing multiple 
-    nodes from set $\mathcal{A}$ and reverses their priority values. By reordering only the suppliers that are already in use, this move fine-tunes 
-    the flow distribution to find lower-cost allocations without necessarily opening new routes or altering the network structure.
+% ----------------------------------------------------------
+\subsubsection{Notation}
+\label{subsubsec:op_notation}
 
-    \item \textbf{Inactive-Active Swap:} This is a global diversification operator. It selects one active node ($i \in \mathcal{A}$) and one inactive 
-    node ($j \in \mathcal{I}$) at random and exchanges their priorities. This forces a currently used route to be downgraded and a previously unused 
-    route to be upgraded, effectively testing global topology changes by bringing new nodes into the solution.
+% Reviewer~2, comment~4 and Reviewer~4, comment~1 both ask for formal definitions rather than conceptual descriptions.
+% The definitions below follow the implementation exactly.
+Let $s \in \{1, \dots, 8\}$ index the transportation stages of Section~\ref{subsubsec:chromosome} and let $V_s$ denote the set of nodes of stage $s$, with $Z_s = |V_s|$. A chromosome
+is the tuple $\pi = (\pi_1, \dots, \pi_8)$, where $\pi_s : V_s \rightarrow \{1, \dots, Z_s\}$ is a bijection assigning a distinct priority to each node, and higher values denote higher
+priority. Nodes of $V_s$ are held in a fixed order, and we write $\mathrm{pos}(v) \in \{1, \dots, Z_s\}$ for the position of node $v$ in that order; note that $\mathrm{pos}(v)$ is a
+property of the instance, whereas $\pi_s(v)$ is a property of the solution.
 
-    \item \textbf{Inactive Boost:} This operator addresses the "starvation" issue common in capacity-constrained problems. 
-    A low-cost supplier might be ignored simply because it sits too low in the priority list to be considered before demands are met. This operator 
-    selects a random inactive node and assigns it the highest possible priority value in the chromosome. This forces the greedy decoder to 
-    maximize flow from this specific node before considering any others, potentially revealing a completely different and superior tree structure.
+Decoding $\pi$ by the procedure of Section~\ref{subsec:decoding} yields, besides the flows and the objective value, an activation indicator $\alpha_s : V_s \rightarrow \{0,1\}$, where
+$\alpha_s(v) = 1$ if node $v$ carries strictly positive flow in the decoded solution. This induces the partition
+%
+\begin{equation}
+\label{eq:active_partition}
+\mathcal{A}_s = \{\, v \in V_s : \alpha_s(v) = 1 \,\}, \qquad \mathcal{I}_s = V_s \setminus \mathcal{A}_s ,
+\end{equation}
+%
+which is what distinguishes these operators from classical permutation moves: $\mathcal{A}_s$ is not available from the genotype and must be read back from the decoder. Each operator
+below first draws a stage $s$ uniformly at random from $\{1, \dots, 8\}$ and then modifies $\pi_s$ alone, leaving the remaining seven segments untouched. Every operator is a no-op
+whenever its precondition on $\mathcal{A}_s$ or $\mathcal{I}_s$ fails, in which case another stage is drawn. We write $\pi'$ for the resulting chromosome and omit the subscript $s$
+where no ambiguity arises.
 
-    \item \textbf{Inactive-Active Exchange two Neighbors (IA-ETN):} This operator provides a "localized" diversification. Instead of a random global 
-    swap, it selects an inactive node and swaps it with its nearest active neighbor in terms of chromosome index distance. Unlike the global 
-    swap, which can be highly disruptive, this operator explores the "boundary" of the solution, testing if a route that is "almost" good enough 
-    (close to the active set) should replace a marginally active route.
-\end{itemize}
+% ----------------------------------------------------------
+\subsubsection{Operator Definitions}
+\label{subsubsec:op_definitions}
+
+\paragraph{Active Reversion.} \textit{Precondition:} $|\mathcal{A}| \ge 2$. Let $v_{(1)}, \dots, v_{(|\mathcal{A}|)}$ be the active nodes ordered by position, and draw two distinct
+ranks $r_1 < r_2$ uniformly at random. The operator reverses the priorities carried by the active nodes ranked between $r_1$ and $r_2$,
+%
+\begin{equation}
+\label{eq:op_activereversion}
+\pi'\!\left(v_{(r_1 + k)}\right) = \pi\!\left(v_{(r_2 - k)}\right), \quad k = 0, \dots, r_2 - r_1 ,
+\end{equation}
+%
+and leaves $\pi'(u) = \pi(u)$ for every other node. Note that the reversal is applied to the \emph{subsequence} of active nodes, not to a contiguous block of $V$: inactive nodes lying
+between $v_{(r_1)}$ and $v_{(r_2)}$ retain their priorities. Since $\mathcal{A}$ is preserved as a set and only the order within it changes, this is the intensification move of the
+four: it redistributes flow among facilities already in use, without opening or closing any facility, so it explores lower-cost allocations within the current network topology.
+
+\paragraph{Inactive-Active Swap.} \textit{Precondition:} $\mathcal{A} \neq \emptyset$ and $\mathcal{I} \neq \emptyset$. Draw $u \in \mathcal{A}$ and $v \in \mathcal{I}$ independently
+and uniformly, and exchange their priorities,
+%
+\begin{equation}
+\label{eq:op_iaswap}
+\pi'(u) = \pi(v), \qquad \pi'(v) = \pi(u), \qquad \pi'(w) = \pi(w) \;\; \forall\, w \notin \{u, v\} .
+\end{equation}
+%
+Because $\pi(u) > \pi(v)$ need not hold, the move can promote or demote either node; what it guarantees is that a currently used facility and a currently unused one exchange their
+standing in the priority order, which is the global diversification mechanism of the set.
+
+\paragraph{Inactive Boost.} \textit{Precondition:} $\mathcal{I} \neq \emptyset$. Draw $v \in \mathcal{I}$ uniformly and promote it above every other node, compressing the priorities it
+overtakes so that their relative order is preserved,
+%
+\begin{equation}
+\label{eq:op_boost}
+\pi'(w) =
+\begin{cases}
+\pi(w) - 1, & \text{if } \pi(w) > \pi(v), \\[2pt]
+\pi(w), & \text{if } \pi(w) < \pi(v), \\[2pt]
+\displaystyle \max_{u \in V} \pi(u) + 1, & \text{if } w = v .
+\end{cases}
+\end{equation}
+%
+This is the most aggressive of the four moves. It addresses the starvation effect characteristic of capacity-constrained problems: a low-cost facility may never enter a solution simply
+because it sits below enough others that demand is exhausted before it is reached, and no pairwise exchange of adjacent priorities is enough to rescue it. Forcing it to the top makes
+the decoder route the maximum admissible flow through it before any other node is considered, which can expose an entirely different tree structure.
+
+% TODO(revision): Equation (\ref{eq:op_boost}) reflects the implementation, in which the boosted node receives
+% max(pi) + 1 rather than Z. The relative order -- which is all the decoder consumes -- is correct either way, so no
+% result is affected, but the image of pi' is then {1,...,Z-1} U {Z+1} rather than {1,...,Z}, which is inconsistent
+% with the bijection stated in Section \ref{subsubsec:op_notation}. Setting the boosted value to Z instead of
+% max(pi) + 1 restores the invariant and changes nothing else. Fix in the code, then simplify this definition.
+
+\paragraph{Inactive-Active Exchange with Nearest Neighbor (IA-ETN).} \textit{Precondition:} $\mathcal{A} \neq \emptyset$ and $\mathcal{I} \neq \emptyset$. Draw $v \in \mathcal{I}$
+uniformly and let
+%
+\begin{equation}
+\label{eq:op_iaetn}
+u^{*} \in \arg\min_{u \in \mathcal{A}} \; \bigl| \mathrm{pos}(u) - \mathrm{pos}(v) \bigr| ,
+\end{equation}
+%
+ties being broken by the lowest position. The operator then exchanges $\pi(v)$ and $\pi(u^{*})$ as in Equation~\eqref{eq:op_iaswap}. Replacing the uniform draw of the active partner by
+the positionally nearest one makes this a localized counterpart of the Inactive-Active Swap: it probes the boundary between $\mathcal{A}$ and $\mathcal{I}$, testing whether a facility
+that is nearly good enough to be used should displace a marginally used one, rather than attempting an arbitrary global rearrangement.
+
+% ----------------------------------------------------------
+\subsubsection{Cost and Applicability}
+\label{subsubsec:op_cost}
+
+All four operators run in $O(Z_s)$ time, dominated in the first, third and fourth cases by the scan required to recover $\mathcal{A}_s$ and $\mathcal{I}_s$ from $\alpha_s$. This cost is
+negligible against that of the re-decoding each move triggers, so the number of objective evaluations, rather than the number of moves, is the meaningful measure of computational
+effort and is what we budget in Section~\ref{subsubsec:shared}.
+
+Two properties should be noted. First, the operators are defined only where the decoder has been run, since $\alpha_s$ is part of its output; a move can therefore never be applied to a
+chromosome that has not been evaluated. Second, all four are structure-preserving in the sense that they map a valid priority assignment to a valid one, so no repair step is required
+and every chromosome reachable by the search decodes to a feasible solution.
 
 % ----------------------------------------------------------
 \subsection{The VNS Algorithm}
@@ -552,9 +630,22 @@ The proposed algorithm is a hybrid metaheuristic that enhances the standard Vari
 for intensification and a Simulated Annealing (SA) acceptance criterion. This hybridization addresses the limitations of pure descent methods in the highly constrained landscape of the 
 pistachio supply chain. The procedure is outlined in Algorithm \ref{algoVNS}.
 
-The intensification phase employs a Variable Neighborhood Descent (VND) strategy rather than a simple local search. In this step, the algorithm iterates sequentially through the 
-entire set of neighborhood structures. Whenever an improvement is found with any operator, the search restarts from the first operator, ensuring that the resulting solution is a local 
-optimum with respect to all defined neighborhoods.
+The intensification phase employs a Variable Neighborhood Descent (VND) strategy rather than a simple local search. In this step, the algorithm iterates sequentially through the
+entire set of neighborhood structures. Whenever an improvement is found with any operator, the search restarts from the first operator.
+
+% Reviewer~2, comment~4: the VND uses sampled rather than exhaustive best improvement. This was not stated before and
+% it materially changes what "local optimum" means here, so it is made explicit.
+One point deserves emphasis, since it qualifies the sense in which the VND returns a local optimum. The neighborhoods of Section~\ref{subsec:neighborhoods} are not enumerated
+exhaustively. Each operator is stochastic, and evaluating its full neighborhood would be prohibitive: the Inactive-Active Swap alone admits $|\mathcal{A}_s| \cdot |\mathcal{I}_s|$
+candidates per stage, each requiring a complete re-decoding. Instead, the descent step draws a fixed sample of $\eta = 45$ independent candidates from the current operator, evaluates
+them, and adopts the best if it improves on the incumbent. The procedure is therefore a \emph{sampled} best-improvement descent, and the solution it returns is a local optimum with
+respect to the sampled neighborhoods rather than a certified local optimum with respect to the complete ones. The sample size $\eta$ is held constant across operators and instance
+sizes, and it enters the computational budget directly, since each of the $\eta$ candidates consumes one objective evaluation.
+
+% TODO(revision): the trajectory-based competitor uses a different sample size in its own descent step (15 against
+% the 45 used here), which is an unjustified asymmetry of exactly the kind Reviewer~4 comment~6 objects to. Harmonise
+% the two before the experiments are re-run, then state the common value here and in Section
+% \ref{subsubsec:shared}. Until that is done this paragraph must not claim that eta is shared across algorithms.
 
 To prevent stagnation in local optima, we replace the standard deterministic acceptance criterion with a probabilistic Simulated Annealing mechanism. This probabilistic acceptance 
 is particularly valuable in highly constrained problems like supply chain networks, where the solution space contains numerous local optima separated by infeasible regions. 
