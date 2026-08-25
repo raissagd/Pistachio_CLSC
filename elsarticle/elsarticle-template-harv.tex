@@ -380,20 +380,21 @@ genotype does not determine the solution on its own, which is why the decoding p
 The decoding process serves as a constructive heuristic that transforms the priority chromosome into a feasible transportation tree. As shown in Fig. \ref{fig:decode_flux}, the decoding 
 process begins with the flow of final products (pistachios, oil, cosmetics) from factories to consumers, working backward through the supply chain. This backward approach is preferred 
 over forward decoding because it naturally respects demand constraints: consumer demand is satisfied first, propagating the requirements upstream to factories and processing centers. 
-This strategy guarantees feasibility by ensuring that facility capacities are respected at every stage while preventing overproduction, a critical consideration in perishable 
-agricultural supply chains.
+This strategy drives the construction towards feasibility by ensuring that facility capacities are respected at every stage while preventing overproduction, a critical consideration
+in perishable agricultural supply chains. As detailed in Section~\ref{subsubsec:feasibility}, the construction is not guaranteed to succeed for every chromosome; when it cannot, the
+decoder reports infeasibility explicitly rather than returning a repaired or penalised solution.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.9\textwidth]{./decode_flux.PNG}
-  \caption{The backward decoding flow. The process prioritizes satisfying end-consumer demands first to propagate requirements upstream, ensuring feasibility throughout the chain.}
+  \caption{The backward decoding flow. The process prioritizes satisfying end-consumer demands first to propagate requirements upstream, so that capacity and demand restrictions are respected at each stage of the construction.}
   \label{fig:decode_flux}
 \end{figure}
 
 As illustrated in Figure \ref{fig:decode_flux}, the decoding process initiates with the flow of derived pistachio products from factories to consumers, ensuring all 
 constraints are satisfied. Oil and cosmetic product flows follow similar principles. Processing centers regulate pistachio allocation, accounting for production losses 
 and ensuring viable distribution. Harvested pistachios are allocated proportionally between factories and oil extraction centers, prioritizing demand satisfaction and 
-minimizing transportation costs. Flows between producers and processing centers cannot exceed production capacity, guaranteeing system feasibility. Waste 
+minimizing transportation costs. Flows between producers and processing centers cannot exceed production capacity. Waste 
 flows are managed similarly, respecting processing and composting capacity limits while minimizing costs.
 
 To decode each logistic flow in the supply chain, we employ the \texttt{decodingStep} function, which implements the priority-based transportation algorithm described 
@@ -510,6 +511,69 @@ and coherent solution to the proposed optimization problem.
   \EndProcedure
   \end{algorithmic}
 \end{algorithm}
+
+% ----------------------------------------------------------
+\subsubsection{Reconciliation at Processing Centers}
+\label{subsubsec:reconciliation}
+
+% Reviewer~4, comment~4: "adjust demands", "update flows" and "match effective capacities" were stated only as
+% pseudocode comments. Step 7 of Algorithm \ref{algoDecode2} is given explicitly below.
+Step 7 of Algorithm~\ref{algoDecode2} is the one operation of the decoder that is not a direct application of \texttt{decodingStep}, and it is what enforces the joint production
+equalities \eqref{eq:restricao8} and \eqref{eq:restricao9}. We state it explicitly. Write $G^{o}_{j} = \sum_{k} G_{o,jk}$ and $G^{r}_{j} = \sum_{e} G_{r,je}$ for the open-shell and
+raw-kernel outflows assigned to processing center $j$ by Steps 5 and 6. Each of the two outflows implies an input requirement at $j$,
+%
+\begin{equation}
+\label{eq:implied_input}
+b^{1}_{j} = \frac{G^{o}_{j}}{(1-\beta)\,\theta_1}, \qquad b^{2}_{j} = \frac{G^{r}_{j}}{(1-\beta)\,\theta_2},
+\end{equation}
+%
+and these will in general disagree, because the two downstream demands were decoded independently while the centre splits a single input stream in fixed proportions. Satisfying both
+therefore requires the larger of the two,
+%
+\begin{equation}
+\label{eq:binding_input}
+b_{j} = \max\bigl\{ b^{1}_{j},\, b^{2}_{j} \bigr\},
+\end{equation}
+%
+from which the target outflows follow as $\widehat{G}^{o}_{j} = b_{j}(1-\beta)\theta_1$ and $\widehat{G}^{r}_{j} = b_{j}(1-\beta)\theta_2$. One of the two is already met; the deficit on
+the other, $\widehat{G}^{r}_{j} - G^{r}_{j}$ when $b^{1}_{j} > b^{2}_{j}$ and $\widehat{G}^{o}_{j} - G^{o}_{j}$ when $b^{2}_{j} > b^{1}_{j}$, is assigned in full to the cheapest
+destination that can still absorb it,
+%
+\begin{equation}
+\label{eq:surplus_routing}
+e^{*} = \min \Bigl\{\, e : \textstyle\sum_{j'} G_{r,j'e} + \bigl(\widehat{G}^{r}_{j} - G^{r}_{j}\bigr) \le C^{r}_{e} \,\Bigr\}
+\quad \text{in increasing order of } \bigl( CE_{je} + Cu2_{j} \bigr),
+\end{equation}
+%
+and symmetrically over the pistachio factories, in increasing order of $\bigl( CK_{jk} + Cu1_{j} \bigr)$, when the open-shell output is the deficient one. Processing centers with
+$G^{o}_{j} = G^{r}_{j} = 0$ are inactive and are skipped. After this step the mass balance at every active processing center conforms exactly to the conversion ratios
+$(1-\beta)\theta_1$ and $(1-\beta)\theta_2$, which is what turns the inequality-based greedy allocation of Steps 5 and 6 into an equality-satisfying solution, and the upstream demand
+decoded in Step 8 is $b_{j}$.
+
+% ----------------------------------------------------------
+\subsubsection{Feasibility and Verification}
+\label{subsubsec:feasibility}
+
+% =====================================================================================================================
+% Reviewer~4, comment~4 objects to the repeated claim that the decoder "guarantees" feasibility. The objection is
+% correct and the claim has been removed throughout: the decoder can fail, and returns +infinity when it does. The
+% paragraphs below state the actual mechanism.
+% TODO(revision): report, from the re-run, the empirical rate at which decoding returns +infinity per instance size.
+% If the rate is negligible the point is closed; if it is not, the search is spending budget on rejected chromosomes
+% and that has to be discussed.
+% =====================================================================================================================
+The decoding procedure is feasibility-driven but not feasibility-guaranteeing, and the distinction matters. Every step respects source capacities and destination demands by
+construction, so no constraint is ever violated silently. There are, however, chromosomes for which the construction cannot be completed: if the deficit of
+Equation~\eqref{eq:surplus_routing} exceeds the residual capacity of every admissible destination, no assignment satisfies the joint production equalities, and the same situation can
+arise when reconciling the waste flows. In those cases the decoder terminates and returns $+\infty$ as the objective value.
+
+This amounts to a rejection mechanism rather than a penalty or a repair. No infeasible solution is ever assigned a finite cost, so infeasible chromosomes cannot be accepted by any of
+the acceptance criteria used in this work, and no penalty weight needs to be calibrated. The property that does hold, and that the operators of Section~\ref{subsec:neighborhoods}
+preserve, is that any chromosome decoding to a finite objective value decodes to a solution satisfying every constraint of the model.
+
+To substantiate that claim independently of the decoder itself, the implementation includes a verification routine that takes a decoded solution and checks it against each constraint
+of the formulation of Section~\ref{sec:problem-definition} separately, returning the list of any that fail. This routine shares no code with the decoder, so it provides a genuine
+check rather than a restatement of the construction logic. It is applied to the final solution of every run reported in Section~\ref{sec:experiments}.
 
 % ----------------------------------------------------------
 \subsection{Neighborhood Structures}
