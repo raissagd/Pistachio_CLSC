@@ -576,56 +576,354 @@ Algorithms \ref{algoDecode1} and \ref{algoDecode2}.
 \section{Computational Experiments}
 \label{sec:experiments}
 
-This section evaluates the performance of the proposed VNS approach. The experiments are divided into two phases: first, we validate the effectiveness of the proposed neighborhood 
-structures against standard operators. Second, we benchmark the optimized VNS against a Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver.
+This section evaluates the performance of the proposed VNS approach. Sections~\ref{subsec:setup} to~\ref{subsec:stats_method} describe the computational environment, the
+benchmark instances, the components shared by all compared algorithms, and the statistical methodology. Section~\ref{subsec:main_comparison} then benchmarks the proposed VNS
+against a Genetic Algorithm (GA), an Iterated Local Search (ILS), and the exact solver. Section~\ref{subsec:operators_analysis} isolates the contribution of the problem-specific
+neighborhood structures by comparing them against classical permutation operators, and Section~\ref{subsec:ablation} reports an ablation study that separates the contribution
+of each individual component of the proposed algorithm.
 
 % ------------------------------------------------------------
 
 \subsection{Experimental Setup}
 \label{subsec:setup}
 
-The algorithms were implemented in Python and executed on a workstation with an Intel Xeon E3-1240 V2 processor (8 cores) and 32 GB of RAM running Ubuntu 24.04 LTS. The exact method 
+% TODO(revision): Reviewer~2, comment~9 asks for a more recent Gurobi release and longer time limits on the large
+% instances. Update the version string and the hardware description once the experiments are re-run.
+The algorithms were implemented in Python and executed on a workstation with an Intel Xeon E3-1240 V2 processor (8 cores) and 32 GB of RAM running Ubuntu 24.04 LTS. The exact method
 was solved using Gurobi Optimizer v11.0.
 
-The test instances were generated following the methodology proposed by \cite{rajabi2023}. Each instance is characterized by equal-sized entities across all echelons 
-(i.e., $I = J = K = E = S = Q = N_1 = N_2 = N_3 = M$), with instance sizes of 10, 30, 100, 200, 400, 800, and 1600. Since the chromosome consists of eight segments encoding 
-all possible source-destination pairs ($I \times J$, $J \times K$, $J \times E$, $K \times N_1$, $E \times N_2$, $E \times S$, $S \times N_3$, and $Q \times M$), 
+% ------------------------------------------------------------
+
+\subsection{Benchmark Instances}
+\label{subsec:instances}
+
+% =====================================================================================================================
+% TODO(revision): this subsection must be rewritten once the instances are regenerated. Three separate issues:
+%   (a) Reviewer~4, comment~3: the sentence below describing the segments as "source-destination pairs" is incorrect
+%       and implies a chromosome quadratic in N. The encoding assigns one priority per node, not per arc, so each
+%       segment has length (sources + destinations) and the total is linear in N. The figure "1,700 for N=10" is also
+%       wrong and must be corrected. The linearity should be presented as a scalability advantage.
+%   (b) Reviewer~2, comment~7: a single instance per size is not enough to assess robustness. Report the number of
+%       independent instances generated per size and aggregate results over them.
+%   (c) Reviewer~2, comment~8: the instances must be published in the GitHub repository, not on external storage.
+% =====================================================================================================================
+The test instances were generated following the methodology proposed by \cite{rajabi2023}. Each instance is characterized by equal-sized entities across all echelons
+(i.e., $I = J = K = E = S = Q = N_1 = N_2 = N_3 = M$), with instance sizes of 10, 30, 100, 200, 400, 800, and 1600. Since the chromosome consists of eight segments encoding
+all possible source-destination pairs ($I \times J$, $J \times K$, $J \times E$, $K \times N_1$, $E \times N_2$, $E \times S$, $S \times N_3$, and $Q \times M$),
 this results in chromosome lengths ranging from 1,700 (for $N=10$) to 27,200 (for $N=1600$) variables in the priority-based encoding.
 
-All problem parameters (facility costs, production costs, transportation costs, capacities, demands, and conversion rates) were randomly generated using uniform distributions 
-with ranges identical to those specified in Table 7 of \cite{rajabi2023}. Complete parameter specifications and the generated instances are publicly available 
+All problem parameters (facility costs, production costs, transportation costs, capacities, demands, and conversion rates) were randomly generated using uniform distributions
+with ranges identical to those specified in Table 7 of \cite{rajabi2023}. Complete parameter specifications and the generated instances are publicly available
 in the project repository to ensure full reproducibility.
 
 % ------------------------------------------------------------
 
-\subsubsection{Algorithm Configurations}
-To ensure a fair comparison across all metaheuristics, each algorithm was allocated an identical computational budget: $N_{max} = 10n$, where $n$ represents the total number of 
+\subsection{Algorithm Configurations}
+\label{subsec:configurations}
+
+\subsubsection{Shared Components}
+\label{subsubsec:shared}
+
+% =====================================================================================================================
+% TODO(revision): Addresses Reviewer~1 comment~2, Reviewer~2 comment~6, and Reviewer~4 comment~6. All three question
+% whether the comparison is fair. It is, and the implementation already guarantees it -- the manuscript simply never
+% says so. This subsection must state explicitly, and ideally as a table of shared vs. algorithm-specific components,
+% that VNS, GA and ILS all share:
+%   - the same integer priority encoding (the same Solution class)
+%   - the same decoding procedure (Algorithms 1-2), hence the same genotype-to-phenotype map
+%   - the same objective evaluation function
+%   - the same constraint handling: feasibility by construction in the decoder, with no penalty term and no repair
+%   - the same deterministic initial solution
+%   - the same stopping criterion and the same evaluation-counting semantics (one count per decode)
+%   - the same instances and the same number of independent runs
+% Reviewer~2 comment~6 in particular assumes the GA is terminated by generations. It is not: it uses the same
+% evaluation counter and the same budget as the trajectory-based methods. This should be stated as a correction.
+% =====================================================================================================================
+
+\textbf{[TO BE WRITTEN]} \textit{Table of shared versus algorithm-specific components, establishing that the three metaheuristics differ only in their search strategy.}
+
+To ensure a fair comparison across all metaheuristics, each algorithm was allocated an identical computational budget: $N_{max} = 10n$, where $n$ represents the total number of
 decision variables in the priority-based encoding. This budget scales linearly with problem size, ensuring equitable evaluation across all instances.
 
+All metaheuristics (VNS, GA, ILS) were executed 30 times for each instance to ensure statistical robustness.
+
+\subsubsection{Algorithm-Specific Parameters}
+\label{subsubsec:params}
+
+% TODO(revision): Reviewer~1, comment~2 and Reviewer~4, comment~6 ask for fuller descriptions of the compared
+% algorithms. Add ILS pseudocode as an algorithm environment, complete the GA description, and report the
+% configurations that were tested and discarded for each competitor so that the reported baseline is visibly the
+% best-performing one rather than an arbitrary choice.
 The specific parameter settings for each algorithm are as follows:
 
 \begin{itemize}
-    \item \textbf{Genetic Algorithm (GA):} The GA uses a population size of $P = \lfloor\sqrt{n}\rfloor$, where $n$ is the total number of decision variables in the priority encoding, 
-    motivated by population-sizing theory suggesting that required population grows roughly with the square root of problem size. The algorithm employs a hybrid crossover operator (probability 0.9) 
-    that randomly alternates between two strategies with equal probability: (i) segment-level crossover, which exchanges entire chromosome segments ($S_1$ through $S_8$) between parents, and 
-    (ii) intra-segment crossover, which applies Partially Mapped Crossover (PMX) within each individual segment to preserve permutation validity while promoting diversity. This hybrid approach 
-    balances global exploration (segment exchange) with local refinement (intra-segment recombination). Mutation probability is set to 0.1, and binary tournament selection is used for parent 
+    \item \textbf{Genetic Algorithm (GA):} The GA uses a population size of $P = \lfloor\sqrt{n}\rfloor$, where $n$ is the total number of decision variables in the priority encoding,
+    motivated by population-sizing theory suggesting that required population grows roughly with the square root of problem size. The algorithm employs a hybrid crossover operator (probability 0.9)
+    that randomly alternates between two strategies with equal probability: (i) segment-level crossover, which exchanges entire chromosome segments ($S_1$ through $S_8$) between parents, and
+    (ii) intra-segment crossover, which applies Partially Mapped Crossover (PMX) within each individual segment to preserve permutation validity while promoting diversity. This hybrid approach
+    balances global exploration (segment exchange) with local refinement (intra-segment recombination). Mutation probability is set to 0.1, and binary tournament selection is used for parent
     selection, following widely established GA practices \citep{hussain2022genetic}.
-    
-    \item \textbf{Iterated Local Search (ILS):} The ILS alternates between local search and perturbation phases. The perturbation strength scales with instance size, and the algorithm 
+
+    \item \textbf{Iterated Local Search (ILS):} The ILS alternates between local search and perturbation phases. The perturbation strength scales with instance size, and the algorithm
     restarts when no improvement is observed after 10 consecutive non-improving iterations \citep{tinos2024iterated}. Local search employs the problem-specific "Inactive–Active Swap" operator.
 
-    \item \textbf{Variable Neighborhood Search (VNS):} The proposed VNS uses initial temperature $T_0 = 100$ and cooling rate $\alpha = 0.995$, which are standard parameters widely 
-    adopted in Simulated Annealing literature \citep{kirkpatrick1983optimization}, providing effective balance between exploration and exploitation. The perturbation strength is set to 7\% of the 
-    chromosome length, a value empirically determined as described in Section~\ref{subsec:vns}. The VND phase cycles sequentially through four problem-specific operators: (1) Active Reversion, 
+    \item \textbf{Variable Neighborhood Search (VNS):} The proposed VNS uses initial temperature $T_0 = 100$ and cooling rate $\alpha = 0.995$, which are standard parameters widely
+    adopted in Simulated Annealing literature \citep{kirkpatrick1983optimization}, providing effective balance between exploration and exploitation. The perturbation strength is set to 7\% of the
+    chromosome length, a value empirically determined as described in Section~\ref{subsec:vns}. The VND phase cycles sequentially through four problem-specific operators: (1) Active Reversion,
     (2) Inactive-Active Swap, (3) Inactive Boost, and (4) IA-ETN. Upon finding an improvement with any operator, the VND restarts from the first operator.
-    
-    \item \textbf{Exact Solver (Gurobi):} For the three largest instances (400, 800, and 1600), the solver was configured with a time limit of 3,600 seconds (1 hour). 
-    For smaller instances, no time limit was imposed, allowing the solver to run until proven optimality. For instances where the optimal solution could not be found within 
+
+    \item \textbf{Exact Solver (Gurobi):} For the three largest instances (400, 800, and 1600), the solver was configured with a time limit of 3,600 seconds (1 hour).
+    For smaller instances, no time limit was imposed, allowing the solver to run until proven optimality. For instances where the optimal solution could not be found within
     the time limit, the best feasible solution found ($\text{Incumbent}$) was recorded.
 \end{itemize}
 
-All metaheuristics (VNS, GA, ILS) were executed 30 times for each instance to ensure statistical robustness.
+% ------------------------------------------------------------
+
+\subsection{Statistical Methodology}
+\label{subsec:stats_method}
+
+% TODO(revision): add a multiple-comparison correction (Holm) and a non-parametric effect size measure
+% (Vargha-Delaney A12 or Cliff's delta) once the experiments are re-run. Reporting p-values alone for fourteen
+% pairwise tests is a standing vulnerability even though the current p-values are small enough that no correction
+% would change any conclusion.
+The same statistical procedure is applied to every pairwise comparison reported in this section. Since parametric tests (such as the t-test) assume normally distributed data,
+we first applied the Shapiro-Wilk test with significance level $\alpha = 0.05$ to check this assumption. When both samples passed the normality test ($p > 0.05$),
+we used the parametric t-test, which offers higher statistical power. When either sample failed the normality test ($p \le 0.05$), we used the non-parametric Mann-Whitney
+U test, which makes no distributional assumptions. All hypotheses are one-tailed, testing whether the first method attains a smaller (better) objective function value than
+the second.
+
+% ------------------------------------------------------------
+\subsection{Comparative Analysis}
+\label{subsec:main_comparison}
+
+In this section, we provide a comprehensive benchmark of the proposed VNS against the Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver (Gurobi). 
+Fig. \ref{fig:comparison_boxplots} presents the boxplots for all methods across the tested instances. The red dashed line represents the optimal solution (or best lower bound) found by Gurobi.
+
+\begin{figure*}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./boxplots_10.png}
+        \caption{Instance 10}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./boxplots_30.png}
+        \caption{Instance 30}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./boxplots_100.png}
+        \caption{Instance 100}
+    \end{subfigure}
+    
+    \vspace{1em}
+    
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./boxplots_200.png}
+        \caption{Instance 200}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./boxplots_400.png}
+        \caption{Instance 400}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./boxplots_800.png}
+        \caption{Instance 800}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{./boxplots_1600.png}
+        \caption{Instance 1600}
+    \end{subfigure}
+    
+    \caption{Comparison of VNS, ILS, and GA across all instance sizes. The red dashed line indicates the reference solution (Gurobi optimum or best incumbent).}
+    \label{fig:comparison_boxplots}
+\end{figure*}
+
+\subsubsection{Performance Comparison}
+Table \ref{tab:descriptive_stats} summarizes the average objective function values and the relative gap to the optimal solution for each method.
+
+For the smallest instance (10), the ILS achieves the best average performance, surpassing the VNS by 2.21\%. This is expected, as simple local search strategies often converge 
+faster in very small search spaces where deep exploration is unnecessary. For Instance 30, the performance of VNS and ILS is statistically indistinguishable.
+
+However, a clear trend emerges from Instance 100 onwards. The VNS consistently outperforms both ILS and GA, with the performance gap widening as the problem complexity increases. 
+For the largest instances (800 and 1600), the VNS maintains a gap to the optimum of approximately 3.5\%, whereas the ILS gap grows to 4.7\% and the GA gap exceeds 10\%. 
+This demonstrates the superior scalability of the proposed approach.
+
+For the three largest instances (400, 800, and 1600), Gurobi was subject to a one-hour time limit to prevent excessive computational costs. Instance 400 reached proven optimality 
+within this limit. However, Instances 800 and 1600 exhausted the time budget without proving optimality, returning the same best incumbent solution value of $5.49 \times 10^8$ for both. 
+These values represent the best feasible solutions found (upper bounds) rather than proven optimal solutions, as the optimality gap had not closed. For smaller instances (10, 30, 100, and 200), 
+Gurobi ran without time constraints and successfully proved optimality.
+
+\begin{table*}[ht]
+    \centering
+    \caption{Descriptive Statistics: Average Objective Function values and Gap to Reference Solution (\%). Note: Instances 10-200 were solved to proven optimality by Gurobi without time constraints. 
+    Instance 400 reached proven optimality within the 1-hour time limit. For instances 800 and 1600, Gurobi reached the time limit without proving optimality; 
+    gaps are calculated relative to the best incumbent solution rather than a proven optimum.}
+    \label{tab:descriptive_stats}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{rcccccccc}
+        \toprule
+        & \textbf{Reference} & \multicolumn{3}{c}{\textbf{Average Objective Function}} & \multicolumn{3}{c}{\textbf{Gap to Reference (\%)}} \\
+        \cmidrule(lr){3-5} \cmidrule(lr){6-8}
+        Inst. & Gurobi (Opt/Bound) & Proposed VNS & ILS & GA & VNS & ILS & GA \\
+        \midrule
+        10 & $7.32 \times 10^6$ & $7.62 \times 10^6$ & $\mathbf{7.46 \times 10^6}$ & $7.82 \times 10^6$ & 4.17\% & \textbf{1.92\%} & 6.89\% \\
+        30 & $2.00 \times 10^7$ & $\mathbf{2.05 \times 10^7}$ & $\mathbf{2.05 \times 10^7}$ & $2.11 \times 10^7$ & \textbf{2.65\%} & 2.76\% & 5.39\% \\
+        100 & $7.06 \times 10^7$ & $\mathbf{7.29 \times 10^7}$ & $7.34 \times 10^7$ & $7.67 \times 10^7$ & \textbf{3.28\%} & 3.97\% & 8.59\% \\
+        200 & $1.38 \times 10^8$ & $\mathbf{1.42 \times 10^8}$ & $1.44 \times 10^8$ & $1.49 \times 10^8$ & \textbf{3.40\%} & 4.48\% & 8.48\% \\
+        400 & $2.71 \times 10^8$ & $\mathbf{2.80 \times 10^8}$ & $2.83 \times 10^8$ & $2.96 \times 10^8$ & \textbf{3.27\%} & 4.42\% & 9.02\% \\
+        800 & $5.49 \times 10^8$ & $\mathbf{5.68 \times 10^8}$ & $5.75 \times 10^8$ & $6.01 \times 10^8$ & \textbf{3.54\%} & 4.72\% & 9.53\% \\
+        1600 & $5.49 \times 10^8$ & $\mathbf{5.68 \times 10^8}$ & $5.74 \times 10^8$ & $6.04 \times 10^8$ & \textbf{3.50\%} & 4.65\% & 10.13\% \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table*}
+
+\subsubsection{Statistical Validation}
+To rigorously validate the performance differences, we applied the statistical methodology described in Section~\ref{subsec:stats_method} with $\alpha = 0.05$ for all tests. 
+Table \ref{tab:detailed_stats} presents the normality checks ($p_{SW}$) and hypothesis testing results for all pairwise comparisons between VNS and its competitors.
+
+The hypothesis tested was $H_1: \mu_{VNS} < \mu_{Competitor}$ (one-tailed). As shown in the table, the data distribution characteristics vary with instance size, 
+requiring different statistical treatments (parametric t-test when normality holds, non-parametric Mann-Whitney U test otherwise).
+
+\begin{table*}[ht]
+    \centering
+    \caption{Detailed Statistical Analysis: Normality Checks and Hypothesis Testing ($\alpha=0.05$).}
+    \label{tab:detailed_stats}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{rcccccccc}
+            \toprule
+            & \multicolumn{3}{c}{\textbf{Normality Check ($p_{SW}$)}} & \multicolumn{5}{c}{\textbf{Hypothesis Testing ($H_1: VNS < Competitor$)}} \\
+            \cmidrule(lr){2-4} \cmidrule(lr){5-9}
+            Inst. & VNS & ILS & GA & Comparison & Normality? & Test Used & p-value & \textbf{Conclusion} \\
+            \midrule
+            \multirow{2}{*}{10} & \multirow{2}{*}{1.70e-11} & \multirow{2}{*}{5.41e-01} & \multirow{2}{*}{3.74e-07} 
+            & VNS vs ILS & No & Mann-Whitney & 9.98e-01 & No Sig. Diff. \\
+            & & & & VNS vs GA & No & Mann-Whitney & 1.09e-07 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{30} & \multirow{2}{*}{6.26e-02} & \multirow{2}{*}{6.64e-01} & \multirow{2}{*}{4.62e-01} 
+            & VNS vs ILS & Yes & t-test & 2.94e-01 & No Sig. Diff. \\
+            & & & & VNS vs GA & Yes & t-test & 1.83e-12 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{100} & \multirow{2}{*}{5.12e-01} & \multirow{2}{*}{6.16e-01} & \multirow{2}{*}{3.46e-05} 
+            & VNS vs ILS & Yes & t-test & 7.94e-06 & VNS Superior \\
+            & & & & VNS vs GA & No & Mann-Whitney & 1.51e-11 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{200} & \multirow{2}{*}{4.34e-02} & \multirow{2}{*}{8.77e-01} & \multirow{2}{*}{6.67e-02} 
+            & VNS vs ILS & No & Mann-Whitney & 3.06e-10 & VNS Superior \\
+            & & & & VNS vs GA & No & Mann-Whitney & 1.51e-11 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{400} & \multirow{2}{*}{2.96e-01} & \multirow{2}{*}{2.95e-01} & \multirow{2}{*}{6.25e-01} 
+            & VNS vs ILS & Yes & t-test & 1.15e-20 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 1.03e-20 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{800} & \multirow{2}{*}{7.11e-01} & \multirow{2}{*}{8.82e-01} & \multirow{2}{*}{4.39e-01} 
+            & VNS vs ILS & Yes & t-test & 4.78e-20 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 1.71e-24 & VNS Superior \\
+            \midrule
+            \multirow{2}{*}{1600} & \multirow{2}{*}{3.56e-01} & \multirow{2}{*}{1.91e-01} & \multirow{2}{*}{1.27e-01} 
+            & VNS vs ILS & Yes & t-test & 1.38e-17 & VNS Superior \\
+            & & & & VNS vs GA & Yes & t-test & 5.97e-23 & VNS Superior \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table*}
+
+The analysis confirms two distinct performance regimes. In small instances (10-30), the simple ILS is highly efficient, and VNS provides no statistical advantage (p-value $> 0.05$). 
+However, a transition occurs at Instance 100. From this point onward, the VNS is statistically superior to both ILS and GA ($p < 10^{-5}$). Notably, in Instance 200, 
+the VNS distribution deviated from normality ($p=4.34 \times 10^{-2}$), requiring the non-parametric Mann-Whitney test, which still confirmed the result with high confidence.
+
+\subsubsection{Performance Regime Analysis}
+The observed performance stratification reveals important insights about algorithm selection based on problem scale. For small instances (10-30 nodes), the solution space 
+is relatively compact, and simple greedy descent strategies employed by ILS converge rapidly to near-optimal solutions. In these cases, the overhead of VNS's multi-neighborhood 
+framework and SA acceptance mechanism provides no advantage, since the problem is simple enough that basic local search suffices. The VND cycling through multiple operators and the 
+probabilistic acceptance of worse solutions become unnecessary computational expenses when the local optimum basin is shallow and easily escapable.
+
+However, as instance size grows beyond 100 nodes, the combinatorial explosion creates a rugged fitness landscape with numerous deep local optima separated by large barriers. 
+Here, the VNS's sophisticated diversification mechanisms (strategic neighborhood sequencing, SA-based hill climbing, and adaptive perturbation) become essential. The problem-specific 
+operators exploit structural properties of the supply chain that are invisible to classical operators, enabling the algorithm to navigate 
+the active/inactive node boundary more effectively. The ILS, constrained to a single neighborhood operator, lacks this structural awareness and becomes trapped in inferior local optima. 
+Similarly, the GA's population-based search suffers from the curse of dimensionality: as chromosome length grows from 1,700 to 27,200 variables, maintaining population diversity while 
+guiding convergence becomes increasingly difficult, resulting in premature convergence to suboptimal regions.
+
+\subsubsection{Convergence Analysis}
+Figure \ref{fig:convergence_plots} illustrates the evolutionary boxplots for all three methods. The ILS (left column) demonstrates a consistent behavior with relatively low 
+variance (small box sizes) throughout the execution. However, despite this stability, it fails to reach the deeper regions found by the VNS, stopping at higher objective function values.
+
+The GA (right column) struggles with the scale of the problem. In larger instances (800 and 1600), its convergence curve is still strictly descending at the end of the 
+computational budget, indicating that it requires significantly more evaluations to compete with the trajectory-based methods.
+
+The Proposed VNS (middle column) offers the best trade-off. In the largest instances, it starts with a broader search distribution (driven 
+by the Simulated Annealing acceptance criteria and the specific neighborhood operators) allowing it to filter through various basins of attraction. Crucially, while the ILS 
+stabilizes early at a sub-optimal level, the VNS sustains a steep descent trajectory for longer, ultimately securing the lowest objective function values with high 
+reliability across all 30 runs.
+
+\begin{figure*}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./convergence_10.png}
+        \caption{Instance 10}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./convergence_30.png}
+        \caption{Instance 30}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./convergence_100.png}
+        \caption{Instance 100}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./convergence_200.png}
+        \caption{Instance 200}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./convergence_400.png}
+        \caption{Instance 400}
+    \end{subfigure}
+    
+    \vspace{0.5em}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./convergence_800.png}
+        \caption{Instance 800}
+    \end{subfigure}
+
+    \vspace{0.5em}
+
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./convergence_1600.png}
+        \caption{Instance 1600}
+    \end{subfigure}
+    
+    \caption{Convergence profiles of VNS, ILS, and GA across all instance sizes. Boxplots show the distribution of objective values at different 
+    execution stages (as percentage of total evaluations), with median lines connecting the boxes. The VNS demonstrates sustained improvement 
+    throughout execution, while GA plateaus earlier in large instances.}
+    \label{fig:convergence_plots}
+\end{figure*}
 
 % ------------------------------------------------------------
 
@@ -636,10 +934,8 @@ To validate the contribution of the novel problem-specific neighborhood structur
 classical permutation operators found in the literature: \textit{Swap}, \textit{Reversion}, \textit{Insertion}, and \textit{Slide} \citep{gendreau2010}.
 
 \subsubsection{Statistical Analysis}
-We performed a rigorous statistical validation of the results across all instance sizes. Since parametric tests (such as the t-test) assume normally distributed data, 
-we first applied the Shapiro-Wilk test with significance level $\alpha = 0.05$ to check this assumption. When both samples passed the normality test ($p > 0.05$), 
-we used the parametric t-test, which offers higher statistical power. When either sample failed the normality test ($p \le 0.05$), we used the non-parametric Mann-Whitney 
-U test, which makes no distributional assumptions. The hypothesis tested was that the Proposed VNS provides a smaller (better) objective function value than the Standard VNS ($H_1: \mu_{Novel} < \mu_{Basic}$).
+Following the procedure defined in Section~\ref{subsec:stats_method}, the hypothesis tested here was that the Proposed VNS provides a smaller (better) objective
+function value than the Standard VNS ($H_1: \mu_{Proposed} < \mu_{Standard}$).
 
 Table \ref{tab:stats_vns} details the p-values obtained. For small instances (10 and 30), the p-values ($> 0.05$) indicate that there is no statistically significant difference 
 between the Proposed VNS and the Standard VNS. The null hypothesis ($H_0: \mu_{Novel} = \mu_{Basic}$) cannot be rejected, meaning both approaches perform comparably in these simple landscapes. 
@@ -800,238 +1096,37 @@ superior solution quality in the long run.
     \label{fig:vns_convergence}
 \end{figure*}
 
+
 % ------------------------------------------------------------
-\subsection{Comparative Analysis}
-\label{subsec:main_comparison}
 
-In this section, we provide a comprehensive benchmark of the proposed VNS against the Genetic Algorithm (GA), Iterated Local Search (ILS), and the exact solver (Gurobi). 
-Fig. \ref{fig:comparison_boxplots} presents the boxplots for all methods across the tested instances. The red dashed line represents the optimal solution (or best lower bound) found by Gurobi.
+\subsection{Ablation Study}
+\label{subsec:ablation}
 
-\begin{figure*}[htbp]
-    \centering
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./boxplots_10.png}
-        \caption{Instance 10}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./boxplots_30.png}
-        \caption{Instance 30}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./boxplots_100.png}
-        \caption{Instance 100}
-    \end{subfigure}
-    
-    \vspace{1em}
-    
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./boxplots_200.png}
-        \caption{Instance 200}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./boxplots_400.png}
-        \caption{Instance 400}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./boxplots_800.png}
-        \caption{Instance 800}
-    \end{subfigure}
+% =====================================================================================================================
+% TODO(revision): Addresses Reviewer~2 comment~1 ("no substantive methodological advancement beyond existing
+% approaches"), Reviewer~4 comment~1 (the operators are structured variants of known moves) and Reviewer~4 comment~6
+% (the ILS baseline is structurally weaker, so the source of the improvement cannot be attributed). All three reduce
+% to the same question: where does the gain actually come from? Only an ablation can answer it.
+%
+% Variants to run, isolating one component at a time:
+%   1. VND + proposed operators + strict-improvement acceptance
+%   2. VND + proposed operators + normalised SA acceptance
+%   3. VND + classical operators (Swap, Reversion, Insertion, Slide) -- the existing "Standard VNS"
+%   4. Single-neighborhood VNS using Inactive-Active Swap only -- separates "more neighborhoods" from
+%      "better neighborhoods"
+%   5. Strengthened ILS given the four proposed operators under the same budget -- this is the decisive one for
+%      Reviewer~4 comment~6. If VNS still wins against an ILS with equal access to the operators, the objection
+%      falls. If it does not, the contribution is the operators rather than the architecture, and the paper should
+%      be framed that way.
+%
+% Note on variant 2: the acceptance criterion must be corrected before this subsection can be written. Reviewer~4
+% comment~5 is correct that with objective values of order 1e7-1e8 and T0 = 100, exp(-delta/T) is numerically zero,
+% so the search behaves as deterministic descent. Section~\ref{subsec:vns} must describe the corrected mechanism,
+% not the current one.
+% =====================================================================================================================
 
-    \vspace{1em}
+\textbf{[TO BE WRITTEN]} \textit{Ablation over the five variants listed above, attributing the observed performance to individual algorithmic components.}
 
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{./boxplots_1600.png}
-        \caption{Instance 1600}
-    \end{subfigure}
-    
-    \caption{Comparison of VNS, ILS, and GA across all instance sizes. The red dashed line indicates the reference solution (Gurobi optimum or best incumbent).}
-    \label{fig:comparison_boxplots}
-\end{figure*}
-
-\subsubsection{Performance Comparison}
-Table \ref{tab:descriptive_stats} summarizes the average objective function values and the relative gap to the optimal solution for each method.
-
-For the smallest instance (10), the ILS achieves the best average performance, surpassing the VNS by 2.21\%. This is expected, as simple local search strategies often converge 
-faster in very small search spaces where deep exploration is unnecessary. For Instance 30, the performance of VNS and ILS is statistically indistinguishable.
-
-However, a clear trend emerges from Instance 100 onwards. The VNS consistently outperforms both ILS and GA, with the performance gap widening as the problem complexity increases. 
-For the largest instances (800 and 1600), the VNS maintains a gap to the optimum of approximately 3.5\%, whereas the ILS gap grows to 4.7\% and the GA gap exceeds 10\%. 
-This demonstrates the superior scalability of the proposed approach.
-
-For the three largest instances (400, 800, and 1600), Gurobi was subject to a one-hour time limit to prevent excessive computational costs. Instance 400 reached proven optimality 
-within this limit. However, Instances 800 and 1600 exhausted the time budget without proving optimality, returning the same best incumbent solution value of $5.49 \times 10^8$ for both. 
-These values represent the best feasible solutions found (upper bounds) rather than proven optimal solutions, as the optimality gap had not closed. For smaller instances (10, 30, 100, and 200), 
-Gurobi ran without time constraints and successfully proved optimality.
-
-\begin{table*}[ht]
-    \centering
-    \caption{Descriptive Statistics: Average Objective Function values and Gap to Reference Solution (\%). Note: Instances 10-200 were solved to proven optimality by Gurobi without time constraints. 
-    Instance 400 reached proven optimality within the 1-hour time limit. For instances 800 and 1600, Gurobi reached the time limit without proving optimality; 
-    gaps are calculated relative to the best incumbent solution rather than a proven optimum.}
-    \label{tab:descriptive_stats}
-    \resizebox{\textwidth}{!}{
-    \begin{tabular}{rcccccccc}
-        \toprule
-        & \textbf{Reference} & \multicolumn{3}{c}{\textbf{Average Objective Function}} & \multicolumn{3}{c}{\textbf{Gap to Reference (\%)}} \\
-        \cmidrule(lr){3-5} \cmidrule(lr){6-8}
-        Inst. & Gurobi (Opt/Bound) & Proposed VNS & ILS & GA & VNS & ILS & GA \\
-        \midrule
-        10 & $7.32 \times 10^6$ & $7.62 \times 10^6$ & $\mathbf{7.46 \times 10^6}$ & $7.82 \times 10^6$ & 4.17\% & \textbf{1.92\%} & 6.89\% \\
-        30 & $2.00 \times 10^7$ & $\mathbf{2.05 \times 10^7}$ & $\mathbf{2.05 \times 10^7}$ & $2.11 \times 10^7$ & \textbf{2.65\%} & 2.76\% & 5.39\% \\
-        100 & $7.06 \times 10^7$ & $\mathbf{7.29 \times 10^7}$ & $7.34 \times 10^7$ & $7.67 \times 10^7$ & \textbf{3.28\%} & 3.97\% & 8.59\% \\
-        200 & $1.38 \times 10^8$ & $\mathbf{1.42 \times 10^8}$ & $1.44 \times 10^8$ & $1.49 \times 10^8$ & \textbf{3.40\%} & 4.48\% & 8.48\% \\
-        400 & $2.71 \times 10^8$ & $\mathbf{2.80 \times 10^8}$ & $2.83 \times 10^8$ & $2.96 \times 10^8$ & \textbf{3.27\%} & 4.42\% & 9.02\% \\
-        800 & $5.49 \times 10^8$ & $\mathbf{5.68 \times 10^8}$ & $5.75 \times 10^8$ & $6.01 \times 10^8$ & \textbf{3.54\%} & 4.72\% & 9.53\% \\
-        1600 & $5.49 \times 10^8$ & $\mathbf{5.68 \times 10^8}$ & $5.74 \times 10^8$ & $6.04 \times 10^8$ & \textbf{3.50\%} & 4.65\% & 10.13\% \\
-        \bottomrule
-    \end{tabular}
-    }
-\end{table*}
-
-\subsubsection{Statistical Validation}
-To rigorously validate the performance differences, we applied the same statistical methodology described in Section~\ref{subsec:operators_analysis} with $\alpha = 0.05$ for all tests. 
-Table \ref{tab:detailed_stats} presents the normality checks ($p_{SW}$) and hypothesis testing results for all pairwise comparisons between VNS and its competitors.
-
-The hypothesis tested was $H_1: \mu_{VNS} < \mu_{Competitor}$ (one-tailed). As shown in the table, the data distribution characteristics vary with instance size, 
-requiring different statistical treatments (parametric t-test when normality holds, non-parametric Mann-Whitney U test otherwise).
-
-\begin{table*}[ht]
-    \centering
-    \caption{Detailed Statistical Analysis: Normality Checks and Hypothesis Testing ($\alpha=0.05$).}
-    \label{tab:detailed_stats}
-    \resizebox{\textwidth}{!}{
-        \begin{tabular}{rcccccccc}
-            \toprule
-            & \multicolumn{3}{c}{\textbf{Normality Check ($p_{SW}$)}} & \multicolumn{5}{c}{\textbf{Hypothesis Testing ($H_1: VNS < Competitor$)}} \\
-            \cmidrule(lr){2-4} \cmidrule(lr){5-9}
-            Inst. & VNS & ILS & GA & Comparison & Normality? & Test Used & p-value & \textbf{Conclusion} \\
-            \midrule
-            \multirow{2}{*}{10} & \multirow{2}{*}{1.70e-11} & \multirow{2}{*}{5.41e-01} & \multirow{2}{*}{3.74e-07} 
-            & VNS vs ILS & No & Mann-Whitney & 9.98e-01 & No Sig. Diff. \\
-            & & & & VNS vs GA & No & Mann-Whitney & 1.09e-07 & VNS Superior \\
-            \midrule
-            \multirow{2}{*}{30} & \multirow{2}{*}{6.26e-02} & \multirow{2}{*}{6.64e-01} & \multirow{2}{*}{4.62e-01} 
-            & VNS vs ILS & Yes & t-test & 2.94e-01 & No Sig. Diff. \\
-            & & & & VNS vs GA & Yes & t-test & 1.83e-12 & VNS Superior \\
-            \midrule
-            \multirow{2}{*}{100} & \multirow{2}{*}{5.12e-01} & \multirow{2}{*}{6.16e-01} & \multirow{2}{*}{3.46e-05} 
-            & VNS vs ILS & Yes & t-test & 7.94e-06 & VNS Superior \\
-            & & & & VNS vs GA & No & Mann-Whitney & 1.51e-11 & VNS Superior \\
-            \midrule
-            \multirow{2}{*}{200} & \multirow{2}{*}{4.34e-02} & \multirow{2}{*}{8.77e-01} & \multirow{2}{*}{6.67e-02} 
-            & VNS vs ILS & No & Mann-Whitney & 3.06e-10 & VNS Superior \\
-            & & & & VNS vs GA & No & Mann-Whitney & 1.51e-11 & VNS Superior \\
-            \midrule
-            \multirow{2}{*}{400} & \multirow{2}{*}{2.96e-01} & \multirow{2}{*}{2.95e-01} & \multirow{2}{*}{6.25e-01} 
-            & VNS vs ILS & Yes & t-test & 1.15e-20 & VNS Superior \\
-            & & & & VNS vs GA & Yes & t-test & 1.03e-20 & VNS Superior \\
-            \midrule
-            \multirow{2}{*}{800} & \multirow{2}{*}{7.11e-01} & \multirow{2}{*}{8.82e-01} & \multirow{2}{*}{4.39e-01} 
-            & VNS vs ILS & Yes & t-test & 4.78e-20 & VNS Superior \\
-            & & & & VNS vs GA & Yes & t-test & 1.71e-24 & VNS Superior \\
-            \midrule
-            \multirow{2}{*}{1600} & \multirow{2}{*}{3.56e-01} & \multirow{2}{*}{1.91e-01} & \multirow{2}{*}{1.27e-01} 
-            & VNS vs ILS & Yes & t-test & 1.38e-17 & VNS Superior \\
-            & & & & VNS vs GA & Yes & t-test & 5.97e-23 & VNS Superior \\
-            \bottomrule
-        \end{tabular}
-    }
-\end{table*}
-
-The analysis confirms two distinct performance regimes. In small instances (10-30), the simple ILS is highly efficient, and VNS provides no statistical advantage (p-value $> 0.05$). 
-However, a transition occurs at Instance 100. From this point onward, the VNS is statistically superior to both ILS and GA ($p < 10^{-5}$). Notably, in Instance 200, 
-the VNS distribution deviated from normality ($p=4.34 \times 10^{-2}$), requiring the non-parametric Mann-Whitney test, which still confirmed the result with high confidence.
-
-\subsubsection{Performance Regime Analysis}
-The observed performance stratification reveals important insights about algorithm selection based on problem scale. For small instances (10-30 nodes), the solution space 
-is relatively compact, and simple greedy descent strategies employed by ILS converge rapidly to near-optimal solutions. In these cases, the overhead of VNS's multi-neighborhood 
-framework and SA acceptance mechanism provides no advantage, since the problem is simple enough that basic local search suffices. The VND cycling through multiple operators and the 
-probabilistic acceptance of worse solutions become unnecessary computational expenses when the local optimum basin is shallow and easily escapable.
-
-However, as instance size grows beyond 100 nodes, the combinatorial explosion creates a rugged fitness landscape with numerous deep local optima separated by large barriers. 
-Here, the VNS's sophisticated diversification mechanisms (strategic neighborhood sequencing, SA-based hill climbing, and adaptive perturbation) become essential. The problem-specific 
-operators exploit structural properties of the supply chain that are invisible to classical operators, enabling the algorithm to navigate 
-the active/inactive node boundary more effectively. The ILS, constrained to a single neighborhood operator, lacks this structural awareness and becomes trapped in inferior local optima. 
-Similarly, the GA's population-based search suffers from the curse of dimensionality: as chromosome length grows from 1,700 to 27,200 variables, maintaining population diversity while 
-guiding convergence becomes increasingly difficult, resulting in premature convergence to suboptimal regions.
-
-\subsubsection{Convergence Analysis}
-Figure \ref{fig:convergence_plots} illustrates the evolutionary boxplots for all three methods. The ILS (left column) demonstrates a consistent behavior with relatively low 
-variance (small box sizes) throughout the execution. However, despite this stability, it fails to reach the deeper regions found by the VNS, stopping at higher objective function values.
-
-The GA (right column) struggles with the scale of the problem. In larger instances (800 and 1600), its convergence curve is still strictly descending at the end of the 
-computational budget, indicating that it requires significantly more evaluations to compete with the trajectory-based methods.
-
-The Proposed VNS (middle column) offers the best trade-off. In the largest instances, it starts with a broader search distribution (driven 
-by the Simulated Annealing acceptance criteria and the specific neighborhood operators) allowing it to filter through various basins of attraction. Crucially, while the ILS 
-stabilizes early at a sub-optimal level, the VNS sustains a steep descent trajectory for longer, ultimately securing the lowest objective function values with high 
-reliability across all 30 runs.
-
-\begin{figure*}[htbp]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./convergence_10.png}
-        \caption{Instance 10}
-    \end{subfigure}
-    
-    \vspace{0.5em}
-    
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./convergence_30.png}
-        \caption{Instance 30}
-    \end{subfigure}
-    
-    \vspace{0.5em}
-    
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./convergence_100.png}
-        \caption{Instance 100}
-    \end{subfigure}
-    
-    \vspace{0.5em}
-    
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./convergence_200.png}
-        \caption{Instance 200}
-    \end{subfigure}
-    
-    \vspace{0.5em}
-    
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./convergence_400.png}
-        \caption{Instance 400}
-    \end{subfigure}
-    
-    \vspace{0.5em}
-    
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./convergence_800.png}
-        \caption{Instance 800}
-    \end{subfigure}
-
-    \vspace{0.5em}
-
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{./convergence_1600.png}
-        \caption{Instance 1600}
-    \end{subfigure}
-    
-    \caption{Convergence profiles of VNS, ILS, and GA across all instance sizes. Boxplots show the distribution of objective values at different 
-    execution stages (as percentage of total evaluations), with median lines connecting the boxes. The VNS demonstrates sustained improvement 
-    throughout execution, while GA plateaus earlier in large instances.}
-    \label{fig:convergence_plots}
-\end{figure*}
 
 % ----------------------------------------------------------------------------------------------------------------------
 \section{Conclusion}
